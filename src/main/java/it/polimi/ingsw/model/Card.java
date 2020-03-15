@@ -3,16 +3,82 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Card {
+public enum Card {
 
-    public static List<Cell> checkMove(Worker w, Board b){
-        List<Cell> avaiable = new ArrayList<Cell>();
-        return avaiable;
-    };
+    APPOLLO("", true),
+    ARTHEMIS("", true),
+    ATHENA("", false),
+    ATLAS("", false),
+    DEMETER("", false),
+    HEPHASTUS("", false),
+    MINOTAUR("", true),
+    PAN("", true),
+    PROMETHEUS("", false);
 
-    public static List<Cell> checkBuild(Worker w, Board bs)
-    {
-        List<Cell> avaiable = new ArrayList<Cell>();
+    private final String description;
+    private boolean ability;
+
+    Card(String description, boolean ability) {
+        this.description = description;
+        this.ability = ability;
+    }
+
+    public List<Cell> checkMove(Worker w, Board b, boolean isAtenaActive){
+        List<Cell> avaiable = new ArrayList<>();
+
+        switch (this){
+            case ARTHEMIS:
+                break;
+            case APPOLLO:
+                break;
+            case ATHENA:
+                break;
+            case ATLAS:
+                break;
+            case DEMETER:
+                break;
+            case HEPHASTUS:
+                break;
+            case MINOTAUR:
+                break;
+            case PAN:
+                break;
+            case PROMETHEUS:
+                break;
+            default:
+                return new ArrayList<>();
+        }
+
         return avaiable;
-    };
+    }
+
+    public List<Cell> checkBuild(Worker w, Board b, Cell denied){
+        List<Cell> avaiable = new ArrayList<>();
+
+        switch (this){
+            case ARTHEMIS:
+                break;
+            case APPOLLO:
+                break;
+            case ATHENA:
+                break;
+            case ATLAS:
+                break;
+            case DEMETER:
+                break;
+            case HEPHASTUS:
+                break;
+            case MINOTAUR:
+                break;
+            case PAN:
+                break;
+            case PROMETHEUS:
+                break;
+            default:
+                return new ArrayList<>();
+        }
+
+        return avaiable;
+    }
+
 }
