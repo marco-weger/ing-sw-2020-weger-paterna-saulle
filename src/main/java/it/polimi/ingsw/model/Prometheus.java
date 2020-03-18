@@ -11,4 +11,5 @@ public class Prometheus extends Card {
     public List<Cell> checkMove(Worker w, Board b) {
         return super.checkMove(w, b);
     }
+
 }

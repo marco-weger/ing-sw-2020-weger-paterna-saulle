@@ -14,16 +14,16 @@ public class Card extends FactoryCard {
     }
 
     public List<Cell> checkBuild(Worker w, Board b){
-
+        return null;
     }
     public List<Cell> checkMove(Worker w, Board b){
-
+        return null;
     }
     public List<Cell> getBlocked(Worker w, Board b, Status current){
-
+        return null;
     }
     public boolean checkWin(){
-
+        return true;
     }
 
 
