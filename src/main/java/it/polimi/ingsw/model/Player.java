@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.cards.Card;
+
 public class Player {
 
     private String name;
-    private FactoryCard card;
+    private Card card;
     private Worker worker1;
     private Worker worker2;
     private boolean hasLost;

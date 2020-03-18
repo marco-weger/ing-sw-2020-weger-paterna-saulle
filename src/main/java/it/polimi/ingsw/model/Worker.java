@@ -38,4 +38,5 @@ public class Worker {
     }
 
     public void move(int x, int y){}
+
 }
