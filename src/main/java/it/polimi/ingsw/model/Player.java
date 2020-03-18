@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 public class Player {
 
     private String name;
-    private Card card;
+    private FactoryCard card;
     private Worker worker1;
     private Worker worker2;
     private boolean hasLost;

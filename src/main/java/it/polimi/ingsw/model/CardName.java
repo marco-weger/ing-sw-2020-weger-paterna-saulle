@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public enum Card {
+public enum CardName {
 
     APPOLLO("", true),
     ARTHEMIS("", true),
@@ -18,12 +15,12 @@ public enum Card {
     private final String description;
     private boolean ability;
 
-    Card(String description, boolean ability) {
+    CardName(String description, boolean ability) {
         this.description = description;
         this.ability = ability;
     }
 
-    public List<Cell> checkMove(Worker w, Board b, boolean isAtenaActive){
+    /*public List<Cell> checkMove(Worker w, Board b, boolean isAtenaActive){
         List<Cell> avaiable = new ArrayList<>();
 
         switch (this){
@@ -78,7 +75,6 @@ public enum Card {
                 return new ArrayList<>();
         }
 
-        return avaiable;
+        return avaiable;*/
     }
 
-}
