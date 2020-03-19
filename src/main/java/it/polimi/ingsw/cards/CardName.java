@@ -2,13 +2,13 @@ package it.polimi.ingsw.cards;
 
 public enum CardName {
 
-    APOLLO("Apollo description"),
-    ARTHEMIS(""),
+    APOLLO("Your Worker may move into an opponent Worker's space by forcing their Worker to the space yours just vacated!"),
+    ARTEMIS(""),
     ATHENA(""),
     ATLAS(""),
-    DEMETER(""),
+    DEMETER("Your Worker may build one additional time, but not on the same space!"),
     HEPHASTUS(""),
-    MINOTAUR(""),
+    MINOTAUR("Your Worker may move into an opponent Worker's space, if their Worker can be forced one space straight backwards to an unoccupied space at any level!"),
     PAN(""),
     PROMETHEUS("");
 
@@ -17,5 +17,6 @@ public enum CardName {
     CardName(String description) {
         this.description = description;
     }
-    }
+
+}
 

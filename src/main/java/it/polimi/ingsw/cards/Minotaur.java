@@ -2,17 +2,16 @@ package it.polimi.ingsw.cards;
 
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.Status;
 import it.polimi.ingsw.model.Worker;
 
 import java.util.List;
 
 public class Minotaur extends Card {
-    public Minotaur(CardName name) {
-        super(name);
+
+    public Minotaur()
+    {
+        super(CardName.MINOTAUR,false,false,true, Status.CHOSEN);
     }
 
-    @Override
-    public List<Cell> checkMove(Worker w, Board b) {
-        return super.checkMove(w, b);
-    }
 }

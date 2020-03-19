@@ -1,14 +1,12 @@
 package it.polimi.ingsw.cards;
 
+import it.polimi.ingsw.model.Status;
+
 public class Pan extends Card {
 
-    public Pan(CardName name) {
-        super(name);
-    }
-
-    @Override
-    public boolean checkWin() {
-        return super.checkWin();
+    public Pan()
+    {
+        super(CardName.PAN,false,false,true, Status.CHOSEN);
     }
 }
 

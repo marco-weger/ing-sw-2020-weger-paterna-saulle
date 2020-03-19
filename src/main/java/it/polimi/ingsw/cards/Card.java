@@ -1,9 +1,6 @@
 package it.polimi.ingsw.cards;
 
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Status;
-import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,18 +9,30 @@ public class Card {
 
     private CardName name;
     private boolean active;
-    private boolean opponent;
-    private boolean question;
-    private Status status;
+    private final boolean opponent;
+    private final boolean question;
+    private final Status status;
 
-    public Card(CardName name) {
+    public Card(CardName name, boolean active, boolean opponent, boolean question, Status status) {
         this.name = name;
+        this.active = active;
+        this.opponent = opponent;
+        this.question = question;
+        this.status = status;
     }
 
-    public List<Cell> checkBuild(Worker w, Board b){
+    public boolean checkWin(Cell from, Cell to) throws NullPointerException
+    {
+        if(from != null && to != null)
+            if(Board.isCellInBoard(from) && Board.isCellInBoard(to))
+                return (from.getLevel() == 2 && to.getLevel() == 3);
+        return false;
+    }
+
+    public List<Cell> checkBuild(List<Player> p, Board b){
         return null;
     }
-    public List<Cell> checkMove(Worker w, Board b){
+    public List<Cell> checkMove(List<Player> p, Board b){
         List<Cell> available = new ArrayList<>();
 
         // TODO: check generici
@@ -31,11 +40,12 @@ public class Card {
 
         return available;
     }
-    public List<Cell> getBlocked(Worker w, Board b, Status current){
+    public List<Cell> getBlock(Worker w, Board b, Status current){
         return null;
     }
-    public boolean checkWin(){
-        return true;
+    public Status getNextStatus(Status current){
+        return Status.BUILT;
     }
+    public void inizializeTurn(){}
 
 }
