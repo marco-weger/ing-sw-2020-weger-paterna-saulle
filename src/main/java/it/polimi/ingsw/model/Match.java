@@ -42,7 +42,39 @@ public class Match extends Observable implements Cloneable {
 
    // public void EndTurn();
 
-   // public void setNextPlayer();
+    /* a method to update the current player*/
+    //TODO: Test on this method
+    public void setNextPlayer(){
+
+        int i = players.indexOf(currentPlayer);
+
+        if (i < players.size() )
+        {
+            currentPlayer = players.get(i + 1);
+        }
+        else {
+            currentPlayer = players.get(0);
+        }
+    }
+
+   // public booelan checkCurrentPlayerLose();
+    //TODO: Fix check on Worker1 and Worker 2
+    public boolean checkCurrentPlayerWin() {
+        int j;
+        int deads = 0;
+        int k = players.size() - 1;
+        for (j = 0; j < players.size();j++ ){
+        if (currentPlayer == players.get(j)) {
+            j++;
+        } else {
+            if (players.get(j).getCurrentWorker().isActive() == false && players.get(j).getCurrentWorker().isActive() == false) {
+                deads++;
+            }
+        }
+    }
+        if (deads == k) return true;
+        else return false;
+   };
 }
 
 
