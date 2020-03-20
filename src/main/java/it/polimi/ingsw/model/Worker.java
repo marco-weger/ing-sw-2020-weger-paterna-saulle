@@ -2,8 +2,15 @@ package it.polimi.ingsw.model;
 
 public class Worker {
 
-    private int row,column,team;
+    private int row,column;
     private boolean active;
+
+    public Worker(int row, int column)
+    {
+        this.row = row;
+        this.column = column;
+        this.active = false;
+    }
 
     public int getRow() {
         return row;
@@ -21,14 +28,6 @@ public class Worker {
         this.column = column;
     }
 
-    public int getTeam() {
-        return team;
-    }
-
-    public void setTeam(int team) {
-        this.team = team;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -38,5 +37,13 @@ public class Worker {
     }
 
     public void move(int x, int y){}
+
+    public int getLevel(Board b){
+        if(b == null) return -1;
+        for(Cell c:b.getField())
+            if(row == c.getRow() && column == c.getColumn())
+                return c.getLevel();
+        return -1;
+    }
 
 }

@@ -24,7 +24,7 @@ public class Board {
 
     public static boolean isCellInBoard(Cell c){
         if(c != null)
-            return (c.getRow() >= 0 && c.getRow() <= 5 && c.getColumn() >= 0 && c.getColumn() <= 5);
+            return (c.getRow() >= 0 && c.getRow() < 5 && c.getColumn() >= 0 && c.getColumn() < 5);
         return false;
     }
 
@@ -34,6 +34,13 @@ public class Board {
                 for(Cell inBoard : field)
                     if(c.getRow() == inBoard.getRow() && c.getColumn() == inBoard.getColumn())
                         inBoard.setLevel(level);
+    }
+
+    public Cell getCell(int row, int column){
+        for(Cell inBoard : field)
+            if(row == inBoard.getRow() && column == inBoard.getColumn())
+                return inBoard;
+        return null;
     }
 
 }

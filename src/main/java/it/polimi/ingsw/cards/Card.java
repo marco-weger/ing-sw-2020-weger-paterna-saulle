@@ -21,6 +21,34 @@ public class Card {
         this.status = status;
     }
 
+    public CardName getName() {
+        return name;
+    }
+
+    public void setName(CardName name) {
+        this.name = name;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isOpponent() {
+        return opponent;
+    }
+
+    public boolean isQuestion() {
+        return question;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
     public boolean checkWin(Cell from, Cell to) throws NullPointerException
     {
         if(from != null && to != null)
@@ -28,24 +56,56 @@ public class Card {
                 return (from.getLevel() == 2 && to.getLevel() == 3);
         return false;
     }
-
-    public List<Cell> checkBuild(List<Player> p, Board b){
-        return null;
+    public List<Cell> checkBuild(List<Player> p, Board b)
+    {
+        if(p == null || b == null) return new ArrayList<>();
+        Worker actived = null;
+        for(Player player:p)
+            if(player.getCard().name.compareTo(this.name) == 0)
+                actived = player.getCurrentWorker();
+        if(actived == null) return new ArrayList<>();
+        List<Cell> ret = new ArrayList<>();
+        for(Cell c:b.getField())
+            if(Math.abs(c.getRow()-actived.getRow()) <= 1 && Math.abs(c.getColumn()-actived.getColumn()) <= 1 && c.getLevel() < 4 && !c.isOccupied(p))
+                ret.add(c);
+        return ret;
     }
     public List<Cell> checkMove(List<Player> p, Board b){
-        List<Cell> available = new ArrayList<>();
-
-        // TODO: check generici
-        available.add(new Cell(0,0,0));
-
-        return available;
+        if(p == null || b == null) return new ArrayList<>(0);
+        Worker actived = null;
+        for(Player player:p)
+            if(player.getCard().name.compareTo(this.name) == 0)
+                actived = player.getCurrentWorker();
+        if(actived == null) return new ArrayList<>();
+        List<Cell> ret = new ArrayList<>();
+        for(Cell c:b.getField())
+            if(Math.abs(c.getRow()-actived.getRow()) <= 1 && Math.abs(c.getColumn()-actived.getColumn()) <= 1 && c.getLevel() <= actived.getLevel(b)+1 && !c.isOccupied(p))
+                ret.add(c);
+        return ret;
     }
     public List<Cell> getBlock(Worker w, Board b, Status current){
-        return null;
+        return new ArrayList<>();
     }
     public Status getNextStatus(Status current){
-        return Status.BUILT;
+        if(current == null) return null;
+        switch (current){
+            case START:
+                return Status.CHOSEN;
+            case CHOSEN:
+                return Status.QUESTION_M;
+            case QUESTION_M:
+                return Status.MOVED;
+            case MOVED:
+                return Status.QUESTION_B;
+            case QUESTION_B:
+                return Status.BUILT;
+            case BUILT:
+                return Status.END;
+            case END:
+                return Status.START;
+            default:
+                return null;
+        }
     }
     public void inizializeTurn(){}
-
 }
