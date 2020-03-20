@@ -61,7 +61,9 @@ public class Player {
         this.hasLost = hasLost;
     }
 
-    public Worker getCurrentWorker(){return worker1;}
+    public Worker getCurrentWorker(){
+         return (getWorker1().isActive()) ? worker1 : worker2;
+    }
 
     public void setCurrentWorker(int i)
     {
