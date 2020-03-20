@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import java.util.List;
+
 public class Cell {
 
     private int row, column, level;
@@ -27,5 +29,15 @@ public class Cell {
     public void setLevel(int level) {
         if(level >= 0 && level <= 4)
             this.level = level;
+    }
+
+    public boolean isOccupied(List<Player> p)
+    {
+        if(p != null)
+            for(Player player:p)
+                if(player.getWorker1() != null && player.getWorker2() != null)
+                    if((player.getWorker1().getRow() == this.row && player.getWorker1().getColumn() == this.column) || (player.getWorker2().getRow() == this.row && player.getWorker2().getColumn() == this.column))
+                        return true;
+        return false;
     }
 }

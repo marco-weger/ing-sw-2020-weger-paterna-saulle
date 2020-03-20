@@ -36,7 +36,19 @@ public class Match extends Observable implements Cloneable {
         this.status = status;
     }
 
-   // public void inizializeMatch (int n);
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+// public void inizializeMatch (int n);
 
    // public void EndMatch();
 
