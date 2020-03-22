@@ -32,9 +32,9 @@ PATHTOJAVAFX is the path to JavaFX 12 (the lib folder!!) and changes depending o
 ### Testing persistence and reconnection
 When reconnecting, remember to vote for the same map the game was being played on before disconnection!
 
-- ###       Marco Weger ([@marco-weger](https://github.com/marco-weger)
-- ###       Francesco Paterna ([@FrancescoPaterna](https://github.com/FrancescoPaterna)
-- ###       Giulio Saulle ([@aGiulioSaulle](https://github.com/GiulioSaulle)
+- ###       Marco Weger ([@marco-weger](https://github.com/marco-weger))
+- ###       Francesco Paterna ([@FrancescoPaterna](https://github.com/FrancescoPaterna))
+- ###       Giulio Saulle ([@aGiulioSaulle](https://github.com/GiulioSaulle))
 
 | Functionality | State |
 |:-----------------------|:------------------------------------:|
