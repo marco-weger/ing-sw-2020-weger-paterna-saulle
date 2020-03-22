@@ -155,16 +155,16 @@ public class MinotaurTest {
         Card c = FactoryCard.getCard(CardName.MINOTAUR);
         p.add(new Player("player1",CardName.MINOTAUR,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        p.add(new Player("player3",CardName.ATLAS,new Worker(2,4),new Worker(0,2)));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         assertNotNull(c);
-        c.move(p,b,b.getCell(2,2));
-        System.out.println(p.get(0).getCurrentWorker().getRow() + " - " + p.get(0).getCurrentWorker().getColumn());
-        System.out.println(p.get(2).getWorker1().getRow() + " - " + p.get(2).getWorker1().getColumn());
+        c.move(p,b,b.getCell(2,4));
+        //System.out.println(p.get(0).getCurrentWorker().getRow() + " - " + p.get(0).getCurrentWorker().getColumn());
+        //System.out.println(p.get(2).getWorker1().getRow() + " - " + p.get(2).getWorker1().getColumn());
         assertEquals(p.get(0).getCurrentWorker().getRow(), 2);
-        assertEquals(p.get(0).getCurrentWorker().getColumn(), 2);
+        assertEquals(p.get(0).getCurrentWorker().getColumn(), 3);
         assertEquals(p.get(2).getWorker1().getRow(), 2);
-        assertEquals(p.get(2).getWorker1().getColumn(), 1);
+        assertEquals(p.get(2).getWorker1().getColumn(), 4);
     }
 }

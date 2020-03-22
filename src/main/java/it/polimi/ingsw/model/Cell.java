@@ -14,11 +14,17 @@ public class Cell {
 
     public int getRow() {return row;}
 
-    public void setRow(int row) {this.row = row;}
+    public void setRow(int row) {
+        if(row >= 0 && row <= 4)
+            this.row = row;
+    }
 
     public int getColumn() {return column;}
 
-    public void setColumn(int column) {this.column = column;}
+    public void setColumn(int column) {
+        if(column >= 0 && column <= 4)
+            this.column = column;
+    }
 
     public int getLevel() {return level;}
 
