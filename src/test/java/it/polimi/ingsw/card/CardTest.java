@@ -173,4 +173,46 @@ public class CardTest {
         assertNotNull(c);
         assertEquals(c.getBlock(new Worker(0,0),new Board(), Status.CHOSEN).size(),0);
     }
+    // move
+    @Test
+    public void move_null()
+    {
+        Card c = FactoryCard.getCard(CardName.PAN);
+        List<Player> p = new ArrayList<>();
+        p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
+        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
+        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        assertNotNull(c);
+
+        c.move(p,new Board(),new Cell(0,0,0));
+        //assertEquals(p.getWorker1().getRow(),1);
+        //assertEquals(p.getWorker1().getRow(),0);
+        //assertEquals(p.getWorker2().getRow(),0);
+        //assertEquals(p.getWorker2().getRow(),0);
+    }
+    public void move()
+    {
+        Card c = FactoryCard.getCard(CardName.PAN);
+        List<Player> p = new ArrayList<>();
+        p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
+        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
+        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        assertNotNull(c);
+
+        c.move(p,new Board(),new Cell(0,0,0));
+    }
+    // build
+    @Test
+    public void build_null()
+    {
+        Card c = FactoryCard.getCard(CardName.APOLLO);
+        assertNotNull(c);
+        assertEquals(c.getBlock(new Worker(0,0),new Board(), Status.CHOSEN).size(),0);
+    }
+    public void build()
+    {
+        Card c = FactoryCard.getCard(CardName.APOLLO);
+        assertNotNull(c);
+        assertEquals(c.getBlock(new Worker(0,0),new Board(), Status.CHOSEN).size(),0);
+    }
 }

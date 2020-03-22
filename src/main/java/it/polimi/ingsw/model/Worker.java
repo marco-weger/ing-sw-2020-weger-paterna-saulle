@@ -9,6 +9,11 @@ public class Worker {
     private int row,column;
     private boolean active, blocked;
 
+    public Worker(int row, int column) {
+        this.row = row;
+        this.column = column;
+    }
+
     public int getRow() {
         return row;
     }
@@ -25,6 +30,7 @@ public class Worker {
         this.column = column;
     }
 
+    /*
     //this version DOES consider the Gods abilities to block
     public boolean getBlocked(Match m, Cell current, Card c) {
         Cell next = new Cell(0,0,0);
@@ -40,6 +46,7 @@ public class Worker {
         }
         return blocked;
     }
+    */
 
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
@@ -56,5 +63,12 @@ public class Worker {
     public void move(int x, int y){
         setRow(x);
         setColumn(y);
+    }
+
+    public int getLevel(Board b){
+        for(Cell c:b.getField())
+            if(c.getRow() == this.row && c.getColumn() == this.column)
+                return c.getLevel();
+        return -1;
     }
 }

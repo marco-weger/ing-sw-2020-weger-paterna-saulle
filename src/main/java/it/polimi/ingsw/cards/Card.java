@@ -86,6 +86,46 @@ public class Card {
     public List<Cell> getBlock(Worker w, Board b, Status current){
         return new ArrayList<>();
     }
+
+    // TODO: testing
+    public void move(List<Player> p, Board b, Cell to){
+        if(!(p == null || b == null || to == null)){
+            Player current = null;
+            for(Player player:p)
+                if(player.getCard().getName().compareTo(this.getName()) == 0)
+                    current = player;
+            if(current != null) {
+                if(current.getCurrentWorker() != null){
+                    // do...
+                }
+            }
+        }
+
+        // TODO: check vari su movimenti (cupola, altri worker) + altre abilità (faccio chemove e vedo se la cella è compresa, poi check block)
+        //current.getCurrentWorker().setRow(to.getRow());
+        //current.getCurrentWorker().setColumn(to.getColumn());
+    }
+
+    // TODO: testing
+    public void build(List<Player> p, Board b, Cell to){
+        if(!(p == null || b == null || to == null)){
+            Player current = null;
+            for(Player player:p)
+                if(player.getCard().getName().compareTo(this.getName()) == 0)
+                    current = player;
+            if(current != null) {
+                if(current.getCurrentWorker() != null){
+                    // do...
+                }
+            }
+        }
+
+        // TODO: check vari su build  + altre abilità (faccio chemove e vedo se la cella è compresa, poi check block)
+        //for(Cell c:b.getField())
+        //    if(c.getRow() == to.getRow() && c.getColumn() == to.getColumn())
+        //        b.build(c,c.getLevel()+1);
+    }
+
     public Status getNextStatus(Status current){
         if(current == null) return null;
         switch (current){
