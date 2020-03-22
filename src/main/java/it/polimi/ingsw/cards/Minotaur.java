@@ -11,7 +11,6 @@ public class Minotaur extends Card {
     {
         super(CardName.MINOTAUR,false,false,true, Status.CHOSEN);
     }
-
     @Override
     public List<Cell> checkMove(List<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
@@ -21,26 +20,56 @@ public class Minotaur extends Card {
                 actived = player.getCurrentWorker();
         if(actived == null) return new ArrayList<>();
         List<Cell> ret = super.checkMove(p, b);
+
         for(Player player:p){
             if(player.getCard().getName().compareTo(this.getName()) != 0){
                 int x = player.getWorker1().getRow() - actived.getRow();
                 int y = player.getWorker1().getColumn() - actived.getColumn();
+                if(Math.abs(x) <= 1 && Math.abs(y) <= 1)
+                    if(!b.getCell(x*2,y*2).isOccupied(p))
+                        ret.add(b.getCell(player.getWorker1().getRow(),player.getWorker1().getColumn()));
 
-                /*
+                x = player.getWorker2().getRow() - actived.getRow();
+                y = player.getWorker2().getColumn() - actived.getColumn();
                 if(Math.abs(x) <= 1 && Math.abs(y) <= 1)
-                    for(Cell c:b.getField())
-                        if(c.getRow() == x*2 && c.getColumn() == y*2 && !c.isOccupied(p))
-                            ret.add(b.getCell(x,y));
-                x = player.getWorker2().getRow() - actived.getCurrentWorker().getRow();
-                y = player.getWorker2().getColumn() - actived.getCurrentWorker().getColumn();
-                if(Math.abs(x) <= 1 && Math.abs(y) <= 1)
-                    for(Cell c:b.getField())
-                        if(c.getRow() == x*2 && c.getColumn() == y*2 && !c.isOccupied(p))
-                            ret.add(b.getCell(x,y));
-                 */
+                    if(!b.getCell(x*2,y*2).isOccupied(p))
+                        ret.add(b.getCell(player.getWorker2().getRow(),player.getWorker2().getColumn()));
             }
         }
         return ret;
     }
-
+    @Override
+    public void move(List<Player> p, Board b, Cell to){
+        if (!(p == null || b == null || to == null)) {
+            Player current = null;
+            for (Player player : p)
+                if (player.getCard().getName().compareTo(this.getName()) == 0)
+                    current = player;
+            if (current != null) {
+                if (current.getCurrentWorker() != null) {
+                    if(to.isOccupied(p)){
+                        for (Player player : p){
+                            if (player.getCard().getName().compareTo(this.getName()) != 0){
+                                if(player.getWorker1().getRow() == to.getRow() && player.getWorker1().getRow() == to.getRow()){
+                                    player.getWorker1().setRow(player.getWorker1().getRow()+(player.getWorker1().getRow()-current.getCurrentWorker().getRow()));
+                                    player.getWorker1().setColumn(player.getWorker1().getColumn()+(player.getWorker1().getColumn()-current.getCurrentWorker().getColumn()));
+                                    current.getCurrentWorker().setRow(to.getRow());
+                                    current.getCurrentWorker().setColumn(to.getColumn());
+                                }
+                                else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getRow() == to.getRow()){
+                                    player.getWorker2().setRow(player.getWorker1().getRow()+(player.getWorker1().getRow()-current.getCurrentWorker().getRow()));
+                                    player.getWorker2().setColumn(player.getWorker1().getColumn()+(player.getWorker1().getColumn()-current.getCurrentWorker().getColumn()));
+                                    current.getCurrentWorker().setRow(to.getRow());
+                                    current.getCurrentWorker().setColumn(to.getColumn());
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        super.move(p,b,to);
+                    }
+                }
+            }
+        }
+    }
 }

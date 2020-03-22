@@ -62,7 +62,11 @@ public class Player {
     }
 
     public Worker getCurrentWorker(){
-         return (getWorker1().isActive()) ? worker1 : worker2;
+         if(getWorker1().isActive())
+             return worker1;
+         else if(getWorker2().isActive())
+             return worker2;
+         else return null;
     }
 
     public void setCurrentWorker(int i)
