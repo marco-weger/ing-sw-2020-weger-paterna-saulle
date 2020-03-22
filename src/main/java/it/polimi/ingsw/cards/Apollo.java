@@ -9,35 +9,66 @@ public class Apollo extends Card {
 
     public Apollo()
     {
-        super(CardName.APOLLO,false,false,true,Status.CHOSEN);
+        super(CardName.APOLLO,false,false,false,Status.CHOSEN);
     }
 
     @Override
     public List<Cell> checkMove(List<Player> p, Board b){
-        if(p == null || b == null) return new ArrayList<>();
-        Player actived = null;
+        if(p == null || b == null) return new ArrayList<>(0);
+        Worker actived = null;
         for(Player player:p)
             if(player.getCard().getName().compareTo(this.getName()) == 0)
-                actived = player;
+                actived = player.getCurrentWorker();
         if(actived == null) return new ArrayList<>();
-        List<Cell> ret = super.checkMove(p,b);
+        List<Cell> ret = super.checkMove(p, b);
         for(Player player:p){
-            if(player.getCard().getName().compareTo(this.getName()) != 0 && actived.getCurrentWorker() != null){
-                int x = player.getWorker1().getRow() - actived.getCurrentWorker().getRow();
-                int y = player.getWorker1().getColumn() - actived.getCurrentWorker().getColumn();
+            if(player.getCard().getName().compareTo(this.getName()) != 0){
+                int x = player.getWorker1().getRow() - actived.getRow();
+                int y = player.getWorker1().getColumn() - actived.getColumn();
                 if(Math.abs(x) <= 1 && Math.abs(y) <= 1)
-                    for(Cell c:b.getField())
-                        if(c.getRow() == x*2 && c.getColumn() == y*2 && !c.isOccupied(p))
-                            ret.add(b.getCell(x,y));
-                x = player.getWorker2().getRow() - actived.getCurrentWorker().getRow();
-                y = player.getWorker2().getColumn() - actived.getCurrentWorker().getColumn();
+                    ret.add(b.getCell(player.getWorker1().getRow(), player.getWorker1().getColumn()));
+
+                x = player.getWorker2().getRow() - actived.getRow();
+                y = player.getWorker2().getColumn() - actived.getColumn();
                 if(Math.abs(x) <= 1 && Math.abs(y) <= 1)
-                    for(Cell c:b.getField())
-                        if(c.getRow() == x*2 && c.getColumn() == y*2 && !c.isOccupied(p))
-                            ret.add(b.getCell(x,y));
+                    ret.add(b.getCell(player.getWorker2().getRow(), player.getWorker2().getColumn()));
             }
         }
         return ret;
+    }
+    @Override
+    public void move(List<Player> p, Board b, Cell to){
+        if (!(p == null || b == null || to == null)) {
+            Player current = null;
+            for (Player player : p)
+                if (player.getCard().getName().compareTo(this.getName()) == 0)
+                    current = player;
+            if (current != null) {
+                if (current.getCurrentWorker() != null) {
+                    if(to.isOccupied(p)){
+                        for (Player player : p){
+                            if (player.getCard().getName().compareTo(this.getName()) != 0){
+                                if(player.getWorker1().getRow() == to.getRow() && player.getWorker1().getRow() == to.getRow()){
+                                    player.getWorker1().setRow(current.getCurrentWorker().getRow());
+                                    player.getWorker1().setColumn(current.getCurrentWorker().getColumn());
+                                    current.getCurrentWorker().setRow(to.getRow());
+                                    current.getCurrentWorker().setColumn(to.getColumn());
+                                }
+                                else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getRow() == to.getRow()){
+                                    player.getWorker2().setRow(current.getCurrentWorker().getRow());
+                                    player.getWorker2().setColumn(current.getCurrentWorker().getColumn());
+                                    current.getCurrentWorker().setRow(to.getRow());
+                                    current.getCurrentWorker().setColumn(to.getColumn());
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        super.move(p,b,to);
+                    }
+                }
+            }
+        }
     }
 
 }

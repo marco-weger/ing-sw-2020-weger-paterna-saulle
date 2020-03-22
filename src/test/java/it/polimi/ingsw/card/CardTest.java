@@ -135,7 +135,7 @@ public class CardTest {
         List<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        p.add(new Player("player3",CardName.ATLAS,new Worker(1,0),new Worker(0,2)));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         for(Cell c:b.getField()){
@@ -152,6 +152,8 @@ public class CardTest {
             else if(c.getRow() == 3 && c.getColumn() == 3)
                 c.setLevel(4);
             else if(c.getRow() == 3 && c.getColumn() == 4)
+                c.setLevel(4);
+            else if(c.getRow() == 2 && c.getColumn() == 2)
                 c.setLevel(4);
         }
         assertNotNull(p);
@@ -185,7 +187,7 @@ public class CardTest {
     public void move_error()
     {
         List<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
+        p.add(new Player("player1",CardName.ATHENA,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(3,4),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
         p.get(0).setCurrentWorker(1);

@@ -99,9 +99,6 @@ public class Card {
                     for (Player player : p)
                         if (player.getCard().getName().compareTo(this.getName()) != 0)
                             available.removeAll(player.getCard().activeBlock(current.getCurrentWorker(), b, Status.QUESTION_M));
-                    //for(Cell c:available)
-                    //    System.out.println(c.getRow() + " - " + c.getColumn());
-                    //System.out.println("================== "+to.getRow() + " - " + to.getColumn());
                     if (available.contains(to)) {
                         current.getCurrentWorker().setRow(to.getRow());
                         current.getCurrentWorker().setColumn(to.getColumn());
