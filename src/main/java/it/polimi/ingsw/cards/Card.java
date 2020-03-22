@@ -87,7 +87,7 @@ public class Card {
         return new ArrayList<>();
     }
 
-    public void move(List<Player> p, Board b, Cell to) throws NullPointerException{
+    public void move(List<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {
             Player current = null;
             for (Player player : p)
@@ -111,7 +111,7 @@ public class Card {
         }
     }
 
-    public void build(List<Player> p, Board b, Cell to) throws NullPointerException{
+    public void build(List<Player> p, Board b, Cell to){
         if(!(p == null || b == null || to == null)){
             Player current = null;
             for(Player player:p)
