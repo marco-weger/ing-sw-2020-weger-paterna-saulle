@@ -79,35 +79,39 @@ public class Card {
         if(actived == null) return new ArrayList<>();
         List<Cell> ret = new ArrayList<>();
         for(Cell c:b.getField())
-            if(Math.abs(c.getRow()-actived.getRow()) <= 1 && Math.abs(c.getColumn()-actived.getColumn()) <= 1 && c.getLevel() <= actived.getLevel(b)+1 && !c.isOccupied(p))
+            if(Math.abs(c.getRow()-actived.getRow()) <= 1 && Math.abs(c.getColumn()-actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() <= actived.getLevel(b)+1 && !c.isOccupied(p))
                 ret.add(c);
         return ret;
     }
-    public List<Cell> getBlock(Worker w, Board b, Status current){
+    public List<Cell> activeBlock(Worker w, Board b, Status current){
         return new ArrayList<>();
     }
 
-    // TODO: testing
-    public void move(List<Player> p, Board b, Cell to){
-        if(!(p == null || b == null || to == null)){
+    public void move(List<Player> p, Board b, Cell to) throws NullPointerException{
+        if (!(p == null || b == null || to == null)) {
             Player current = null;
-            for(Player player:p)
-                if(player.getCard().getName().compareTo(this.getName()) == 0)
+            for (Player player : p)
+                if (player.getCard().getName().compareTo(this.getName()) == 0)
                     current = player;
-            if(current != null) {
-                if(current.getCurrentWorker() != null){
-                    // do...
+            if (current != null) {
+                if (current.getCurrentWorker() != null) {
+                    List<Cell> available = checkMove(p, b);
+                    for (Player player : p)
+                        if (player.getCard().getName().compareTo(this.getName()) != 0)
+                            available.removeAll(player.getCard().activeBlock(current.getCurrentWorker(), b, Status.QUESTION_M));
+                    //for(Cell c:available)
+                    //    System.out.println(c.getRow() + " - " + c.getColumn());
+                    //System.out.println("================== "+to.getRow() + " - " + to.getColumn());
+                    if (available.contains(to)) {
+                        current.getCurrentWorker().setRow(to.getRow());
+                        current.getCurrentWorker().setColumn(to.getColumn());
+                    }
                 }
             }
         }
-
-        // TODO: check vari su movimenti (cupola, altri worker) + altre abilità (faccio chemove e vedo se la cella è compresa, poi check block)
-        //current.getCurrentWorker().setRow(to.getRow());
-        //current.getCurrentWorker().setColumn(to.getColumn());
     }
 
-    // TODO: testing
-    public void build(List<Player> p, Board b, Cell to){
+    public void build(List<Player> p, Board b, Cell to) throws NullPointerException{
         if(!(p == null || b == null || to == null)){
             Player current = null;
             for(Player player:p)
@@ -115,15 +119,16 @@ public class Card {
                     current = player;
             if(current != null) {
                 if(current.getCurrentWorker() != null){
-                    // do...
+                    List<Cell> available = checkBuild(p,b);
+                    for(Player player:p)
+                        if(player.getCard().getName().compareTo(this.getName()) != 0)
+                            available.removeAll(player.getCard().activeBlock(current.getCurrentWorker(),b, Status.QUESTION_B));
+                    if(available.contains(to)){
+                        available.get(available.indexOf(to)).setLevel(available.get(available.indexOf(to)).getLevel()+1);
+                    }
                 }
             }
         }
-
-        // TODO: check vari su build  + altre abilità (faccio chemove e vedo se la cella è compresa, poi check block)
-        //for(Cell c:b.getField())
-        //    if(c.getRow() == to.getRow() && c.getColumn() == to.getColumn())
-        //        b.build(c,c.getLevel()+1);
     }
 
     public Status getNextStatus(Status current){

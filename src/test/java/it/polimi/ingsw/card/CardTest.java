@@ -96,8 +96,8 @@ public class CardTest {
         assertNotNull(p);
         assertNotNull(b);
         List<Cell> ret = p.get(0).getCard().checkBuild(p,b);
-        for(Cell c:ret)
-            System.out.println(c.getRow() + " - " + c.getColumn());
+        //for(Cell c:ret)
+        //    System.out.println(c.getRow() + " - " + c.getColumn());
         assertEquals(ret.size(),3);
         for(Cell c:ret)
             assertTrue(c.getRow() == 1 && c.getColumn() == 2 || c.getRow() == 1 && c.getColumn() == 3 || c.getRow() == 1 && c.getColumn() == 4);
@@ -157,62 +157,95 @@ public class CardTest {
         assertNotNull(p);
         assertNotNull(b);
         List<Cell> ret = p.get(0).getCard().checkMove(p,b);
-        for(Cell c:ret)
-            System.out.println(c.getRow() + " - " + c.getColumn());
+        //for(Cell c:ret)
+        //    System.out.println(c.getRow() + " - " + c.getColumn());
         assertEquals(ret.size(),1);
         for(Cell c:ret){
             assertEquals(c.getRow() , 1);
             assertEquals(c.getColumn() , 2);
         }
     }
-    // getBlock
+    // activeBlock
     @Test
-    public void getBlock()
+    public void activeBlock()
     {
         Card c = FactoryCard.getCard(CardName.APOLLO);
         assertNotNull(c);
-        assertEquals(c.getBlock(new Worker(0,0),new Board(), Status.CHOSEN).size(),0);
+        assertEquals(c.activeBlock(new Worker(0,0),new Board(), Status.CHOSEN).size(),0);
     }
     // move
     @Test
     public void move_null()
     {
         Card c = FactoryCard.getCard(CardName.PAN);
+        assertNotNull(c);
+        c.move(null,null,null);
+    }
+    @Test
+    public void move_error()
+    {
         List<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
+        p.add(new Player("player2",CardName.ARTEMIS,new Worker(3,4),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
-        assertNotNull(c);
-
-        c.move(p,new Board(),new Cell(0,0,0));
-        //assertEquals(p.getWorker1().getRow(),1);
-        //assertEquals(p.getWorker1().getRow(),0);
-        //assertEquals(p.getWorker2().getRow(),0);
-        //assertEquals(p.getWorker2().getRow(),0);
+        p.get(0).setCurrentWorker(1);
+        p.get(0).getCard().move(p,new Board(),new Cell(3,4,0));
+        assertEquals(p.get(0).getCurrentWorker().getRow(), 2);
+        assertEquals(p.get(0).getCurrentWorker().getColumn(), 3);
     }
+    @Test
     public void move()
     {
-        Card c = FactoryCard.getCard(CardName.PAN);
         List<Player> p = new ArrayList<>();
+        Card c = FactoryCard.getCard(CardName.APOLLO);
         p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
         assertNotNull(c);
-
-        c.move(p,new Board(),new Cell(0,0,0));
+        for(Cell cell:b.getField())
+            if(cell.getRow() == 3 & cell.getColumn() == 4)
+                c.move(p,b,cell);
+        assertEquals(p.get(0).getCurrentWorker().getRow(), 3);
+        assertEquals(p.get(0).getCurrentWorker().getColumn(), 4);
     }
     // build
     @Test
     public void build_null()
     {
-        Card c = FactoryCard.getCard(CardName.APOLLO);
+        Card c = FactoryCard.getCard(CardName.PAN);
         assertNotNull(c);
-        assertEquals(c.getBlock(new Worker(0,0),new Board(), Status.CHOSEN).size(),0);
+        c.build(null,null,null);
     }
+    @Test
+    public void build_error()
+    {
+        List<Player> p = new ArrayList<>();
+        p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
+        p.add(new Player("player2",CardName.ARTEMIS,new Worker(3,4),new Worker(0,1)));
+        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        p.get(0).setCurrentWorker(1);
+        p.get(0).getCard().build(p,new Board(),new Cell(3,4,0));
+        assertEquals(p.get(0).getCurrentWorker().getRow(), 2);
+        assertEquals(p.get(0).getCurrentWorker().getColumn(), 3);
+    }
+    @Test
     public void build()
     {
+        List<Player> p = new ArrayList<>();
         Card c = FactoryCard.getCard(CardName.APOLLO);
+        p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
+        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
+        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
         assertNotNull(c);
-        assertEquals(c.getBlock(new Worker(0,0),new Board(), Status.CHOSEN).size(),0);
+        for(Cell cell:b.getField()){
+            if(cell.getRow() == 3 & cell.getColumn() == 4){
+                c.build(p,b,cell);
+                assertEquals(cell.getLevel(), 1);
+            }
+        }
     }
 }
