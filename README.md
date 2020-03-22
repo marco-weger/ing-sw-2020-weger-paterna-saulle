@@ -2,7 +2,7 @@
 # Prova Finale Ingegneria del Software 2020
 ## Gruppo CG13
 
-This final project was made between March and July 2019 as our final thesis project at Politecnico di Milano. <br>
+This final project was made between March and July 2020 as our final thesis project at Politecnico di Milano. <br>
 <!-- TODO: add final score -->
 <!--
 ## How to start JARs
