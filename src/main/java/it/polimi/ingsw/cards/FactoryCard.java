@@ -16,7 +16,7 @@ public class FactoryCard {
             case DEMETER:
                 return new Demeter();
             case HEPHASTUS:
-                return new Hepaestus();
+                return new Hephaestus();
             case MINOTAUR:
                 return new Minotaur();
             case PAN:

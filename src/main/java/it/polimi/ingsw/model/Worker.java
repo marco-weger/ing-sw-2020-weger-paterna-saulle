@@ -32,7 +32,7 @@ public class Worker {
 
     /*
     //this version DOES consider the Gods abilities to block
-    public boolean getBlocked(Match m, Cell current, Card c) {
+    public void setBlocked(Match m, Cell current, Card c) {
         Cell next = new Cell(0,0,0);
         for(int i=-1; i<2;i++){
             for (int j=-1;j<2;j++){
@@ -41,15 +41,15 @@ public class Worker {
                 next.setColumn(getColumn()+j);
                 next.setRow(getRow()+i);
                 if(!(next.isOccupied(m.getPlayers()) || next.getLevel()==4 || next.getLevel()>current.getLevel()+1 || !(next.equals(c.getBlock(this, m.getBoard(), m.getStatus())))))
-                    return blocked = false;
+                    this.blocked = false;
             }
         }
-        return blocked;
+        this.blocked = true;
     }
     */
 
-    public void setBlocked(boolean blocked) {
-        this.blocked = blocked;
+    public boolean isBlocked() {
+        return blocked;
     }
 
     public boolean isActive() {
