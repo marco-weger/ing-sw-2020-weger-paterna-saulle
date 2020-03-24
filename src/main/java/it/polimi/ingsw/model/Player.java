@@ -53,12 +53,15 @@ public class Player {
         this.worker2 = worker2;
     }
 
-    public boolean isHasLost() {
-        return hasLost;
+    public void setHasLost() {
+        if (getWorker1().isBlocked() && getWorker2().isBlocked()) {
+            this.hasLost = true;
+        }
+        this.hasLost = false;
     }
 
-    public void setHasLost(boolean hasLost) {
-        this.hasLost = hasLost;
+    public boolean isHasLost() {
+        return hasLost;
     }
 
     public Worker getCurrentWorker(){
