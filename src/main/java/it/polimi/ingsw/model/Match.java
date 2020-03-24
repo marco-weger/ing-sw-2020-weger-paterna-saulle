@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
@@ -7,7 +8,7 @@ public class Match extends Observable implements Cloneable {
 
     private int id;
     private Board board;
-    private List<Player> players;
+    private static List<Player> players;
     private boolean IsEnded;
     private Player currentPlayer;
     private Status status;
@@ -36,7 +37,7 @@ public class Match extends Observable implements Cloneable {
         this.status = status;
     }
 
-    public List<Player> getPlayers() {
+    public static List<Player> getPlayers() {
         return players;
     }
 
@@ -55,11 +56,8 @@ public class Match extends Observable implements Cloneable {
    // public void EndTurn();
 
     /* a method to update the current player*/
-    //TODO: Test on this method
     public void setNextPlayer(){
-
         int i = players.indexOf(currentPlayer);
-
         if (i < players.size() )
         {
             currentPlayer = players.get(i + 1);
@@ -69,8 +67,23 @@ public class Match extends Observable implements Cloneable {
         }
     }
 
-   // public booelan checkCurrentPlayerLose();
-    //TODO: Fix check on Worker1 and Worker 2
+    /**
+     *verifica se l'utente non ha più mosse disponibili, nel caso viene incrementato il suo attributo Looser
+     */
+   public boolean checkCurrentPlayerLose() {
+       List<Cell> empty = new ArrayList<>();
+       if(currentPlayer.getCard().checkMove(players,board).equals(empty)) {
+           currentPlayer.setHasLost(true);
+           return true;
+       }
+           else
+               return false;
+       }
+
+
+    /**
+     * verifica se il giocatore ha vinto la partita causa sconfitta degli altri giocatori
+     */
     public boolean checkCurrentPlayerWin() {
         int j;
         int deads = 0;
@@ -79,14 +92,13 @@ public class Match extends Observable implements Cloneable {
         if (currentPlayer == players.get(j)) {
             j++;
         } else {
-            if (players.get(j).getCurrentWorker().isActive() == false && players.get(j).getCurrentWorker().isActive() == false) {
+            if (!players.get(j).getWorker1().isActive() && !players.get(j).getWorker2().isActive()) {
                 deads++;
             }
         }
     }
-        if (deads == k) return true;
-        else return false;
-   };
+        return (deads == k);
+   }
 }
 
 
