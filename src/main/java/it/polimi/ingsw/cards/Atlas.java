@@ -1,6 +1,5 @@
 package it.polimi.ingsw.cards;
 
-import com.sun.deploy.security.SelectableSecurityManager;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;

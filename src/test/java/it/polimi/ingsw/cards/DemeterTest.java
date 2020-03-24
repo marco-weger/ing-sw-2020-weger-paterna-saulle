@@ -1,8 +1,5 @@
-package it.polimi.ingsw.card;
+package it.polimi.ingsw.cards;
 
-import it.polimi.ingsw.cards.Card;
-import it.polimi.ingsw.cards.CardName;
-import it.polimi.ingsw.cards.FactoryCard;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
