@@ -5,9 +5,9 @@ import it.polimi.ingsw.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hepaestus extends Card {
+public class Hephaestus extends Card {
 
-    public Hepaestus()
+    public Hephaestus()
     {
         super(CardName.HEPHASTUS,false,false,true, Status.CHOSEN);
     }
