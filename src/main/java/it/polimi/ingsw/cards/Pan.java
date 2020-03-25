@@ -18,7 +18,8 @@ public class Pan extends Card {
      */
     @Override
     public boolean checkWin(Cell from, Cell to) throws NullPointerException {
-            if (from.getLevel() == 2 && to.getLevel() == 0)
+            if(from == null || to == null) return false;
+            else if (from.getLevel() == 2 && to.getLevel() == 0)
                 return true;
             else
                 return super.checkWin(from, to);
