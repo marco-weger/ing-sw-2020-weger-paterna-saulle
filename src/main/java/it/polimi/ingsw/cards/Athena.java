@@ -11,7 +11,7 @@ public class Athena extends Card {
         super(CardName.ATHENA,false,false,true,Status.CHOSEN);
     }
     /**
-     * Restituisce al giocatore un arraylist con le mosse possibili
+     * Restituisce al giocatore un arraylist con le mosse proibite
      */
     @Override
     public List<Cell> activeBlock(Worker w, Board b, Status current) {
@@ -20,7 +20,7 @@ public class Athena extends Card {
         p = Match.getPlayers();
 
         for(Cell c:b.getField())
-            if(Math.abs(c.getRow()-w.getRow()) <= 1 && Math.abs(c.getColumn()-w.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() == w.getLevel(b) && !c.isOccupied(p))
+            if(Math.abs(c.getRow()-w.getRow()) <= 1 && Math.abs(c.getColumn()-w.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() == w.getLevel(b) +1 && !c.isOccupied(p))
                 ret.add(c);
         return ret;
     }
