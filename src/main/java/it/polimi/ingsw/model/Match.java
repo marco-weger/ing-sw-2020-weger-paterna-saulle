@@ -67,12 +67,10 @@ public class Match extends Observable implements Cloneable {
 
    // public void EndTurn();
 
-    /**
-     *  a method to update the current player
-     */
+    /* a method to update the current player*/
     public void setNextPlayer(){
         int i = players.indexOf(currentPlayer);
-        if (i < players.size() -1 )
+        if (i < players.size() )
         {
             currentPlayer = players.get(i + 1);
         }
@@ -84,10 +82,10 @@ public class Match extends Observable implements Cloneable {
     /**
      *verifica se l'utente non ha più mosse disponibili, nel caso viene incrementato il suo attributo Looser
      */
-   public boolean checkCurrentPlayerLose() {
+  /* public boolean checkCurrentPlayerLose() {
        List<Cell> empty = new ArrayList<>();
        if(currentPlayer.getCard().checkMove(players,board).equals(empty)) {
-           currentPlayer.setHasLost();
+           currentPlayer.setHasLost(true);
            return true;
        }
            else

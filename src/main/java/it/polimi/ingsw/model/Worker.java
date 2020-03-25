@@ -7,7 +7,7 @@ import java.util.List;
 public class Worker {
 
     private int row,column;
-    private boolean active, blocked;
+    private boolean active;
 
     public Worker(int row, int column) {
         this.row = row;
@@ -40,17 +40,18 @@ public class Worker {
                     continue; //permit excluding the case in which next is the same as current
                 next.setColumn(getColumn()+j);
                 next.setRow(getRow()+i);
-                if(!(next.isOccupied(m.getPlayers()) || next.getLevel()==4 || next.getLevel()>current.getLevel()+1 || !(next.equals(c.getBlock(this, m.getBoard(), m.getStatus())))))
+                if(!(next.isOccupied(m.getPlayers()) || next.getLevel()==4 || next.getLevel()>current.getLevel()+1 || !(next.equals(c.activeBlock(this, m.getBoard(), m.getStatus())))))
                     this.blocked = false;
             }
         }
         this.blocked = true;
     }
-    */
+
 
     public boolean isBlocked() {
         return blocked;
     }
+    */
 
     public boolean isActive() {
         return active;
@@ -66,9 +67,10 @@ public class Worker {
     }
 
     public int getLevel(Board b){
+        if (b != null) {
         for(Cell c:b.getField())
             if(c.getRow() == this.row && c.getColumn() == this.column)
-                return c.getLevel();
+                return c.getLevel();}
         return -1;
     }
 }
