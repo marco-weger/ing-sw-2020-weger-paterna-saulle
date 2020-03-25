@@ -49,17 +49,32 @@ public class Match extends Observable implements Cloneable {
         return board;
     }
 
-// public void inizializeMatch (int n);
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    // public void inizializeMatch (int n);
 
    // public void EndMatch();
 
    // public void EndTurn();
 
-    /* a method to update the current player*/
+    /**
+     *  a method to update the current player
+     */
     public void setNextPlayer(){
         int i = players.indexOf(currentPlayer);
-        if (i < players.size() )
+        if (i < players.size() -1 )
         {
+            System.out.println("\n The number of players is :  " + i);
             currentPlayer = players.get(i + 1);
         }
         else {
@@ -73,7 +88,7 @@ public class Match extends Observable implements Cloneable {
    public boolean checkCurrentPlayerLose() {
        List<Cell> empty = new ArrayList<>();
        if(currentPlayer.getCard().checkMove(players,board).equals(empty)) {
-           currentPlayer.setHasLost(true);
+           currentPlayer.setHasLost();
            return true;
        }
            else

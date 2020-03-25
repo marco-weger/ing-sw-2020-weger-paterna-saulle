@@ -11,11 +11,8 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
-
-
-
-
 public class PanTest {
+
 
     @Test
     public void checkWin_JUMP() {
