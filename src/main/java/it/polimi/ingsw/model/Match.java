@@ -74,7 +74,6 @@ public class Match extends Observable implements Cloneable {
         int i = players.indexOf(currentPlayer);
         if (i < players.size() -1 )
         {
-            System.out.println("\n The number of players is :  " + i);
             currentPlayer = players.get(i + 1);
         }
         else {
