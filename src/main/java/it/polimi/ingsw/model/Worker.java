@@ -1,9 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.cards.Card;
-
-import java.util.List;
-
 public class Worker {
 
     private int row,column;

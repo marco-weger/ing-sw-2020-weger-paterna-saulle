@@ -1,8 +1,9 @@
 package it.polimi.ingsw.cards;
+
 import it.polimi.ingsw.model.*;
+
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class Athena extends Card {
 
