@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.cards.Card;
 import it.polimi.ingsw.cards.CardName;
-import it.polimi.ingsw.cards.FactoryCard;
 import org.junit.Test;
 
 import java.util.ArrayList;

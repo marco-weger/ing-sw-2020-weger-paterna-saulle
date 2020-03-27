@@ -1,10 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.cards.CardName;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 

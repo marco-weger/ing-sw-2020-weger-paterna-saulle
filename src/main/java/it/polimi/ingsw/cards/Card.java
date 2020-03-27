@@ -7,6 +7,13 @@ import java.util.List;
 
 public class Card {
 
+    /**
+     * Active is related to the ability.
+     * Final parameters are used to manage abilities.
+     * OPPONENT: it is true if the ability influences opposite turns.
+     * QUESTION: it is true if the ability need a question to be actived.
+     * STATUS: the state when the ability could be actived.
+     */
     private CardName name;
     private boolean active;
     private final boolean opponent;
@@ -49,6 +56,14 @@ public class Card {
         return status;
     }
 
+    public void inizializeTurn(){}
+
+    /**
+     * It checks for the after move win condition
+     * @param from cell
+     * @param to cell
+     * @return true if this move is a win condition
+     */
     public boolean checkWin(Cell from, Cell to) throws NullPointerException
     {
         if(from != null && to != null)
@@ -56,6 +71,12 @@ public class Card {
                 return (from.getLevel() == 2 && to.getLevel() == 3);
         return false;
     }
+
+    /**
+     * @param p list of player
+     * @param b board
+     * @return list of cells where active worker could build
+     */
     public List<Cell> checkBuild(List<Player> p, Board b)
     {
         if(p == null || b == null) return new ArrayList<>();
@@ -70,6 +91,12 @@ public class Card {
                 ret.add(c);
         return ret;
     }
+
+    /**
+     * @param p list of player
+     * @param b board
+     * @return list of cells where active worker could move
+     */
     public List<Cell> checkMove(List<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
@@ -83,10 +110,22 @@ public class Card {
                 ret.add(c);
         return ret;
     }
+
+    /**
+     * If the ability influences opposite turns this method return blocked cells (QUESTION_M for move and QUESTION_B for build).
+     * @param w active worker
+     * @param b board
+     * @param current current state of current turn
+     */
     public List<Cell> activeBlock(Worker w, Board b, Status current){
         return new ArrayList<>();
     }
 
+    /**
+     * @param p list of player
+     * @param b board
+     * @param to where to move
+     */
     public void move(List<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {
             Player current = null;
@@ -108,6 +147,11 @@ public class Card {
         }
     }
 
+    /**
+     * @param p list of player
+     * @param b board
+     * @param to where to build
+     */
     public void build(List<Player> p, Board b, Cell to){
         if(!(p == null || b == null || to == null)){
             Player current = null;
@@ -128,6 +172,10 @@ public class Card {
         }
     }
 
+    /**
+     * @param current current state of current turn
+     * @return next status by considering active abilities
+     */
     public Status getNextStatus(Status current){
         if(current == null) return null;
         switch (current){
@@ -149,5 +197,48 @@ public class Card {
                 return null;
         }
     }
-    public void inizializeTurn(){}
+
+    /*
+    public boolean checkWorker1Blocked(List<Player> p, Board b){
+        if (!(p == null || b == null )) {
+            for(Player player : p)
+                if(player.getCard().name.compareTo(this.name) == 0)
+                    player.setCurrentWorker(1);
+
+            List<Cell> available = checkMove(p,b);
+            for(Player player : p)
+                if(player.getCard().name.compareTo(this.name) != 0)
+                    available.removeAll(activeBlock(player.getCurrentWorker(),b,Status.QUESTION_M));
+
+            for(Player player : p)
+                if(player.getCard().name.compareTo(this.name) == 0)
+                    player.setCurrentWorker(0);
+
+            return available.size() == 0;
+        }
+        return true;
+    }
+    */
+
+    /*
+    public boolean checkWorker2Blocked(List<Player> p, Board b){
+        if (!(p == null || b == null )) {
+            for(Player player : p)
+                if(player.getCard().name.compareTo(this.name) == 0)
+                    player.setCurrentWorker(2);
+
+            List<Cell> available = checkMove(p,b);
+            for(Player player : p)
+                if(player.getCard().name.compareTo(this.name) != 0)
+                    available.removeAll(activeBlock(player.getCurrentWorker(),b,Status.QUESTION_M));
+
+            for(Player player : p)
+                if(player.getCard().name.compareTo(this.name) == 0)
+                    player.setCurrentWorker(0);
+
+            return available.size() == 0;
+        }
+        return true;
+    }
+    */
 }

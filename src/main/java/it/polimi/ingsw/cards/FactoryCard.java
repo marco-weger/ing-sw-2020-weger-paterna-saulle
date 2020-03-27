@@ -2,6 +2,11 @@ package it.polimi.ingsw.cards;
 
 public class FactoryCard {
 
+    /**
+     * Factory pattern used to manage safely card generation
+     * @param cardName name of the card you want to instance
+     * @return istance of the card
+     */
     public static Card getCard(CardName cardName){
         switch (cardName)
         {
