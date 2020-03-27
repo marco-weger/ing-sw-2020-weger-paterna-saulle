@@ -63,54 +63,55 @@ public class Match extends Observable implements Cloneable {
 
     // public void inizializeMatch (int n);
 
-   // public void EndMatch();
+    // public void EndMatch();
 
-   // public void EndTurn();
+    // public void EndTurn();
 
     /* a method to update the current player*/
-    public void setNextPlayer(){
+    public void setNextPlayer() {
         int i = players.indexOf(currentPlayer);
-        if (i < players.size() )
-        {
+        if (i < players.size()) {
             currentPlayer = players.get(i + 1);
-        }
-        else {
+        } else {
             currentPlayer = players.get(0);
         }
     }
 
     /**
-     *verifica se l'utente non ha più mosse disponibili, nel caso viene incrementato il suo attributo Looser
+     * verifica se l'utente non ha più mosse disponibili, aggiorna lo stato Active dei workers
      */
-  /* public boolean checkCurrentPlayerLose() {
-       List<Cell> empty = new ArrayList<>();
-       if(currentPlayer.getCard().checkMove(players,board).equals(empty)) {
-           currentPlayer.setHasLost(true);
-           return true;
-       }
-           else
-               return false;
-       }
+    public boolean checkCurrentPlayerLose() {
+        List<Cell> empty = new ArrayList<>();
+        currentPlayer.setCurrentWorker(1);
+        if (currentPlayer.getCard().checkMove(players, board).equals(empty)) {
+            currentPlayer.getWorker1().setActive(false);
+            currentPlayer.setCurrentWorker(2);
+            if (currentPlayer.getCard().checkMove(players, board).equals(empty)) {
+                currentPlayer.getWorker2().setActive(false);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 
 
     /**
      * verifica se il giocatore ha vinto la partita causa sconfitta degli altri giocatori
      */
     public boolean checkCurrentPlayerWin() {
-        int j;
         int deads = 0;
-        int k = players.size() - 1;
-        for (j = 0; j < players.size();j++ ){
-        if (currentPlayer == players.get(j)) {
-            j++;
-        } else {
-            if (!players.get(j).getWorker1().isActive() && !players.get(j).getWorker2().isActive()) {
-                deads++;
+        int k = (players.size() - 1);
+        for (Player player : players) {
+            if (currentPlayer != player) {
+                if (!player.getWorker1().isActive() && !player.getWorker2().isActive()) {
+                    deads++;
+                }
             }
         }
-    }
         return (deads == k);
-   }
+    }
 }
-
 
