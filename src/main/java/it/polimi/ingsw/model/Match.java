@@ -67,10 +67,12 @@ public class Match extends Observable implements Cloneable {
 
     // public void EndTurn();
 
-    /* a method to update the current player*/
+    /**
+     * a method to set next player
+     */
     public void setNextPlayer() {
         int i = players.indexOf(currentPlayer);
-        if (i < players.size()) {
+        if (i < players.size()-1) {
             currentPlayer = players.get(i + 1);
         } else {
             currentPlayer = players.get(0);
@@ -78,7 +80,7 @@ public class Match extends Observable implements Cloneable {
     }
 
     /**
-     * verifica se l'utente non ha più mosse disponibili, aggiorna lo stato Active dei workers
+     *@return check if currentplayer doesn't have move, and update workers status
      */
     public boolean checkCurrentPlayerLose() {
         List<Cell> empty = new ArrayList<>();
@@ -99,7 +101,7 @@ public class Match extends Observable implements Cloneable {
 
 
     /**
-     * verifica se il giocatore ha vinto la partita causa sconfitta degli altri giocatori
+     * @return Verify if the current player win for other players defeat
      */
     public boolean checkCurrentPlayerWin() {
         int deads = 0;
