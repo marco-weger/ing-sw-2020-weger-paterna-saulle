@@ -127,7 +127,7 @@ public class CardTest {
         assertEquals(c.checkMove(p,new Board()).size(),0);
     }
     @Test
-    public void checkMove()
+    public void checkMove_easyMove()
     {
         List<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
@@ -162,6 +162,35 @@ public class CardTest {
         for(Cell c:ret){
             assertEquals(c.getRow() , 1);
             assertEquals(c.getColumn() , 2);
+        }
+    }
+    @Test
+    public void checkMove_downTo()
+    {
+        List<Player> p = new ArrayList<>();
+        p.add(new Player("player1",CardName.APOLLO,new Worker(0,0),new Worker(4,0)));
+        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,1),new Worker(4,2)));
+        p.add(new Player("player3",CardName.ATLAS,new Worker(4,3),new Worker(0,4)));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
+        for(Cell c:b.getField()){
+            if(c.getRow() == 0 && c.getColumn() == 0)
+                c.setLevel(3);
+            else if(c.getRow() == 1 && c.getColumn() == 0)
+                c.setLevel(0);
+            else if(c.getRow() == 0 && c.getColumn() == 1)
+                c.setLevel(1);
+            else if(c.getRow() == 1 && c.getColumn() == 1)
+                c.setLevel(4);
+        }
+        assertNotNull(p);
+        assertNotNull(b);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,b);
+        //for(Cell c:ret)
+        //    System.out.println(c.getRow() + " - " + c.getColumn());
+        assertEquals(ret.size(),2);
+        for(Cell c:ret){
+            assertEquals(c.getRow()+c.getColumn() , 1);
         }
     }
     // activeBlock
