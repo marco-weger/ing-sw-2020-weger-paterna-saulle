@@ -71,8 +71,10 @@ public class Player {
 
     public void setCurrentWorker(int i)
     {
-        worker1.setActive(i==1);
-        worker2.setActive(i==2);
+        if(i==1||i==2) {
+            worker1.setActive(i == 1);
+            worker2.setActive(i == 2);
+        }
     }
 
 }

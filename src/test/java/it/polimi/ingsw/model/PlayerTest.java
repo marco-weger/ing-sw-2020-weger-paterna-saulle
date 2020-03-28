@@ -1,9 +1,21 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.cards.CardName;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+import static org.junit.Assert.*;
 
 
-class PlayerTest {
+public class PlayerTest {
 
-    public void getName() {
+    @Test
+    public void current_worker(){
+        Player p = new Player("player1", CardName.HEPHASTUS,new Worker(0,0),new Worker(0,0));
+        p.setCurrentWorker(1);
+        assertEquals(p.getWorker1(), p.getCurrentWorker());
+        p.setCurrentWorker(2);
+        assertEquals(p.getWorker2(), p.getCurrentWorker());
     }
 
 

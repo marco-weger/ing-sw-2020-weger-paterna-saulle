@@ -11,20 +11,31 @@ public class Artemis extends Card {
         super(CardName.ARTEMIS, false, false, true, Status.CHOSEN);
     }
 
+    @Override
     public List<Cell> checkMove(List<Player> p, Board b) {
         if (p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
-        for (Player player : p)
-            if (player.getCard().getName().compareTo(this.getName()) == 0) //get current player (matching card name)
+        Player current = null;
+        for (Player player : p){
+            if (player.getCard().getName().compareTo(this.getName()) == 0) { //get current player (matching card name)
+                current=player; //references the player whit this card
                 actived = player.getCurrentWorker();
+            }
+        }
         if (actived == null) return new ArrayList<>();
-        List<Cell> available = super.checkMove(p, b);
-        for (Cell c : b.getField())
-            if (Math.abs(c.getRow() - actived.getRow()) <= 2 && Math.abs(c.getColumn() - actived.getColumn()) <= 2 && c.getLevel() < 4 && c.getLevel() <= actived.getLevel(b) + 1 && !c.isOccupied(p))
-                available.add(c);
+        List<Cell> available = super.checkMove(p,b);
+        if(current.getCard().isActive()) {
+            //this list is for counting purpose, otherwise it would loop because of the ".add()" function
+            List<Cell> copy = new ArrayList<>(available);
+            for (Cell c : copy)
+               for (Cell j : b.getField())
+                      if (Math.abs(j.getRow() - c.getRow()) <= 1 && Math.abs(j.getColumn() - c.getColumn()) <= 1 && j.getLevel() < 4 && j.getLevel() <= c.getLevel() + 1 && !j.isOccupied(p) && !(available.contains(j)) && !(j.getRow()==actived.getRow() && j.getColumn()==actived.getColumn()))
+                         available.add(j);
+        }
         return available;
     }
 
+    @Override
     public void move(List<Player> p, Board b, Cell to) {
         if (!(p == null || b == null || to == null)) {
             Player current = null;
