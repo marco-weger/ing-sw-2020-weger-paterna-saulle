@@ -16,6 +16,7 @@ public class Athena extends Card {
      */
     @Override
     public List<Cell> activeBlock(Worker w, Board b, Status current) {
+        if(w == null || b == null ) return new ArrayList<>(0);
         List<Cell> ret = new ArrayList<>();
         List<Player> p;
         p = Match.getPlayers();

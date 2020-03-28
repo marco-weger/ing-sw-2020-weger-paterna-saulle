@@ -83,5 +83,19 @@ public class PanTest {
 
 
     }
+
+    @Test
+    public void cell_NULL(){
+
+        Card c = FactoryCard.getCard(CardName.PAN);
+        List<Player> p = new ArrayList<>();
+        p.add(new Player("player1", CardName.PAN, new Worker(0, 0), new Worker(0, 1)));
+        p.add(new Player("player2", CardName.ARTEMIS, new Worker(3, 0), new Worker(3, 3)));
+        p.add(new Player("player3", CardName.ATLAS, new Worker(2, 0), new Worker(2, 2)));
+        Assert.assertNotNull(c);
+        p.get(0).setCurrentWorker(0);
+        assertFalse(c.checkWin(null, null));
+
+    }
 }
 
