@@ -16,6 +16,7 @@ public class Athena extends Card {
      */
     @Override
     public List<Cell> activeBlock(Worker w, Board b, Status current) {
+        /*
         if(w == null || b == null ) return new ArrayList<>(0);
         List<Cell> ret = new ArrayList<>();
         List<Player> p;
@@ -25,6 +26,8 @@ public class Athena extends Card {
             if(Math.abs(c.getRow()-w.getRow()) <= 1 && Math.abs(c.getColumn()-w.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() == w.getLevel(b) +1 && !c.isOccupied(p))
                 ret.add(c);
         return ret;
+         */
+        return new ArrayList<>();
     }
 
     /**
