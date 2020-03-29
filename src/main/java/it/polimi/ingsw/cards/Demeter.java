@@ -12,6 +12,13 @@ public class Demeter extends Card {
         super(CardName.DEMETER,false,false,true, Status.CHOSEN);
         lastBuild = null;
     }
+
+    /**
+     * It checks buildable cells by watchi active attribute
+     * @param p list of player
+     * @param b board
+     * @return where to build
+     */
     @Override
     public List<Cell> checkBuild(List<Player> p, Board b)
     {
@@ -26,6 +33,13 @@ public class Demeter extends Card {
             ret.remove(lastBuild);
         return ret;
     }
+
+    /**
+     * It builds and set the value of lastBuild attribute
+     * @param p list of player
+     * @param b board
+     * @param to where to build
+     */
     @Override
     public void build(List<Player> p, Board b, Cell to){
         if(!(p == null || b == null || to == null)){

@@ -62,14 +62,8 @@ public class Match extends Observable {
         this.currentPlayer = currentPlayer;
     }
 
-    // public void inizializeMatch (int n);
-
-    // public void EndMatch();
-
-    // public void EndTurn();
-
     /**
-     * a method to set next player
+     * A method to set next player
      */
     public void setNextPlayer() {
         int i = players.indexOf(currentPlayer);
@@ -81,7 +75,7 @@ public class Match extends Observable {
     }
 
     /**
-     *@return check if currentplayer doesn't have move, and update workers status
+     * @return It checks if current player doesn't have move, and update workers status
      */
     public boolean checkCurrentPlayerLose() {
         List<Cell> empty = new ArrayList<>();
@@ -102,7 +96,7 @@ public class Match extends Observable {
 
 
     /**
-     * @return Verify if the current player win for other players defeat
+     * @return It verifies if the current player win for other players defeat
      */
     public boolean checkCurrentPlayerWin() {
         int deads = 0;

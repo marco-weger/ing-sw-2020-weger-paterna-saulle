@@ -11,6 +11,13 @@ public class Minotaur extends Card {
     {
         super(CardName.MINOTAUR,false,false,true, Status.CHOSEN);
     }
+
+    /**
+     * It checks if it's possible to force some opponent worker
+     * @param p list of player
+     * @param b board
+     * @return list of available cells
+     */
     @Override
     public List<Cell> checkMove(List<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
@@ -38,6 +45,13 @@ public class Minotaur extends Card {
         }
         return ret;
     }
+
+    /**
+     * It moves and does the switch if necessary
+     * @param p list of player
+     * @param b board
+     * @param to where to move
+     */
     @Override
     public void move(List<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {

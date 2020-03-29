@@ -197,48 +197,4 @@ public class Card {
                 return null;
         }
     }
-
-    /*
-    public boolean checkWorker1Blocked(List<Player> p, Board b){
-        if (!(p == null || b == null )) {
-            for(Player player : p)
-                if(player.getCard().name.compareTo(this.name) == 0)
-                    player.setCurrentWorker(1);
-
-            List<Cell> available = checkMove(p,b);
-            for(Player player : p)
-                if(player.getCard().name.compareTo(this.name) != 0)
-                    available.removeAll(activeBlock(player.getCurrentWorker(),b,Status.QUESTION_M));
-
-            for(Player player : p)
-                if(player.getCard().name.compareTo(this.name) == 0)
-                    player.setCurrentWorker(0);
-
-            return available.size() == 0;
-        }
-        return true;
-    }
-    */
-
-    /*
-    public boolean checkWorker2Blocked(List<Player> p, Board b){
-        if (!(p == null || b == null )) {
-            for(Player player : p)
-                if(player.getCard().name.compareTo(this.name) == 0)
-                    player.setCurrentWorker(2);
-
-            List<Cell> available = checkMove(p,b);
-            for(Player player : p)
-                if(player.getCard().name.compareTo(this.name) != 0)
-                    available.removeAll(activeBlock(player.getCurrentWorker(),b,Status.QUESTION_M));
-
-            for(Player player : p)
-                if(player.getCard().name.compareTo(this.name) == 0)
-                    player.setCurrentWorker(0);
-
-            return available.size() == 0;
-        }
-        return true;
-    }
-    */
 }

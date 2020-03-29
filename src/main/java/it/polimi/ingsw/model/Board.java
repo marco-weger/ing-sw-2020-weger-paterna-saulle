@@ -22,12 +22,21 @@ public class Board {
         this.field = field;
     }
 
+    /**
+     * @param c the cell
+     * @return true if the cell is in the 5x5 board
+     */
     public static boolean isCellInBoard(Cell c){
         if(c != null)
             return (c.getRow() >= 0 && c.getRow() < 5 && c.getColumn() >= 0 && c.getColumn() < 5);
         return false;
     }
 
+    /**
+     * It sets the level of the cell by using params
+     * @param c the cell
+     * @param level the level
+     */
     public void build(Cell c, int level){
         if(c != null)
             if(isCellInBoard(c) && level >= 0 && level <= 4)
@@ -36,6 +45,12 @@ public class Board {
                         inBoard.setLevel(level);
     }
 
+    /**
+     * It returns the required cell if exists
+     * @param row the row
+     * @param column the column
+     * @return the cell
+     */
     public Cell getCell(int row, int column){
         for(Cell inBoard : field)
             if(row == inBoard.getRow() && column == inBoard.getColumn())

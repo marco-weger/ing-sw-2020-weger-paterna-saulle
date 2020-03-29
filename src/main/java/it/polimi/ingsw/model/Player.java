@@ -10,7 +10,7 @@ public class Player {
     private Card card;
     private Worker worker1;
     private Worker worker2;
-   // private boolean hasLost;
+    private boolean loser;
 
     public Player(String name, CardName card, Worker worker1, Worker worker2)
     {
@@ -53,13 +53,13 @@ public class Player {
         this.worker2 = worker2;
     }
 
-    /*public void setHasLost(boolean lost) {
-            this.hasLost = lost;
+    public void setLoser(boolean loser) {
+            this.loser = loser;
     }
 
-    public boolean isHasLost() {
-        return hasLost;
-    }*/
+    public boolean isLoser() {
+        return loser;
+    }
 
     public Worker getCurrentWorker(){
          if(getWorker1().isActive())

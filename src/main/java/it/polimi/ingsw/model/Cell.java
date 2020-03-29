@@ -28,15 +28,16 @@ public class Cell {
 
     public int getLevel() {return level;}
 
-    /*@
-      requires level >= 0 && level <= 4
-      ensures this.level >= 0 && this.level <= 4
-    @*/
     public void setLevel(int level) {
         if(level >= 0 && level <= 4)
             this.level = level;
     }
 
+    /**
+     * It checks for any workers in the cell
+     * @param p list of players
+     * @return true if occupied
+     */
     public boolean isOccupied(List<Player> p)
     {
         if(p != null)

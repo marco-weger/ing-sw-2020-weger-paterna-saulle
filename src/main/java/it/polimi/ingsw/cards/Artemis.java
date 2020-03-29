@@ -11,6 +11,12 @@ public class Artemis extends Card {
         super(CardName.ARTEMIS, false, false, true, Status.CHOSEN);
     }
 
+    /**
+     * It checks for second move
+     * @param p list of player
+     * @param b board
+     * @return list of available cells
+     */
     @Override
     public List<Cell> checkMove(List<Player> p, Board b) {
         if (p == null || b == null) return new ArrayList<>(0);
@@ -35,6 +41,12 @@ public class Artemis extends Card {
         return available;
     }
 
+    /**
+     * It moves the current worker
+     * @param p list of player
+     * @param b board
+     * @param to where to move
+     */
     @Override
     public void move(List<Player> p, Board b, Cell to) {
         if (!(p == null || b == null || to == null)) {

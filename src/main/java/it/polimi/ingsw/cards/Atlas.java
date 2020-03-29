@@ -12,6 +12,7 @@ public class Atlas extends Card {
         super(CardName.ATLAS,false,false,true, Status.CHOSEN);
     }
 
+    // TODO: is it necessary? Its a normal check (MARCO)
     @Override
     public List<Cell> checkBuild(List<Player> p, Board b) {
         if(p == null || b == null) return new ArrayList<>();
@@ -28,6 +29,12 @@ public class Atlas extends Card {
         return buildable;
     }
 
+    /**
+     * It builds normal or a dome by active attribute
+     * @param p list of player
+     * @param b board
+     * @param in where to build
+     */
     @Override
     public void build(List<Player> p, Board b, Cell in) {
         if(!(p == null || b == null || in == null)){
