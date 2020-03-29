@@ -1,14 +1,15 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.Observable;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
-public class Match extends Observable implements Cloneable {
+public class Match extends Observable {
 
     private int id;
     private Board board;
-    private static List<Player> players;
+    private List<Player> players;
     private boolean IsEnded;
     private Player currentPlayer;
     private Status status;
@@ -37,7 +38,7 @@ public class Match extends Observable implements Cloneable {
         this.status = status;
     }
 
-    public static List<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
