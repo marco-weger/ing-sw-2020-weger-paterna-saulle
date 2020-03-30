@@ -11,21 +11,6 @@ public class Atlas extends Card {
     {
         super(CardName.ATLAS,false,false,true, Status.CHOSEN);
     }
-    //checkBuild
-    // TODO: is it necessary? Its a normal check (MARCO)
-    //I think it's not (GIULIO)
-    @Override
-    public List<Cell> checkBuild(List<Player> p, Board b)
-    {
-        if(p == null || b == null) return new ArrayList<>();
-        Worker actived = null;
-        for(Player player:p)
-            if(player.getCard().getName().compareTo(this.getName()) == 0)
-                actived = player.getCurrentWorker();
-        if(actived == null) return new ArrayList<>();
-        return super.checkBuild(p,b);
-    }
-
     /**
      * It builds normal or a dome by active attribute
      * @param p list of player

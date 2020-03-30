@@ -117,7 +117,7 @@ public class Card {
      * @param b board
      * @param current current state of current turn
      */
-    public List<Cell> activeBlock(Worker w, Board b, Status current){
+    public List<Cell> activeBlock(List<Player> p, Board b, Worker w,  Status current){
         return new ArrayList<>();
     }
 
@@ -137,7 +137,7 @@ public class Card {
                     List<Cell> available = checkMove(p, b);
                     for (Player player : p)
                         if (player.getCard().getName().compareTo(this.getName()) != 0)
-                            available.removeAll(player.getCard().activeBlock(current.getCurrentWorker(), b, Status.QUESTION_M));
+                            available.removeAll(player.getCard().activeBlock(p, b,  current.getCurrentWorker(),Status.QUESTION_M));
                     if (available.contains(to)) {
                         current.getCurrentWorker().setRow(to.getRow());
                         current.getCurrentWorker().setColumn(to.getColumn());
@@ -163,7 +163,7 @@ public class Card {
                     List<Cell> available = checkBuild(p,b);
                     for(Player player:p)
                         if(player.getCard().getName().compareTo(this.getName()) != 0)
-                            available.removeAll(player.getCard().activeBlock(current.getCurrentWorker(),b, Status.QUESTION_B));
+                            available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_B));
                     if(available.contains(to)){
                         available.get(available.indexOf(to)).setLevel(available.get(available.indexOf(to)).getLevel()+1);
                     }

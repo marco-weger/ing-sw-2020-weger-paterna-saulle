@@ -15,6 +15,27 @@ public class Prometheus extends Card {
      * Checkmove di Prometeo, se il potere è attivo, mostra solo le caselle dello stesso livello
      * se il potere è spento, mostra tutte le caselle
      */
+
+
+    @Override
+    public Status getNextStatus(Status current) {
+        if (!super.isActive()) {
+            return super.getNextStatus(current);
+        }
+        else {
+            if (current == null) return null;
+            switch (current) {
+                case CHOSEN:
+                    return Status.QUESTION_B;
+                case BUILT:
+                    super.setActive(false);
+                    return Status.QUESTION_M;
+                default:
+                    return super.getNextStatus(current);
+            }
+        }
+    }
+
     @Override
     public List<Cell> checkMove(List<Player> p, Board b) {
         if(p == null || b == null) return new ArrayList<>(0);

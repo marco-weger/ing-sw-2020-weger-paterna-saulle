@@ -15,19 +15,16 @@ public class Athena extends Card {
      * Restituisce al giocatore un arraylist con le mosse proibite
      */
     @Override
-    public List<Cell> activeBlock(Worker w, Board b, Status current) {
-        /*
-        if(w == null || b == null ) return new ArrayList<>(0);
+    public List<Cell> activeBlock(List<Player> p, Board b, Worker w,  Status current) {
+        if(p == null || b == null ) return new ArrayList<>(0);
         List<Cell> ret = new ArrayList<>();
-        List<Player> p;
-        p = Match.getPlayers();
-
-        for(Cell c:b.getField())
-            if(Math.abs(c.getRow()-w.getRow()) <= 1 && Math.abs(c.getColumn()-w.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() == w.getLevel(b) +1 && !c.isOccupied(p))
-                ret.add(c);
-        return ret;
-         */
-        return new ArrayList<>();
+        if(super.getStatus() != Status.QUESTION_M)  return ret;
+        else{
+            for (Cell c : b.getField())
+                if (Math.abs(c.getRow() - w.getRow()) <= 1 && Math.abs(c.getColumn() - w.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() == w.getLevel(b) + 1 && !c.isOccupied(p))
+                    ret.add(c);
+            return ret;
+        }
     }
 
     /**

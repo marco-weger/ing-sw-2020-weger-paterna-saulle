@@ -58,7 +58,7 @@ public class AthenaTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        List<Cell> ret = p.get(0).getCard().activeBlock(w1, b, Status.CHOSEN);
+        List<Cell> ret = p.get(0).getCard().activeBlock(p, b, w1, Status.CHOSEN);
         assertEquals(ret.size(), 2);
     }
 
@@ -70,6 +70,7 @@ public class AthenaTest {
         p.add(new Player("player2", CardName.ARTEMIS, new Worker(4, 4), new Worker(0, 1)));
         p.add(new Player("player3", CardName.ATLAS, new Worker(1, 0), new Worker(0, 2)));
         p.get(1).setCurrentWorker(1);
+        Worker w1 = p.get(1).getCurrentWorker();
         Board b = new Board();
         for (Cell c : b.getField()) {
             if (c.getRow() == 4 && c.getColumn() == 4)
@@ -83,7 +84,7 @@ public class AthenaTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        List<Cell> ret = p.get(0).getCard().activeBlock(null, null, Status.CHOSEN);
+        List<Cell> ret = p.get(0).getCard().activeBlock(p, b, w1, Status.CHOSEN);
         assertEquals(ret.size(), 0);
     }
 
