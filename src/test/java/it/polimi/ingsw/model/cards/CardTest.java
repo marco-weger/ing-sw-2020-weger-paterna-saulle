@@ -199,7 +199,7 @@ public class CardTest {
     {
         Card c = FactoryCard.getCard(CardName.APOLLO);
         assertNotNull(c);
-        assertEquals(c.activeBlock(new Worker(0,0),new Board(), Status.CHOSEN).size(),0);
+        assertEquals(c.activeBlock(null,new Board(), new Worker(0,0), Status.CHOSEN).size(),0);
     }
     // move
     @Test
