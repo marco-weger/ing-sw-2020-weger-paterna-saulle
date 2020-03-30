@@ -12,7 +12,14 @@ public class Athena extends Card {
         super(CardName.ATHENA,false,false,true,Status.CHOSEN);
     }
     /**
-     * Restituisce al giocatore un arraylist con le mosse proibite
+     *if Athena is active, return a list of opponent's blocked cell
+     *
+     * @param p list of player
+     * @param b board
+     * @param w worker
+     * @param current status
+     *
+     * @return list of opponent's blocked cell
      */
     @Override
     public List<Cell> activeBlock(List<Player> p, Board b, Worker w,  Status current) {
@@ -28,8 +35,10 @@ public class Athena extends Card {
     }
 
     /**
-     * Resetta il parametro isActive di Atena, se all'inizio del turno il giocatore
-     * ha il parametro a 1 (finito il round, finito il potere)
+     * Reset the parameter isActive of Athena, if a new round is STARTED
+     * and the player with Athena Card have used the power
+     * (status player == START and  isActive current player ==1 )
+     *
      */
     @Override
     public void inizializeTurn() {

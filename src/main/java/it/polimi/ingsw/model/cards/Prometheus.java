@@ -11,11 +11,17 @@ public class Prometheus extends Card {
         super(CardName.PROMETHEUS,false,false,true, Status.CHOSEN);
     }
 
-    /**
-     * Checkmove di Prometeo, se il potere è attivo, mostra solo le caselle dello stesso livello
-     * se il potere è spento, mostra tutte le caselle
-     */
 
+    /**
+     * if Prometheus is Active, the player follows this line
+     * start-> chosen-> quesion_b-> built-> question_m-> moved-> question_b-> built-> end
+     *
+     * otherwise the player follows the classical line
+     * start-> chosen-> question_m-> moved-> question_b-> built-> end
+     *
+     * @param current current state of current turn
+     * @return next state
+     */
 
     @Override
     public Status getNextStatus(Status current) {
@@ -35,6 +41,17 @@ public class Prometheus extends Card {
             }
         }
     }
+
+
+    /**
+     * if Prometheus is Active, return only the cells with the same level;
+     * otherwise return a simple check move
+     *
+     * @param p list of players
+     * @param b board
+     *
+     * @return list of available cells
+     */
 
     @Override
     public List<Cell> checkMove(List<Player> p, Board b) {
