@@ -10,9 +10,18 @@ public class Match extends Observable {
     private int id;
     private Board board;
     private List<Player> players;
-    private boolean IsEnded;
+    private boolean ended;
     private Player currentPlayer;
     private Status status;
+
+    public Match(int id, Board board, List<Player> players,boolean ended, Player currentPlayer, Status status){
+        this.id=id;
+        this.board=board;
+        this.players=players;
+        this.ended=ended;
+        this.currentPlayer=currentPlayer;
+        this.status=status;
+    }
 
     public int getId() {
         return id;
@@ -23,11 +32,11 @@ public class Match extends Observable {
     }
 
     public boolean isEnded() {
-        return IsEnded;
+        return ended;
     }
 
     public void setEnded(boolean ended) {
-        IsEnded = ended;
+        this.ended = ended;
     }
 
     public Status getStatus() {
