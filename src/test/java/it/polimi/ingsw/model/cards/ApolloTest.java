@@ -40,6 +40,32 @@ public class ApolloTest {
         assertEquals(c.checkMove(p,new Board()).size(),0);
     }
     @Test
+    public void checkMove_swtichUnaviable()
+    {
+        List<Player> p = new ArrayList<>();
+        p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
+        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
+        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
+        for(Cell c:b.getField()){
+            if(c.getRow() == 1)
+                c.setLevel(4);
+            else if(c.getRow() == 3)
+                c.setLevel(4);
+            else if(c.getRow() == 2 && c.getColumn() == 1)
+                c.setLevel(4);
+        }
+        assertNotNull(p);
+        assertNotNull(b);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,b);
+        //for(Cell c:ret)
+        //    System.out.println(c.getRow() + " - " + c.getColumn());
+        assertEquals(ret.size(),1);
+        for(Cell c:ret)
+            assertTrue(c.getRow() == 2 && c.getColumn()== 4);
+    }
+    @Test
     public void checkMove()
     {
         List<Player> p = new ArrayList<>();
