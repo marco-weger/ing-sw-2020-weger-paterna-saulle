@@ -26,7 +26,17 @@ public class Hephaestus extends Card {
             if(player.getCard().getName().compareTo(this.getName()) == 0)
                 actived = player.getCurrentWorker();
         if(actived == null) return new ArrayList<>();
-        return super.checkBuild(p,b);
+
+        List<Cell> available = super.checkBuild(p,b);
+
+        // if the player has chosen to active the ability i remove the cell with a level more than 1 (MARCO)
+        if(isActive()){
+            for(Cell c : available){
+                if(c.getLevel() > 1)
+                    available.remove(c);
+            }
+        }
+        return available;
     }
 
     /**
@@ -45,14 +55,11 @@ public class Hephaestus extends Card {
             if(current != null) {
                 if(current.getCurrentWorker() != null){
                     List<Cell> available = checkBuild(p,b);
-                    //check if "in" is contained in available,
-                    // TODO: IMPLEMENT EXCEPTION
                     if(available.contains(in)){
-                        //with this is impossible to build a lvl.3, and a dome consecutively.
-                        if(current.getCard().isActive() && in.getLevel()<2){
+                        if(isActive() && in.getLevel()<2){
                             available.get(available.indexOf(in)).setLevel(available.get(available.indexOf(in)).getLevel()+2);
                         }
-                        else if(!current.getCard().isActive())
+                        else if(!isActive() && in.getLevel()<4)
                          {
                             available.get(available.indexOf(in)).setLevel(available.get(available.indexOf(in)).getLevel()+1);
                         }
