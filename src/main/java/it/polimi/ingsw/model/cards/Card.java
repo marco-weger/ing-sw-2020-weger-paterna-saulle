@@ -56,6 +56,8 @@ public class Card {
         return status;
     }
 
+
+
     public void inizializeTurn(){}
 
     /**
@@ -197,4 +199,6 @@ public class Card {
                 return null;
         }
     }
+
 }
+
