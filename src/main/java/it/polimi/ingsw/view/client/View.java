@@ -1,7 +1,5 @@
 package it.polimi.ingsw.view.client;
 
-//import sun.rmi.transport.Connection;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;

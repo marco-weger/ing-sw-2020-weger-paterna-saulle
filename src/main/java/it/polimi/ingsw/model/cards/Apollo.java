@@ -29,15 +29,19 @@ public class Apollo extends Card {
         List<Cell> ret = super.checkMove(p, b);
         for(Player player:p){
             if(player.getCard().getName().compareTo(this.getName()) != 0){
+                player.setCurrentWorker(1);
                 int x = player.getWorker1().getRow() - actived.getRow();
                 int y = player.getWorker1().getColumn() - actived.getColumn();
-                if(Math.abs(x) <= 1 && Math.abs(y) <= 1)
+                if(Math.abs(x) <= 1 && Math.abs(y) <= 1 && player.getCard().checkBuild(p,b).size() > 0)
                     ret.add(b.getCell(player.getWorker1().getRow(), player.getWorker1().getColumn()));
 
+                player.setCurrentWorker(2);
                 x = player.getWorker2().getRow() - actived.getRow();
                 y = player.getWorker2().getColumn() - actived.getColumn();
-                if(Math.abs(x) <= 1 && Math.abs(y) <= 1)
+                if(Math.abs(x) <= 1 && Math.abs(y) <= 1 && player.getCard().checkBuild(p,b).size() > 0)
                     ret.add(b.getCell(player.getWorker2().getRow(), player.getWorker2().getColumn()));
+
+                player.setCurrentWorker(0);
             }
         }
         return ret;
