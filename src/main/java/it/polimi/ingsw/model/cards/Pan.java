@@ -1,4 +1,4 @@
-package it.polimi.ingsw.cards;
+package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Status;

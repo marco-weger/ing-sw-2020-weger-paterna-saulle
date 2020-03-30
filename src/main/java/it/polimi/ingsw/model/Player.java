@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.cards.Card;
-import it.polimi.ingsw.cards.CardName;
-import it.polimi.ingsw.cards.FactoryCard;
+import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.model.cards.CardName;
+import it.polimi.ingsw.model.cards.FactoryCard;
 
 public class Player {
 

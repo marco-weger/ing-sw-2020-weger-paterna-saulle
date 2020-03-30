@@ -1,4 +1,4 @@
-package it.polimi.ingsw.cards;
+package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Cell;
@@ -11,39 +11,35 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class ApolloTest {
+public class MinotaurTest {
     // checkMove
     @Test
     public void checkMove_paramsNull()
     {
-        Card c = FactoryCard.getCard(CardName.APOLLO);
         List<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
+        p.add(new Player("player1",CardName.PAN,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
-        assertNotNull(c);
-        List<Cell> ret = c.checkMove(p,null);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,null);
         assertEquals(ret.size(),0);
-        ret = c.checkMove(null,new Board());
+        ret = p.get(0).getCard().checkMove(null,new Board());
         assertEquals(0, ret.size());
     }
     @Test
     public void checkMove_noCurrentPlayerWorker()
     {
-        Card c = FactoryCard.getCard(CardName.PAN);
         List<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
+        p.add(new Player("player1",CardName.PAN,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
-        assertNotNull(c);
-        assertEquals(c.checkMove(p,new Board()).size(),0);
-        assertEquals(c.checkMove(p,new Board()).size(),0);
+        assertEquals(p.get(0).getCard().checkMove(p,new Board()).size(),0);
+        assertEquals(p.get(0).getCard().checkMove(p,new Board()).size(),0);
     }
     @Test
     public void checkMove()
     {
         List<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
+        p.add(new Player("player1",CardName.PAN,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
         p.get(0).setCurrentWorker(1);
@@ -67,25 +63,29 @@ public class ApolloTest {
         assertNotNull(p);
         assertNotNull(b);
         List<Cell> ret = p.get(0).getCard().checkMove(p,b);
+
+
+        // TODO: edit here...
+        //assertEquals(ret.size(),2);
         //for(Cell c:ret)
-        //    System.out.println(c.getRow() + " - " + c.getColumn());
-        assertEquals(ret.size(),2);
-        for(Cell c:ret)
-            assertTrue((c.getRow() == 1 && c.getColumn() == 2) || (c.getRow() == 2 && c.getColumn() == 2));
+        //    assertTrue((c.getRow() == 1 && c.getColumn() == 2) || (c.getRow() == 2 && c.getColumn() == 2));
     }
     // move
     @Test
     public void move_null()
     {
-        Card c = FactoryCard.getCard(CardName.PAN);
-        assertNotNull(c);
-        c.move(null,null,null);
+        List<Player> p = new ArrayList<>();
+        p.add(new Player("player1",CardName.PAN,new Worker(2,3),new Worker(0,0)));
+        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
+        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        p.get(0).setCurrentWorker(1);
+        p.get(0).getCard().move(null,null,null);
     }
     @Test
     public void move_error()
     {
         List<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
+        p.add(new Player("player1",CardName.PAN,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(3,4),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
         p.get(0).setCurrentWorker(1);
@@ -116,7 +116,7 @@ public class ApolloTest {
     public void move_noAbility()
     {
         List<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
+        p.add(new Player("player1",CardName.PAN,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
         p.get(0).setCurrentWorker(1);
@@ -149,19 +149,17 @@ public class ApolloTest {
     public void move_ability()
     {
         List<Player> p = new ArrayList<>();
-        Card c = FactoryCard.getCard(CardName.APOLLO);
-        p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
+        p.add(new Player("player1",CardName.PAN,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        p.add(new Player("player3",CardName.ATLAS,new Worker(2,4),new Worker(0,2)));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
-        assertNotNull(c);
-        for(Cell cell:b.getField())
-            if(cell.getRow() == 2 & cell.getColumn() == 2)
-                c.move(p,b,cell);
+        p.get(0).getCard().move(p,b,b.getCell(2,4));
+        //System.out.println(p.get(0).getCurrentWorker().getRow() + " - " + p.get(0).getCurrentWorker().getColumn());
+        //System.out.println(p.get(2).getWorker1().getRow() + " - " + p.get(2).getWorker1().getColumn());
         assertEquals(p.get(0).getCurrentWorker().getRow(), 2);
-        assertEquals(p.get(0).getCurrentWorker().getColumn(), 2);
+        assertEquals(p.get(0).getCurrentWorker().getColumn(), 3);
         assertEquals(p.get(2).getWorker1().getRow(), 2);
-        assertEquals(p.get(2).getWorker1().getColumn(), 3);
+        assertEquals(p.get(2).getWorker1().getColumn(), 4);
     }
 }
