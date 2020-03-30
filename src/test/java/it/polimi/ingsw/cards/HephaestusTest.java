@@ -61,8 +61,43 @@ public class HephaestusTest {
     public void checkAndBuild_activeSuccess() {
         List<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.HEPHASTUS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.MINOTAUR, new Worker(2, 1), new Worker(1, 2)));
-        p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(2, 3)));
+        p.add(new Player("player2", CardName.MINOTAUR, new Worker(0, 0), new Worker(1, 2)));
+        p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(4, 4)));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
+        assertNotNull(p);
+        assertNotNull(b);
+        for (Cell c : b.getField()) {
+            if (c.getRow() == 3 && c.getColumn() == 1)
+                c.setLevel(1);
+            else if (c.getRow() == 3 && c.getColumn() == 2)
+                c.setLevel(2);
+            else if (c.getRow() == 3 && c.getColumn() == 3)
+                c.setLevel(3);
+            else if (c.getRow() == 2 && c.getColumn() == 1)
+                c.setLevel(0);
+            else if (c.getRow() == 2 && c.getColumn() == 3)
+                c.setLevel(4);
+        }
+
+        p.get(0).getCard().setActive(true);
+
+        List<Cell> building = p.get(0).getCard().checkBuild(p, b);
+
+        assertEquals(building.size(), 2);
+        for (Cell c : building)
+            assertTrue(c.getRow() == 2 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 1);
+
+        p.get(0).getCard().build(p, b, b.getCell(3, 1));
+        assertEquals(3, b.getCell(3,1).getLevel());
+    }
+
+    @Test
+    public void checkAndBuild_activeFailed() {
+        List<Player> p = new ArrayList<>();
+        p.add(new Player("player1", CardName.HEPHASTUS, new Worker(2, 2), new Worker(1, 1)));
+        p.add(new Player("player2", CardName.MINOTAUR, new Worker(0, 0), new Worker(1, 2)));
+        p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(4, 4)));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         assertNotNull(p);
@@ -74,54 +109,29 @@ public class HephaestusTest {
                 c.setLevel(1);
             else if (c.getRow() == 3 && c.getColumn() == 3)
                 c.setLevel(2);
+            else if (c.getRow() == 2 && c.getColumn() == 1)
+                c.setLevel(3);
+            else if (c.getRow() == 2 && c.getColumn() == 3)
+                c.setLevel(4);
         }
-        List<Cell> building = p.get(0).getCard().checkBuild(p, b);
-        assertEquals(building.size(), 3);
-        for (Cell c : building)
-            assertTrue(c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2 || c.getRow() == 3 && c.getColumn() == 3);
-        p.get(0).getCard().setActive(true);
-        p.get(0).getCard().build(p, b, b.getCell(3, 2));
-        //current cell level is 1, expected to build 2 blocks
-        building = p.get(0).getCard().checkBuild(p, b);
-        assertEquals(building.size(), 3);
-        for (Cell c : building)
-            assertTrue(c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2||c.getRow() == 3 && c.getColumn() == 3);
-        for (Cell c : b.getField())
-            if (c.getRow() == 3 && c.getColumn() == 2)
-                assertEquals(3, c.getLevel());
-    }
 
-    //TODO: handling the exceptions
-    @Test
-    public void checkAndBuild_activeFailed() {
-        List<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.HEPHASTUS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.MINOTAUR, new Worker(2, 1), new Worker(1, 2)));
-        p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(2, 3)));
-        p.get(0).setCurrentWorker(1);
-        Board b = new Board();
-        assertNotNull(p);
-        assertNotNull(b);
-        for (Cell c : b.getField()) {
-            if (c.getRow() == 3 && c.getColumn() == 1)
-                c.setLevel(0);
-            else if (c.getRow() == 3 && c.getColumn() == 2)
-                c.setLevel(2);
-            else if (c.getRow() == 3 && c.getColumn() == 3)
-                c.setLevel(2);
-        }
+        //p.get(0).getCard().setActive(true);
+
         List<Cell> building = p.get(0).getCard().checkBuild(p, b);
-        assertEquals(building.size(), 3);
+
+        assertEquals(building.size(), 4);
         for (Cell c : building)
-            assertTrue(c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2 || c.getRow() == 3 && c.getColumn() == 3);
-        p.get(0).getCard().setActive(true);
+            assertTrue(c.getRow() == 2 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2 || c.getRow() == 3 && c.getColumn() == 3);
+
         p.get(0).getCard().build(p, b, b.getCell(3, 2));
-        //current cell level is 2, expected trying to build 2 blocks, but failing to do so, thus the level remains the same
         assertEquals(2, b.getCell(3,2).getLevel());
+
+        /*
         building = p.get(0).getCard().checkBuild(p, b);
         assertEquals(building.size(), 3);
         for (Cell c : building)
             assertTrue(c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2||c.getRow() == 3 && c.getColumn() == 3);
+         */
     }
 
     //build

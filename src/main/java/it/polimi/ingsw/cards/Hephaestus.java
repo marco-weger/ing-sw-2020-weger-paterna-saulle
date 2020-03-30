@@ -28,14 +28,16 @@ public class Hephaestus extends Card {
         if(actived == null) return new ArrayList<>();
 
         List<Cell> available = super.checkBuild(p,b);
+        List<Cell> toRemove = new ArrayList<>();
 
         // if the player has chosen to active the ability i remove the cell with a level more than 1 (MARCO)
         if(isActive()){
             for(Cell c : available){
                 if(c.getLevel() > 1)
-                    available.remove(c);
+                    toRemove.add(c);
             }
         }
+        available.removeAll(toRemove);
         return available;
     }
 
