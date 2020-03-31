@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.model.cards.FactoryCard;
 
-public class Player {
+public class Player extends Observable {
 
     private String name;
     private Card card;

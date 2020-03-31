@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
-public class Worker {
+import it.polimi.ingsw.Observable;
+
+public class Worker extends Observable {
 
     private int row,column;
     private boolean active;
