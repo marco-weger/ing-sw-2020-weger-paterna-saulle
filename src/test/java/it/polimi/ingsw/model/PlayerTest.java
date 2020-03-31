@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.model.cards.FactoryCard;
 import org.junit.Test;
@@ -36,5 +37,14 @@ public class PlayerTest {
         assertEquals(p.getWorker2(), p.getCurrentWorker());
     }
 
-
+    @Test
+    public void testClone() throws CloneNotSupportedException {
+        Player p = new Player("TEST",CardName.ARTEMIS,new Worker(0,0),new Worker(4,4));
+        Player p2 = p.clone();
+        p2.setCard(FactoryCard.getCard(CardName.APOLLO));
+        p2.getWorker1().setColumn(1);
+        assertEquals(p.getWorker1().getColumn(), 0);
+        assertEquals(p2.getWorker1().getColumn(), 1);
+        assertEquals(p.getCard().getName(), CardName.ARTEMIS);
+    }
 }

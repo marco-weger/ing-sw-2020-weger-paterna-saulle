@@ -49,19 +49,19 @@ public class WorkerTest {
         }
 
     }
+    @Test
+    public void testClone() throws CloneNotSupportedException {
+        Worker w = new Worker(0,0);
+        Worker w2 = w.clone();
 
-   /* @Test
-    public void activeWorker(){
-        Match m = new Match();
-        Player p = new Player("player1", CardName.PAN,null,null);
-        m.getCurrentPlayer().equals(p);
-        p.setCurrentWorker(1);
-        Worker w = new Worker(p.getCurrentWorker().getRow(),p.getCurrentWorker().getColumn());
-        //it should be done after the implementation of the controller, the test on "active" for acknowledge
-        //that the Worker is actually getting activated by the Player.
-        w.setActive(true);
-        assertSame(p.getCurrentWorker(), w); //&& w.isActive()==true && p.getWorker1()==w);
+        w2.setRow(4);
+        w2.setColumn(4);
 
-    }*/
+        assertEquals(w.getRow(),0);
+        assertEquals(w.getColumn(),0);
+        assertEquals(w2.getRow(),4);
+        assertEquals(w2.getColumn(),4);
+
+    }
 
 }

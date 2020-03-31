@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Card {
+public class Card{
 
     /**
      * Active is related to the ability.
@@ -195,6 +195,5 @@ public class Card {
                 return null;
         }
     }
-
 }
 

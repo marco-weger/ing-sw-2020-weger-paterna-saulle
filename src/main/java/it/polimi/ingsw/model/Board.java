@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board {
+public class Board implements Cloneable{
 
     private List<Cell> field;
 
@@ -56,6 +56,15 @@ public class Board {
             if(row == inBoard.getRow() && column == inBoard.getColumn())
                 return inBoard;
         return null;
+    }
+
+    @Override
+    public Board clone() throws CloneNotSupportedException {
+        Board b = (Board)super.clone();
+        b.field = new ArrayList<>();
+        for(Cell c : this.field)
+            b.field.add(c.clone());
+        return b;
     }
 
 }

@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.Observable;
 
-public class Worker extends Observable {
+public class Worker extends Observable implements Cloneable{
 
     private int row,column;
     private boolean active;
@@ -56,5 +56,14 @@ public class Worker extends Observable {
             if(c.getRow() == this.row && c.getColumn() == this.column)
                 return c.getLevel();}
         return -1;
+    }
+
+    @Override
+    public Worker clone() throws CloneNotSupportedException {
+        Worker w = (Worker)super.clone(); //new Worker(this.row,this.column);
+        w.setActive(this.isActive());
+        w.setColumn(this.getColumn());
+        w.setRow(this.getRow());
+        return w;
     }
 }

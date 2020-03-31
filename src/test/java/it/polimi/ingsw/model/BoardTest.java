@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.model.cards.CardName;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class BoardTest {
+public class BoardTest{
 
     // isCellInBoard
     @Test
@@ -60,5 +62,14 @@ public class BoardTest {
         for(Cell c: b.getField())
             if(c.getRow() == 0 && c.getColumn() == 0)
                 assertEquals(c.getLevel(),3);
+    }
+    @Test
+    public void testClone() throws CloneNotSupportedException {
+        Board b = new Board();
+        Board b2 = b.clone();
+
+        b2.getCell(0,0).setLevel(4);
+        assertEquals(b.getCell(0,0).getLevel(),0);
+        assertEquals(b2.getCell(0,0).getLevel(),4);
     }
 }

@@ -20,7 +20,7 @@ public class MatchTest {
         b.getCell(0,0).setLevel(4);
         m.setBoard(b);
         assertEquals(m.getBoard().getCell(0,0).getLevel(),4);
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         m.setPlayers(p);
@@ -33,7 +33,7 @@ public class MatchTest {
 
     @Test
     public void testSetNextPlayer03() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
@@ -45,7 +45,7 @@ public class MatchTest {
 
     @Test
     public void testSetNextPlayer13() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
@@ -57,7 +57,7 @@ public class MatchTest {
 
     @Test
     public void testSetNextPlayer23() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
@@ -69,7 +69,7 @@ public class MatchTest {
 
     @Test
     public void testSetNextPlayer02() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
@@ -81,7 +81,7 @@ public class MatchTest {
 
     @Test
     public void testSetNextPlayer12() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
@@ -93,7 +93,7 @@ public class MatchTest {
 
     @Test
     public void testCheckCurrentPlayerWin2() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
@@ -106,7 +106,7 @@ public class MatchTest {
 
     @Test
     public void testCheckCurrentPlayerWin3() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
@@ -120,7 +120,7 @@ public class MatchTest {
 
     @Test
     public void testCheckCurrentPlayerLoseFalse() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(1,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(1,4),new Worker(4,4)));
         Match m = new Match(0, new Board(), p,false, p.get(0), Status.START);
@@ -130,7 +130,7 @@ public class MatchTest {
 
     @Test
     public void testCheckCurrentPlayerLoseTrue() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(1,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(1,4),new Worker(4,4)));
         Match m = new Match(0, new Board(), p,false, p.get(0), Status.START);
@@ -144,5 +144,37 @@ public class MatchTest {
                 c.setLevel(0);
         assertFalse(m.checkCurrentPlayerLose());
     }
+    // clone
+    @Test
+    public void testClone(){
+        ArrayList<Player> p = new ArrayList<>();
+        p.add (new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(1,0)));
+        Match m = new Match(
+               0,
+                new Board(),
+                p,
+                false,
+                new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(1,0)),
+                Status.START
+        );
+        m.getPlayers().get(0).getWorker1().setActive(false);
+        assertFalse(m.getPlayers().get(0).getWorker1().isActive());
+        Match m2 = m.clone();
+        assertNotNull(m2);
+        m2.setId(1);
+        assertEquals(m.getId(),0);
+        assertEquals(m2.getId(),1);
 
+        m2.getCurrentPlayer().setName("AAAA");
+        assertEquals(m.getCurrentPlayer().getName(),"player1");
+        assertEquals(m2.getCurrentPlayer().getName(),"AAAA");
+
+        m2.getPlayers().get(0).getWorker1().setActive(true);
+        m2.getPlayers().get(0).setName("TEST");
+        assertFalse(m.getPlayers().get(0).getWorker1().isActive());
+        assertEquals(m.getPlayers().get(0).getName(),"player1");
+        assertTrue(m2.getPlayers().get(0).getWorker1().isActive());
+        assertEquals(m2.getPlayers().get(0).getName(),"TEST");
+
+    }
 }

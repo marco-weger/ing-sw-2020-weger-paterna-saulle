@@ -5,16 +5,16 @@ import it.polimi.ingsw.Observable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Match extends Observable {
+public class Match extends Observable implements Cloneable {
 
     private int id;
     private Board board;
-    private List<Player> players;
+    private ArrayList<Player> players;
     private boolean ended;
     private Player currentPlayer;
     private Status status;
 
-    public Match(int id, Board board, List<Player> players,boolean ended, Player currentPlayer, Status status){
+    public Match(int id, Board board, ArrayList<Player> players,boolean ended, Player currentPlayer, Status status){
         this.id=id;
         this.board=board;
         this.players=players;
@@ -51,7 +51,7 @@ public class Match extends Observable {
         return players;
     }
 
-    public void setPlayers(List<Player> players) {
+    public void setPlayers(ArrayList<Player> players) {
         this.players = players;
     }
 
@@ -87,7 +87,6 @@ public class Match extends Observable {
      * @return It checks if current player doesn't have move, and update workers status
      */
     public boolean checkCurrentPlayerLose() {
-        List<Cell> empty = new ArrayList<>();
         currentPlayer.setCurrentWorker(1);
         System.out.println(currentPlayer.getCard().checkMove(players, board).size());
         if (currentPlayer.getCard().checkMove(players, board).size() == 0) {
@@ -121,6 +120,27 @@ public class Match extends Observable {
             }
         }
         return (deads == k);
+    }
+
+    @Override
+    public void notifyObservers(Object obj) {
+        super.notifyObservers(this.clone());
+    }
+
+    @Override
+    public Match clone(){
+        try {
+            Match m = (Match)super.clone();
+            m.players = new ArrayList<>();
+            for(Player p : this.players)
+                m.players.add(p.clone());
+            m.board = this.board.clone();
+            m.currentPlayer = this.currentPlayer.clone();
+            return m;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

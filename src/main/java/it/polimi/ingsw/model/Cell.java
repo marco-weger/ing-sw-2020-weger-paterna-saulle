@@ -4,7 +4,7 @@ import it.polimi.ingsw.Observable;
 
 import java.util.List;
 
-public class Cell extends Observable {
+public class Cell extends Observable implements Cloneable{
 
     private int row, column, level;
 
@@ -48,5 +48,14 @@ public class Cell extends Observable {
                     if((player.getWorker1().getRow() == this.row && player.getWorker1().getColumn() == this.column) || (player.getWorker2().getRow() == this.row && player.getWorker2().getColumn() == this.column))
                         return true;
         return false;
+    }
+
+    @Override
+    public Cell clone() throws CloneNotSupportedException {
+        Cell c = (Cell)super.clone();
+        c.setLevel(this.getLevel());
+        c.setRow(this.getRow());
+        c.setColumn(this.getColumn());
+        return c;
     }
 }

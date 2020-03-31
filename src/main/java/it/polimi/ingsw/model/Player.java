@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.model.cards.FactoryCard;
 
-public class Player extends Observable {
+public class Player extends Observable implements Cloneable{
 
     private String name;
     private Card card;
@@ -76,6 +76,16 @@ public class Player extends Observable {
             worker1.setActive(i == 1);
             worker2.setActive(i == 2);
         }
+    }
+
+    @Override
+    public Player clone() throws CloneNotSupportedException {
+        Player p = (Player)super.clone();
+        p.setWorker1(worker1.clone());
+        p.setWorker2(worker2.clone());
+        p.setCard(FactoryCard.getCard(card.getName()));
+        p.getCard().setActive(this.card.isActive());
+        return p;
     }
 
 }
