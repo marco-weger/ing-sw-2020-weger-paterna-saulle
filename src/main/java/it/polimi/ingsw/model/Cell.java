@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.Observable;
+
 import java.util.List;
 
-public class Cell {
+public class Cell extends Observable {
 
     private int row, column, level;
 
