@@ -172,7 +172,7 @@ public class ApolloTest {
         assertEquals(p.get(0).getCurrentWorker().getColumn(), 4);
     }
     @Test
-    public void move_ability()
+    public void move_abilityWorker1()
     {
         List<Player> p = new ArrayList<>();
         Card c = FactoryCard.getCard(CardName.APOLLO);
@@ -189,5 +189,20 @@ public class ApolloTest {
         assertEquals(p.get(0).getCurrentWorker().getColumn(), 2);
         assertEquals(p.get(2).getWorker1().getRow(), 2);
         assertEquals(p.get(2).getWorker1().getColumn(), 3);
+    }
+    @Test
+    public void move_abilityWorker2()
+    {
+        List<Player> p = new ArrayList<>();
+        p.add(new Player("player1",CardName.APOLLO,new Worker(0,0),new Worker(2,3)));
+        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,1),new Worker(4,0)));
+        p.add(new Player("player3",CardName.ATLAS,new Worker(0,2),new Worker(2,2)));
+        p.get(0).setCurrentWorker(2);
+        Board b = new Board();
+        p.get(0).getCard().move(p,b,b.getCell(2,2));
+        assertEquals(p.get(0).getCurrentWorker().getRow(), 2);
+        assertEquals(p.get(0).getCurrentWorker().getColumn(), 2);
+        assertEquals(p.get(2).getWorker2().getRow(), 2);
+        assertEquals(p.get(2).getWorker2().getColumn(), 3);
     }
 }

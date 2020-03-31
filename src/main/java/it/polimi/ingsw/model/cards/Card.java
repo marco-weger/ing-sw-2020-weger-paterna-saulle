@@ -32,10 +32,6 @@ public class Card {
         return name;
     }
 
-    public void setName(CardName name) {
-        this.name = name;
-    }
-
     public boolean isActive() {
         return active;
     }

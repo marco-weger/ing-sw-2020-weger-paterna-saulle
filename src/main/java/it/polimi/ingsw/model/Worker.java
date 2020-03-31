@@ -32,10 +32,6 @@ public class Worker {
         return active;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     /**
      * It moves the worker to the chosen cell
      * @param x row

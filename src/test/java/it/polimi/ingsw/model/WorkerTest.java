@@ -5,6 +5,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class WorkerTest {
+    // move
+    @Test
+    public void move(){
+        Worker w = new Worker(0,0);
+        w.move(3,4);
+        assertEquals(w.getRow(),3);
+        assertEquals(w.getColumn(),4);
+    }
+
     // getLevel
     @Test
     public void getLevel_boardNull()

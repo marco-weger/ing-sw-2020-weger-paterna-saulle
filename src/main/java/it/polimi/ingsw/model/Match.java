@@ -89,16 +89,19 @@ public class Match extends Observable {
     public boolean checkCurrentPlayerLose() {
         List<Cell> empty = new ArrayList<>();
         currentPlayer.setCurrentWorker(1);
-        if (currentPlayer.getCard().checkMove(players, board).equals(empty)) {
-            currentPlayer.getWorker1().setActive(false);
+        System.out.println(currentPlayer.getCard().checkMove(players, board).size());
+        if (currentPlayer.getCard().checkMove(players, board).size() == 0) {
             currentPlayer.setCurrentWorker(2);
-            if (currentPlayer.getCard().checkMove(players, board).equals(empty)) {
-                currentPlayer.getWorker2().setActive(false);
+            System.out.println(currentPlayer.getCard().checkMove(players, board).size());
+            if (currentPlayer.getCard().checkMove(players, board).size() == 0) {
+                currentPlayer.setCurrentWorker(0);
                 return true;
             } else {
+                currentPlayer.setCurrentWorker(0);
                 return false;
             }
         } else {
+            currentPlayer.setCurrentWorker(0);
             return false;
         }
     }

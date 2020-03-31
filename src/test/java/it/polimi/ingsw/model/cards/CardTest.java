@@ -9,6 +9,43 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class CardTest {
+    // setter
+    @Test
+    public void setter()
+    {
+        Card c = FactoryCard.getCard(CardName.APOLLO);
+        assertNotNull(c);
+        c.setActive(true);
+        assertTrue(c.isActive());
+        assertFalse(c.isOpponent());
+        assertFalse(c.isQuestion());
+    }
+    // getNextStatus
+    @Test
+    public void getNextStatus()
+    {
+        Card c = FactoryCard.getCard(CardName.APOLLO);
+        assertNotNull(c);
+        Status s;
+        s = c.getNextStatus(Status.START);
+        assertNotNull(s);
+        assertEquals(Status.CHOSEN, s);
+        s = c.getNextStatus(Status.CHOSEN);
+        assertNotNull(s);
+        assertEquals(Status.QUESTION_M, s);
+        s = c.getNextStatus(Status.QUESTION_M);
+        assertNotNull(s);
+        assertEquals(Status.MOVED, s);
+        s = c.getNextStatus(Status.MOVED);
+        assertNotNull(s);
+        assertEquals(Status.QUESTION_B, s);
+        s = c.getNextStatus(Status.BUILT);
+        assertNotNull(s);
+        assertEquals(Status.END, s);
+        s = c.getNextStatus(Status.END);
+        assertNotNull(s);
+        assertEquals(Status.START, s);
+    }
     // checkWin
     @Test
     public void checkWin_cellNull()
