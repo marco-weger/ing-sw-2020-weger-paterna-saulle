@@ -32,9 +32,7 @@ public class Worker {
         return active;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    protected void setActive(boolean active){this.active=active;}
 
     /**
      * It moves the worker to the chosen cell

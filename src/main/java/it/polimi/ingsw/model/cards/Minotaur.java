@@ -32,15 +32,22 @@ public class Minotaur extends Card {
             if(player.getCard().getName().compareTo(this.getName()) != 0){
                 int x = player.getWorker1().getRow() - actived.getRow();
                 int y = player.getWorker1().getColumn() - actived.getColumn();
-                if(Math.abs(x) <= 1 && Math.abs(y) <= 1)
-                    if(!b.getCell(x*2,y*2).isOccupied(p))
-                        ret.add(b.getCell(player.getWorker1().getRow(),player.getWorker1().getColumn()));
-
+                if(Math.abs(x) <= 1 && Math.abs(y) <= 1){
+                    x = actived.getRow() + x*2;
+                    y = actived.getColumn() + y*2;
+                    if(x >= 0 && x <= 4 && y >= 0 && y <= 4)
+                        if(!b.getCell(x,y).isOccupied(p))
+                            ret.add(b.getCell(player.getWorker1().getRow(),player.getWorker1().getColumn()));
+                }
                 x = player.getWorker2().getRow() - actived.getRow();
                 y = player.getWorker2().getColumn() - actived.getColumn();
-                if(Math.abs(x) <= 1 && Math.abs(y) <= 1)
-                    if(!b.getCell(x*2,y*2).isOccupied(p))
-                        ret.add(b.getCell(player.getWorker2().getRow(),player.getWorker2().getColumn()));
+                if(Math.abs(x) <= 1 && Math.abs(y) <= 1){
+                    x = actived.getRow() + x*2;
+                    y = actived.getColumn() + y*2;
+                    if(x >= 0 && x <= 4 && y >= 0 && y <= 4)
+                        if(!b.getCell(x,y).isOccupied(p))
+                            ret.add(b.getCell(player.getWorker2().getRow(),player.getWorker2().getColumn()));
+                }
             }
         }
         return ret;
