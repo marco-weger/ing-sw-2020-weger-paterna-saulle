@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.Observer;
+import it.polimi.ingsw.messages.ClientMessage;
 import it.polimi.ingsw.model.Match;
 
 public class Controller implements Observer, ClientMessageHandler {
@@ -32,10 +33,10 @@ public class Controller implements Observer, ClientMessageHandler {
     }
 
 
-    public void reciveMessage() {
+    @Override
+    public void reciveMessage(ClientMessage cm) {
 
     }
-
 
     public void handleMessage() {
 
@@ -61,4 +62,5 @@ public class Controller implements Observer, ClientMessageHandler {
     public void endTurn(){
 
     }
+
 }
