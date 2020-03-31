@@ -6,6 +6,6 @@ public interface ClientMessageHandler {
 
     void reciveMessage(ClientMessage cm);
 
-    void handleMessage();
+    //void handleMessage();
 
 }
