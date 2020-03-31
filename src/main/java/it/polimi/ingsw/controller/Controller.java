@@ -38,11 +38,6 @@ public class Controller implements Observer, ClientMessageHandler {
 
     }
 
-    public void reciveMessage() {
-
-    }
-
-
     public void handleMessage() {
 
     }
