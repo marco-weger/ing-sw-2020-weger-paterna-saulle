@@ -88,10 +88,8 @@ public class Match extends Observable implements Cloneable {
      */
     public boolean checkCurrentPlayerLose() {
         currentPlayer.setCurrentWorker(1);
-        System.out.println(currentPlayer.getCard().checkMove(players, board).size());
         if (currentPlayer.getCard().checkMove(players, board).size() == 0) {
             currentPlayer.setCurrentWorker(2);
-            System.out.println(currentPlayer.getCard().checkMove(players, board).size());
             if (currentPlayer.getCard().checkMove(players, board).size() == 0) {
                 currentPlayer.setCurrentWorker(0);
                 return true;
