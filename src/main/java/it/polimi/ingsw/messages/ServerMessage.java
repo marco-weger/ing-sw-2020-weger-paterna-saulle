@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Message;
+package it.polimi.ingsw.messages;
 
 public interface ServerMessage {
 
