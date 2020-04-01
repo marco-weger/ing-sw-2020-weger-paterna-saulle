@@ -41,7 +41,7 @@ public class Worker extends Observable implements Cloneable{
      * @param x row
      * @param y column
      */
-    public void move(int x, int y){
+    protected void move(int x, int y){
         setRow(x);
         setColumn(y);
     }
