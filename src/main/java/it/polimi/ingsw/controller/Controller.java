@@ -2,7 +2,9 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.ClientMessage;
+import it.polimi.ingsw.messages.clientMessage.*;
 import it.polimi.ingsw.model.Match;
+import it.polimi.ingsw.view.server.VirtualView;
 
 public class Controller implements Observer, ClientMessageHandler {
 
@@ -11,34 +13,78 @@ public class Controller implements Observer, ClientMessageHandler {
      * The CONTROLLER is the only one allowed to modify the MODEL
      */
     private Match match;
+    private VirtualView virtualView;
 
-    // TODO: VIRTUALVIEW, TURN
-
-    public Controller(Match match) {
+    public Controller(Match match, VirtualView virtualView) {
         this.match = match;
+        this.virtualView = virtualView;
     }
 
     @Override
-    public void notifyObserver(Object arg) {
-
-        /*
-        if( ! (arg instanceof AnswerEvent))
-            throw new RuntimeException("This must be an AnswerEvent object");
-
-        AnswerEvent answerEvent = (AnswerEvent) arg;
-
-        answerEvent.acceptEventHandler(this);
-         */
-
+    public void notifyObserver(Object arg){
+        if( ! (arg instanceof ClientMessage))
+            throw new RuntimeException("This must be an ClientMessage object");
+        ClientMessage cm = (ClientMessage) arg;
+        cm.Accept(this);
     }
-
 
     @Override
     public void reciveMessage(ClientMessage cm) {
+        new Thread(() -> cm.Accept(this)).start();
+    }
+
+    @Override
+    public void handleMessage(ConnectionClient message) {
 
     }
 
-    public void handleMessage() {
+    @Override
+    public void handleMessage(DisconnectionClient event) {
+
+    }
+
+    @Override
+    public void handleMessage(ReConnectionClient message) {
+
+    }
+
+    @Override
+    public void handleMessage(Ping event) {
+
+    }
+
+    @Override
+    public void handleMessage(ChallengerChoseClient message) {
+
+    }
+
+    @Override
+    public void handleMessage(PlayerChoseClient message) {
+
+    }
+
+    @Override
+    public void handleMessage(WorkerInizializeClient message) {
+
+    }
+
+    @Override
+    public void handleMessage(WorkerChoseClient message) {
+
+    }
+
+    @Override
+    public void handleMessage(AnswerAbilityClient message) {
+
+    }
+
+    @Override
+    public void handleMessage(MoveClient message) {
+
+    }
+
+    @Override
+    public void handleMessage(BuildClient message) {
 
     }
 
