@@ -103,11 +103,16 @@ public class Card extends Observable {
             if(player.getCard().name.compareTo(this.name) == 0)
                 actived = player.getCurrentWorker();
         if(actived == null) return new ArrayList<>();
-        List<Cell> ret = new ArrayList<>();
+        List<Cell> available = new ArrayList<>();
         for(Cell c:b.getField())
             if(Math.abs(c.getRow()-actived.getRow()) <= 1 && Math.abs(c.getColumn()-actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() <= actived.getLevel(b)+1 && !c.isOccupied(p))
-                ret.add(c);
-        return ret;
+                available.add(c);
+
+        // here i check for ATHENA ability
+        for (Player player : p)
+            if (player.getCard().getName().compareTo(this.getName()) != 0)
+                available.removeAll(player.getCard().activeBlock(p, b, actived,Status.QUESTION_M));
+        return available;
     }
 
     /**
