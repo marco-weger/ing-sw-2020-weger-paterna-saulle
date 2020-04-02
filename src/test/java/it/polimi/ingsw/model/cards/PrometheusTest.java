@@ -46,12 +46,12 @@ public class PrometheusTest {
             else if(cell.getRow() == 1 && cell.getColumn() == 1)
                 cell.setLevel(0);
             else if(cell.getRow() == 1 && cell.getColumn() == 0)
-                cell.setLevel(1);
+                cell.setLevel(2);
         }
         assertNotNull(p);
         assertNotNull(b);
         List<Cell> ret = p.get(0).getCard().checkMove(p,b);
-        //assertEquals(2, ret.size());
+        assertEquals(2, ret.size());
 
     }
 
