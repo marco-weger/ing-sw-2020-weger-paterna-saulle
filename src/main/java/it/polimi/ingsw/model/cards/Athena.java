@@ -9,7 +9,7 @@ public class Athena extends Card {
 
     public Athena()
     {
-        super(CardName.ATHENA,false,false,true,Status.CHOSEN);
+        super(CardName.ATHENA,false,true,false,Status.CHOSEN);
     }
     /**
      *if Athena is active, return a list of opponent's blocked cell

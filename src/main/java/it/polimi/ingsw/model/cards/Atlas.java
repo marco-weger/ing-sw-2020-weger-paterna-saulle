@@ -9,7 +9,7 @@ public class Atlas extends Card {
 
     public Atlas()
     {
-        super(CardName.ATLAS,false,false,true, Status.CHOSEN);
+        super(CardName.ATLAS,false,false,true, Status.MOVED);
     }
     /**
      * It builds normal or a dome by active attribute

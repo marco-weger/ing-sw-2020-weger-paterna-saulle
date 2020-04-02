@@ -70,4 +70,23 @@ protected List<Cell> checkMove(List<Player> p, Board b) {
     }
     return ret;
 }
+
+    @Override
+    protected List<Cell> checkBuild(List<Player> p, Board b) {
+        List<Cell> available = super.checkBuild(p, b);
+
+        // TODO: if ACTIVE and CHECKMOVE has only 1 element i must remove the single CELL from available
+
+        return available;
+    }
+
+    @Override
+    public boolean activable(List<Player> p, Board b){
+        boolean activable = super.activable(p,b);
+        this.setActive(true);
+        if(checkBuild(p,b).size() == 0)
+            activable = false;
+        this.setActive(false);
+        return activable;
+    }
 }

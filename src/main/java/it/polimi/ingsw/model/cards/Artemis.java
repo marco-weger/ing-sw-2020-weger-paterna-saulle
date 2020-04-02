@@ -8,7 +8,7 @@ import java.util.List;
 public class Artemis extends Card {
 
     public Artemis() {
-        super(CardName.ARTEMIS, false, false, true, Status.CHOSEN);
+        super(CardName.ARTEMIS, false, false, false, Status.CHOSEN);
     }
 
     /**

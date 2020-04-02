@@ -9,7 +9,7 @@ public class Minotaur extends Card {
 
     public Minotaur()
     {
-        super(CardName.MINOTAUR,false,false,true, Status.CHOSEN);
+        super(CardName.MINOTAUR,false,false,false, Status.CHOSEN);
     }
 
     /**

@@ -9,7 +9,7 @@ public class Hephaestus extends Card {
 
     public Hephaestus()
     {
-        super(CardName.HEPHASTUS,false,false,true, Status.CHOSEN);
+        super(CardName.HEPHASTUS,false,false,true, Status.MOVED);
     }
 
     /**

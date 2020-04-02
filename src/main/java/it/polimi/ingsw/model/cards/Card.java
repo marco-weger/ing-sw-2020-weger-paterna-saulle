@@ -1,8 +1,12 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.Observable;
+import it.polimi.ingsw.commons.SnapCell;
+import it.polimi.ingsw.commons.serverMessages.CheckBuildServer;
+import it.polimi.ingsw.commons.serverMessages.CheckMoveServer;
 import it.polimi.ingsw.model.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,6 +204,34 @@ public class Card extends Observable {
             default:
                 return null;
         }
+    }
+
+    public void getCheckMove(List<Player> p, Board b){
+        List<Cell> available = this.checkMove(p,b);
+        ArrayList<SnapCell> snap = new ArrayList<>();
+        for(Cell c:available)
+            snap.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));
+        for(Player player:p){
+            if(player.getCard().name.compareTo(this.name) == 0){
+                notifyObservers(new CheckMoveServer(player.getName(),snap));
+            }
+        }
+    }
+
+    public void getCheckBuild(List<Player> p, Board b){
+        List<Cell> available = this.checkBuild(p,b);
+        ArrayList<SnapCell> snap = new ArrayList<>();
+        for(Cell c:available)
+            snap.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));
+        for(Player player:p){
+            if(player.getCard().name.compareTo(this.name) == 0){
+                notifyObservers(new CheckBuildServer(player.getName(),snap));
+            }
+        }
+    }
+
+    public boolean activable(List<Player> p, Board b){
+        return true;
     }
 
 }

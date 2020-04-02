@@ -7,7 +7,7 @@ public class Pan extends Card {
 
     public Pan()
     {
-        super(CardName.PAN,false,false,true, Status.CHOSEN);
+        super(CardName.PAN,false,false,false, Status.MOVED);
     }
 
 

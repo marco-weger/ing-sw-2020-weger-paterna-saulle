@@ -20,7 +20,7 @@ public class VirtualView extends Observable implements Observer, ServerMessageHa
 
     @Override
     public void handleMessage(CheckMoveServer cms) {
-
+        // TODO: let client know where to move
     }
 
     @Override

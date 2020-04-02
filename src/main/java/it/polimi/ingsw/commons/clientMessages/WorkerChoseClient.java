@@ -10,8 +10,8 @@ public class WorkerChoseClient implements ClientMessage , Serializable {
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    String name;
-    int worker;
+    public String name;
+    public int worker;
 
     public WorkerChoseClient(String name, int worker)
     {

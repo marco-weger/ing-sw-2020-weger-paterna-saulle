@@ -9,7 +9,7 @@ public class Demeter extends Card {
     Cell lastBuild;
     public Demeter()
     {
-        super(CardName.DEMETER,false,false,true, Status.CHOSEN);
+        super(CardName.DEMETER,false,false,true, Status.BUILT);
         lastBuild = null;
     }
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.model.Match;
+import it.polimi.ingsw.model.Status;
 import it.polimi.ingsw.view.server.VirtualView;
 
 public class Controller implements Observer, ClientMessageHandler {
@@ -68,7 +69,22 @@ public class Controller implements Observer, ClientMessageHandler {
 
     @Override
     public void handleMessage(WorkerChoseClient message) {
+        if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.START) == 0){
+            match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
+            match.getCurrentPlayer().setCurrentWorker(message.worker);
 
+            if(match.getCurrentPlayer().getCard().isQuestion()
+                    && match.getCurrentPlayer().getCard().getStatus().compareTo(match.getStatus()) == 0
+                    && match.getCurrentPlayer().getCard().activable(match.getPlayers(),match.getBoard())
+            )
+            {
+                // TODO: must generate question message
+            }
+            else{
+                match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(),match.getBoard());
+                match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
+            }
+        }
     }
 
     @Override
