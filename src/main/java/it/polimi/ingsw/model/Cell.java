@@ -16,7 +16,7 @@ public class Cell extends Observable implements Cloneable{
 
     public int getRow() {return row;}
 
-    protected void setRow(int row) {
+    public void setRow(int row) {
         if(row >= 0 && row <= 4)
             this.row = row;
     }

@@ -117,7 +117,7 @@ public class MatchTest {
         assertTrue(m.checkCurrentPlayerWin());
 
     }
-
+/*
     @Test
     public void testCheckCurrentPlayerLoseFalse() {
         ArrayList<Player> p = new ArrayList<>();
@@ -144,7 +144,11 @@ public class MatchTest {
                 c.setLevel(0);
         assertFalse(m.checkCurrentPlayerLose());
     }
+
+    */
+
     // clone
+    /*
     @Test
     public void testClone(){
         ArrayList<Player> p = new ArrayList<>();
@@ -177,4 +181,5 @@ public class MatchTest {
         assertEquals(m2.getPlayers().get(0).getName(),"TEST");
 
     }
+    */
 }
