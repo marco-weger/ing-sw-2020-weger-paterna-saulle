@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Card{
+public class Card extends Observable {
 
     /**
      * Active is related to the ability.
@@ -75,7 +76,7 @@ public class Card{
      * @param b board
      * @return list of cells where active worker could build
      */
-    public List<Cell> checkBuild(List<Player> p, Board b)
+    protected List<Cell> checkBuild(List<Player> p, Board b)
     {
         if(p == null || b == null) return new ArrayList<>();
         Worker actived = null;
@@ -95,7 +96,7 @@ public class Card{
      * @param b board
      * @return list of cells where active worker could move
      */
-    public List<Cell> checkMove(List<Player> p, Board b){
+    protected List<Cell> checkMove(List<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
         for(Player player:p)
@@ -115,7 +116,7 @@ public class Card{
      * @param b board
      * @param current current state of current turn
      */
-    public List<Cell> activeBlock(List<Player> p, Board b, Worker w,  Status current){
+    protected List<Cell> activeBlock(List<Player> p, Board b, Worker w,  Status current){
         return new ArrayList<>();
     }
 
@@ -194,5 +195,6 @@ public class Card{
                 return null;
         }
     }
+
 }
 
