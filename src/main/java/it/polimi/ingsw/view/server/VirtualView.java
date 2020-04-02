@@ -11,6 +11,7 @@ public class VirtualView extends Observable implements Observer {
     private ArrayList<Player> playersName;
 
     @Override
-    public void notifyObserver(Object arg) {}
+    public void update(Object obj) {
 
+    }
 }
