@@ -1,10 +1,12 @@
-package it.polimi.ingsw.messages.clientMessages;
+package it.polimi.ingsw.commons.clientMessages;
 
 import it.polimi.ingsw.controller.ClientMessageHandler;
-import it.polimi.ingsw.messages.ClientMessage;
+import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.model.cards.CardName;
 
-public class ChallengerChoseClient implements ClientMessage {
+import java.io.Serializable;
+
+public class ChallengerChoseClient implements ClientMessage, Serializable {
 
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}

@@ -1,9 +1,11 @@
-package it.polimi.ingsw.messages.clientMessages;
+package it.polimi.ingsw.commons.clientMessages;
 
 import it.polimi.ingsw.controller.ClientMessageHandler;
-import it.polimi.ingsw.messages.ClientMessage;
+import it.polimi.ingsw.commons.ClientMessage;
 
-public class BuildClient implements ClientMessage {
+import java.io.Serializable;
+
+public class MoveClient implements ClientMessage, Serializable {
 
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
@@ -12,10 +14,11 @@ public class BuildClient implements ClientMessage {
     int x;
     int y;
 
-    public BuildClient(String name, int x, int y)
+    public MoveClient(String name, int x, int y)
     {
         this.name=name;
         this.x=x;
         this.y=y;
     }
+
 }

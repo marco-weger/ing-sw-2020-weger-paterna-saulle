@@ -1,9 +1,11 @@
-package it.polimi.ingsw.messages.clientMessages;
+package it.polimi.ingsw.commons.clientMessages;
 
 import it.polimi.ingsw.controller.ClientMessageHandler;
-import it.polimi.ingsw.messages.ClientMessage;
+import it.polimi.ingsw.commons.ClientMessage;
 
-public class WorkerChoseClient implements ClientMessage {
+import java.io.Serializable;
+
+public class WorkerChoseClient implements ClientMessage , Serializable {
 
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}

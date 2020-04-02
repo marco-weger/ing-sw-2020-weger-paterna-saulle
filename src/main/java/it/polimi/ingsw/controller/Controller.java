@@ -1,8 +1,8 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.Observer;
-import it.polimi.ingsw.messages.ClientMessage;
-import it.polimi.ingsw.messages.clientMessages.*;
+import it.polimi.ingsw.commons.ClientMessage;
+import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.view.server.VirtualView;
 
