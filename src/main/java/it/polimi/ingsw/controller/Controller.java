@@ -28,7 +28,7 @@ public class Controller implements Observer, ClientMessageHandler {
         //cm.Accept(this);
 
         // TODO: not sure this is the best way to call correct method... test!
-        new Thread(() -> cm.Accept(this)).start();
+        // new Thread(() -> cm.Accept(this)).start();
     }
 
     @Override
