@@ -2,6 +2,6 @@ package it.polimi.ingsw;
 
 public interface Observer {
 
-    void notifyObserver(Object obj);
+    void update(Object obj);
 
 }

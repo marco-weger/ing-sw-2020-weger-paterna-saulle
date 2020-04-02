@@ -1,9 +1,9 @@
-package it.polimi.ingsw.messages.clientMessage;
+package it.polimi.ingsw.messages.clientMessages;
 
 import it.polimi.ingsw.controller.ClientMessageHandler;
 import it.polimi.ingsw.messages.ClientMessage;
 
-public class MoveClient implements ClientMessage {
+public class WorkerInizializeClient implements ClientMessage {
 
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
@@ -12,7 +12,7 @@ public class MoveClient implements ClientMessage {
     int x;
     int y;
 
-    public MoveClient(String name, int x, int y)
+    public WorkerInizializeClient(String name, int x, int y)
     {
         this.name=name;
         this.x=x;

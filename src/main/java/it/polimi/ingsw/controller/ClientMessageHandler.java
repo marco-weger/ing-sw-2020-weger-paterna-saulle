@@ -1,12 +1,8 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.messages.ClientMessage;
-import it.polimi.ingsw.messages.clientMessage.*;
+import it.polimi.ingsw.messages.clientMessages.*;
 
 public interface ClientMessageHandler {
-
-    void reciveMessage(ClientMessage cm);
-
     void handleMessage(ConnectionClient message);
     void handleMessage(DisconnectionClient message);
     void handleMessage(ReConnectionClient message);

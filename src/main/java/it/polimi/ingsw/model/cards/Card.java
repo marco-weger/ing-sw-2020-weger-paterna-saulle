@@ -137,8 +137,7 @@ public class Card{
                         if (player.getCard().getName().compareTo(this.getName()) != 0)
                             available.removeAll(player.getCard().activeBlock(p, b,  current.getCurrentWorker(),Status.QUESTION_M));
                     if (available.contains(to)) {
-                        current.getCurrentWorker().setRow(to.getRow());
-                        current.getCurrentWorker().setColumn(to.getColumn());
+                        current.getCurrentWorker().move(to.getRow(),to.getColumn());
                     }
                 }
             }

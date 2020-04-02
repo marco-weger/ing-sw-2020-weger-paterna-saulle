@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.messages.ClientMessage;
-import it.polimi.ingsw.messages.clientMessage.*;
+import it.polimi.ingsw.messages.clientMessages.*;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.view.server.VirtualView;
 
@@ -21,15 +21,13 @@ public class Controller implements Observer, ClientMessageHandler {
     }
 
     @Override
-    public void notifyObserver(Object arg){
+    public void update(Object arg){
         if( ! (arg instanceof ClientMessage))
             throw new RuntimeException("This must be an ClientMessage object");
         ClientMessage cm = (ClientMessage) arg;
-        cm.Accept(this);
-    }
+        //cm.Accept(this);
 
-    @Override
-    public void reciveMessage(ClientMessage cm) {
+        // TODO: not sure this is the best way to call correct method... test!
         new Thread(() -> cm.Accept(this)).start();
     }
 
