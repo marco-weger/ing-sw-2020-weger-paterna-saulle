@@ -44,40 +44,30 @@ public class Prometheus extends Card {
 
 
     /**
-     * if Prometheus is Active, return only the cells with the same level;
-     * otherwise return a simple check move
-     *
-     * @param p list of players
-     * @param b board
-     *
-     * @return list of available cells
-     */
+ * if Prometheus is Active, return only the cells with level inferior to current level plus one,
+ * otherwise return a simple check move;
+ *
+ * @param p list of players
+ * @param b board
+ *
+ * @return list of available cells
+ */
 
-    @Override
-    protected List<Cell> checkMove(List<Player> p, Board b) {
-        if(p == null || b == null) return new ArrayList<>(0);
-        Worker actived = null;
-        for(Player player:p)
-            if(player.getCard().getName().compareTo(this.getName()) == 0)
-                actived = player.getCurrentWorker();
-        if(actived == null) return new ArrayList<>();
-        List<Cell> ret = new ArrayList<>();
-        if(!super.isActive()) {
-            for (Cell c : b.getField()) {
-                if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() <= actived.getLevel(b) + 1 && !c.isOccupied(p))
-                    ret.add(c);
-            }
-            return ret;
+@Override
+protected List<Cell> checkMove(List<Player> p, Board b) {
+    if (p == null || b == null) return new ArrayList<>(0);
+    Worker actived = null;
+    for (Player player : p)
+        if (player.getCard().getName().compareTo(this.getName()) == 0)
+            actived = player.getCurrentWorker();
+    if (actived == null) return new ArrayList<>();
+    List<Cell> ret = super.checkMove(p, b);
+    if (super.isActive()) {
+        for (Cell c : ret) {
+            if (c.getLevel() > b.getCell(actived.getRow(),actived.getColumn()).getLevel())
+                ret.remove(c);
         }
-        else {
-            for (Cell c : b.getField()) {
-                if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() == actived.getLevel(b) && !c.isOccupied(p))
-                    ret.add(c);
-            }
-            return ret;
-        }
-
     }
-
-
+    return ret;
+}
 }
