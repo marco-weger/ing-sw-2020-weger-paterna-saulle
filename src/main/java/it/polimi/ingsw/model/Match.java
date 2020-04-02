@@ -5,7 +5,7 @@ import it.polimi.ingsw.Observable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Match extends Observable implements Cloneable {
+public class Match {
 
     private int id;
     private Board board;
@@ -120,12 +120,15 @@ public class Match extends Observable implements Cloneable {
         return (deads == k);
     }
 
+    /*
     @Override
     public void notifyObservers(Object obj) {
         super.notifyObservers(this.clone());
     }
+    */
 
-    @Override
+
+  /*  @Override
     public Match clone(){
         try {
             Match m = (Match)super.clone();
@@ -139,6 +142,6 @@ public class Match extends Observable implements Cloneable {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 }
 

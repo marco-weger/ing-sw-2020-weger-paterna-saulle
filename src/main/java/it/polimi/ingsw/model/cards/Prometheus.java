@@ -54,7 +54,7 @@ public class Prometheus extends Card {
      */
 
     @Override
-    public List<Cell> checkMove(List<Player> p, Board b) {
+    protected List<Cell> checkMove(List<Player> p, Board b) {
         if(p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
         for(Player player:p)

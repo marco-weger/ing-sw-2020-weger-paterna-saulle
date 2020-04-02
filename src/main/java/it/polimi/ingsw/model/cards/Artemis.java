@@ -18,7 +18,7 @@ public class Artemis extends Card {
      * @return list of available cells
      */
     @Override
-    public List<Cell> checkMove(List<Player> p, Board b) {
+    protected List<Cell> checkMove(List<Player> p, Board b) {
         if (p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
         Player current = null;

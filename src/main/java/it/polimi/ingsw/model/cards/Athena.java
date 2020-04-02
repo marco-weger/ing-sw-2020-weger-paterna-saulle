@@ -22,7 +22,7 @@ public class Athena extends Card {
      * @return list of opponent's blocked cell
      */
     @Override
-    public List<Cell> activeBlock(List<Player> p, Board b, Worker w,  Status current) {
+    protected List<Cell> activeBlock(List<Player> p, Board b, Worker w,  Status current) {
         if(p == null || b == null ) return new ArrayList<>(0);
         List<Cell> ret = new ArrayList<>();
         if(current != Status.QUESTION_M)  return ret;
