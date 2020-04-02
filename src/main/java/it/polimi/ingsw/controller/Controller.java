@@ -30,7 +30,7 @@ public class Controller implements Observer, ClientMessageHandler {
 
     @Override
     public void reciveMessage(ClientMessage cm) {
-        new Thread(() -> cm.Accept(this)).start();
+        //new Thread(() -> cm.Accept(this)).start();
     }
 
     @Override

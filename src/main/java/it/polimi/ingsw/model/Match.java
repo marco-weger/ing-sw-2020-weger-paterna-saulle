@@ -86,7 +86,7 @@ public class Match {
     /**
      * @return It checks if current player doesn't have move, and update workers status
      */
-    public boolean checkCurrentPlayerLose() {
+    /*public boolean checkCurrentPlayerLose() {
         currentPlayer.setCurrentWorker(1);
         if (currentPlayer.getCard().checkMove(players, board).size() == 0) {
             currentPlayer.setCurrentWorker(2);
@@ -102,7 +102,7 @@ public class Match {
             return false;
         }
     }
-
+    */
 
     /**
      * @return It verifies if the current player win for other players defeat

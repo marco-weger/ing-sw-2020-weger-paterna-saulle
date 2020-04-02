@@ -66,16 +66,20 @@ public class Apollo extends Card {
                         for (Player player : p){
                             if (player.getCard().getName().compareTo(this.getName()) != 0){
                                 if(player.getWorker1().getRow() == to.getRow() && player.getWorker1().getRow() == to.getRow()){
-                                    player.getWorker1().setRow(current.getCurrentWorker().getRow());
-                                    player.getWorker1().setColumn(current.getCurrentWorker().getColumn());
-                                    current.getCurrentWorker().setRow(to.getRow());
-                                    current.getCurrentWorker().setColumn(to.getColumn());
+                                    player.getWorker1().move(to.getRow(), to.getColumn());
+                                   // player.getWorker1().setRow(current.getCurrentWorker().getRow());
+                                   // player.getWorker1().setColumn(current.getCurrentWorker().getColumn());
+                                    current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                                    //current.getCurrentWorker().setRow(to.getRow());
+                                    //current.getCurrentWorker().setColumn(to.getColumn());
                                 }
                                 else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getRow() == to.getRow()){
-                                    player.getWorker2().setRow(current.getCurrentWorker().getRow());
-                                    player.getWorker2().setColumn(current.getCurrentWorker().getColumn());
-                                    current.getCurrentWorker().setRow(to.getRow());
-                                    current.getCurrentWorker().setColumn(to.getColumn());
+                                    player.getWorker2().move(to.getRow(), to.getColumn());
+                                    //player.getWorker2().setRow(current.getCurrentWorker().getRow());
+                                   // player.getWorker2().setColumn(current.getCurrentWorker().getColumn());
+                                    current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                                   // current.getCurrentWorker().setRow(to.getRow());
+                                   // current.getCurrentWorker().setColumn(to.getColumn());
                                 }
                             }
                         }

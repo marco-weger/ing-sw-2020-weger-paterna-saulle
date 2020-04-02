@@ -75,20 +75,24 @@ public class Minotaur extends Card {
                                     int x = player.getWorker1().getRow()+(player.getWorker1().getRow()-current.getCurrentWorker().getRow());
                                     int y = player.getWorker1().getColumn()+(player.getWorker1().getColumn()-current.getCurrentWorker().getColumn());
                                     if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
-                                        player.getWorker1().setRow(x);
-                                        player.getWorker1().setColumn(y);
-                                        current.getCurrentWorker().setRow(to.getRow());
-                                        current.getCurrentWorker().setColumn(to.getColumn());
+                                        player.getWorker1().move(x, y);
+                                        //player.getWorker1().setRow(x);
+                                        //player.getWorker1().setColumn(y);
+                                       // current.getCurrentWorker().setRow(to.getRow());
+                                       // current.getCurrentWorker().setColumn(to.getColumn());
+                                        current.getCurrentWorker().move(to.getRow(), to.getColumn());
                                     }
                                 }
                                 else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getRow() == to.getRow()){
                                     int x = player.getWorker2().getRow()+(player.getWorker2().getRow()-current.getCurrentWorker().getRow());
                                     int y = player.getWorker2().getColumn()+(player.getWorker2().getColumn()-current.getCurrentWorker().getColumn());
                                     if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
-                                        player.getWorker2().setRow(x);
-                                        player.getWorker2().setColumn(y);
-                                        current.getCurrentWorker().setRow(to.getRow());
-                                        current.getCurrentWorker().setColumn(to.getColumn());
+                                        player.getWorker2().move(x, y);
+                                       // player.getWorker2().setRow(x);
+                                       // player.getWorker2().setColumn(y);
+                                        current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                                       // current.getCurrentWorker().setRow(to.getRow());
+                                        //current.getCurrentWorker().setColumn(to.getColumn());
                                     }
                                 }
                             }
