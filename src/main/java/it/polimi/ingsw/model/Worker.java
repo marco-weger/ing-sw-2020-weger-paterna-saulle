@@ -16,7 +16,7 @@ public class Worker extends Observable implements Cloneable{
         return row;
     }
 
-    public void setRow(int row) {
+    protected void setRow(int row) {
         if(0<=row && row<5)
         this.row = row;
     }
@@ -25,7 +25,7 @@ public class Worker extends Observable implements Cloneable{
         return column;
     }
 
-    public void setColumn(int column) {
+    protected void setColumn(int column) {
         if(0<=column && column<5)
         this.column = column;
     }
