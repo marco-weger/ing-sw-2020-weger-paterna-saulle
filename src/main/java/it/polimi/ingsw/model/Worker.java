@@ -34,7 +34,7 @@ public class Worker extends Observable implements Cloneable{
         return active;
     }
 
-    protected void setActive(boolean active){this.active=active;}
+    public void setActive(boolean active){this.active=active;}
 
     /**
      * It moves the worker to the chosen cell
