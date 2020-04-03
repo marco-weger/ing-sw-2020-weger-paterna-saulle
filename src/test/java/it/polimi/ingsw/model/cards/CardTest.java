@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.model.*;
 import org.junit.Test;
 
@@ -135,6 +136,41 @@ public class CardTest {
         for(Cell c:ret)
             assertTrue(c.getRow() == 1 && c.getColumn() == 2 || c.getRow() == 1 && c.getColumn() == 3 || c.getRow() == 1 && c.getColumn() == 4);
     }
+    // getCheckBuild
+    @Test
+    public void getCheckBuild()
+    {
+        ArrayList<Player> p = new ArrayList<>();
+        p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
+        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
+        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
+        for(Cell c:b.getField()){
+            if(c.getRow() == 1 && c.getColumn() == 2)
+                c.setLevel(1);
+            else if(c.getRow() == 1 && c.getColumn() == 3)
+                c.setLevel(2);
+            else if(c.getRow() == 1 && c.getColumn() == 4)
+                c.setLevel(3);
+            else if(c.getRow() == 2 && c.getColumn() == 4)
+                c.setLevel(4);
+            else if(c.getRow() == 3 && c.getColumn() == 2)
+                c.setLevel(4);
+            else if(c.getRow() == 3 && c.getColumn() == 3)
+                c.setLevel(4);
+            else if(c.getRow() == 3 && c.getColumn() == 4)
+                c.setLevel(4);
+        }
+        assertNotNull(p);
+        assertNotNull(b);
+        ArrayList<SnapCell> ret = p.get(0).getCard().getCheckBuild(p,b);
+        //for(Cell c:ret)
+        //    System.out.println(c.getRow() + " - " + c.getColumn());
+        assertEquals(ret.size(),3);
+        for(SnapCell c:ret)
+            assertTrue(c.row == 1 && c.column == 2 || c.row == 1 && c.column == 3 || c.row == 1 && c.column == 4);
+    }
     // checkMove
     @Test
     public void checkMove_paramsNull()
@@ -227,6 +263,36 @@ public class CardTest {
         assertEquals(ret.size(),2);
         for(Cell c:ret){
             assertEquals(c.getRow()+c.getColumn() , 1);
+        }
+    }
+    // getCheckMove
+    @Test
+    public void getcheckMove_downTo()
+    {
+        ArrayList<Player> p = new ArrayList<>();
+        p.add(new Player("player1",CardName.APOLLO,new Worker(0,0),new Worker(4,0)));
+        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,1),new Worker(4,2)));
+        p.add(new Player("player3",CardName.ATLAS,new Worker(4,3),new Worker(0,4)));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
+        for(Cell c:b.getField()){
+            if(c.getRow() == 0 && c.getColumn() == 0)
+                c.setLevel(3);
+            else if(c.getRow() == 1 && c.getColumn() == 0)
+                c.setLevel(0);
+            else if(c.getRow() == 0 && c.getColumn() == 1)
+                c.setLevel(1);
+            else if(c.getRow() == 1 && c.getColumn() == 1)
+                c.setLevel(4);
+        }
+        assertNotNull(p);
+        assertNotNull(b);
+        ArrayList<SnapCell> ret = p.get(0).getCard().getCheckMove(p,b);
+        //for(Cell c:ret)
+        //    System.out.println(c.getRow() + " - " + c.getColumn());
+        assertEquals(ret.size(),2);
+        for(SnapCell c:ret){
+            assertEquals(c.row+c.column , 1);
         }
     }
     // activeBlock

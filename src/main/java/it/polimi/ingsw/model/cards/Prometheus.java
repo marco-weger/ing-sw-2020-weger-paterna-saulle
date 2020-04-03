@@ -45,7 +45,6 @@ public class Prometheus extends Card {
      *
      * @param p list of players
      * @param b board
-     *
      * @return list of available cells
      */
     @Override
@@ -56,27 +55,45 @@ public class Prometheus extends Card {
             if (player.getCard().getName().compareTo(this.getName()) == 0)
                 actived = player.getCurrentWorker();
         if (actived == null) return new ArrayList<>();
-            ArrayList<Cell> ret = super.checkMove(p, b);
+        ArrayList<Cell> ret = super.checkMove(p, b);
+        ArrayList<Cell> toRemove = new ArrayList<>();
         if (super.isActive()) {
             for (Cell c : ret) {
                 if (c.getLevel() > b.getCell(actived.getRow(),actived.getColumn()).getLevel())
-                    ret.remove(c);
+                    toRemove.add(c);
             }
         }
+        ret.removeAll(toRemove);
         return ret;
     }
 
+    /**
+     * If you want to build before moving it checks if the new build could block your next move (you could lose the match) and then remove that possibility
+     * @param p list of player
+     * @param b board
+     * @return list of available cells
+     */
     @Override
     protected ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b) {
+
         ArrayList<Cell> available = super.checkBuild(p, b);
 
-        // TODO: if ACTIVE and CHECKMOVE has only 1 element i must remove the single CELL from available
+        ArrayList<Cell> tmp = this.checkMove(p,b);
+        if(isActive() && tmp.size() == 1){
+            available.remove(tmp.get(0));
+        }
 
         return available;
     }
 
+    /**
+     * It uses the checkBuild to checks if there is some build possibilities before moving
+     * @param p list of player
+     * @param b board
+     * @return true if you could activate ability in this turn
+     */
     @Override
-    public boolean activable(ArrayList<Player> p, Board b){
+    public boolean activable(ArrayList<Player> p, Board b) {
         boolean activable = super.activable(p,b);
         this.setActive(true);
         if(checkBuild(p,b).size() == 0)

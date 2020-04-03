@@ -11,8 +11,8 @@ public class CheckMoveServer implements ServerMessage, Serializable {
     @Override
     public void Accept(ServerMessageHandler smh) {smh.handleMessage(this);}
 
-    String name;
-    ArrayList<SnapCell> sc;
+    public String name;
+    public ArrayList<SnapCell> sc;
 
     public CheckMoveServer(String name, ArrayList<SnapCell> sc){
         this.name=name;

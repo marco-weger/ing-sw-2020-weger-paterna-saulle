@@ -11,8 +11,8 @@ public class CheckBuildServer implements ServerMessage, Serializable {
     @Override
     public void Accept(ServerMessageHandler smh) {smh.handleMessage(this);}
 
-    String name;
-    ArrayList<SnapCell> sc;
+    public String name;
+    public ArrayList<SnapCell> sc;
 
     public CheckBuildServer(String name, ArrayList<SnapCell> sc){
         this.name=name;

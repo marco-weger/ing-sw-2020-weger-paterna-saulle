@@ -207,7 +207,8 @@ public class Card extends Observable {
      * @param p players
      * @param b the board
      */
-    public void getCheckMove(ArrayList<Player> p, Board b){
+    public ArrayList<SnapCell> getCheckMove(ArrayList<Player> p, Board b){
+        // TODO: return added only for testing
         ArrayList<Cell> available = this.checkMove(p,b);
         ArrayList<SnapCell> snap = new ArrayList<>();
         for(Cell c:available)
@@ -217,6 +218,7 @@ public class Card extends Observable {
                 notifyObservers(new CheckMoveServer(player.getName(),snap));
             }
         }
+        return snap;
     }
 
     /**
@@ -224,7 +226,8 @@ public class Card extends Observable {
      * @param p players
      * @param b the board
      */
-    public void getCheckBuild(ArrayList<Player> p, Board b){
+    public ArrayList<SnapCell> getCheckBuild(ArrayList<Player> p, Board b){
+        // TODO: return added only for testing
         ArrayList<Cell> available = this.checkBuild(p,b);
         ArrayList<SnapCell> snap = new ArrayList<>();
         for(Cell c:available)
@@ -234,8 +237,14 @@ public class Card extends Observable {
                 notifyObservers(new CheckBuildServer(player.getName(),snap));
             }
         }
+        return snap;
     }
 
+     /**
+     * @param p list of player
+     * @param b board
+     * @return true if you could activate ability in this turn
+     */
     public boolean activable(ArrayList<Player> p, Board b){
         return true;
     }
