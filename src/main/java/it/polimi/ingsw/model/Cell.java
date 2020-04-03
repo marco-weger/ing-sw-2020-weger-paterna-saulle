@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.Observable;
+import java.util.ArrayList;
 
-import java.util.List;
+public class Cell{
 
-public class Cell extends Observable implements Cloneable{
-
+    /**
+     * The level is a value from 0 (no buildings) to 4 (dome)
+     */
     private int row, column, level;
 
     public Cell(int row, int column, int level) {
@@ -16,6 +17,10 @@ public class Cell extends Observable implements Cloneable{
 
     public int getRow() {return row;}
 
+    /**
+     * It checks for a row from 0 to 4
+     * @param row the row
+     */
     public void setRow(int row) {
         if(row >= 0 && row <= 4)
             this.row = row;
@@ -23,6 +28,10 @@ public class Cell extends Observable implements Cloneable{
 
     public int getColumn() {return column;}
 
+    /**
+     * It checks for a column from 0 to 4
+     * @param column the column
+     */
     public void setColumn(int column) {
         if(column >= 0 && column <= 4)
             this.column = column;
@@ -30,6 +39,10 @@ public class Cell extends Observable implements Cloneable{
 
     public int getLevel() {return level;}
 
+    /**
+     * It checks for a level from 0 to 4
+     * @param level the level
+     */
     public void setLevel(int level) {
         if(level >= 0 && level <= 4)
             this.level = level;
@@ -40,7 +53,7 @@ public class Cell extends Observable implements Cloneable{
      * @param p list of players
      * @return true if occupied
      */
-    public boolean isOccupied(List<Player> p)
+    public boolean isOccupied(ArrayList<Player> p)
     {
         if(p != null)
             for(Player player:p)
@@ -48,14 +61,5 @@ public class Cell extends Observable implements Cloneable{
                     if((player.getWorker1().getRow() == this.row && player.getWorker1().getColumn() == this.column) || (player.getWorker2().getRow() == this.row && player.getWorker2().getColumn() == this.column))
                         return true;
         return false;
-    }
-
-    @Override
-    public Cell clone() throws CloneNotSupportedException {
-        Cell c = (Cell)super.clone();
-        c.setLevel(this.getLevel());
-        c.setRow(this.getRow());
-        c.setColumn(this.getColumn());
-        return c;
     }
 }

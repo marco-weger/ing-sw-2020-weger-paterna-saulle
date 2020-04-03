@@ -3,14 +3,13 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Athena extends Card {
 
-    public Athena()
-    {
-        super(CardName.ATHENA,false,true,false,Status.CHOSEN);
+    public Athena(CardName name, boolean active, boolean opponent, boolean question, Status status) {
+        super(name, active, opponent, question, status);
     }
+
     /**
      *if Athena is active, return a list of opponent's blocked cell
      *
@@ -22,9 +21,9 @@ public class Athena extends Card {
      * @return list of opponent's blocked cell
      */
     @Override
-    protected List<Cell> activeBlock(List<Player> p, Board b, Worker w,  Status current) {
+    protected ArrayList<Cell> activeBlock(ArrayList<Player> p, Board b, Worker w,  Status current) {
         if(p == null || b == null ) return new ArrayList<>(0);
-        List<Cell> ret = new ArrayList<>();
+        ArrayList<Cell> ret = new ArrayList<>();
         if(current != Status.QUESTION_M)  return ret;
         else{
             for (Cell c : b.getField())

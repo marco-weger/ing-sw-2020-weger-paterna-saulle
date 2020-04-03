@@ -6,9 +6,7 @@ import it.polimi.ingsw.commons.serverMessages.CheckBuildServer;
 import it.polimi.ingsw.commons.serverMessages.CheckMoveServer;
 import it.polimi.ingsw.model.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Card extends Observable {
 
@@ -57,8 +55,6 @@ public class Card extends Observable {
         return status;
     }
 
-
-
     public void inizializeTurn(){}
 
     /**
@@ -80,7 +76,7 @@ public class Card extends Observable {
      * @param b board
      * @return list of cells where active worker could build
      */
-    protected List<Cell> checkBuild(List<Player> p, Board b)
+    protected ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b)
     {
         if(p == null || b == null) return new ArrayList<>();
         Worker actived = null;
@@ -88,7 +84,7 @@ public class Card extends Observable {
             if(player.getCard().name.compareTo(this.name) == 0)
                 actived = player.getCurrentWorker();
         if(actived == null) return new ArrayList<>();
-        List<Cell> ret = new ArrayList<>();
+        ArrayList<Cell> ret = new ArrayList<>();
         for(Cell c:b.getField())
             if(Math.abs(c.getRow()-actived.getRow()) <= 1 && Math.abs(c.getColumn()-actived.getColumn()) <= 1 && c.getLevel() < 4 && !c.isOccupied(p))
                 ret.add(c);
@@ -100,14 +96,14 @@ public class Card extends Observable {
      * @param b board
      * @return list of cells where active worker could move
      */
-    protected List<Cell> checkMove(List<Player> p, Board b){
+    protected ArrayList<Cell> checkMove(ArrayList<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
         for(Player player:p)
             if(player.getCard().name.compareTo(this.name) == 0)
                 actived = player.getCurrentWorker();
         if(actived == null) return new ArrayList<>();
-        List<Cell> available = new ArrayList<>();
+        ArrayList<Cell> available = new ArrayList<>();
         for(Cell c:b.getField())
             if(Math.abs(c.getRow()-actived.getRow()) <= 1 && Math.abs(c.getColumn()-actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() <= actived.getLevel(b)+1 && !c.isOccupied(p))
                 available.add(c);
@@ -125,7 +121,7 @@ public class Card extends Observable {
      * @param b board
      * @param current current state of current turn
      */
-    protected List<Cell> activeBlock(List<Player> p, Board b, Worker w,  Status current){
+    protected ArrayList<Cell> activeBlock(ArrayList<Player> p, Board b, Worker w,  Status current){
         return new ArrayList<>();
     }
 
@@ -134,7 +130,7 @@ public class Card extends Observable {
      * @param b board
      * @param to where to move
      */
-    public void move(List<Player> p, Board b, Cell to){
+    public void move(ArrayList<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {
             Player current = null;
             for (Player player : p)
@@ -142,7 +138,7 @@ public class Card extends Observable {
                     current = player;
             if (current != null) {
                 if (current.getCurrentWorker() != null) {
-                    List<Cell> available = checkMove(p, b);
+                    ArrayList<Cell> available = checkMove(p, b);
                     for (Player player : p)
                         if (player.getCard().getName().compareTo(this.getName()) != 0)
                             available.removeAll(player.getCard().activeBlock(p, b,  current.getCurrentWorker(),Status.QUESTION_M));
@@ -160,7 +156,7 @@ public class Card extends Observable {
      * @param b board
      * @param to where to build
      */
-    public void build(List<Player> p, Board b, Cell to){
+    public void build(ArrayList<Player> p, Board b, Cell to){
         if(!(p == null || b == null || to == null)){
             Player current = null;
             for(Player player:p)
@@ -168,7 +164,7 @@ public class Card extends Observable {
                     current = player;
             if(current != null) {
                 if(current.getCurrentWorker() != null){
-                    List<Cell> available = checkBuild(p,b);
+                    ArrayList<Cell> available = checkBuild(p,b);
                     for(Player player:p)
                         if(player.getCard().getName().compareTo(this.getName()) != 0)
                             available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_B));
@@ -206,8 +202,13 @@ public class Card extends Observable {
         }
     }
 
-    public void getCheckMove(List<Player> p, Board b){
-        List<Cell> available = this.checkMove(p,b);
+    /**
+     * It creates a message and notify the VIEW for available cells
+     * @param p players
+     * @param b the board
+     */
+    public void getCheckMove(ArrayList<Player> p, Board b){
+        ArrayList<Cell> available = this.checkMove(p,b);
         ArrayList<SnapCell> snap = new ArrayList<>();
         for(Cell c:available)
             snap.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));
@@ -218,8 +219,13 @@ public class Card extends Observable {
         }
     }
 
-    public void getCheckBuild(List<Player> p, Board b){
-        List<Cell> available = this.checkBuild(p,b);
+    /**
+     * It creates a message and notify the VIEW for available cells
+     * @param p players
+     * @param b the board
+     */
+    public void getCheckBuild(ArrayList<Player> p, Board b){
+        ArrayList<Cell> available = this.checkBuild(p,b);
         ArrayList<SnapCell> snap = new ArrayList<>();
         for(Cell c:available)
             snap.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));
@@ -230,7 +236,7 @@ public class Card extends Observable {
         }
     }
 
-    public boolean activable(List<Player> p, Board b){
+    public boolean activable(ArrayList<Player> p, Board b){
         return true;
     }
 

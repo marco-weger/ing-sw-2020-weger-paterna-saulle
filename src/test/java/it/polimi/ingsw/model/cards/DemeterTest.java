@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.Worker;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -17,7 +16,7 @@ public class DemeterTest {
     public void checkBuild_paramsNull()
     {
         Card c = FactoryCard.getCard(CardName.DEMETER);
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.DEMETER,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
@@ -28,7 +27,7 @@ public class DemeterTest {
     @Test
     public void checkBuild_noCurrentPlayerWorker()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.DEMETER,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
@@ -37,7 +36,7 @@ public class DemeterTest {
     @Test
     public void checkBuild_noActive()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.DEMETER,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
@@ -62,7 +61,7 @@ public class DemeterTest {
         assertNotNull(p);
         assertNotNull(b);
         p.get(0).getCard().setActive(false);
-        List<Cell> ret = p.get(0).getCard().checkBuild(p,b);
+        ArrayList<Cell> ret = p.get(0).getCard().checkBuild(p,b);
         assertEquals(ret.size(),3);
         for(Cell c:ret)
             assertTrue(c.getRow() == 1 && c.getColumn() == 2 || c.getRow() == 1 && c.getColumn() == 3 || c.getRow() == 1 && c.getColumn() == 4);
@@ -70,7 +69,7 @@ public class DemeterTest {
     @Test
     public void checkBuild_active()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.DEMETER,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
@@ -95,7 +94,7 @@ public class DemeterTest {
         assertNotNull(p);
         assertNotNull(b);
         p.get(0).getCard().setActive(false);
-        List<Cell> ret = p.get(0).getCard().checkBuild(p,b);
+        ArrayList<Cell> ret = p.get(0).getCard().checkBuild(p,b);
         assertEquals(ret.size(),3);
         for(Cell c:ret)
             assertTrue(c.getRow() == 1 && c.getColumn() == 2 || c.getRow() == 1 && c.getColumn() == 3 || c.getRow() == 1 && c.getColumn() == 4);
@@ -117,7 +116,7 @@ public class DemeterTest {
     @Test
     public void build_error()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.DEMETER,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(3,4),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
@@ -129,7 +128,7 @@ public class DemeterTest {
     @Test
     public void build()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.DEMETER,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));

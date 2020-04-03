@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -13,9 +12,9 @@ public class HephaestusTest {
     // checkBuild
     @Test
     public void checkBuild_paramsNull() {
-        Card c = FactoryCard.getCard(CardName.HEPHASTUS);
-        List<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.HEPHASTUS, new Worker(0, 0), new Worker(0, 0)));
+        Card c = FactoryCard.getCard(CardName.HEPHAESTUS);
+        ArrayList<Player> p = new ArrayList<>();
+        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(0, 0), new Worker(0, 0)));
         p.add(new Player("player2", CardName.PAN, new Worker(0, 0), new Worker(0, 0)));
         p.add(new Player("player3", CardName.PROMETHEUS, new Worker(0, 0), new Worker(0, 0)));
         assertNotNull(c);
@@ -25,8 +24,8 @@ public class HephaestusTest {
 
     @Test
     public void checkBuild_noCurrentPlayerWorker() {
-        List<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.HEPHASTUS, new Worker(0, 0), new Worker(0, 0)));
+        ArrayList<Player> p = new ArrayList<>();
+        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(0, 0), new Worker(0, 0)));
         p.add(new Player("player2", CardName.ARTEMIS, new Worker(0, 0), new Worker(0, 0)));
         p.add(new Player("player3", CardName.MINOTAUR, new Worker(0, 0), new Worker(0, 0)));
         assertEquals(p.get(0).getCard().checkBuild(p, new Board()).size(), 0);
@@ -34,8 +33,8 @@ public class HephaestusTest {
 
     @Test
     public void checkAndBuild_noActive() {
-        List<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.HEPHASTUS, new Worker(2, 2), new Worker(1, 1)));
+        ArrayList<Player> p = new ArrayList<>();
+        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(2, 2), new Worker(1, 1)));
         p.add(new Player("player2", CardName.ATHENA, new Worker(2, 1), new Worker(1, 2)));
         p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(2, 3)));
         p.get(0).setCurrentWorker(1);
@@ -51,7 +50,7 @@ public class HephaestusTest {
             else if (c.getRow() == 3 && c.getColumn() == 3)
                 c.setLevel(0);
         }
-        List<Cell> building = p.get(0).getCard().checkBuild(p, b);
+        ArrayList<Cell> building = p.get(0).getCard().checkBuild(p, b);
         assertEquals(building.size(), 3);
         for (Cell c : building)
             assertTrue(c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2 || c.getRow() == 3 && c.getColumn() == 3);
@@ -59,8 +58,8 @@ public class HephaestusTest {
 
     @Test
     public void checkAndBuild_activeSuccess() {
-        List<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.HEPHASTUS, new Worker(2, 2), new Worker(1, 1)));
+        ArrayList<Player> p = new ArrayList<>();
+        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(2, 2), new Worker(1, 1)));
         p.add(new Player("player2", CardName.MINOTAUR, new Worker(0, 0), new Worker(1, 2)));
         p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(4, 4)));
         p.get(0).setCurrentWorker(1);
@@ -82,7 +81,7 @@ public class HephaestusTest {
 
         p.get(0).getCard().setActive(true);
 
-        List<Cell> building = p.get(0).getCard().checkBuild(p, b);
+        ArrayList<Cell> building = p.get(0).getCard().checkBuild(p, b);
 
         assertEquals(building.size(), 2);
         for (Cell c : building)
@@ -94,8 +93,8 @@ public class HephaestusTest {
 
     @Test
     public void checkAndBuild_activeFailed() {
-        List<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.HEPHASTUS, new Worker(2, 2), new Worker(1, 1)));
+        ArrayList<Player> p = new ArrayList<>();
+        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(2, 2), new Worker(1, 1)));
         p.add(new Player("player2", CardName.MINOTAUR, new Worker(0, 0), new Worker(1, 2)));
         p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(4, 4)));
         p.get(0).setCurrentWorker(1);
@@ -117,7 +116,7 @@ public class HephaestusTest {
 
         //p.get(0).getCard().setActive(true);
 
-        List<Cell> building = p.get(0).getCard().checkBuild(p, b);
+        ArrayList<Cell> building = p.get(0).getCard().checkBuild(p, b);
 
         assertEquals(building.size(), 4);
         for (Cell c : building)
@@ -137,16 +136,16 @@ public class HephaestusTest {
     //build
     @Test
     public void build_null() {
-        Card c = FactoryCard.getCard(CardName.HEPHASTUS);
+        Card c = FactoryCard.getCard(CardName.HEPHAESTUS);
         assertNotNull(c);
         c.build(null, null, null);
     }
 
     @Test
     public void build_error() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         Board b = new Board();
-        p.add(new Player("player1", CardName.HEPHASTUS, new Worker(2, 2), new Worker(1, 1)));
+        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(2, 2), new Worker(1, 1)));
         p.add(new Player("player2", CardName.DEMETER, new Worker(2, 1), new Worker(1, 2)));
         p.add(new Player("player3", CardName.APOLLO, new Worker(1, 3), new Worker(2, 3)));
         p.get(0).setCurrentWorker(1);
@@ -163,13 +162,13 @@ public class HephaestusTest {
 
     @Test
     public void build() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         Board b = new Board();
-        p.add(new Player("player1", CardName.HEPHASTUS, new Worker(2, 2), new Worker(1, 1)));
+        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(2, 2), new Worker(1, 1)));
         p.add(new Player("player2", CardName.PROMETHEUS, new Worker(2, 1), new Worker(1, 2)));
         p.add(new Player("player3", CardName.ARTEMIS, new Worker(1, 3), new Worker(2, 3)));
         p.get(0).setCurrentWorker(1);
-        List<Cell> b1 = p.get(0).getCard().checkBuild(p,b);
+        ArrayList<Cell> b1 = p.get(0).getCard().checkBuild(p,b);
         for (Cell c : b1) {
             b.getCell(c.getRow(),c.getColumn()).setLevel(0);
             assertEquals(c.getLevel(),0);

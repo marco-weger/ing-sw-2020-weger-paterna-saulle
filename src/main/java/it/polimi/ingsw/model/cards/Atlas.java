@@ -3,14 +3,14 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Atlas extends Card {
 
-    public Atlas()
-    {
-        super(CardName.ATLAS,false,false,true, Status.MOVED);
+
+    public Atlas(CardName name, boolean active, boolean opponent, boolean question, Status status) {
+        super(name, active, opponent, question, status);
     }
+
     /**
      * It builds normal or a dome by active attribute
      * @param p list of player
@@ -18,7 +18,7 @@ public class Atlas extends Card {
      * @param in where to build
      */
     @Override
-    public void build(List<Player> p, Board b, Cell in) {
+    public void build(ArrayList<Player> p, Board b, Cell in) {
         if(!(p == null || b == null || in == null)){
             Player current = null;
             for(Player player:p)
@@ -26,7 +26,7 @@ public class Atlas extends Card {
                     current = player;
             if(current != null) {
                 if(current.getCurrentWorker() != null){
-                    List<Cell> available = checkBuild(p,b);
+                    ArrayList<Cell> available = checkBuild(p,b);
                         //check if "in" is contained in available.
                         if(available.contains(in)){
                             if(current.getCard().isActive()){

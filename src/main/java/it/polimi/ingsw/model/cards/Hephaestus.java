@@ -3,13 +3,11 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Hephaestus extends Card {
 
-    public Hephaestus()
-    {
-        super(CardName.HEPHASTUS,false,false,true, Status.MOVED);
+    public Hephaestus(CardName name, boolean active, boolean opponent, boolean question, Status status) {
+        super(name, active, opponent, question, status);
     }
 
     /**
@@ -19,7 +17,7 @@ public class Hephaestus extends Card {
      * @return where to build
      */
     @Override
-    protected List<Cell> checkBuild(List<Player> p, Board b) {
+    protected ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b) {
         if(p == null || b == null) return new ArrayList<>();
         Worker actived = null;
         for(Player player:p)
@@ -27,8 +25,8 @@ public class Hephaestus extends Card {
                 actived = player.getCurrentWorker();
         if(actived == null) return new ArrayList<>();
 
-        List<Cell> available = super.checkBuild(p,b);
-        List<Cell> toRemove = new ArrayList<>();
+        ArrayList<Cell> available = super.checkBuild(p,b);
+        ArrayList<Cell> toRemove = new ArrayList<>();
 
         // if the player has chosen to active the ability i remove the cell with a level more than 1 (MARCO)
         if(isActive()){
@@ -48,7 +46,7 @@ public class Hephaestus extends Card {
      * @param in where to build
      */
     @Override
-    public void build(List<Player> p, Board b, Cell in) {
+    public void build(ArrayList<Player> p, Board b, Cell in) {
         if(!(p == null || b == null || in == null)){
             Player current = null;
             for(Player player:p)
@@ -56,7 +54,7 @@ public class Hephaestus extends Card {
                     current = player;
             if(current != null) {
                 if(current.getCurrentWorker() != null){
-                    List<Cell> available = checkBuild(p,b);
+                    ArrayList<Cell> available = checkBuild(p,b);
                     if(available.contains(in)){
                         if(isActive() && in.getLevel()<2){
                             available.get(available.indexOf(in)).setLevel(available.get(available.indexOf(in)).getLevel()+2);

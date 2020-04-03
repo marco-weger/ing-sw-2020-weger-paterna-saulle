@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -82,7 +81,7 @@ public class CardTest {
     public void checkBuild_paramsNull()
     {
         Card c = FactoryCard.getCard(CardName.APOLLO);
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
@@ -94,7 +93,7 @@ public class CardTest {
     public void checkBuild_noCurrentPlayerWorker()
     {
         Card c = FactoryCard.getCard(CardName.PAN);
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
@@ -105,7 +104,7 @@ public class CardTest {
     @Test
     public void checkBuild()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
@@ -129,7 +128,7 @@ public class CardTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        List<Cell> ret = p.get(0).getCard().checkBuild(p,b);
+        ArrayList<Cell> ret = p.get(0).getCard().checkBuild(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
         assertEquals(ret.size(),3);
@@ -141,12 +140,12 @@ public class CardTest {
     public void checkMove_paramsNull()
     {
         Card c = FactoryCard.getCard(CardName.APOLLO);
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
         assertNotNull(c);
-        List<Cell> ret = c.checkMove(p,null);
+        ArrayList<Cell> ret = c.checkMove(p,null);
         assertEquals(ret.size(),0);
         ret = c.checkMove(null,new Board());
         assertEquals(0, ret.size());
@@ -155,7 +154,7 @@ public class CardTest {
     public void checkMove_noCurrentPlayerWorker()
     {
         Card c = FactoryCard.getCard(CardName.PAN);
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
@@ -166,7 +165,7 @@ public class CardTest {
     @Test
     public void checkMove_easyMove()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(1,0),new Worker(0,2)));
@@ -192,7 +191,7 @@ public class CardTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        List<Cell> ret = p.get(0).getCard().checkMove(p,b);
+        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
         assertEquals(ret.size(),1);
@@ -204,7 +203,7 @@ public class CardTest {
     @Test
     public void checkMove_downTo()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.APOLLO,new Worker(0,0),new Worker(4,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,1),new Worker(4,2)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(4,3),new Worker(0,4)));
@@ -222,7 +221,7 @@ public class CardTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        List<Cell> ret = p.get(0).getCard().checkMove(p,b);
+        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
         assertEquals(ret.size(),2);
@@ -249,7 +248,7 @@ public class CardTest {
     @Test
     public void move_error()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.ATHENA,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(3,4),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
@@ -261,7 +260,7 @@ public class CardTest {
     @Test
     public void move()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         Card c = FactoryCard.getCard(CardName.APOLLO);
         p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
@@ -286,7 +285,7 @@ public class CardTest {
     @Test
     public void build_error()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(3,4),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
@@ -298,7 +297,7 @@ public class CardTest {
     @Test
     public void build()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         Card c = FactoryCard.getCard(CardName.APOLLO);
         p.add(new Player("player1",CardName.APOLLO,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));

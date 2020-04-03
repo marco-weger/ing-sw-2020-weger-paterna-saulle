@@ -1,16 +1,31 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.model.cards.FactoryCard;
 
-public class Player extends Observable implements Cloneable{
+public class Player {
 
+    /**
+     * Username
+     */
     private String name;
+
+    /**
+     * His card, must be assigned by FACTORY class
+     */
     private Card card;
-    private Worker worker1;
-    private Worker worker2;
+
+    /**
+     * Workers
+     */
+    private Worker worker1,worker2;
+
+    /**
+     * True if this is the current player
+     */
+    private boolean active;
+
     private boolean loser;
 
     public Player(String name, CardName card, Worker worker1, Worker worker2)
@@ -19,7 +34,8 @@ public class Player extends Observable implements Cloneable{
         this.card = FactoryCard.getCard(card);
         this.worker1 = worker1;
         this.worker2 = worker2;
-        //this.hasLost = false;
+        this.active = false;
+        this.loser = false;
     }
 
     public String getName() {
@@ -62,6 +78,14 @@ public class Player extends Observable implements Cloneable{
         return loser;
     }
 
+    public void setActive(boolean active){
+        this.active=active;
+    }
+
+    public boolean isActive(){
+        return active;
+    }
+
     public Worker getCurrentWorker(){
          if(getWorker1().isActive())
              return worker1;
@@ -70,6 +94,10 @@ public class Player extends Observable implements Cloneable{
          else return null;
     }
 
+    /**
+     * Only one worker a time could be active
+     * @param i 1 first worker, 2 the second one
+     */
     public void setCurrentWorker(int i)
     {
         if(i==1||i==2) {
@@ -77,15 +105,4 @@ public class Player extends Observable implements Cloneable{
             worker2.setActive(i == 2);
         }
     }
-
-    @Override
-    public Player clone() throws CloneNotSupportedException {
-        Player p = (Player)super.clone();
-        p.setWorker1(worker1.clone());
-        p.setWorker2(worker2.clone());
-        p.setCard(FactoryCard.getCard(card.getName()));
-        p.getCard().setActive(this.card.isActive());
-        return p;
-    }
-
 }

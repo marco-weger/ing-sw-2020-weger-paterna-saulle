@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.Worker;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -16,11 +15,11 @@ public class MinotaurTest {
     @Test
     public void checkMove_paramsNull()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.MINOTAUR,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
-        List<Cell> ret = p.get(0).getCard().checkMove(p,null);
+        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,null);
         assertEquals(ret.size(),0);
         ret = p.get(0).getCard().checkMove(null,new Board());
         assertEquals(0, ret.size());
@@ -28,7 +27,7 @@ public class MinotaurTest {
     @Test
     public void checkMove_noCurrentPlayerWorker()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.MINOTAUR,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
@@ -38,7 +37,7 @@ public class MinotaurTest {
     @Test
     public void checkMove()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.MINOTAUR,new Worker(2,2),new Worker(2,1)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(2,3),new Worker(1,2)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(0,2),new Worker(4,4)));
@@ -50,7 +49,7 @@ public class MinotaurTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        List<Cell> ret = p.get(0).getCard().checkMove(p,b);
+        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,b);
 
         assertEquals(ret.size(),3);
         for(Cell c:ret)
@@ -60,7 +59,7 @@ public class MinotaurTest {
     @Test
     public void move_null()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.MINOTAUR,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
@@ -70,7 +69,7 @@ public class MinotaurTest {
     @Test
     public void move_error()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.MINOTAUR,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(3,4),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
@@ -101,7 +100,7 @@ public class MinotaurTest {
     @Test
     public void move_noAbility()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.MINOTAUR,new Worker(2,3),new Worker(0,0)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
@@ -134,7 +133,7 @@ public class MinotaurTest {
     @Test
     public void move_abilityWorker1()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.MINOTAUR,new Worker(2,2),new Worker(2,1)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(2,3),new Worker(1,2)));
         p.add(new Player("player3",CardName.ATLAS,new Worker(4,3),new Worker(4,4)));
@@ -156,7 +155,7 @@ public class MinotaurTest {
     @Test
     public void move_abilityWorker2()
     {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1",CardName.MINOTAUR,new Worker(2,2),new Worker(2,1)));
         p.add(new Player("player2",CardName.ARTEMIS,new Worker(2,3),new Worker(1,2)));
         p.get(0).setCurrentWorker(1);
@@ -169,7 +168,7 @@ public class MinotaurTest {
         assertNotNull(b);
         p.get(0).setCurrentWorker(0);
 
-        List<Cell> available = p.get(0).getCard().checkMove(p,b);
+        ArrayList<Cell> available = p.get(0).getCard().checkMove(p,b);
         assertTrue(available.contains(b.getCell(1,2)));
         p.get(0).getCard().move(p,b,b.getCell(1,2));
         assertEquals(p.get(0).getWorker1().getRow(), 1);

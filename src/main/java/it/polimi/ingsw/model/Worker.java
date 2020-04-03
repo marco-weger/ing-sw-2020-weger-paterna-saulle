@@ -1,10 +1,15 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.Observable;
+public class Worker {
 
-public class Worker extends Observable implements Cloneable{
-
+    /**
+     * Position of worker
+     */
     private int row,column;
+
+    /**
+     * It represents if this worker is the active one
+     */
     private boolean active;
 
     public Worker(int row, int column) {
@@ -56,14 +61,5 @@ public class Worker extends Observable implements Cloneable{
             if(c.getRow() == this.row && c.getColumn() == this.column)
                 return c.getLevel();}
         return -1;
-    }
-
-    @Override
-    public Worker clone() throws CloneNotSupportedException {
-        Worker w = (Worker)super.clone(); //new Worker(this.row,this.column);
-        w.setActive(this.isActive());
-        w.setColumn(this.getColumn());
-        w.setRow(this.getRow());
-        return w;
     }
 }

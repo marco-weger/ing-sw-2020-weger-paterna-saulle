@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -13,9 +12,9 @@ public class AtlasTest {
     @Test
     public void checkBuild_paramsNull() {
         Card c = FactoryCard.getCard(CardName.ATLAS);
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.ATLAS, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player2", CardName.HEPHASTUS, new Worker(0, 0), new Worker(0, 0)));
+        p.add(new Player("player2", CardName.HEPHAESTUS, new Worker(0, 0), new Worker(0, 0)));
         p.add(new Player("player3", CardName.PROMETHEUS, new Worker(0, 0), new Worker(0, 0)));
         assertNotNull(c);
         assertEquals(c.checkBuild(null, new Board()).size(), 0);
@@ -24,7 +23,7 @@ public class AtlasTest {
 
     @Test
     public void checkBuild_noCurrentPlayerWorker() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.ATLAS, new Worker(0, 0), new Worker(0, 0)));
         p.add(new Player("player2", CardName.ARTEMIS, new Worker(0, 0), new Worker(0, 0)));
         p.add(new Player("player3", CardName.MINOTAUR, new Worker(0, 0), new Worker(0, 0)));
@@ -33,9 +32,9 @@ public class AtlasTest {
 
     @Test
     public void checkAndBuild_noActive() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.ATLAS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.HEPHASTUS, new Worker(2, 1), new Worker(1, 2)));
+        p.add(new Player("player2", CardName.HEPHAESTUS, new Worker(2, 1), new Worker(1, 2)));
         p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(2, 3)));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().setActive(false);
@@ -50,7 +49,7 @@ public class AtlasTest {
             else if (c.getRow() == 3 && c.getColumn() == 3)
                 c.setLevel(0);
         }
-        List<Cell> building = p.get(0).getCard().checkBuild(p, b);
+        ArrayList<Cell> building = p.get(0).getCard().checkBuild(p, b);
         assertEquals(building.size(), 3);
         for (Cell c : building)
             assertTrue(c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2 || c.getRow() == 3 && c.getColumn() == 3);
@@ -58,9 +57,9 @@ public class AtlasTest {
 
     @Test
     public void checkAndBuild_active() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.ATLAS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.HEPHASTUS, new Worker(2, 1), new Worker(1, 2)));
+        p.add(new Player("player2", CardName.HEPHAESTUS, new Worker(2, 1), new Worker(1, 2)));
         p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(2, 3)));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
@@ -74,7 +73,7 @@ public class AtlasTest {
             else if (c.getRow() == 3 && c.getColumn() == 3)
                 c.setLevel(0);
         }
-        List<Cell> building = p.get(0).getCard().checkBuild(p, b);
+        ArrayList<Cell> building = p.get(0).getCard().checkBuild(p, b);
         assertEquals(building.size(), 3);
         for (Cell c : building)
             assertTrue(c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2 || c.getRow() == 3 && c.getColumn() == 3);
@@ -99,10 +98,10 @@ public class AtlasTest {
 
     @Test
     public void build_error() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         Board b = new Board();
         p.add(new Player("player1", CardName.ATLAS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.HEPHASTUS, new Worker(2, 1), new Worker(1, 2)));
+        p.add(new Player("player2", CardName.HEPHAESTUS, new Worker(2, 1), new Worker(1, 2)));
         p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(2, 3)));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().setActive(true);
@@ -118,13 +117,13 @@ public class AtlasTest {
 
     @Test
     public void build() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         Board b = new Board();
         p.add(new Player("player1", CardName.ATLAS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.HEPHASTUS, new Worker(2, 1), new Worker(1, 2)));
+        p.add(new Player("player2", CardName.HEPHAESTUS, new Worker(2, 1), new Worker(1, 2)));
         p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(2, 3)));
         p.get(0).setCurrentWorker(1);
-        List<Cell> b1 = p.get(0).getCard().checkBuild(p,b);
+        ArrayList<Cell> b1 = p.get(0).getCard().checkBuild(p,b);
         for (Cell c : b1) {
                 b.getCell(c.getRow(),c.getColumn()).setLevel(0);
                 assertEquals(c.getLevel(),0);

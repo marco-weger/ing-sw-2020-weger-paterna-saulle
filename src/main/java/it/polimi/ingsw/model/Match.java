@@ -1,25 +1,36 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.Observable;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class Match {
 
+    /**
+     * Unique id to discriminate the match
+     */
     private int id;
+
+    /**
+     * The board
+     */
     private Board board;
+
+    /**
+     * List of players (2 or 3)
+     */
     private ArrayList<Player> players;
-    private boolean ended;
-    private Player currentPlayer;
+
+    /**
+     * Status of the match
+     */
     private Status status;
 
-    public Match(int id, Board board, ArrayList<Player> players,boolean ended, Player currentPlayer, Status status){
+    private boolean ended;
+
+    public Match(int id, Board board, ArrayList<Player> players,boolean ended, Status status){
         this.id=id;
         this.board=board;
         this.players=players;
         this.ended=ended;
-        this.currentPlayer=currentPlayer;
         this.status=status;
     }
 
@@ -47,7 +58,7 @@ public class Match {
         this.status = status;
     }
 
-    public List<Player> getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
@@ -63,23 +74,31 @@ public class Match {
         this.board = board;
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
+    /**
+     * Current player getter
+     */
+    public Player getCurrentPlayer(){
+        for(Player p:players)
+            if(p.isActive())
+                return p;
+        return null;
     }
 
     /**
      * A method to set next player
      */
     public void setNextPlayer() {
-        int i = players.indexOf(currentPlayer);
-        if (i < players.size()-1) {
-            currentPlayer = players.get(i + 1);
-        } else {
-            currentPlayer = players.get(0);
+        if(getCurrentPlayer() != null){
+            int i = players.indexOf(getCurrentPlayer());
+            getCurrentPlayer().setActive(false);
+            if (i < players.size()-1) {
+                players.get(i + 1).setActive(true);
+            } else {
+                players.get(0).setActive(true);
+            }
+        }
+        else{
+            players.get(0).setActive(true);
         }
     }
 
@@ -111,7 +130,7 @@ public class Match {
         int deads = 0;
         int k = (players.size() - 1);
         for (Player player : players) {
-            if (currentPlayer != player) {
+            if (getCurrentPlayer() != player) {
                 if (!player.getWorker1().isActive() && !player.getWorker2().isActive()) {
                     deads++;
                 }
@@ -119,29 +138,5 @@ public class Match {
         }
         return (deads == k);
     }
-
-    /*
-    @Override
-    public void notifyObservers(Object obj) {
-        super.notifyObservers(this.clone());
-    }
-    */
-
-
-  /*  @Override
-    public Match clone(){
-        try {
-            Match m = (Match)super.clone();
-            m.players = new ArrayList<>();
-            for(Player p : this.players)
-                m.players.add(p.clone());
-            m.board = this.board.clone();
-            m.currentPlayer = this.currentPlayer.clone();
-            return m;
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }*/
 }
 

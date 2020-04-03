@@ -1,12 +1,17 @@
 package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class Board implements Cloneable{
+public class Board {
 
-    private List<Cell> field;
+    /**
+     * It is a 25 items list to represent the board
+     */
+    private ArrayList<Cell> field;
 
+    /**
+     * The board is initialized with all cells at 0 level
+     */
     public Board(){
         field = new ArrayList<>();
         for(int i=0; i<5; i++)
@@ -14,11 +19,11 @@ public class Board implements Cloneable{
                 field.add(new Cell(i,j,0));
     }
 
-    public List<Cell> getField() {
+    public ArrayList<Cell> getField() {
         return field;
     }
 
-    public void setField(List<Cell> field) {
+    public void setField(ArrayList<Cell> field) {
         this.field = field;
     }
 
@@ -57,14 +62,4 @@ public class Board implements Cloneable{
                 return inBoard;
         return null;
     }
-
-    @Override
-    public Board clone() throws CloneNotSupportedException {
-        Board b = (Board)super.clone();
-        b.field = new ArrayList<>();
-        for(Cell c : this.field)
-            b.field.add(c.clone());
-        return b;
-    }
-
 }

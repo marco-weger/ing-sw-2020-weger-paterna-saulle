@@ -49,19 +49,5 @@ public class WorkerTest {
         }
 
     }
-    @Test
-    public void testClone() throws CloneNotSupportedException {
-        Worker w = new Worker(0,0);
-        Worker w2 = w.clone();
-
-        w2.setRow(4);
-        w2.setColumn(4);
-
-        assertEquals(w.getRow(),0);
-        assertEquals(w.getColumn(),0);
-        assertEquals(w2.getRow(),4);
-        assertEquals(w2.getColumn(),4);
-
-    }
 
 }

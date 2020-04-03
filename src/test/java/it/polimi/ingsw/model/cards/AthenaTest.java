@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model.cards;
 
-
 import it.polimi.ingsw.model.*;
 import org.junit.Test;
+
 import java.util.ArrayList;
-import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class AthenaTest {
@@ -13,7 +13,7 @@ public class AthenaTest {
     @Test
     public void inizializeTurn_turnoffpower() {
         Card c = FactoryCard.getCard(CardName.ATHENA);
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.APOLLO, new Worker(0, 0), new Worker(0, 0)));
         p.add(new Player("player2", CardName.ARTEMIS, new Worker(0, 0), new Worker(0, 0)));
         p.add(new Player("player3", CardName.ATLAS, new Worker(0, 0), new Worker(0, 0)));
@@ -27,7 +27,7 @@ public class AthenaTest {
     @Test
     public void inizializeTurn_NOpower() {
         Card c = FactoryCard.getCard(CardName.ATHENA);
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.APOLLO, new Worker(0, 0), new Worker(0, 0)));
         p.add(new Player("player2", CardName.ARTEMIS, new Worker(0, 0), new Worker(0, 0)));
         p.add(new Player("player3", CardName.ATLAS, new Worker(0, 0), new Worker(0, 0)));
@@ -39,7 +39,7 @@ public class AthenaTest {
 
     @Test
     public void ActiveBlock() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.ATHENA, new Worker(2, 3), new Worker(0, 0)));
         p.add(new Player("player2", CardName.ARTEMIS, new Worker(4, 4), new Worker(0, 1)));
         p.add(new Player("player3", CardName.ATLAS, new Worker(1, 0), new Worker(0, 2)));
@@ -58,13 +58,13 @@ public class AthenaTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        List<Cell> ret = p.get(0).getCard().activeBlock(p, b, w1, Status.QUESTION_M);
+        ArrayList<Cell> ret = p.get(0).getCard().activeBlock(p, b, w1, Status.QUESTION_M);
         assertEquals(2, ret.size());
     }
 
     @Test
     public void ActiveBlockWithOccupied() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.ATHENA, new Worker(2, 3), new Worker(0, 0)));
         p.add(new Player("player2", CardName.ARTEMIS, new Worker(4, 4), new Worker(0, 1)));
         p.add(new Player("player3", CardName.ATLAS, new Worker(3, 4), new Worker(0, 2)));
@@ -83,14 +83,14 @@ public class AthenaTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        List<Cell> ret = p.get(0).getCard().activeBlock(p, b, w1, Status.QUESTION_M);
+        ArrayList<Cell> ret = p.get(0).getCard().activeBlock(p, b, w1, Status.QUESTION_M);
         assertEquals(1, ret.size());
     }
 
 
     @Test
     public void ActiveBlock_NULL() {
-        List<Player> p = new ArrayList<>();
+        ArrayList<Player> p = new ArrayList<>();
         p.add(new Player("player1", CardName.ATHENA, new Worker(2, 3), new Worker(0, 0)));
         p.add(new Player("player2", CardName.ARTEMIS, new Worker(4, 4), new Worker(0, 1)));
         p.add(new Player("player3", CardName.ATLAS, new Worker(1, 0), new Worker(0, 2)));
@@ -106,7 +106,7 @@ public class AthenaTest {
             else if (c.getRow() == 3 && c.getColumn() == 3)
                 c.setLevel(1);
         }
-        List<Cell> ret = p.get(0).getCard().activeBlock(null, null, null, null);
+        ArrayList<Cell> ret = p.get(0).getCard().activeBlock(null, null, null, null);
         assertEquals(ret.size(), 0);
     }
 

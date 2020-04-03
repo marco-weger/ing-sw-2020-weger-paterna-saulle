@@ -3,13 +3,11 @@ package it.polimi.ingsw.model.cards;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Apollo extends Card {
 
-    public Apollo()
-    {
-        super(CardName.APOLLO,false,false,false,Status.CHOSEN);
+    public Apollo(CardName name, boolean active, boolean opponent, boolean question, Status status) {
+        super(name, active, opponent, question, status);
     }
 
     /**
@@ -19,14 +17,14 @@ public class Apollo extends Card {
      * @return list of available cells
      */
     @Override
-    protected List<Cell> checkMove(List<Player> p, Board b){
+    protected ArrayList<Cell> checkMove(ArrayList<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
         for(Player player:p)
             if(player.getCard().getName().compareTo(this.getName()) == 0)
                 actived = player.getCurrentWorker();
         if(actived == null) return new ArrayList<>();
-        List<Cell> ret = super.checkMove(p, b);
+        ArrayList<Cell> ret = super.checkMove(p, b);
         for(Player player:p){
             if(player.getCard().getName().compareTo(this.getName()) != 0){
                 player.setCurrentWorker(1);
@@ -54,7 +52,7 @@ public class Apollo extends Card {
      * @param to where to move
      */
     @Override
-    public void move(List<Player> p, Board b, Cell to){
+    public void move(ArrayList<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {
             Player current = null;
             for (Player player : p)
