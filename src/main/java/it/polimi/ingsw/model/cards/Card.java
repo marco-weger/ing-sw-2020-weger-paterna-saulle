@@ -65,9 +65,12 @@ public class Card extends Observable {
      */
     public boolean checkWin(Cell from, Cell to) throws NullPointerException
     {
-        if(from != null && to != null)
-            if(Board.isCellInBoard(from) && Board.isCellInBoard(to))
-                return (from.getLevel() == 2 && to.getLevel() == 3);
+        if(from != null && to != null){
+            if(Board.isCellInBoard(from) && Board.isCellInBoard(to) && from.getLevel() == 2 && to.getLevel() == 3){
+                // TODO: notifico il current che ha vinto, sarà poi il controller a notificare della sconfitta gli altri 2 (SomeoneWinServer)
+                return true;
+            }
+        }
         return false;
     }
 
@@ -211,7 +214,6 @@ public class Card extends Observable {
      * @param b the board
      */
     public ArrayList<SnapCell> getCheckMove(ArrayList<Player> p, Board b){
-        // TODO: return added only for testing
         ArrayList<Cell> available = this.checkMove(p,b);
         ArrayList<SnapCell> snap = new ArrayList<>();
         for(Cell c:available)
@@ -230,7 +232,6 @@ public class Card extends Observable {
      * @param b the board
      */
     public ArrayList<SnapCell> getCheckBuild(ArrayList<Player> p, Board b){
-        // TODO: return added only for testing
         ArrayList<Cell> available = this.checkBuild(p,b);
         ArrayList<SnapCell> snap = new ArrayList<>();
         for(Cell c:available)
@@ -250,6 +251,33 @@ public class Card extends Observable {
      */
     public boolean activable(ArrayList<Player> p, Board b){
         return true;
+    }
+
+    /**
+     * @return It checks if current player doesn't have move, and update workers status
+     */
+    public boolean hasLost(ArrayList<Player> p, Board b) {
+        Player current = null;
+        for(Player player:p)
+            if(player.getCard().getName().compareTo(this.getName()) == 0)
+                current = player;
+        /*
+        .setCurrentWorker(1);
+        if (getCurrentPlayer().getCard().checkMove(players, board).size() == 0) {
+            getCurrentPlayer().setCurrentWorker(2);
+            if (getCurrentPlayer().getCard().checkMove(players, board).size() == 0) {
+                getCurrentPlayer().setCurrentWorker(0);
+                return true;
+            } else {
+                getCurrentPlayer().setCurrentWorker(0);
+                return false;
+            }
+        } else {
+            getCurrentPlayer().setCurrentWorker(0);
+            return false;
+        }*/
+        // TODO: if it has lost notify all players set workers to null (SomeoneLoseServer)
+        return false;
     }
 
 }

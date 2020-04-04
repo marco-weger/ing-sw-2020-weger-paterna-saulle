@@ -4,7 +4,10 @@ import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.VirtualView;
+
+import java.util.ArrayList;
 
 public class Controller implements Observer, ClientMessageHandler {
 
@@ -58,10 +61,11 @@ public class Controller implements Observer, ClientMessageHandler {
                 && message.c.size() == match.getPlayers().size()
                 && match.getSelectedCard().size() == 0
         ){
+            ArrayList<CardName> tmp = new ArrayList<>();
             for(int i = 0; i < match.getPlayers().size(); i++)
-                match.getSelectedCard().add(message.c.get(i));
+                tmp.add(message.c.get(i));
 
-            // TODO: now i have to notify the view with a message for the last player, he has to choice its card
+            match.setSelectedCards(tmp);
         }
     }
 
@@ -83,13 +87,12 @@ public class Controller implements Observer, ClientMessageHandler {
                     p.setCard(message.c);
                 }
             }
-            if(match.getSelectedCard().size() == 0){
+            if(match.getSelectedCard().size() == 1){
+                // TODO: operatione to inizialize firs player
                 match.setStatus(Status.WORKER_CHOICE);
-
-                // TODO: now i have to notify first player the card and then ask to this one to set up its worker
             }
-            else if(match.getSelectedCard().size() == 1){
-                // TODO: now i have to ask to "central" player to choice its card
+            else {
+                match.setSelectedCards(match.getSelectedCard());
             }
         }
     }
@@ -113,7 +116,8 @@ public class Controller implements Observer, ClientMessageHandler {
             else
                 selected.setWorker2(new Worker(message.x,message.y));
 
-            // TODO: now i have to notify all players the worker position
+            if(match.getPlayers().get(match.getPlayers().size()-1).getWorker2() != null)
+                startTurn();
         }
     }
 
@@ -128,11 +132,11 @@ public class Controller implements Observer, ClientMessageHandler {
                     && match.getCurrentPlayer().getCard().activable(match.getPlayers(),match.getBoard())
             )
             {
-                // TODO: must generate question message
+                match.getCurrentPlayer().doQuestion();
             }
             else{
-                match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(),match.getBoard());
                 match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
+                match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(),match.getBoard());
             }
         }
     }
@@ -170,7 +174,7 @@ public class Controller implements Observer, ClientMessageHandler {
                         && match.getCurrentPlayer().getCard().getStatus().compareTo(match.getStatus()) == 0
                         && match.getCurrentPlayer().getCard().activable(match.getPlayers(),match.getBoard())
                 ){
-                    // TODO: must generate question message
+                    match.getCurrentPlayer().doQuestion();
                 }
                 else
                 {
@@ -188,47 +192,39 @@ public class Controller implements Observer, ClientMessageHandler {
         ){
             if(match.getCurrentPlayer().getCard().build(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
                 match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
-                if(match.getCurrentPlayer().getCard().isQuestion()
-                        && match.getCurrentPlayer().getCard().getStatus().compareTo(match.getStatus()) == 0
-                        && match.getCurrentPlayer().getCard().activable(match.getPlayers(),match.getBoard())
-                ){
-                    // TODO: must generate question message
-                }
-                else if(match.getStatus().equals(Status.END))
+                if(match.getStatus().equals(Status.END))
                 {
-                    // TODO: check if in next player has lost and inizialize next turn...
+                    startTurn();
                 }
             }
         }
     }
 
     public void endGame(Player winner){
-        match.setEnded(true);
         for(Player p:match.getPlayers())
             if(p.getName().compareTo(winner.getName()) != 0)
-                p.setLoser(true);
-
-        // TODO: notify all users
+                match.setLosers(p);
+        match.setEnded(true);
+        match.setStatus(Status.END);
     }
 
     public void inizializeMatch() {
-
-    }
-
-    public void cardChoicheHandler() {
-
-    }
-
-    public void setupWorkerHandler() {
-
+        // TODO: valuteremo più avanti se usarlo
     }
 
     public void startTurn(){
+        match.setNextPlayer();
 
+        match.getCurrentPlayer().getCard().inizializeTurn();
+        if(match.checkCurrentPlayerWin())
+            endGame(match.getCurrentPlayer());
+        else{
+            if(match.getCurrentPlayer().getCard().hasLost(match.getPlayers(),match.getBoard())){
+                startTurn();
+            }
+            else match.setStatus(Status.START);
+        }
     }
 
-    public void endTurn(){
-
-    }
 
 }

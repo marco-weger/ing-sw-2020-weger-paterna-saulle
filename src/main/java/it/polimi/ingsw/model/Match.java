@@ -22,6 +22,11 @@ public class Match {
     private ArrayList<Player> players;
 
     /**
+     * List of losers
+     */
+    private ArrayList<Player> losers;
+
+    /**
      * Status of the match
      */
     private Status status;
@@ -61,6 +66,7 @@ public class Match {
 
     public void setStatus(Status status) {
         this.status = status;
+        // TODO: notifica del current status alla view ed eventualmente (?) di chi è il turno (CurrentStatusServer)
     }
 
     public ArrayList<Player> getPlayers() {
@@ -69,6 +75,16 @@ public class Match {
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
+    }
+
+    public ArrayList<Player> getLosers() {
+        return losers;
+    }
+
+    public void setLosers(Player p) {
+        getLosers().add(p);
+        getPlayers().remove(p);
+        // TODO: notify the loser (SomeoneLoseServer)
     }
 
     public Board getBoard() {
@@ -81,7 +97,11 @@ public class Match {
 
     public ArrayList<CardName> getSelectedCard(){ return selectedCard; }
 
-    public void setSelectedCard(ArrayList<CardName> selectedCard){ this.selectedCard=selectedCard; }
+    public void setSelectedCards(ArrayList<CardName> selectedCard){
+        this.selectedCard = new ArrayList<>();
+        this.selectedCard.addAll(selectedCard);
+        // TODO: notifica chiedendo al giocatore in ultima posizione la scelta (ServerMessageHandler)
+    }
 
     /**
      * Current player getter
@@ -112,27 +132,6 @@ public class Match {
     }
 
     /**
-     * @return It checks if current player doesn't have move, and update workers status
-     */
-    /*public boolean checkCurrentPlayerLose() {
-        currentPlayer.setCurrentWorker(1);
-        if (currentPlayer.getCard().checkMove(players, board).size() == 0) {
-            currentPlayer.setCurrentWorker(2);
-            if (currentPlayer.getCard().checkMove(players, board).size() == 0) {
-                currentPlayer.setCurrentWorker(0);
-                return true;
-            } else {
-                currentPlayer.setCurrentWorker(0);
-                return false;
-            }
-        } else {
-            currentPlayer.setCurrentWorker(0);
-            return false;
-        }
-    }
-    */
-
-    /**
      * @return It verifies if the current player win for other players defeat
      */
     public boolean checkCurrentPlayerWin() {
@@ -145,7 +144,11 @@ public class Match {
                 }
             }
         }
-        return (deads == k);
+        if(deads == k){
+            // TODO: notify win (SomeoneWinServer)
+            return true;
+        }
+        return false;
     }
 }
 

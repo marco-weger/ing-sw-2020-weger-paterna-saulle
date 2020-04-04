@@ -26,8 +26,6 @@ public class Player {
      */
     private boolean active;
 
-    private boolean loser;
-
     public Player(String name)
     {
         this.name = name;
@@ -35,7 +33,6 @@ public class Player {
         this.worker1 = null;
         this.worker2 = null;
         this.active = false;
-        this.loser = false;
     }
 
     public String getName() {
@@ -56,6 +53,8 @@ public class Player {
      */
     public void setCard(CardName card) {
         this.card = FactoryCard.getCard(card);
+
+        // TODO: notifico tutti i giocatori della scelta fatta (CardChosenServer)
     }
 
     public Worker getWorker1() {
@@ -64,6 +63,8 @@ public class Player {
 
     public void setWorker1(Worker worker1) {
         this.worker1 = worker1;
+
+        // TODO: notify all (ricordarsi di aggiungere nel messaggio chi è worker) (WorkerChosenServer)
     }
 
     public Worker getWorker2() {
@@ -72,14 +73,6 @@ public class Player {
 
     public void setWorker2(Worker worker2) {
         this.worker2 = worker2;
-    }
-
-    public void setLoser(boolean loser) {
-            this.loser = loser;
-    }
-
-    public boolean isLoser() {
-        return loser;
     }
 
     public void setActive(boolean active){
@@ -108,5 +101,9 @@ public class Player {
             worker1.setActive(i == 1);
             worker2.setActive(i == 2);
         }
+    }
+
+    public void doQuestion(){
+        // TODO: notify con name settato sul suo nome (QuestionAbilityServer)
     }
 }
