@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.server;
+package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;

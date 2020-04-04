@@ -16,9 +16,10 @@ public class Atlas extends Card {
      * @param p list of player
      * @param b board
      * @param in where to build
+     * @return true if builded
      */
     @Override
-    public void build(ArrayList<Player> p, Board b, Cell in) {
+    public boolean build(ArrayList<Player> p, Board b, Cell in) {
         if(!(p == null || b == null || in == null)){
             Player current = null;
             for(Player player:p)
@@ -27,16 +28,18 @@ public class Atlas extends Card {
             if(current != null) {
                 if(current.getCurrentWorker() != null){
                     ArrayList<Cell> available = checkBuild(p,b);
-                        //check if "in" is contained in available.
-                        if(available.contains(in)){
-                            if(current.getCard().isActive()){
-                                 available.get(available.indexOf(in)).setLevel(4);}
-                             else {
-                                 available.get(available.indexOf(in)).setLevel(available.get(available.indexOf(in)).getLevel()+1);
-                             }
+                    //check if "in" is contained in available.
+                    if(available.contains(in)){
+                        if(current.getCard().isActive()){
+                            available.get(available.indexOf(in)).setLevel(4);}
+                        else {
+                            available.get(available.indexOf(in)).setLevel(available.get(available.indexOf(in)).getLevel()+1);
                         }
+                        return true;
+                    }
                 }
             }
         }
+        return false;
     }
 }

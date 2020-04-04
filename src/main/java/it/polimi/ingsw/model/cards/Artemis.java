@@ -45,9 +45,10 @@ public class Artemis extends Card {
      * @param p list of player
      * @param b board
      * @param to where to move
+     * @return true if moved
      */
     @Override
-    public void move(ArrayList<Player> p, Board b, Cell to) {
+    public boolean move(ArrayList<Player> p, Board b, Cell to) {
         if (!(p == null || b == null || to == null)) {
             Player current = null;
             for (Player player : p)
@@ -60,11 +61,11 @@ public class Artemis extends Card {
                     //thus, the control if "to" equals the current worker starting point.
                     if (available.contains(to) && !((current.getCurrentWorker().getRow()==to.getRow()) && current.getCurrentWorker().getColumn()==to.getColumn())) {
                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
-                       // current.getCurrentWorker().setRow(to.getRow());
-                       // current.getCurrentWorker().setColumn(to.getColumn());
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 }

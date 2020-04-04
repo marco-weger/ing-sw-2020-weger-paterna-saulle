@@ -2,6 +2,7 @@ package it.polimi.ingsw.commons.clientMessages;
 
 import it.polimi.ingsw.controller.ClientMessageHandler;
 import it.polimi.ingsw.commons.ClientMessage;
+import it.polimi.ingsw.model.Status;
 
 import java.io.Serializable;
 
@@ -10,16 +11,15 @@ public class AnswerAbilityClient implements ClientMessage, Serializable {
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    String name;
-    boolean ability;
+    public String name;
+    public boolean ability;
 
     /**
-     * 0 - BEFORE_M question
-     * 1 - BEFORE_B question
+     * BEFORE_M or BEFORE_B
      */
-    int type;
+    public Status type;
 
-    public AnswerAbilityClient(String name, boolean ability, int type)
+    public AnswerAbilityClient(String name, boolean ability, Status type)
     {
         this.name=name;
         this.ability=ability;

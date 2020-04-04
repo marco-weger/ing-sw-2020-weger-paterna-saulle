@@ -28,12 +28,12 @@ public class Player {
 
     private boolean loser;
 
-    public Player(String name, CardName card, Worker worker1, Worker worker2)
+    public Player(String name)
     {
         this.name = name;
-        this.card = FactoryCard.getCard(card);
-        this.worker1 = worker1;
-        this.worker2 = worker2;
+        this.card = null; //FactoryCard.getCard(card);
+        this.worker1 = null;
+        this.worker2 = null;
         this.active = false;
         this.loser = false;
     }
@@ -50,8 +50,12 @@ public class Player {
         return card;
     }
 
-    public void setCard(Card card) {
-        this.card = card;
+    /**
+     * The card is instanced by FACTORY class
+     * @param card value from card ENUM
+     */
+    public void setCard(CardName card) {
+        this.card = FactoryCard.getCard(card);
     }
 
     public Worker getWorker1() {

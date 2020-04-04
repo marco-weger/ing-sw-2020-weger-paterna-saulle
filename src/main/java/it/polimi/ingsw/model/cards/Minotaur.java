@@ -55,9 +55,10 @@ public class Minotaur extends Card {
      * @param p list of player
      * @param b board
      * @param to where to move
+     * @return true if moved
      */
     @Override
-    public void move(ArrayList<Player> p, Board b, Cell to){
+    public boolean move(ArrayList<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {
             Player current = null;
             for (Player player : p)
@@ -73,11 +74,8 @@ public class Minotaur extends Card {
                                     int y = player.getWorker1().getColumn()+(player.getWorker1().getColumn()-current.getCurrentWorker().getColumn());
                                     if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
                                         player.getWorker1().move(x, y);
-                                        //player.getWorker1().setRow(x);
-                                        //player.getWorker1().setColumn(y);
-                                       // current.getCurrentWorker().setRow(to.getRow());
-                                       // current.getCurrentWorker().setColumn(to.getColumn());
                                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                                        return true;
                                     }
                                 }
                                 else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getRow() == to.getRow()){
@@ -85,11 +83,8 @@ public class Minotaur extends Card {
                                     int y = player.getWorker2().getColumn()+(player.getWorker2().getColumn()-current.getCurrentWorker().getColumn());
                                     if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
                                         player.getWorker2().move(x, y);
-                                       // player.getWorker2().setRow(x);
-                                       // player.getWorker2().setColumn(y);
                                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
-                                       // current.getCurrentWorker().setRow(to.getRow());
-                                        //current.getCurrentWorker().setColumn(to.getColumn());
+                                        return true;
                                     }
                                 }
                             }
@@ -97,9 +92,11 @@ public class Minotaur extends Card {
                     }
                     else{
                         super.move(p,b,to);
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cards.CardName;
+
 import java.util.ArrayList;
 
 public class Match {
@@ -26,12 +28,15 @@ public class Match {
 
     private boolean ended;
 
-    public Match(int id, Board board, ArrayList<Player> players,boolean ended, Status status){
+    private ArrayList<CardName> selectedCard;
+
+    public Match(int id){
         this.id=id;
-        this.board=board;
-        this.players=players;
-        this.ended=ended;
-        this.status=status;
+        this.board=new Board();
+        this.ended=false;
+        this.status=Status.CARD_CHOICE;
+        this.players = new ArrayList<>();
+        this.selectedCard = new ArrayList<>();
     }
 
     public int getId() {
@@ -73,6 +78,10 @@ public class Match {
     public void setBoard(Board board) {
         this.board = board;
     }
+
+    public ArrayList<CardName> getSelectedCard(){ return selectedCard; }
+
+    public void setSelectedCard(ArrayList<CardName> selectedCard){ this.selectedCard=selectedCard; }
 
     /**
      * Current player getter

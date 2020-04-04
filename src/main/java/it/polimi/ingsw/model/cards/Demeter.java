@@ -39,9 +39,10 @@ public class Demeter extends Card {
      * @param p list of player
      * @param b board
      * @param to where to build
+     * @return true if builded
      */
     @Override
-    public void build(ArrayList<Player> p, Board b, Cell to){
+    public boolean build(ArrayList<Player> p, Board b, Cell to){
         if(!(p == null || b == null || to == null)){
             Player current = null;
             for(Player player:p)
@@ -53,9 +54,11 @@ public class Demeter extends Card {
                     if(available.contains(to)){
                         super.build(p,b,to);
                         lastBuild = to;
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 }

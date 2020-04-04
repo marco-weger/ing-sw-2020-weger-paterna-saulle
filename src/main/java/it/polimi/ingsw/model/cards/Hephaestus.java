@@ -44,9 +44,10 @@ public class Hephaestus extends Card {
      * @param p list of player
      * @param b board
      * @param in where to build
+     * @return true if builded
      */
     @Override
-    public void build(ArrayList<Player> p, Board b, Cell in) {
+    public boolean build(ArrayList<Player> p, Board b, Cell in) {
         if(!(p == null || b == null || in == null)){
             Player current = null;
             for(Player player:p)
@@ -58,14 +59,17 @@ public class Hephaestus extends Card {
                     if(available.contains(in)){
                         if(isActive() && in.getLevel()<2){
                             available.get(available.indexOf(in)).setLevel(available.get(available.indexOf(in)).getLevel()+2);
+                            return true;
                         }
                         else if(!isActive() && in.getLevel()<4)
                          {
                             available.get(available.indexOf(in)).setLevel(available.get(available.indexOf(in)).getLevel()+1);
+                            return true;
                         }
                     }
                 }
             }
         }
+        return false;
     }
 }

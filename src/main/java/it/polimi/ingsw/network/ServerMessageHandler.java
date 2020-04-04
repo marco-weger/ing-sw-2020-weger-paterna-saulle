@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.server;
+package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.serverMessages.*;

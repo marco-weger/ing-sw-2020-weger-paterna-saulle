@@ -10,9 +10,8 @@ public class BuildClient implements ClientMessage, Serializable {
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    String name;
-    int x;
-    int y;
+    public String name;
+    public int x, y;
 
     public BuildClient(String name, int x, int y)
     {

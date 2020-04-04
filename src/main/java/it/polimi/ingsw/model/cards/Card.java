@@ -130,7 +130,7 @@ public class Card extends Observable {
      * @param b board
      * @param to where to move
      */
-    public void move(ArrayList<Player> p, Board b, Cell to){
+    public boolean move(ArrayList<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {
             Player current = null;
             for (Player player : p)
@@ -144,11 +144,12 @@ public class Card extends Observable {
                             available.removeAll(player.getCard().activeBlock(p, b,  current.getCurrentWorker(),Status.QUESTION_M));
                     if (available.contains(to)) {
                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
-                        //current.getCurrentWorker().setColumn(to.getColumn());
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     /**
@@ -156,7 +157,7 @@ public class Card extends Observable {
      * @param b board
      * @param to where to build
      */
-    public void build(ArrayList<Player> p, Board b, Cell to){
+    public boolean build(ArrayList<Player> p, Board b, Cell to){
         if(!(p == null || b == null || to == null)){
             Player current = null;
             for(Player player:p)
@@ -170,10 +171,12 @@ public class Card extends Observable {
                             available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_B));
                     if(available.contains(to)){
                         available.get(available.indexOf(to)).setLevel(available.get(available.indexOf(to)).getLevel()+1);
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     /**

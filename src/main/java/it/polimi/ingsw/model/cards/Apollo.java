@@ -50,9 +50,10 @@ public class Apollo extends Card {
      * @param p list of player
      * @param b board
      * @param to where to move
+     * @return true if moved
      */
     @Override
-    public void move(ArrayList<Player> p, Board b, Cell to){
+    public boolean move(ArrayList<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {
             Player current = null;
             for (Player player : p)
@@ -65,29 +66,25 @@ public class Apollo extends Card {
                             if (player.getCard().getName().compareTo(this.getName()) != 0){
                                 if(player.getWorker1().getRow() == to.getRow() && player.getWorker1().getRow() == to.getRow()){
                                     player.getWorker1().move(current.getCurrentWorker().getRow(), current.getCurrentWorker().getColumn());
-                                   // player.getWorker1().setRow(current.getCurrentWorker().getRow());
-                                   // player.getWorker1().setColumn(current.getCurrentWorker().getColumn());
                                     current.getCurrentWorker().move(to.getRow(), to.getColumn());
-                                    //current.getCurrentWorker().setRow(to.getRow());
-                                    //current.getCurrentWorker().setColumn(to.getColumn());
+                                    return true;
                                 }
                                 else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getRow() == to.getRow()){
                                     player.getWorker2().move(current.getCurrentWorker().getRow(), current.getCurrentWorker().getColumn());
-                                    //player.getWorker2().setRow(current.getCurrentWorker().getRow());
-                                   // player.getWorker2().setColumn(current.getCurrentWorker().getColumn());
                                     current.getCurrentWorker().move(to.getRow(), to.getColumn());
-                                   // current.getCurrentWorker().setRow(to.getRow());
-                                   // current.getCurrentWorker().setColumn(to.getColumn());
+                                    return true;
                                 }
                             }
                         }
                     }
                     else{
                         super.move(p,b,to);
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
 }
