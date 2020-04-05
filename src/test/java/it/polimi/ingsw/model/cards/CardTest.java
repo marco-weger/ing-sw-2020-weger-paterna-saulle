@@ -418,4 +418,87 @@ public class CardTest {
             }
         }
     }
+
+    @Test
+    public void hasLostFalse() {
+        initialize();
+        p.get(0).setCard(CardName.APOLLO);
+        p.get(1).setCard(CardName.ARTEMIS);
+        p.get(0).setWorker1(new Worker(0,0));
+        p.get(0).setWorker2(new Worker(1,0));
+        p.get(1).setWorker1(new Worker(1,4));
+        p.get(1).setWorker2(new Worker(4,4));
+        Board b = new Board();
+        for(Cell ce :b.getField()){
+            if(ce.getRow() == 0 && ce.getColumn() == 0)
+                ce.setLevel(0);
+            else if(ce.getRow() == 0 && ce.getColumn() == 1)
+                ce.setLevel(0);
+            else if(ce.getRow() == 0 && ce.getColumn() == 2)
+                ce.setLevel(0);
+            else if(ce.getRow() == 0 && ce.getColumn() == 3)
+                ce.setLevel(0);
+            else if(ce.getRow() == 0 && ce.getColumn() == 4)
+                ce.setLevel(0);
+            else if(ce.getRow() == 1 && ce.getColumn() == 0)
+                ce.setLevel(0);
+            else if(ce.getRow() == 1 && ce.getColumn() == 1)
+                ce.setLevel(0);
+            else if(ce.getRow() == 1 && ce.getColumn() ==2)
+                ce.setLevel(0);
+            else if(ce.getRow() == 1 && ce.getColumn() == 3)
+                ce.setLevel(0);
+            else if(ce.getRow() == 1 && ce.getColumn() == 4)
+                ce.setLevel(0);
+            else if(ce.getRow() == 2 && ce.getColumn() == 0)
+                ce.setLevel(0);
+            else if(ce.getRow() == 2 && ce.getColumn() == 1)
+                ce.setLevel(0);
+            else if(ce.getRow() == 2 && ce.getColumn() ==2)
+                ce.setLevel(0);
+            else if(ce.getRow() == 2 && ce.getColumn() == 3)
+                ce.setLevel(0);
+            else if(ce.getRow() == 2 && ce.getColumn() == 4)
+                ce.setLevel(0);
+            else if(ce.getRow() == 3 && ce.getColumn() == 0)
+                ce.setLevel(0);
+            else if(ce.getRow() == 3 && ce.getColumn() == 1)
+                ce.setLevel(0);
+            else if(ce.getRow() == 3 && ce.getColumn() ==2)
+                ce.setLevel(0);
+            else if(ce.getRow() == 3 && ce.getColumn() == 3)
+                ce.setLevel(0);
+            else if(ce.getRow() == 3 && ce.getColumn() == 4)
+                ce.setLevel(0);
+            else if(ce.getRow() == 4 && ce.getColumn() == 0)
+                ce.setLevel(0);
+            else if(ce.getRow() == 4 && ce.getColumn() == 1)
+                ce.setLevel(0);
+            else if(ce.getRow() == 4 && ce.getColumn() ==2)
+                ce.setLevel(0);
+            else if(ce.getRow() == 4 && ce.getColumn() == 3)
+                ce.setLevel(0);
+            else if(ce.getRow() == 4 && ce.getColumn() == 4)
+                ce.setLevel(0);
+        }
+        assertFalse(p.get(0).getCard().hasLost(p, b));
+    }
+
+   /* @Test
+    public void hasLostTrue() {
+        ArrayList<Player> p = new ArrayList<>();
+        p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(1,0)));
+        p.add(new Player("player2",CardName.ARTEMIS,new Worker(1,4),new Worker(4,4)));
+        Match m = new Match(0, new Board(), p,false, p.get(0), Status.START);
+        for(Cell c : m.getBoard().getField())
+            if(!c.isOccupied(p))
+                c.setLevel(4);
+        m.setCurrentPlayer(p.get(0));
+        assertTrue(m.checkCurrentPlayerLose());
+        for(Cell c : m.getBoard().getField())
+            if(c.getRow() == 2 && c.getColumn() == 0)
+                c.setLevel(0);
+        assertFalse(m.checkCurrentPlayerLose());
+    }*/
+
 }

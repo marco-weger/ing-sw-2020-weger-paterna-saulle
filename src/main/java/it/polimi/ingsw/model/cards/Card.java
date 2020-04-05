@@ -257,28 +257,38 @@ public class Card extends Observable {
      * @return It checks if current player doesn't have move, and update workers status
      */
     public boolean hasLost(ArrayList<Player> p, Board b) {
+        if(p == null || b == null) return false;
         Player current = null;
-        for(Player player:p)
-            if(player.getCard().getName().compareTo(this.getName()) == 0)
+        for (Player player : p) {
+            if (player.getCard().getName().compareTo(this.getName()) == 0)
                 current = player;
-        /*
-        .setCurrentWorker(1);
-        if (getCurrentPlayer().getCard().checkMove(players, board).size() == 0) {
-            getCurrentPlayer().setCurrentWorker(2);
-            if (getCurrentPlayer().getCard().checkMove(players, board).size() == 0) {
-                getCurrentPlayer().setCurrentWorker(0);
+        }
+
+        if (current == null) {
+            throw new NullPointerException("Current player is Null");
+        }
+
+        current.setCurrentWorker(1);
+        if (current.getCard().checkMove(p, b).size() == 0) {
+            current.setCurrentWorker(2);
+
+            if (current.getCard().checkMove(p, b).size() == 0) {
+                current.getCurrentWorker().move(-1, -1);
+                current.setCurrentWorker(1);
+                current.getCurrentWorker().move(-1, -1);
+                // TODO: if it has lost notify all players set workers to null (SomeoneLoseServer)
                 return true;
             } else {
-                getCurrentPlayer().setCurrentWorker(0);
+                current.setCurrentWorker(0);
                 return false;
             }
-        } else {
-            getCurrentPlayer().setCurrentWorker(0);
+        }
+        else {
+            current.setCurrentWorker(0);
             return false;
-        }*/
-        // TODO: if it has lost notify all players set workers to null (SomeoneLoseServer)
-        return false;
+        }
     }
+
 
 }
 
