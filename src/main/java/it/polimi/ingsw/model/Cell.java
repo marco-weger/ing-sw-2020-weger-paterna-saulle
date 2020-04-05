@@ -55,11 +55,18 @@ public class Cell{
      */
     public boolean isOccupied(ArrayList<Player> p)
     {
-        if(p != null)
-            for(Player player:p)
-                if(player.getWorker1() != null && player.getWorker2() != null)
-                    if((player.getWorker1().getRow() == this.row && player.getWorker1().getColumn() == this.column) || (player.getWorker2().getRow() == this.row && player.getWorker2().getColumn() == this.column))
+        if(p != null){
+            for(Player player:p){
+                if(player.getWorker1() != null){
+                    if(player.getWorker1().getRow() == this.row && player.getWorker1().getColumn() == this.column)
                         return true;
+                }
+                if(player.getWorker2() != null){
+                    if(player.getWorker2().getRow() == this.row && player.getWorker2().getColumn() == this.column)
+                        return true;
+                }
+            }
+        }
         return false;
     }
 }

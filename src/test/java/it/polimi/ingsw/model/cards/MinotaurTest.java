@@ -7,18 +7,31 @@ import it.polimi.ingsw.model.Worker;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
 public class MinotaurTest {
+    ArrayList<Player> p = new ArrayList<>(Arrays.asList(
+            new Player("player1"),
+            new Player("player2"),
+            new Player("player3")
+    ));
+
+    public void initialize(){
+        for(Player player:p){
+            player.setWorker1(new Worker(0,0));
+            player.setWorker2(new Worker(0,0));
+        }
+        p.get(0).setCard(CardName.MINOTAUR);
+        p.get(1).setCard(CardName.ARTEMIS);
+        p.get(2).setCard(CardName.ATLAS);
+    }
     // checkMove
     @Test
     public void checkMove_paramsNull()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.MINOTAUR,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
+        initialize();
         ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,null);
         assertEquals(ret.size(),0);
         ret = p.get(0).getCard().checkMove(null,new Board());
@@ -27,20 +40,20 @@ public class MinotaurTest {
     @Test
     public void checkMove_noCurrentPlayerWorker()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.MINOTAUR,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
+        initialize();
         assertEquals(p.get(0).getCard().checkMove(p,new Board()).size(),0);
         assertEquals(p.get(0).getCard().checkMove(p,new Board()).size(),0);
     }
     @Test
     public void checkMove()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.MINOTAUR,new Worker(2,2),new Worker(2,1)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(2,3),new Worker(1,2)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(0,2),new Worker(4,4)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(2,1));
+        p.get(1).setWorker1(new Worker(2,3));
+        p.get(1).setWorker2(new Worker(1,2));
+        p.get(2).setWorker1(new Worker(0,2));
+        p.get(2).setWorker2(new Worker(4,4));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         for(Cell c:b.getField()){
@@ -59,20 +72,26 @@ public class MinotaurTest {
     @Test
     public void move_null()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.MINOTAUR,new Worker(2,3),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,3));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(4,0));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(2,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().move(null,null,null);
     }
     @Test
     public void move_error()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.MINOTAUR,new Worker(2,3),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(3,4),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,3));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(3,4));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(2,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         for(Cell c:b.getField()){
@@ -100,10 +119,13 @@ public class MinotaurTest {
     @Test
     public void move_noAbility()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.MINOTAUR,new Worker(2,3),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,3));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(4,0));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(2,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         for(Cell c:b.getField()){
@@ -133,10 +155,13 @@ public class MinotaurTest {
     @Test
     public void move_abilityWorker1()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.MINOTAUR,new Worker(2,2),new Worker(2,1)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(2,3),new Worker(1,2)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(4,3),new Worker(4,4)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(2,1));
+        p.get(1).setWorker1(new Worker(2,3));
+        p.get(1).setWorker2(new Worker(1,2));
+        p.get(2).setWorker1(new Worker(4,3));
+        p.get(2).setWorker2(new Worker(4,4));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         for(Cell c:b.getField()){
@@ -155,9 +180,11 @@ public class MinotaurTest {
     @Test
     public void move_abilityWorker2()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.MINOTAUR,new Worker(2,2),new Worker(2,1)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(2,3),new Worker(1,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(2,1));
+        p.get(1).setWorker1(new Worker(2,3));
+        p.get(1).setWorker2(new Worker(1,2));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         for(Cell c:b.getField()){

@@ -4,33 +4,45 @@ import it.polimi.ingsw.model.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
 public class ArtemisTest {
+    ArrayList<Player> p = new ArrayList<>(Arrays.asList(
+            new Player("player1"),
+            new Player("player2"),
+            new Player("player3")
+    ));
 
+    public void initialize(){
+        for(Player player:p){
+            player.setWorker1(new Worker(0,0));
+            player.setWorker2(new Worker(0,0));
+        }
+        p.get(0).setCard(CardName.ARTEMIS);
+        p.get(1).setCard(CardName.HEPHAESTUS);
+        p.get(2).setCard(CardName.DEMETER);
+    }
     //checkMove
     @Test
     public void checkMove_nullAndZeros() {
-        Card c = FactoryCard.getCard(CardName.ARTEMIS);
-        assertNotNull(c);
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.ARTEMIS, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player2", CardName.HEPHAESTUS, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player3", CardName.DEMETER, new Worker(0, 0), new Worker(0, 0)));
-        ArrayList<Cell> moving = c.checkMove(p, null);
+        initialize();
+        ArrayList<Cell> moving = p.get(0).getCard().checkMove(p, null);
         assertEquals(moving.size(), 0);
-        moving = c.checkMove(null, new Board());
+        moving = p.get(0).getCard().checkMove(null, new Board());
         assertEquals(0, moving.size());
-
     }
 
     @Test
     public void checkMove_firstRingFailed() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.ARTEMIS, new Worker(1, 1), new Worker(0, 0)));
-        p.add(new Player("player2", CardName.APOLLO, new Worker(2, 0), new Worker(0, 1)));
-        p.add(new Player("player3", CardName.ATLAS, new Worker(2, 2), new Worker(0, 2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(1,1));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(2,0));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(2,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         assertNotNull(p);
@@ -54,10 +66,13 @@ public class ArtemisTest {
     @Test
     public void checkMove_firstRingSuccess()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.ARTEMIS,new Worker(1,1),new Worker(0,0)));
-        p.add(new Player("player2",CardName.APOLLO,new Worker(2,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(1,1));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(2,0));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(2,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().setActive(false);
         Board b = new Board();
@@ -77,10 +92,13 @@ public class ArtemisTest {
 
     @Test
     public void checkMove_secondRingSuccess(){
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.ARTEMIS,new Worker(1,1),new Worker(0,0)));
-        p.add(new Player("player2",CardName.APOLLO,new Worker(2,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(1,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(1,1));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(2,0));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(2,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().setActive(true);
         Board b = new Board();
@@ -115,10 +133,13 @@ public class ArtemisTest {
 
     @Test
     public void checkMove_secondRingFailed1(){
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.ARTEMIS,new Worker(1,1),new Worker(0,0)));
-        p.add(new Player("player2",CardName.APOLLO,new Worker(2,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(1,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(1,1));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(2,0));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(1,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().setActive(true);
         Board b = new Board();
@@ -153,10 +174,13 @@ public class ArtemisTest {
 
     @Test
     public void checkMove_secondRingFailed2(){
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.ARTEMIS,new Worker(1,1),new Worker(0,0)));
-        p.add(new Player("player2",CardName.APOLLO,new Worker(2,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(1,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(1,1));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(2,0));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(1,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().setActive(true);
         Board b = new Board();
@@ -200,10 +224,13 @@ public class ArtemisTest {
     @Test
     public void moveErrorWhitAbility()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.ARTEMIS,new Worker(1,1),new Worker(0,0)));
-        p.add(new Player("player2",CardName.APOLLO,new Worker(2,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(1,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(1,1));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(2,0));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(1,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         for(Cell c:b.getField()){
@@ -237,10 +264,13 @@ public class ArtemisTest {
     @Test
     public void moveNoAbility()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.ARTEMIS,new Worker(1,1),new Worker(0,0)));
-        p.add(new Player("player2",CardName.APOLLO,new Worker(2,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(1,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(1,1));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(2,0));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(1,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().setActive(false);
         Board b = new Board();
@@ -261,10 +291,13 @@ public class ArtemisTest {
     @Test
     public void moveWhitAbility()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.ARTEMIS,new Worker(1,1),new Worker(0,0)));
-        p.add(new Player("player2",CardName.APOLLO,new Worker(2,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(1,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(1,1));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(2,0));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(1,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().setActive(true);
         Board b = new Board();

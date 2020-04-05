@@ -41,8 +41,7 @@ public class Athena extends Card {
      */
     @Override
     public void inizializeTurn() {
-        if(super.isActive()  && super.getStatus() == Status.START)
-            super.setActive(false);
+        super.setActive(false);
     }
 }
 

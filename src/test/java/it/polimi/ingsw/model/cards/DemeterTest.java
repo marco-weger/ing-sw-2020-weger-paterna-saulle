@@ -7,39 +7,50 @@ import it.polimi.ingsw.model.Worker;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
 public class DemeterTest {
+    ArrayList<Player> p = new ArrayList<>(Arrays.asList(
+            new Player("player1"),
+            new Player("player2"),
+            new Player("player3")
+    ));
+
+    public void initialize(){
+        for(Player player:p){
+            player.setWorker1(new Worker(0,0));
+            player.setWorker2(new Worker(0,0));
+        }
+        p.get(0).setCard(CardName.DEMETER);
+        p.get(1).setCard(CardName.ARTEMIS);
+        p.get(2).setCard(CardName.ATLAS);
+    }
     // checkBuild
     @Test
     public void checkBuild_paramsNull()
     {
-        Card c = FactoryCard.getCard(CardName.DEMETER);
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.DEMETER,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
-        assertNotNull(c);
-        assertEquals(c.checkBuild(null,new Board()).size(),0);
-        assertEquals(c.checkBuild(p,null).size(),0);
+        initialize();
+        assertEquals(p.get(0).getCard().checkBuild(null,new Board()).size(),0);
+        assertEquals(p.get(0).getCard().checkBuild(p,null).size(),0);
     }
     @Test
     public void checkBuild_noCurrentPlayerWorker()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.DEMETER,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
+        initialize();
         assertEquals(p.get(0).getCard().checkBuild(p,new Board()).size(),0);
     }
     @Test
     public void checkBuild_noActive()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.DEMETER,new Worker(2,3),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,3));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(4,0));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(2,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         for(Cell c:b.getField()){
@@ -69,10 +80,13 @@ public class DemeterTest {
     @Test
     public void checkBuild_active()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.DEMETER,new Worker(2,3),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,3));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(4,0));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(2,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         for(Cell c:b.getField()){
@@ -116,10 +130,13 @@ public class DemeterTest {
     @Test
     public void build_error()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.DEMETER,new Worker(2,3),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(3,4),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,3));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(3,4));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(2,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().build(p,new Board(),new Cell(3,4,0));
         assertEquals(p.get(0).getCurrentWorker().getRow(), 2);
@@ -128,10 +145,13 @@ public class DemeterTest {
     @Test
     public void build()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.DEMETER,new Worker(2,3),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(4,0),new Worker(0,1)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(2,2),new Worker(0,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,3));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(4,0));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(2,2));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         for(Cell cell:b.getField()){

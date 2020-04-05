@@ -41,6 +41,7 @@ public class Match {
         this.ended=false;
         this.status=Status.CARD_CHOICE;
         this.players = new ArrayList<>();
+        this.losers = new ArrayList<>();
         this.selectedCard = new ArrayList<>();
     }
 

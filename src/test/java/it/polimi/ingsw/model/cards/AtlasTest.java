@@ -4,63 +4,70 @@ import it.polimi.ingsw.model.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
 public class AtlasTest {
+    ArrayList<Player> p = new ArrayList<>(Arrays.asList(
+            new Player("player1"),
+            new Player("player2"),
+            new Player("player3")
+    ));
+
+    public void initialize(){
+        for(Player player:p){
+            player.setWorker1(new Worker(0,0));
+            player.setWorker2(new Worker(0,0));
+        }
+        p.get(0).setCard(CardName.ATLAS);
+        p.get(1).setCard(CardName.HEPHAESTUS);
+        p.get(2).setCard(CardName.DEMETER);
+    }
+
     // checkBuild
     @Test
     public void checkBuild_paramsNull() {
-        Card c = FactoryCard.getCard(CardName.ATLAS);
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.ATLAS, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player2", CardName.HEPHAESTUS, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player3", CardName.PROMETHEUS, new Worker(0, 0), new Worker(0, 0)));
-        assertNotNull(c);
-        assertEquals(c.checkBuild(null, new Board()).size(), 0);
-        assertEquals(c.checkBuild(p, null).size(), 0);
+        initialize();
+        assertEquals(p.get(0).getCard().checkBuild(null, new Board()).size(), 0);
+        assertEquals(p.get(0).getCard().checkBuild(p, null).size(), 0);
     }
 
     @Test
     public void checkBuild_noCurrentPlayerWorker() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.ATLAS, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player2", CardName.ARTEMIS, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player3", CardName.MINOTAUR, new Worker(0, 0), new Worker(0, 0)));
+        initialize();
         assertEquals(p.get(0).getCard().checkBuild(p, new Board()).size(), 0);
     }
 
     @Test
     public void checkAndBuild_noActive() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.ATLAS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.HEPHAESTUS, new Worker(2, 1), new Worker(1, 2)));
-        p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(2, 3)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(1,1));
+        p.get(1).setWorker1(new Worker(2,1));
+        p.get(1).setWorker2(new Worker(1,2));
+        p.get(2).setWorker1(new Worker(1,3));
+        p.get(2).setWorker2(new Worker(2,3));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().setActive(false);
         Board b = new Board();
-        assertNotNull(p);
-        assertNotNull(b);
-        for (Cell c : b.getField()) {
-            if (c.getRow() == 3 && c.getColumn() == 1)
-                c.setLevel(0);
-            else if (c.getRow() == 3 && c.getColumn() == 2)
-                c.setLevel(1);
-            else if (c.getRow() == 3 && c.getColumn() == 3)
-                c.setLevel(0);
-        }
         ArrayList<Cell> building = p.get(0).getCard().checkBuild(p, b);
         assertEquals(building.size(), 3);
         for (Cell c : building)
             assertTrue(c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2 || c.getRow() == 3 && c.getColumn() == 3);
+        assertTrue(p.get(0).getCard().build(p,b,building.get(1)));
+        assertEquals(building.get(1).getLevel(),1);
     }
 
     @Test
     public void checkAndBuild_active() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.ATLAS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.HEPHAESTUS, new Worker(2, 1), new Worker(1, 2)));
-        p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(2, 3)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(1,1));
+        p.get(1).setWorker1(new Worker(2,1));
+        p.get(1).setWorker2(new Worker(1,2));
+        p.get(2).setWorker1(new Worker(1,3));
+        p.get(2).setWorker2(new Worker(2,3));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         assertNotNull(p);
@@ -98,11 +105,14 @@ public class AtlasTest {
 
     @Test
     public void build_error() {
-        ArrayList<Player> p = new ArrayList<>();
         Board b = new Board();
-        p.add(new Player("player1", CardName.ATLAS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.HEPHAESTUS, new Worker(2, 1), new Worker(1, 2)));
-        p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(2, 3)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(1,1));
+        p.get(1).setWorker1(new Worker(2,1));
+        p.get(1).setWorker2(new Worker(1,2));
+        p.get(2).setWorker1(new Worker(1,3));
+        p.get(2).setWorker2(new Worker(2,3));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().setActive(true);
         p.get(0).getCard().build(p, b, new Cell(1, 3, 0));
@@ -117,11 +127,14 @@ public class AtlasTest {
 
     @Test
     public void build() {
-        ArrayList<Player> p = new ArrayList<>();
         Board b = new Board();
-        p.add(new Player("player1", CardName.ATLAS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.HEPHAESTUS, new Worker(2, 1), new Worker(1, 2)));
-        p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(2, 3)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(1,1));
+        p.get(1).setWorker1(new Worker(2,1));
+        p.get(1).setWorker2(new Worker(1,2));
+        p.get(2).setWorker1(new Worker(1,3));
+        p.get(2).setWorker2(new Worker(2,3));
         p.get(0).setCurrentWorker(1);
         ArrayList<Cell> b1 = p.get(0).getCard().checkBuild(p,b);
         for (Cell c : b1) {

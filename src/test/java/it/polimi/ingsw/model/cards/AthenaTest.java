@@ -4,45 +4,53 @@ import it.polimi.ingsw.model.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
 public class AthenaTest {
+    ArrayList<Player> p = new ArrayList<>(Arrays.asList(
+            new Player("player1"),
+            new Player("player2"),
+            new Player("player3")
+    ));
 
+    public void initialize(){
+        for(Player player:p){
+            player.setWorker1(new Worker(0,0));
+            player.setWorker2(new Worker(0,0));
+        }
+        p.get(0).setCard(CardName.ATHENA);
+        p.get(1).setCard(CardName.HEPHAESTUS);
+        p.get(2).setCard(CardName.DEMETER);
+    }
 
     @Test
     public void inizializeTurn_turnoffpower() {
-        Card c = FactoryCard.getCard(CardName.ATHENA);
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.APOLLO, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player2", CardName.ARTEMIS, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player3", CardName.ATLAS, new Worker(0, 0), new Worker(0, 0)));
-        assertNotNull(c);
+        initialize();
         p.get(0).getCard().setActive(true);
-        c.inizializeTurn();
-        assertFalse(c.isActive());
+        p.get(0).getCard().inizializeTurn();
+        assertFalse(p.get(0).getCard().isActive());
     }
 
 
     @Test
     public void inizializeTurn_NOpower() {
-        Card c = FactoryCard.getCard(CardName.ATHENA);
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.APOLLO, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player2", CardName.ARTEMIS, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player3", CardName.ATLAS, new Worker(0, 0), new Worker(0, 0)));
-        assertNotNull(c);
+        initialize();
         p.get(0).getCard().setActive(false);
-        c.inizializeTurn();
-        assertFalse(c.isActive());
+        p.get(0).getCard().inizializeTurn();
+        assertFalse(p.get(0).getCard().isActive());
     }
 
     @Test
     public void ActiveBlock() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.ATHENA, new Worker(2, 3), new Worker(0, 0)));
-        p.add(new Player("player2", CardName.ARTEMIS, new Worker(4, 4), new Worker(0, 1)));
-        p.add(new Player("player3", CardName.ATLAS, new Worker(1, 0), new Worker(0, 2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,3));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(4,4));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(1,0));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(1).setCurrentWorker(1);
         Worker w1 = p.get(1).getCurrentWorker();
         Board b = new Board();
@@ -64,10 +72,13 @@ public class AthenaTest {
 
     @Test
     public void ActiveBlockWithOccupied() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.ATHENA, new Worker(2, 3), new Worker(0, 0)));
-        p.add(new Player("player2", CardName.ARTEMIS, new Worker(4, 4), new Worker(0, 1)));
-        p.add(new Player("player3", CardName.ATLAS, new Worker(3, 4), new Worker(0, 2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,3));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(4,4));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(3,4));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(1).setCurrentWorker(1);
         Worker w1 = p.get(1).getCurrentWorker();
         Board b = new Board();
@@ -90,10 +101,13 @@ public class AthenaTest {
 
     @Test
     public void ActiveBlock_NULL() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.ATHENA, new Worker(2, 3), new Worker(0, 0)));
-        p.add(new Player("player2", CardName.ARTEMIS, new Worker(4, 4), new Worker(0, 1)));
-        p.add(new Player("player3", CardName.ATLAS, new Worker(1, 0), new Worker(0, 2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,3));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(4,4));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(1,0));
+        p.get(2).setWorker2(new Worker(0,2));
         p.get(1).setCurrentWorker(1);
         Board b = new Board();
         for (Cell c : b.getField()) {

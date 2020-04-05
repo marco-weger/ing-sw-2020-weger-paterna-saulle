@@ -1,16 +1,34 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardName;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 
 public class MatchTest {
+    ArrayList<Player> p = new ArrayList<>(Arrays.asList(
+            new Player("player1"),
+            new Player("player2"),
+            new Player("player3")
+    ));
 
+    public void initialize(){
+        for(Player player:p){
+            player.setWorker1(new Worker(0,0));
+            player.setWorker2(new Worker(0,0));
+        }
+        p.get(0).setCard(CardName.PAN);
+        p.get(1).setCard(CardName.ARTEMIS);
+        p.get(2).setCard(CardName.ATLAS);
+    }
     @Test
     public void getter_setter(){
-        Match m = new Match(0, new Board(), null, false, Status.START);
+        Match m = new Match(0);
+
         m.setId(1);
         assertEquals(m.getId(),1);
         m.setStatus(Status.CHOSEN);
@@ -19,22 +37,26 @@ public class MatchTest {
         b.getCell(0,0).setLevel(4);
         m.setBoard(b);
         assertEquals(m.getBoard().getCell(0,0).getLevel(),4);
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
+        initialize();
         m.setPlayers(p);
         assertEquals(p,m.getPlayers());
         m.setEnded(true);
         assertTrue(m.isEnded());
+        m.setSelectedCards(new ArrayList<>(Arrays.asList(CardName.ATHENA,CardName.ATLAS)));
+        assertEquals(m.getSelectedCard().get(0), CardName.ATHENA);
+        assertEquals(m.getSelectedCard().get(1), CardName.ATLAS);
+        m.setLosers(m.getPlayers().get(1));
+        assertEquals(m.getPlayers().size(),2);
+        assertEquals(m.getLosers().size(),1);
+        assertEquals(m.getPlayers().get(1).getCard().getName(), CardName.ATLAS);
+        assertEquals(m.getLosers().get(0).getCard().getName(), CardName.ARTEMIS);
     }
 
     @Test
     public void testSetNextPlayer03() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
-        Match m = new Match(0, new Board(), p,false, Status.START);
+        initialize();
+        Match m = new Match(0);
+        m.setPlayers(p);
         m.setNextPlayer();
         assertEquals(m.getCurrentPlayer(), p.get(0));
         m.setNextPlayer();
@@ -43,11 +65,9 @@ public class MatchTest {
 
     @Test
     public void testSetNextPlayer13() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
-        Match m = new Match(0, new Board(), p,false, Status.START);
+        initialize();
+        Match m = new Match(0);
+        m.setPlayers(p);
         m.setNextPlayer();
         m.setNextPlayer();
         m.setNextPlayer();
@@ -56,11 +76,9 @@ public class MatchTest {
 
     @Test
     public void testSetNextPlayer23() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
-        Match m = new Match(0, new Board(), p,false, Status.START);
+        initialize();
+        Match m = new Match(0);
+        m.setPlayers(p);
         m.setNextPlayer();
         m.setNextPlayer();
         m.setNextPlayer();
@@ -70,11 +88,9 @@ public class MatchTest {
 
     @Test
     public void testSetNextPlayer02() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
-        Match m = new Match(0, new Board(), p,false, Status.START);
+        initialize();
+        Match m = new Match(0);
+        m.setPlayers(p);
         m.setNextPlayer();
         m.setNextPlayer();
         assertEquals(m.getCurrentPlayer(), p.get(1));
@@ -82,11 +98,9 @@ public class MatchTest {
 
     @Test
     public void testSetNextPlayer12() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
-        Match m = new Match(0, new Board(), p,false, Status.START);
+        initialize();
+        Match m = new Match(0);
+        m.setPlayers(p);
         m.setNextPlayer();
         m.setNextPlayer();
         m.setNextPlayer();
@@ -95,11 +109,9 @@ public class MatchTest {
 
     @Test
     public void testCheckCurrentPlayerWin2() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
-        Match m = new Match(0, new Board(), p,false, Status.START);
+        initialize();
+        Match m = new Match(0);
+        m.setPlayers(p);
         m.setNextPlayer();
         p.get(1).setCurrentWorker(0);
         assertTrue(m.checkCurrentPlayerWin());
@@ -108,11 +120,9 @@ public class MatchTest {
 
     @Test
     public void testCheckCurrentPlayerWin3() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
-        Match m = new Match(0, new Board(), p,false, Status.START);
+        initialize();
+        Match m = new Match(0);
+        m.setPlayers(p);
         m.setNextPlayer();
         p.get(1).setCurrentWorker(0);
         p.get(2).setCurrentWorker(0);

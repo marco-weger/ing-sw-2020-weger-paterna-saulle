@@ -4,10 +4,26 @@ import it.polimi.ingsw.model.cards.CardName;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
 public class CellTest {
+    ArrayList<Player> p = new ArrayList<>(Arrays.asList(
+            new Player("player1"),
+            new Player("player2"),
+            new Player("player3")
+    ));
+
+    public void initialize(){
+        for(Player player:p){
+            player.setWorker1(new Worker(0,0));
+            player.setWorker2(new Worker(0,0));
+        }
+        p.get(0).setCard(CardName.PROMETHEUS);
+        p.get(1).setCard(CardName.ARTEMIS);
+        p.get(2).setCard(CardName.ATLAS);
+    }
     // setter
     @Test
     public void setter()
@@ -29,28 +45,24 @@ public class CellTest {
     @Test
     public void isCellInBoard_workerNull()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.APOLLO,null,null));
-        p.add(new Player("player2",CardName.ARTEMIS,null,null));
-        p.add(new Player("player3",CardName.ATLAS,null,null));
         assertFalse(new Cell(0,0,0).isOccupied(p));
     }
     @Test
     public void isCellInBoard_true()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.APOLLO,new Worker(2,4),new Worker(1,1)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(3,4),new Worker(1,4)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(4,4),new Worker(1,2)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,4));
+        p.get(0).setWorker2(new Worker(1,1));
+        p.get(1).setWorker1(new Worker(3,4));
+        p.get(1).setWorker2(new Worker(1,4));
+        p.get(2).setWorker1(new Worker(4,4));
+        p.get(2).setWorker2(new Worker(1,2));
         assertTrue(new Cell(1,4,0).isOccupied(p));
     }
     @Test
     public void isCellInBoard_false()
     {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1",CardName.APOLLO,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player2",CardName.ARTEMIS,new Worker(0,0),new Worker(0,0)));
-        p.add(new Player("player3",CardName.ATLAS,new Worker(0,0),new Worker(0,0)));
+        initialize();
         assertFalse(new Cell(1,4,0).isOccupied(p));
     }
 }

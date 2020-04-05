@@ -4,39 +4,50 @@ import it.polimi.ingsw.model.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 public class HephaestusTest {
+    ArrayList<Player> p = new ArrayList<>(Arrays.asList(
+            new Player("player1"),
+            new Player("player2"),
+            new Player("player3")
+    ));
+
+    public void initialize(){
+        for(Player player:p){
+            player.setWorker1(new Worker(0,0));
+            player.setWorker2(new Worker(0,0));
+        }
+        p.get(0).setCard(CardName.HEPHAESTUS);
+        p.get(1).setCard(CardName.ARTEMIS);
+        p.get(2).setCard(CardName.ATLAS);
+    }
     // checkBuild
     @Test
     public void checkBuild_paramsNull() {
-        Card c = FactoryCard.getCard(CardName.HEPHAESTUS);
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player2", CardName.PAN, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player3", CardName.PROMETHEUS, new Worker(0, 0), new Worker(0, 0)));
-        assertNotNull(c);
-        assertEquals(c.checkBuild(null, new Board()).size(), 0);
-        assertEquals(c.checkBuild(p, null).size(), 0);
+        initialize();
+        assertEquals(p.get(0).getCard().checkBuild(null, new Board()).size(), 0);
+        assertEquals(p.get(0).getCard().checkBuild(p, null).size(), 0);
     }
 
     @Test
     public void checkBuild_noCurrentPlayerWorker() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player2", CardName.ARTEMIS, new Worker(0, 0), new Worker(0, 0)));
-        p.add(new Player("player3", CardName.MINOTAUR, new Worker(0, 0), new Worker(0, 0)));
+        initialize();
         assertEquals(p.get(0).getCard().checkBuild(p, new Board()).size(), 0);
     }
 
     @Test
     public void checkAndBuild_noActive() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.ATHENA, new Worker(2, 1), new Worker(1, 2)));
-        p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(2, 3)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(1,1));
+        p.get(1).setWorker1(new Worker(2,1));
+        p.get(1).setWorker2(new Worker(1,2));
+        p.get(2).setWorker1(new Worker(1,3));
+        p.get(2).setWorker2(new Worker(2,3));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().setActive(false);
         Board b = new Board();
@@ -58,10 +69,13 @@ public class HephaestusTest {
 
     @Test
     public void checkAndBuild_activeSuccess() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.MINOTAUR, new Worker(0, 0), new Worker(1, 2)));
-        p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(4, 4)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(1,1));
+        p.get(1).setWorker1(new Worker(0,0));
+        p.get(1).setWorker2(new Worker(1,2));
+        p.get(2).setWorker1(new Worker(1,3));
+        p.get(2).setWorker2(new Worker(4,4));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         assertNotNull(p);
@@ -93,10 +107,13 @@ public class HephaestusTest {
 
     @Test
     public void checkAndBuild_activeFailed() {
-        ArrayList<Player> p = new ArrayList<>();
-        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.MINOTAUR, new Worker(0, 0), new Worker(1, 2)));
-        p.add(new Player("player3", CardName.PAN, new Worker(1, 3), new Worker(4, 4)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(1,1));
+        p.get(1).setWorker1(new Worker(0,0));
+        p.get(1).setWorker2(new Worker(1,2));
+        p.get(2).setWorker1(new Worker(1,3));
+        p.get(2).setWorker2(new Worker(4,4));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         assertNotNull(p);
@@ -143,11 +160,14 @@ public class HephaestusTest {
 
     @Test
     public void build_error() {
-        ArrayList<Player> p = new ArrayList<>();
         Board b = new Board();
-        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.DEMETER, new Worker(2, 1), new Worker(1, 2)));
-        p.add(new Player("player3", CardName.APOLLO, new Worker(1, 3), new Worker(2, 3)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(1,1));
+        p.get(1).setWorker1(new Worker(2,1));
+        p.get(1).setWorker2(new Worker(1,2));
+        p.get(2).setWorker1(new Worker(1,3));
+        p.get(2).setWorker2(new Worker(2,3));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().setActive(true);
         p.get(0).getCard().build(p, b, new Cell(1, 3, 0));
@@ -162,11 +182,14 @@ public class HephaestusTest {
 
     @Test
     public void build() {
-        ArrayList<Player> p = new ArrayList<>();
         Board b = new Board();
-        p.add(new Player("player1", CardName.HEPHAESTUS, new Worker(2, 2), new Worker(1, 1)));
-        p.add(new Player("player2", CardName.PROMETHEUS, new Worker(2, 1), new Worker(1, 2)));
-        p.add(new Player("player3", CardName.ARTEMIS, new Worker(1, 3), new Worker(2, 3)));
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(1,1));
+        p.get(1).setWorker1(new Worker(2,1));
+        p.get(1).setWorker2(new Worker(1,2));
+        p.get(2).setWorker1(new Worker(1,3));
+        p.get(2).setWorker2(new Worker(2,3));
         p.get(0).setCurrentWorker(1);
         ArrayList<Cell> b1 = p.get(0).getCard().checkBuild(p,b);
         for (Cell c : b1) {
