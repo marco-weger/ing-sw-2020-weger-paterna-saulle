@@ -6,7 +6,7 @@ public interface ClientMessageHandler {
     void handleMessage(ConnectionClient message);
     void handleMessage(DisconnectionClient message);
     void handleMessage(ReConnectionClient message);
-    void handleMessage(Ping message);
+    void handleMessage(PingClient message);
 
     void handleMessage(ChallengerChoseClient message);
     void handleMessage(PlayerChoseClient message);

@@ -102,7 +102,7 @@ public class Match extends Observable {
      */
     public void setLosers(Player p) {
         if(p.isActive())
-            players.get((players.indexOf(getCurrentPlayer())+1)%3).setActive(true);
+            players.get((players.indexOf(getCurrentPlayer())+1)%(players.size())).setActive(true);
         getLosers().add(p);
         getPlayers().remove(p);
         if(players.size() > 1)

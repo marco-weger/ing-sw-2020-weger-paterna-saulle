@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CardName;
+import it.polimi.ingsw.network.VirtualView;
 import org.junit.Test;
 
 import javax.naming.ldap.Control;
@@ -32,7 +33,21 @@ public class ControllerTest {
         Match m = new Match(42);
         m.setPlayers(players);
         //generate a Controller for that Match
-        controller = new Controller(m);
+        // TODO: pass the virtual view
+        controller = new Controller(m,null);
+
+    }
+    @Test
+    public void getter_setter(){
+        initialize();
+        Match m = new Match(42);
+        controller = new Controller(m,null);
+        m = new Match(22);
+        controller.setMatch(m);
+        assertEquals(m,controller.getMatch());
+        VirtualView vv = new VirtualView();
+        controller.setVirtualView(vv);
+        assertEquals(vv,controller.getVirtualView());
     }
 
     @Test
@@ -43,10 +58,10 @@ public class ControllerTest {
     public void challengerChoseClient() {
         initialize();
         controller.getMatch().setStatus(Status.CARD_CHOICE);
-        controller.handleMessage(new ChallengerChoseClient("Giulio",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.MINOTAUR,CardName.HEPHAESTUS))));
+        controller.handleMessage(new ChallengerChoseClient("Giulio",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
         assertEquals(controller.getMatch().getSelectedCard().size(),0);
-        controller.handleMessage(new ChallengerChoseClient("Marco",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.MINOTAUR,CardName.HEPHAESTUS))));
-        assertTrue(controller.getMatch().getSelectedCard().containsAll(Arrays.asList(CardName.ATLAS,CardName.MINOTAUR,CardName.HEPHAESTUS)));
+        controller.handleMessage(new ChallengerChoseClient("Marco",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
+        assertTrue(controller.getMatch().getSelectedCard().containsAll(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS)));
     }
 
     @Test
@@ -62,43 +77,38 @@ public class ControllerTest {
         assertNull(controller.getMatch().getPlayers().get(1).getCard());
         controller.handleMessage(new PlayerChoseClient("Francesco",CardName.ATLAS));
         assertEquals(controller.getMatch().getPlayers().get(1).getCard().getName(),CardName.ATLAS);
-        assertEquals(controller.getMatch().getPlayers().get(0).getCard().getName(),CardName.MINOTAUR);
+        assertEquals(controller.getMatch().getPlayers().get(0).getCard().getName(),CardName.PAN);
+    }
+    @Test
+    public void connectionClient() {
+        initialize();
+        challengerChoseClient();
+        // TODO: this message will be implemented
+        controller.handleMessage(new ConnectionClient());
     }
 
     @Test
-    public void testHandleMessage1() {
+    public void disconnectionClient() {
+        initialize();
+        challengerChoseClient();
+        // TODO: this message will be implemented
+        controller.handleMessage(new DisconnectionClient());
     }
 
     @Test
-    public void testHandleMessage2() {
+    public void reConnectionClient() {
+        initialize();
+        challengerChoseClient();
+        // TODO: this message will be implemented
+        controller.handleMessage(new ReConnectionClient());
     }
 
     @Test
-    public void testHandleMessage3() {
-    }
-
-    @Test
-    public void testHandleMessage4() {
-    }
-
-    @Test
-    public void testHandleMessage5() {
-    }
-
-    @Test
-    public void testHandleMessage6() {
-    }
-
-    @Test
-    public void testHandleMessage7() {
-    }
-
-    @Test
-    public void testHandleMessage8() {
-    }
-
-    @Test
-    public void testHandleMessage9() {
+    public void pingclient() {
+        initialize();
+        challengerChoseClient();
+        // TODO: this message will be implemented
+        controller.handleMessage(new PingClient());
     }
 
     @Test
@@ -117,18 +127,20 @@ public class ControllerTest {
     @Test
     public void startTurnTestGoOn() {
         initialize();
+        playerChoseClient();
         controller.getMatch().getPlayers().get(0).setActive(true);
         controller.startTurn(true);
         assertEquals(controller.getMatch().getPlayers().get(1), controller.getMatch().getCurrentPlayer());
     }
 
-    //TODO perchè se elimino prima il primo player e poi il secondo genero errore?
     @Test
     public void startTurnTestPlayerWin() {
         initialize();
+        playerChoseClient();
         controller.getMatch().getPlayers().get(0).setActive(true);
-        controller.getMatch().setLosers(controller.getMatch().getPlayers().get(2));
         controller.getMatch().setLosers(controller.getMatch().getPlayers().get(1));
+        controller.getMatch().setLosers(controller.getMatch().getPlayers().get(1));
+        assertEquals(controller.getMatch().getPlayers().size(),1);
         controller.startTurn(false);
         assertTrue(controller.getMatch().isEnded());
         assertEquals(Status.END, controller.getMatch().getStatus());
@@ -137,6 +149,7 @@ public class ControllerTest {
     @Test
     public void startTurnTestSTART() {
         initialize();
+        playerChoseClient();
         controller.getMatch().getPlayers().get(0).setActive(true);
         for(Cell ce: controller.getMatch().getBoard().getField()){
             if(ce.getRow() == 0 && ce.getColumn() == 0)
@@ -168,6 +181,7 @@ public class ControllerTest {
     @Test
     public void startTurnTestCurrentPlayerHasLost() {
         initialize();
+        playerChoseClient();
         controller.getMatch().getPlayers().get(0).setActive(true);
         controller.getMatch().getPlayers().get(0).getWorker1().move(0,0);
         controller.getMatch().getPlayers().get(0).getWorker2().move(1,0);

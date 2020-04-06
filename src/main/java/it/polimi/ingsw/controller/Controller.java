@@ -26,11 +26,6 @@ public class Controller implements Observer, ClientMessageHandler {
         this.virtualView = virtualView;
     }
 
-    // FIXME remove
-    public Controller(Match match) {
-        this.match = match;
-    }
-
 
     public VirtualView getVirtualView() {
         return virtualView;
@@ -75,7 +70,7 @@ public class Controller implements Observer, ClientMessageHandler {
     }
 
     @Override
-    public void handleMessage(Ping event) {
+    public void handleMessage(PingClient event) {
 
     }
 
@@ -261,7 +256,6 @@ public class Controller implements Observer, ClientMessageHandler {
             endGame(match.getCurrentPlayer());
         }
         else{
-
             if(match.getCurrentPlayer().getCard().hasLost(match.getPlayers(),match.getBoard())){
                 match.setLosers(match.getCurrentPlayer());
                 startTurn(false);
