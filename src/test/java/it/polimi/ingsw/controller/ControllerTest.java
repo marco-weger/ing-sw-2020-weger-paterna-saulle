@@ -112,6 +112,22 @@ public class ControllerTest {
     }
 
     @Test
+    public void BuildClient() {
+        initialize();
+        playerChoseClient();
+        controller.getMatch().getPlayers().get(1).setActive(true);
+        controller.getMatch().setStatus(Status.QUESTION_B);
+        controller.getMatch().getPlayers().get(1).getWorker1().move(0,0);
+        controller.getMatch().getPlayers().get(1).getWorker2().move(1,1);
+        controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
+        controller.getMatch().getBoard().getCell(1,0).setLevel(0);
+        controller.handleMessage(new BuildClient("Francesco", 1, 0));
+        //assertTrue(controller.getMatch().getCurrentPlayer().getCard().build(controller.getMatch().getPlayers(),controller.getMatch().getBoard(),controller.getMatch().getBoard().getCell(1,0)));
+        assertEquals(1, controller.getMatch().getBoard().getCell(1, 0).getLevel());
+    }
+
+
+        @Test
     public void endGameTest() {
         initialize();
         controller.endGame(controller.getMatch().getPlayers().get(2));
