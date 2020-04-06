@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 public class Controller implements Observer, ClientMessageHandler {
 
+
+
     /**
      * The MODEL
      * The CONTROLLER is the only one allowed to modify the MODEL
@@ -18,9 +20,27 @@ public class Controller implements Observer, ClientMessageHandler {
     private Match match;
     private VirtualView virtualView;
 
+
     public Controller(Match match, VirtualView virtualView) {
         this.match = match;
         this.virtualView = virtualView;
+    }
+
+
+    public VirtualView getVirtualView() {
+        return virtualView;
+    }
+
+    public void setVirtualView(VirtualView virtualView) {
+        this.virtualView = virtualView;
+    }
+
+    public Match getMatch() {
+        return match;
+    }
+
+    public void setMatch(Match match) {
+        this.match = match;
     }
 
     @Override

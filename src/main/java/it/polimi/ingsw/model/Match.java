@@ -50,6 +50,17 @@ public class Match extends Observable {
         this.selectedCard = new ArrayList<>();
     }
 
+    //constructor used to test controller [ONLY FOR THAT PURPOSE]
+    public Match(int id, Board b, Status STATE, ArrayList<Player> p, ArrayList<CardName> s){
+        this.id = id;
+        this.board = b;
+        this.ended = false;
+        this.status = STATE;
+        this.players = p;
+        this.losers = new ArrayList<>();
+        this.selectedCard = s;
+    }
+
     public int getId() {
         return id;
     }
