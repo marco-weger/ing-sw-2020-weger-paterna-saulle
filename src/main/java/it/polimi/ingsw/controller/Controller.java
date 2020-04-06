@@ -176,7 +176,8 @@ public class Controller implements Observer, ClientMessageHandler {
     }
 
     //TODO ho cambiato Status.QUESTION_M in Status.MOVE, perché devo garantire di essere nello stato di costruzione, non sono l'anserAbility
-    //TODO rivedere questo messaggio in caso in cui lo spostamento NON è valido. (Caso non garantito spostamento+checkbuild)
+    //TODO rivedere questo messaggio in caso di ARTHEMIS
+    //FIXME rivedere domani assolutamente!
 
     /**
      * If the player can move into that cell, with this method he can move into it.
