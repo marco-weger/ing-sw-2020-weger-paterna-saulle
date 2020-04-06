@@ -72,16 +72,17 @@ public class ControllerTest {
     public void endGameTest() {
         controller.getMatch().setPlayers(players);
 
-        System.out.println(m.getPlayers().get(0).getName());
-        System.out.println(m.getPlayers().get(1).getName());
-        System.out.println(m.getPlayers().get(2).getName() + "\n");
 
-        controller.endGame(m.getPlayers().get(0));
+      //  System.out.println(m.getPlayers().get(0).getName());
+      //  System.out.println(m.getPlayers().get(1).getName());
+      //  System.out.println(m.getPlayers().get(2).getName() + "\n");
 
-        System.out.println(m.getLosers().get(0).getName());
-        //System.out.println(m.getLosers().get(1).getName());
+        controller.endGame(m.getPlayers().get(2));
 
-       // assertEquals(2, m.getLosers().size());
+      //  System.out.println(m.getLosers().get(0).getName());
+      //  System.out.println(m.getLosers().get(1).getName());
+
+        assertEquals(2, m.getLosers().size());
         assertTrue(m.isEnded());
         assertEquals(Status.END,m.getStatus());
     }

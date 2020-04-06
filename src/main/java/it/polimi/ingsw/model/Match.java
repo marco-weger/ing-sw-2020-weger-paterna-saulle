@@ -100,11 +100,15 @@ public class Match extends Observable {
      * A method that add a player into the Loser List and remove it from the Active Player List
      * @param p select a player
      */
+    //FIXME discutere su SetLoser
     public void setLosers(Player p) {
-        if(p.isActive())
+      /*  if(p.isActive())
             players.get((players.indexOf(getCurrentPlayer())+1)%3).setActive(true);
         getLosers().add(p);
-        getPlayers().remove(p);
+        getPlayers().remove(p);*/
+
+      getLosers().add(p);
+      p.setActive(false);
         notifyObservers(new SomeoneLoseServer(p.getName()));
     }
 
