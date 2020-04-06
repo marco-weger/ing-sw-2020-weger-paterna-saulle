@@ -26,6 +26,7 @@ public class Controller implements Observer, ClientMessageHandler {
         this.virtualView = virtualView;
     }
 
+    // FIXME remove
     public Controller(Match match) {
         this.match = match;
     }

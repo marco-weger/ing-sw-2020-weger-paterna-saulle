@@ -21,7 +21,7 @@ public class PlayerChoseClient implements ClientMessage , Serializable {
      * @param name the name of the player
      * this method send to the server the decision of the player about the card chosen
      */
-    public PlayerChoseClient(CardName c, String name){
+    public PlayerChoseClient(String name, CardName c){
         this.c=c;
         this.name=name;
     }

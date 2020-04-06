@@ -1,4 +1,5 @@
 package it.polimi.ingsw.controller;
+import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CardName;
 import org.junit.Test;
@@ -26,9 +27,6 @@ public class ControllerTest {
             player.setWorker1(new Worker(0,0));
             player.setWorker2(new Worker(0,0));
         }
-        players.get(0).setCard(CardName.PAN);
-        players.get(1).setCard(CardName.ARTEMIS);
-        players.get(2).setCard(CardName.ATLAS);
 
         //generate a Match
         Match m = new Match(42);
@@ -42,11 +40,29 @@ public class ControllerTest {
     }
 
     @Test
-    public void handleMessage() {
+    public void challengerChoseClient() {
+        initialize();
+        controller.getMatch().setStatus(Status.CARD_CHOICE);
+        controller.handleMessage(new ChallengerChoseClient("Giulio",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.MINOTAUR,CardName.HEPHAESTUS))));
+        assertEquals(controller.getMatch().getSelectedCard().size(),0);
+        controller.handleMessage(new ChallengerChoseClient("Marco",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.MINOTAUR,CardName.HEPHAESTUS))));
+        assertTrue(controller.getMatch().getSelectedCard().containsAll(Arrays.asList(CardName.ATLAS,CardName.MINOTAUR,CardName.HEPHAESTUS)));
     }
 
     @Test
-    public void testHandleMessage() {
+    public void playerChoseClient() {
+        initialize();
+        challengerChoseClient();
+        controller.getMatch().setStatus(Status.CARD_CHOICE);
+        controller.handleMessage(new PlayerChoseClient("Francesco",CardName.ATLAS));
+        assertNull(controller.getMatch().getPlayers().get(1).getCard());
+        controller.handleMessage(new PlayerChoseClient("Giulio",CardName.HEPHAESTUS));
+        assertEquals(controller.getMatch().getPlayers().get(2).getCard().getName(),CardName.HEPHAESTUS);
+        controller.handleMessage(new PlayerChoseClient("Francesco",CardName.HEPHAESTUS));
+        assertNull(controller.getMatch().getPlayers().get(1).getCard());
+        controller.handleMessage(new PlayerChoseClient("Francesco",CardName.ATLAS));
+        assertEquals(controller.getMatch().getPlayers().get(1).getCard().getName(),CardName.ATLAS);
+        assertEquals(controller.getMatch().getPlayers().get(0).getCard().getName(),CardName.MINOTAUR);
     }
 
     @Test
