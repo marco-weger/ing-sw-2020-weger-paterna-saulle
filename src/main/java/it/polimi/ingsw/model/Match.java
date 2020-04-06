@@ -76,7 +76,10 @@ public class Match extends Observable {
      */
     public void setStatus(Status status) {
         this.status = status;
-        notifyObservers(new CurrentStatusServer(getCurrentPlayer().getName(),status));
+        if(getCurrentPlayer() != null)
+            notifyObservers(new CurrentStatusServer(getCurrentPlayer().getName(),status));
+        else
+            notifyObservers(new CurrentStatusServer("",status));
     }
 
     public ArrayList<Player> getPlayers() {
@@ -96,6 +99,8 @@ public class Match extends Observable {
      * @param p select a player
      */
     public void setLosers(Player p) {
+        if(p.isActive())
+            players.get((players.indexOf(getCurrentPlayer())+1)%3).setActive(true);
         getLosers().add(p);
         getPlayers().remove(p);
         notifyObservers(new SomeoneLoseServer(p.getName()));

@@ -113,7 +113,9 @@ public class MatchTest {
         Match m = new Match(0);
         m.setPlayers(p);
         m.setNextPlayer();
-        p.get(1).setCurrentWorker(0);
+        m.setNextPlayer();
+        m.setLosers(p.get(2));
+        m.setLosers(p.get(0));
         assertTrue(m.checkCurrentPlayerWin());
 
     }
@@ -124,8 +126,8 @@ public class MatchTest {
         Match m = new Match(0);
         m.setPlayers(p);
         m.setNextPlayer();
-        p.get(1).setCurrentWorker(0);
-        p.get(2).setCurrentWorker(0);
+        m.setLosers(p.get(1));
+        m.setLosers(p.get(1));
         assertTrue(m.checkCurrentPlayerWin());
 
     }

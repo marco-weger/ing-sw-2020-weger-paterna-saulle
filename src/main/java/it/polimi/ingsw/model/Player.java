@@ -70,15 +70,20 @@ public class Player extends Observable {
      */
     public void setWorker1(Worker worker1) {
         this.worker1 = worker1;
-        notifyObservers(new WorkerChosenServer(name,1,worker1.getRow(),worker2.getRow()));
+        notifyObservers(new WorkerChosenServer(name,1,worker1.getRow(),worker1.getRow()));
     }
 
     public Worker getWorker2() {
         return worker2;
     }
 
+    /**
+     * The first worker is instanced, all players will be notified
+     * @param worker2 the istance of worker
+     */
     public void setWorker2(Worker worker2) {
         this.worker2 = worker2;
+        notifyObservers(new WorkerChosenServer(name,1,worker2.getRow(),worker2.getRow()));
     }
 
     public void setActive(boolean active){
