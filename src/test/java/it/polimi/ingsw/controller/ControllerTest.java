@@ -52,6 +52,12 @@ public class ControllerTest {
 
     @Test
     public void update() {
+        initialize();
+        controller.getMatch().setStatus(Status.CARD_CHOICE);
+        controller.update(new ChallengerChoseClient("Giulio",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
+        assertEquals(controller.getMatch().getSelectedCard().size(),0);
+        controller.update(new ChallengerChoseClient("Marco",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
+        assertTrue(controller.getMatch().getSelectedCard().containsAll(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS)));
     }
 
     @Test
