@@ -26,6 +26,10 @@ public class Controller implements Observer, ClientMessageHandler {
         this.virtualView = virtualView;
     }
 
+    public Controller(Match match) {
+        this.match = match;
+    }
+
 
     public VirtualView getVirtualView() {
         return virtualView;
@@ -221,9 +225,10 @@ public class Controller implements Observer, ClientMessageHandler {
     }
 
     public void endGame(Player winner){
-        for(Player p:match.getPlayers())
-            if(p.getName().compareTo(winner.getName()) != 0)
+        for(Player p:match.getPlayers()) {
+            if (p.getName().compareTo(winner.getName()) != 0)
                 match.setLosers(p);
+        }
         match.setEnded(true);
         match.setStatus(Status.END);
     }

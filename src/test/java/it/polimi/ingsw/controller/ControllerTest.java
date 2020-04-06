@@ -1,32 +1,25 @@
 package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.cards.Card;
-import it.polimi.ingsw.model.cards.CardName;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class ControllerTest {
 
-    Board b = new Board();
-
-    ArrayList<Player> p = new ArrayList<>(Arrays.asList(
+    //create a list of players with the developers
+    ArrayList<Player> players = new ArrayList<>(Arrays.asList(
             new Player("Marco"),
             new Player("Francesco"),
             new Player("Giulio")
     ));
 
-    ArrayList<CardName> s = new ArrayList<>(Arrays.asList(
-            CardName.ATHENA,CardName.PAN,CardName.APOLLO
-    ));
+    //generate a Match
+    Match m = new Match(42);
+    //generate a Controller for that Match
+    Controller controller = new Controller(m);
 
-    //ended = false, losers = empty [TEST CONSTRUCTOR]
-    Match m = new Match(42, b, Status.CARD_CHOICE, p , s);
     @Test
     public void update() {
     }
@@ -77,10 +70,20 @@ public class ControllerTest {
 
     @Test
     public void endGameTest() {
-        Player winner = p.get(0);
-    //    setMatch(m);
-    //    m.endGame(winner);
-     //   assertTrue(m.endGame(winner);
+        controller.getMatch().setPlayers(players);
+
+        System.out.println(m.getPlayers().get(0).getName());
+        System.out.println(m.getPlayers().get(1).getName());
+        System.out.println(m.getPlayers().get(2).getName() + "\n");
+
+        controller.endGame(m.getPlayers().get(0));
+
+        System.out.println(m.getLosers().get(0).getName());
+        //System.out.println(m.getLosers().get(1).getName());
+
+       // assertEquals(2, m.getLosers().size());
+        assertTrue(m.isEnded());
+        assertEquals(Status.END,m.getStatus());
     }
 
     @Test
