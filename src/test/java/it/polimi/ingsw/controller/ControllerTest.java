@@ -79,6 +79,11 @@ public class ControllerTest {
         assertEquals(controller.getMatch().getPlayers().get(1).getCard().getName(),CardName.ATLAS);
         assertEquals(controller.getMatch().getPlayers().get(0).getCard().getName(),CardName.PAN);
     }
+
+    //Marco=PAN
+    //Francesco=ATLAS
+    //Giulio=HEPHAESTUS
+
     @Test
     public void connectionClient() {
         initialize();
@@ -110,6 +115,66 @@ public class ControllerTest {
         // TODO: this message will be implemented
         controller.handleMessage(new PingClient());
     }
+
+    //Marco=PAN
+    //Francesco=ATLAS
+    //Giulio=HEPHAESTUS
+     @Test
+    public void answerAbilityPassive() {
+        initialize();
+        playerChoseClient();
+        controller.getMatch().getPlayers().get(2).setActive(true);
+        assertEquals(controller.getMatch().getCurrentPlayer().getName(),"Giulio");
+        controller.getMatch().setStatus(Status.CHOSEN);
+        //Giulio has answered yes to the question
+         //so it will activate his ability, and switch to next turn
+        controller.handleMessage(new AnswerAbilityClient(controller.getMatch().getCurrentPlayer().getName(), true, controller.getMatch().getStatus()));
+         assertTrue(controller.getMatch().getCurrentPlayer().getCard().isActive());
+        assertEquals(controller.getMatch().getStatus(), Status.QUESTION_M);
+        /*
+         controller.getMatch().getPlayers().get(0).getWorker1().move(0,0);
+         controller.getMatch().getPlayers().get(0).getWorker2().move(1,0);
+         controller.getMatch().getPlayers().get(1).getWorker1().move(2,0);
+         controller.getMatch().getPlayers().get(1).getWorker2().move(0,1);
+         controller.getMatch().getPlayers().get(2).getWorker1().move(2,1);
+         controller.getMatch().getPlayers().get(2).getWorker2().move(1,1);
+         for(Cell ce: controller.getMatch().getBoard().getField()){
+             if(ce.getRow() == 0 && ce.getColumn() == 0)
+                 ce.setLevel(0);
+             else if(ce.getRow() == 1 && ce.getColumn() == 0)
+                 ce.setLevel(0);
+             else if(ce.getRow() == 2 && ce.getColumn() == 0)
+                 ce.setLevel(0);
+             else if(ce.getRow() == 0 && ce.getColumn() == 1)
+                 ce.setLevel(0);
+             else if(ce.getRow() == 2 && ce.getColumn() == 1)
+                 ce.setLevel(0);
+             else if(ce.getRow() == 1 && ce.getColumn() == 2)
+                 ce.setLevel(0);
+             else if(ce.getRow() == 1 && ce.getColumn() == 1)
+                 ce.setLevel(0);
+             else if(ce.getRow() == 3 && ce.getColumn() == 0)
+                 ce.setLevel(0);
+             else if(ce.getRow() == 3 && ce.getColumn() == 1)
+                 ce.setLevel(0);
+             else if(ce.getRow() == 0 && ce.getColumn() == 2)
+                 ce.setLevel(0);
+         }
+
+         assertEquals(controller.getMatch().getCurrentPlayer().getCard().getCheckMove(controller.getMatch().getPlayers(),controller.getMatch().getBoard()).size(), 4);
+    */
+        controller.getMatch().setStatus(Status.MOVED);
+         controller.handleMessage(new AnswerAbilityClient(controller.getMatch().getCurrentPlayer().getName(), true, controller.getMatch().getStatus()));
+         assertEquals(controller.getMatch().getStatus(), Status.QUESTION_B);
+}
+
+    @Test
+    public void movementClient() {
+        initialize();
+        //controller.handleMessage(mess);
+
+    }
+
 
     @Test
     public void BuildClient() {

@@ -167,8 +167,8 @@ public class Controller implements Observer, ClientMessageHandler {
     @Override
     public void handleMessage(AnswerAbilityClient message) {
         if(match.getCurrentPlayer().getName().compareTo(message.name) == 0
-                && match.getStatus().compareTo(message.type) == 0
-        ){
+                && match.getStatus().compareTo(message.type) == 0)
+        {
             match.getCurrentPlayer().getCard().setActive(message.ability);
             match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
             if(match.getStatus().compareTo(Status.QUESTION_M) == 0){
