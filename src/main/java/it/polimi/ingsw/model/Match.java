@@ -36,10 +36,26 @@ public class Match extends Observable {
      */
     private Status status;
 
+    /**
+     * True if the match is ended
+     */
     private boolean ended;
 
+    /**
+     * This list is used during cards matching
+     */
     private ArrayList<CardName> selectedCard;
 
+    /**
+     * The match is initialized with these;
+     * - BOARD: 5x5 cell board with all cells at 0 level
+     * - ENDED: false
+     * - STATUS: CARD_CHOICE
+     * - PLAYERS: empty list
+     * - SELECTEDCARD: empty list
+     * - LOOSERS: empty list
+     * @param id the unique match id
+     */
     public Match(int id){
         this.id=id;
         this.board=new Board();
@@ -49,8 +65,6 @@ public class Match extends Observable {
         this.losers = new ArrayList<>();
         this.selectedCard = new ArrayList<>();
     }
-
-
 
     public int getId() {
         return id;

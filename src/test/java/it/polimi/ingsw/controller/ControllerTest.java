@@ -52,6 +52,12 @@ public class ControllerTest {
 
     @Test
     public void update() {
+        initialize();
+        controller.getMatch().setStatus(Status.CARD_CHOICE);
+        controller.update(new ChallengerChoseClient("Giulio",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
+        assertEquals(controller.getMatch().getSelectedCard().size(),0);
+        controller.update(new ChallengerChoseClient("Marco",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
+        assertTrue(controller.getMatch().getSelectedCard().containsAll(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS)));
     }
 
     @Test
@@ -79,6 +85,11 @@ public class ControllerTest {
         assertEquals(controller.getMatch().getPlayers().get(1).getCard().getName(),CardName.ATLAS);
         assertEquals(controller.getMatch().getPlayers().get(0).getCard().getName(),CardName.PAN);
     }
+
+    //Marco=PAN
+    //Francesco=ATLAS
+    //Giulio=HEPHAESTUS
+
     @Test
     public void connectionClient() {
         initialize();
@@ -111,40 +122,41 @@ public class ControllerTest {
         controller.handleMessage(new PingClient());
     }
 
-
-
-    @Test
-    public void MoveClientWin(){
+    //Marco=PAN
+    //Francesco=ATLAS
+    //Giulio=HEPHAESTUS
+     @Test
+    public void answerAbilityClient() {
         initialize();
         playerChoseClient();
-        controller.getMatch().getPlayers().get(1).setActive(true);
+        controller.getMatch().getPlayers().get(2).setActive(true);
+        assertEquals(controller.getMatch().getCurrentPlayer().getName(),"Giulio");
+        controller.getMatch().setStatus(Status.START);
+         controller.handleMessage(new AnswerAbilityClient(controller.getMatch().getCurrentPlayer().getName(), false, controller.getMatch().getStatus()));
+         assertFalse(controller.getMatch().getCurrentPlayer().getCard().isActive());
+         assertEquals(controller.getMatch().getStatus(), Status.CHOSEN);
+        //Giulio has answered yes to the question
+         //so it will activate his ability, and switch to next turn
+        controller.handleMessage(new AnswerAbilityClient(controller.getMatch().getCurrentPlayer().getName(), true, controller.getMatch().getStatus()));
+         assertTrue(controller.getMatch().getCurrentPlayer().getCard().isActive());
+        assertEquals(controller.getMatch().getStatus(), Status.QUESTION_M);
         controller.getMatch().setStatus(Status.MOVED);
-        controller.getMatch().getPlayers().get(1).setCard(CardName.ATLAS);
-        controller.getMatch().getPlayers().get(1).getWorker1().move(0,0);
-        controller.getMatch().getPlayers().get(1).getWorker2().move(1,1);
-        controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
-        controller.getMatch().getBoard().getCell(0,0).setLevel(2);
-        controller.getMatch().getBoard().getCell(1,0).setLevel(3);
-        controller.handleMessage(new MoveClient("Francesco", 1, 0));
-        assertEquals(1, controller.getMatch().getPlayers().size());
-        assertEquals("Francesco", controller.getMatch().getPlayers().get(0).getName());
-        assertEquals(Status.END, controller.getMatch().getStatus());
-    }
-
+         controller.handleMessage(new AnswerAbilityClient(controller.getMatch().getCurrentPlayer().getName(), true, controller.getMatch().getStatus()));
+         assertEquals(controller.getMatch().getStatus(), Status.QUESTION_B);
+         controller.getMatch().getPlayers().get(1).setActive(true);
+         controller.getMatch().getCurrentPlayer().getCard().setActive(true);
+         assertTrue(controller.getMatch().getCurrentPlayer().getCard().isActive());
+         controller.getMatch().setStatus(Status.START);
+         controller.handleMessage(new AnswerAbilityClient("Giulio", false, controller.getMatch().getStatus()));
+         assertTrue(controller.getMatch().getCurrentPlayer().getCard().isActive());
+         assertEquals(controller.getMatch().getStatus(), Status.START);
+     }
 
     @Test
-    public void MoveClient(){
+    public void movementClient() {
         initialize();
-        playerChoseClient();
-        controller.getMatch().getPlayers().get(1).setActive(true);
-        controller.getMatch().setStatus(Status.MOVED);
-        controller.getMatch().getPlayers().get(1).getWorker1().move(0,0);
-        controller.getMatch().getPlayers().get(1).getWorker2().move(1,1);
-        controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
-        controller.handleMessage(new MoveClient("Francesco", 1, 0));
-        assertEquals(1, controller.getMatch().getPlayers().get(1).getWorker1().getRow());
-        assertEquals(0, controller.getMatch().getPlayers().get(1).getWorker1().getColumn());
-        assertEquals(Status.BUILT, controller.getMatch().getStatus());
+        //controller.handleMessage(mess);
+
     }
 
 

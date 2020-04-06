@@ -166,18 +166,13 @@ public class Controller implements Observer, ClientMessageHandler {
 
     @Override
     public void handleMessage(AnswerAbilityClient message) {
-        if(match.getCurrentPlayer().getName().compareTo(message.name) == 0
-                && match.getStatus().compareTo(message.type) == 0
-        ){
+        if(match.getCurrentPlayer().getName().compareTo(message.name) == 0 && match.getStatus().compareTo(message.type) == 0) {
             match.getCurrentPlayer().getCard().setActive(message.ability);
             match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
-            if(match.getStatus().compareTo(Status.QUESTION_M) == 0){
-                match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(),match.getBoard());
-            }
-            else if(match.getStatus().compareTo(Status.QUESTION_B) == 0){
-                match.getCurrentPlayer().getCard().getCheckBuild(match.getPlayers(),match.getBoard());
-            }
-        }
+            if (match.getStatus().compareTo(Status.QUESTION_M) == 0)
+                match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(), match.getBoard());
+            else if (match.getStatus().compareTo(Status.QUESTION_B) == 0)
+                match.getCurrentPlayer().getCard().getCheckBuild(match.getPlayers(), match.getBoard()); }
     }
 
     //TODO ho cambiato Status.QUESTION_M in Status.MOVE, perché devo garantire di essere nello stato di costruzione, non sono l'anserAbility
