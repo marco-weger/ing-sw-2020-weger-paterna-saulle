@@ -239,7 +239,7 @@ public class Controller implements Observer, ClientMessageHandler {
      * Move all the loser players into the loser list and call the end of the Match
      *@param winner the player who have win the match
      */
-    public void endGame(Player winner){
+    private void endGame(Player winner){
         for(int i=0;i<match.getPlayers().size();)
         {
             if (match.getPlayers().get(i).getName().compareTo(winner.getName()) != 0)
@@ -252,7 +252,7 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
-    public void inizializeMatch() {
+    private void inizializeMatch() {
         // TODO: it will be used after lobby closing
     }
 
