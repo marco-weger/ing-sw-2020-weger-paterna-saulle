@@ -83,6 +83,9 @@ public class Player {
         return active;
     }
 
+    /**
+     *a method to get the current worker
+     */
     public Worker getCurrentWorker(){
          if(getWorker1().isActive())
              return worker1;

@@ -254,6 +254,8 @@ public class Card extends Observable {
     }
 
     /**
+     * @param p list of players
+     * @param b board
      * @return It checks if current player doesn't have move, and update workers status
      */
     public boolean hasLost(ArrayList<Player> p, Board b) {

@@ -8,4 +8,8 @@ import java.io.Serializable;
 public class ReConnectionClient implements ClientMessage , Serializable {
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
+
+    /**
+     * @a require to reconnection by the client, to guarantee persistence
+     */
 }

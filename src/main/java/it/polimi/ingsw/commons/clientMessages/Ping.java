@@ -8,4 +8,9 @@ import java.io.Serializable;
 public class Ping  implements ClientMessage , Serializable {
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
+
+
+    /**
+     * a method to check the connection client-server
+     */
 }

@@ -13,6 +13,11 @@ public class BuildClient implements ClientMessage, Serializable {
     public String name;
     public int x, y;
 
+    /**
+     * @param x the row chosen to build
+     * @param y the column chosen to build
+     * this method send to the server the decision of the player about where Build.
+     */
     public BuildClient(String name, int x, int y)
     {
         this.name=name;

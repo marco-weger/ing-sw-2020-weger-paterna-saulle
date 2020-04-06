@@ -13,6 +13,12 @@ public class WorkerChoseClient implements ClientMessage , Serializable {
     public String name;
     public int worker;
 
+
+    /**
+     * @param name the name of the player
+     * @param worker the worker chosen
+     * this method send to the server the decision of the player about the worker to use.
+     */
     public WorkerChoseClient(String name, int worker)
     {
         this.name=name;

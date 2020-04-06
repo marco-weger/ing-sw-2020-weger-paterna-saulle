@@ -82,6 +82,10 @@ public class Match {
         return losers;
     }
 
+    /**
+     *@param p select a player
+     *a method that add a player into the Loser List and remove it from the Active Player List
+     */
     public void setLosers(Player p) {
         getLosers().add(p);
         getPlayers().remove(p);
@@ -97,6 +101,11 @@ public class Match {
     }
 
     public ArrayList<CardName> getSelectedCard(){ return selectedCard; }
+
+    /**
+     *@param selectedCard the list of card selected
+     * a method that pick the card from the deck and notify the third player to choose.
+     */
 
     public void setSelectedCards(ArrayList<CardName> selectedCard){
         this.selectedCard = new ArrayList<>();

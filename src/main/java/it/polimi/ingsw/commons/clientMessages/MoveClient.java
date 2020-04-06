@@ -13,6 +13,11 @@ public class MoveClient implements ClientMessage, Serializable {
     public String name;
     public int x, y;
 
+    /**
+     * @param x the row chosen to move
+     * @param y the column chosen to move
+     * this method send to the server the decision of the player about where move.
+     */
     public MoveClient(String name, int x, int y)
     {
         this.name=name;

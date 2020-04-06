@@ -8,4 +8,6 @@ import java.io.Serializable;
 public class DisconnectionClient implements ClientMessage, Serializable {
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
+
+    //TODO chiarire questo metodo.
 }

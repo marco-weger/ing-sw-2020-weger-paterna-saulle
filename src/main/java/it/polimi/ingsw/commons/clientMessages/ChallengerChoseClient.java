@@ -15,6 +15,11 @@ public class ChallengerChoseClient implements ClientMessage, Serializable {
     public String name;
     public ArrayList<CardName> c;
 
+    /**
+     * @param name the name of the challenger
+     * @param c ths list of card pick from the deck
+     * this method send to the server the three or two card pick from the deck by the challenger
+     */
     public ChallengerChoseClient(String name, ArrayList<CardName> c) {
         this.name = name;
         this.c = c;

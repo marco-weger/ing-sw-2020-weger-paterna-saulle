@@ -15,6 +15,7 @@ public class AnswerAbilityClient implements ClientMessage, Serializable {
     public boolean ability;
 
     /**
+     * this method send to the server the decision of the player about switch on or not his God ability.
      * BEFORE_M or BEFORE_B
      */
     public Status type;
