@@ -1,10 +1,15 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.Observable;
+import it.polimi.ingsw.commons.serverMessages.AvailableCardServer;
+import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
+import it.polimi.ingsw.commons.serverMessages.SomeoneLoseServer;
+import it.polimi.ingsw.commons.serverMessages.SomeoneWinServer;
 import it.polimi.ingsw.model.cards.CardName;
 
 import java.util.ArrayList;
 
-public class Match {
+public class Match extends Observable {
 
     /**
      * Unique id to discriminate the match
@@ -65,9 +70,13 @@ public class Match {
         return status;
     }
 
+    /**
+     * When the status changes the view will be notified with current one and current player
+     * @param status the new status
+     */
     public void setStatus(Status status) {
         this.status = status;
-        // TODO: notifica del current status alla view ed eventualmente (?) di chi è il turno (CurrentStatusServer)
+        notifyObservers(new CurrentStatusServer(getCurrentPlayer().getName(),status));
     }
 
     public ArrayList<Player> getPlayers() {
@@ -83,13 +92,13 @@ public class Match {
     }
 
     /**
-     *@param p select a player
-     *a method that add a player into the Loser List and remove it from the Active Player List
+     * A method that add a player into the Loser List and remove it from the Active Player List
+     * @param p select a player
      */
     public void setLosers(Player p) {
         getLosers().add(p);
         getPlayers().remove(p);
-        // TODO: notify the loser (SomeoneLoseServer)
+        notifyObservers(new SomeoneLoseServer(p.getName()));
     }
 
     public Board getBoard() {
@@ -103,14 +112,13 @@ public class Match {
     public ArrayList<CardName> getSelectedCard(){ return selectedCard; }
 
     /**
-     *@param selectedCard the list of card selected
-     * a method that pick the card from the deck and notify the third player to choose.
+     * A method that pick the card from the deck and notify the third player to choose.
+     * @param selectedCard the list of card selected
      */
-
     public void setSelectedCards(ArrayList<CardName> selectedCard){
         this.selectedCard = new ArrayList<>();
         this.selectedCard.addAll(selectedCard);
-        // TODO: notifica chiedendo al giocatore in ultima posizione la scelta (ServerMessageHandler)
+        notifyObservers(new AvailableCardServer(selectedCard));
     }
 
     /**
@@ -145,17 +153,8 @@ public class Match {
      * @return It verifies if the current player win for other players defeat
      */
     public boolean checkCurrentPlayerWin() {
-        int deads = 0;
-        int k = (players.size() - 1);
-        for (Player player : players) {
-            if (getCurrentPlayer() != player) {
-                if (!player.getWorker1().isActive() && !player.getWorker2().isActive()) {
-                    deads++;
-                }
-            }
-        }
-        if(deads == k){
-            // TODO: notify win (SomeoneWinServer)
+        if(players.size() == 1){
+            notifyObservers(new SomeoneWinServer(players.get(0).getName()));
             return true;
         }
         return false;
