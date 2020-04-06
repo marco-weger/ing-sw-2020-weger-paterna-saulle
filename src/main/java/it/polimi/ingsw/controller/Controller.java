@@ -228,12 +228,16 @@ public class Controller implements Observer, ClientMessageHandler {
     }
 
     public void endGame(Player winner){
-        for(Player p:match.getPlayers()) {
-            if (p.getName().compareTo(winner.getName()) != 0)
-                match.setLosers(p);
+        for(int i=0;i<match.getPlayers().size();)
+        {
+            if (match.getPlayers().get(i).getName().compareTo(winner.getName()) != 0)
+                match.setLosers(match.getPlayers().get(i));
+            else i++;
         }
-        match.setEnded(true);
-        match.setStatus(Status.END);
+        if(match.getPlayers().size() == 1){
+            match.setEnded(true);
+            match.setStatus(Status.END);
+        }
     }
 
     public void inizializeMatch() {
