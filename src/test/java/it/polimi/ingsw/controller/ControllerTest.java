@@ -111,6 +111,43 @@ public class ControllerTest {
         controller.handleMessage(new PingClient());
     }
 
+
+
+    @Test
+    public void MoveClientWin(){
+        initialize();
+        playerChoseClient();
+        controller.getMatch().getPlayers().get(1).setActive(true);
+        controller.getMatch().setStatus(Status.MOVED);
+        controller.getMatch().getPlayers().get(1).setCard(CardName.ATLAS);
+        controller.getMatch().getPlayers().get(1).getWorker1().move(0,0);
+        controller.getMatch().getPlayers().get(1).getWorker2().move(1,1);
+        controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
+        controller.getMatch().getBoard().getCell(0,0).setLevel(2);
+        controller.getMatch().getBoard().getCell(1,0).setLevel(3);
+        controller.handleMessage(new MoveClient("Francesco", 1, 0));
+        assertEquals(1, controller.getMatch().getPlayers().size());
+        assertEquals("Francesco", controller.getMatch().getPlayers().get(0).getName());
+        assertEquals(Status.END, controller.getMatch().getStatus());
+    }
+
+
+    @Test
+    public void MoveClient(){
+        initialize();
+        playerChoseClient();
+        controller.getMatch().getPlayers().get(1).setActive(true);
+        controller.getMatch().setStatus(Status.MOVED);
+        controller.getMatch().getPlayers().get(1).getWorker1().move(0,0);
+        controller.getMatch().getPlayers().get(1).getWorker2().move(1,1);
+        controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
+        controller.handleMessage(new MoveClient("Francesco", 1, 0));
+        assertEquals(1, controller.getMatch().getPlayers().get(1).getWorker1().getRow());
+        assertEquals(0, controller.getMatch().getPlayers().get(1).getWorker1().getColumn());
+        assertEquals(Status.BUILT, controller.getMatch().getStatus());
+    }
+
+
     @Test
     public void BuildClient() {
         initialize();

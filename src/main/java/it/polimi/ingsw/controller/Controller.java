@@ -180,23 +180,33 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+    //TODO ho cambiato Status.QUESTION_M in Status.MOVE, perché devo garantire di essere nello stato di costruzione, non sono l'anserAbility
+    //TODO rivedere questo messaggio in caso in cui lo spostamento NON è valido. (Caso non garantito spostamento+checkbuild)
+
+    /**
+     * If the player can move into that cell, with this method he can move into it.
+     * after it, if the player have won, end the game
+     * if the player God is Arthemis, ask the question to the players
+     * @param message a message ClientToServer with the name of the player and the cell where him wants to move.
+     */
     @Override
     public void handleMessage(MoveClient message) {
-        if(match.getCurrentPlayer().getName().equals(message.name)
-            && match.getStatus().compareTo(Status.QUESTION_M) == 0
-        ){
+        if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.MOVED) == 0){
             Cell from = match.getBoard().getCell(match.getCurrentPlayer().getCurrentWorker().getRow(),match.getCurrentPlayer().getCurrentWorker().getRow());
             if(match.getCurrentPlayer().getCard().move(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
 
                 if(match.getCurrentPlayer().getCard().checkWin(from,match.getBoard().getCell(message.x,message.y))){
+                    //caso with currentplayerwin
                     endGame(match.getCurrentPlayer());
+                    return;
                 }
 
                 match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
                 if(match.getCurrentPlayer().getCard().isQuestion()
                         && match.getCurrentPlayer().getCard().getStatus().compareTo(match.getStatus()) == 0
-                        && match.getCurrentPlayer().getCard().activable(match.getPlayers(),match.getBoard())
-                ){
+                        && match.getCurrentPlayer().getCard().activable(match.getPlayers(),match.getBoard()))
+                {
+                    //ARTHEMIS CHOOSE TO MOVE
                     match.getCurrentPlayer().doQuestion();
                 }
                 else
@@ -208,7 +218,15 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
-    //TODO ho cambiato Status.QUESTION_M in Status.BUILT, perché devo garantire di essere nello stato di costruzione, non sono l'anserAbility
+    //TODO ho cambiato Status.QUESTION_B in Status.BUILT, perché devo garantire di essere nello stato di costruzione, non sono l'anserAbility
+
+    /**
+     * If the player Can Build in the cell, build a tower.
+     * After if the player have Prometehus card with the ability on goes to QUESTION_M
+     * else, go to END and close the turn.
+     * @param message a message ClientToServer with the name of the player and the cell where him wants to build.
+     */
+
     @Override
     public void handleMessage(BuildClient message) {
         if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.BUILT) == 0){
@@ -244,7 +262,9 @@ public class Controller implements Observer, ClientMessageHandler {
     }
 
     /**
-     *
+     *this method handle the turn, if the goOn is true, close the currentplayer turn and set the next player
+     * instead, if the goOne is false, check if the current player have won --> (in case End the game)
+     * if the GoOne is false, but the player doesn't have won, check if the player have lost --> (in case move the player into loser list)
      * @param goOn if true goes to the next player, if false initialize the turn
      */
     public void startTurn(boolean goOn){
