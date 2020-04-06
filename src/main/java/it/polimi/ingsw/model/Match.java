@@ -105,7 +105,9 @@ public class Match extends Observable {
             players.get((players.indexOf(getCurrentPlayer())+1)%3).setActive(true);
         getLosers().add(p);
         getPlayers().remove(p);
-        notifyObservers(new SomeoneLoseServer(p.getName()));
+        if(players.size() > 1)
+            notifyObservers(new SomeoneLoseServer(p.getName()));
+        else notifyObservers(new SomeoneWinServer(players.get(0).getName()));
     }
 
     public Board getBoard() {

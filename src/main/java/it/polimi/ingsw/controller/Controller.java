@@ -112,8 +112,11 @@ public class Controller implements Observer, ClientMessageHandler {
                 }
             }
             if(match.getSelectedCard().size() == 1){
-                // TODO: operatione to inizialize firs player
-                match.setStatus(Status.WORKER_CHOICE);
+                match.getPlayers().get(0).setCard(match.getSelectedCard().get(0));
+                match.getSelectedCard().remove(match.getSelectedCard().get(0));
+
+                if(match.getSelectedCard().size() == 0)
+                    match.setStatus(Status.WORKER_CHOICE);
             }
             else {
                 match.setSelectedCards(match.getSelectedCard());
@@ -141,7 +144,7 @@ public class Controller implements Observer, ClientMessageHandler {
                 selected.setWorker2(new Worker(message.x,message.y));
 
             if(match.getPlayers().get(match.getPlayers().size()-1).getWorker2() != null)
-                startTurn();
+                startTurn(true);
         }
     }
 
@@ -218,7 +221,7 @@ public class Controller implements Observer, ClientMessageHandler {
                 match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
                 if(match.getStatus().equals(Status.END))
                 {
-                    startTurn();
+                    startTurn(true);
                 }
             }
         }
@@ -234,18 +237,20 @@ public class Controller implements Observer, ClientMessageHandler {
     }
 
     public void inizializeMatch() {
-        // TODO: valuteremo più avanti se usarlo
+        // TODO: it will be used after lobby closing
     }
 
-    public void startTurn(){
-        match.setNextPlayer();
+    public void startTurn(boolean goOn){
+        if(goOn)
+            match.setNextPlayer();
 
         match.getCurrentPlayer().getCard().inizializeTurn();
         if(match.checkCurrentPlayerWin())
             endGame(match.getCurrentPlayer());
         else{
             if(match.getCurrentPlayer().getCard().hasLost(match.getPlayers(),match.getBoard())){
-                startTurn();
+                match.setLosers(match.getCurrentPlayer());
+                startTurn(false);
             }
             else match.setStatus(Status.START);
         }

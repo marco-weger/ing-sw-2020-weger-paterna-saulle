@@ -4,6 +4,8 @@ import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.serverMessages.CheckBuildServer;
 import it.polimi.ingsw.commons.serverMessages.CheckMoveServer;
+import it.polimi.ingsw.commons.serverMessages.SomeoneLoseServer;
+import it.polimi.ingsw.commons.serverMessages.SomeoneWinServer;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
@@ -65,12 +67,8 @@ public class Card extends Observable {
      */
     public boolean checkWin(Cell from, Cell to) throws NullPointerException
     {
-        if(from != null && to != null){
-            if(Board.isCellInBoard(from) && Board.isCellInBoard(to) && from.getLevel() == 2 && to.getLevel() == 3){
-                // TODO: notifico il current che ha vinto, sarà poi il controller a notificare della sconfitta gli altri 2 (SomeoneWinServer)
-                return true;
-            }
-        }
+        if(from != null && to != null)
+            return (Board.isCellInBoard(from) && Board.isCellInBoard(to) && from.getLevel() == 2 && to.getLevel() == 3);
         return false;
     }
 
@@ -278,7 +276,6 @@ public class Card extends Observable {
                 current.getCurrentWorker().move(-1, -1);
                 current.setCurrentWorker(1);
                 current.getCurrentWorker().move(-1, -1);
-                // TODO: if it has lost notify all players set workers to null (SomeoneLoseServer)
                 return true;
             } else {
                 current.setCurrentWorker(0);

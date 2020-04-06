@@ -17,11 +17,10 @@ public class Pan extends Card {
      */
     @Override
     public boolean checkWin(Cell from, Cell to) {
-            if(from == null || to == null) return false;
-            else if (from.getLevel() == 2 && to.getLevel() == 0){
-                // TODO: notifico il current che ha vinto, sarà poi il controller a notificare della sconfitta gli altri 2 (SomeoneWinServer)
+            if(from == null || to == null)
+                return false;
+            else if (from.getLevel() == 2 && to.getLevel() == 0)
                 return true;
-            }
             else
                 return super.checkWin(from, to);
 

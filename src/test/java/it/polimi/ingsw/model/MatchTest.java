@@ -130,6 +130,7 @@ public class MatchTest {
         m.setLosers(p.get(1));
         assertTrue(m.checkCurrentPlayerWin());
 
+        //
     }
 /*
     @Test
