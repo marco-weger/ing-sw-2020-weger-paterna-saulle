@@ -134,11 +134,18 @@ public class MatchTest {
     }
 
     @Test
-    public void testHasLost(){
+    public void testSetLoser(){
         initialize();
         Match m = new Match(0);
+        m.setPlayers(p);
+        m.setNextPlayer(); //0
+        m.setNextPlayer(); //1
+        m.setNextPlayer(); //2
 
-
+        m.setLosers(p.get(2));
+        assertEquals(m.getCurrentPlayer(),m.getPlayers().get(0));
+        m.setLosers(p.get(1));
+        assertTrue(m.checkCurrentPlayerWin());
     }
 /*
     @Test
