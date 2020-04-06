@@ -100,7 +100,7 @@ public class Match extends Observable {
      * A method that add a player into the Loser List and remove it from the Active Player List
      * @param p select a player
      */
-    //FIXME discutere su SetLoser
+    //FIXME discutere su SetLoser, se è invocato solo da endGame e da startTurn va bene cosi
     public void setLosers(Player p) {
       /*  if(p.isActive())
             players.get((players.indexOf(getCurrentPlayer())+1)%3).setActive(true);
@@ -163,8 +163,10 @@ public class Match extends Observable {
     /**
      * @return It verifies if the current player win for other players defeat
      */
+    //FIXME Meglio contare il numero dei player eliminati, che rimuovere i player dalla lista
+    //FIXME altrimenti addio alla modalità spettatore, e il parametro active diventa inutile
     public boolean checkCurrentPlayerWin() {
-        if(players.size() == 1){
+        if(losers.size() == players.size()-1){
             notifyObservers(new SomeoneWinServer(players.get(0).getName()));
             return true;
         }

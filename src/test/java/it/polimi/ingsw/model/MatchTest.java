@@ -131,6 +131,14 @@ public class MatchTest {
         assertTrue(m.checkCurrentPlayerWin());
 
     }
+
+    @Test
+    public void testHasLost(){
+        initialize();
+        Match m = new Match(0);
+
+
+    }
 /*
     @Test
     public void testCheckCurrentPlayerLoseFalse() {
