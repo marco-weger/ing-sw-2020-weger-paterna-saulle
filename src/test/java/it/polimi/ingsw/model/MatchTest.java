@@ -132,6 +132,14 @@ public class MatchTest {
 
         //
     }
+
+    @Test
+    public void testHasLost(){
+        initialize();
+        Match m = new Match(0);
+
+
+    }
 /*
     @Test
     public void testCheckCurrentPlayerLoseFalse() {
