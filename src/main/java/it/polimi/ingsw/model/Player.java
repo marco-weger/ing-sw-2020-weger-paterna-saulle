@@ -1,10 +1,14 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.Observable;
+import it.polimi.ingsw.commons.serverMessages.CardChosenServer;
+import it.polimi.ingsw.commons.serverMessages.QuestionAbilityServer;
+import it.polimi.ingsw.commons.serverMessages.WorkerChosenServer;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.model.cards.FactoryCard;
 
-public class Player {
+public class Player extends Observable {
 
     /**
      * Username
@@ -48,23 +52,25 @@ public class Player {
     }
 
     /**
-     * The card is instanced by FACTORY class
+     * The card is instanced by FACTORY class, all players will be notified
      * @param card value from card ENUM
      */
     public void setCard(CardName card) {
         this.card = FactoryCard.getCard(card);
-
-        // TODO: notifico tutti i giocatori della scelta fatta (CardChosenServer)
+        notifyObservers(new CardChosenServer(name,card));
     }
 
     public Worker getWorker1() {
         return worker1;
     }
 
+    /**
+     * The first worker is instanced, all players will be notified
+     * @param worker1 the istance of worker
+     */
     public void setWorker1(Worker worker1) {
         this.worker1 = worker1;
-
-        // TODO: notify all (ricordarsi di aggiungere nel messaggio chi è worker) (WorkerChosenServer)
+        notifyObservers(new WorkerChosenServer(name,1,worker1.getRow(),worker2.getRow()));
     }
 
     public Worker getWorker2() {
@@ -106,7 +112,10 @@ public class Player {
         }
     }
 
+    /**
+     * When called notify the view that it's the moment to make the quest to user
+     */
     public void doQuestion(){
-        // TODO: notify con name settato sul suo nome (QuestionAbilityServer)
+        notifyObservers(new QuestionAbilityServer(name));
     }
 }
