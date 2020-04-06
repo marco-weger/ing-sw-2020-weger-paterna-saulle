@@ -10,19 +10,19 @@ public class BoardTest{
     public void isCellInBoard_cellNull()
     {
         Board b = new Board();
-        assertFalse(Board.isCellInBoard(null));
+        assertFalse(b.isCellInBoard(null));
     }
     @Test
     public void isCellInBoard_cellIn()
     {
         Board b = new Board();
-        assertTrue(Board.isCellInBoard(new Cell(0,0,0)));
+        assertTrue(b.isCellInBoard(new Cell(0,0,0)));
     }
     @Test
     public void isCellInBoard_cellOut()
     {
         Board b = new Board();
-        assertFalse(Board.isCellInBoard(new Cell(5,5,0)));
+        assertFalse(b.isCellInBoard(new Cell(5,5,0)));
     }
     // build
     @Test

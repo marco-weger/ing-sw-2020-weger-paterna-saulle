@@ -65,10 +65,10 @@ public class Card extends Observable {
      * @param to cell
      * @return true if this move is a win condition
      */
-    public boolean checkWin(Cell from, Cell to) throws NullPointerException
+    public boolean checkWin(Cell from, Cell to)
     {
         if(from != null && to != null)
-            return (Board.isCellInBoard(from) && Board.isCellInBoard(to) && from.getLevel() == 2 && to.getLevel() == 3);
+            return (from.getLevel() == 2 && to.getLevel() == 3);
         return false;
     }
 

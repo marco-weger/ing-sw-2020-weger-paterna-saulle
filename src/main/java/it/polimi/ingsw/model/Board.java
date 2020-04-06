@@ -31,9 +31,12 @@ public class Board {
      * @param c the cell
      * @return true if the cell is in the 5x5 board
      */
-    public static boolean isCellInBoard(Cell c){
+    public boolean isCellInBoard(Cell c){
         if(c != null)
-            return (c.getRow() >= 0 && c.getRow() < 5 && c.getColumn() >= 0 && c.getColumn() < 5);
+            for(Cell cell:this.field)
+                if(cell.getRow() == c.getRow() && cell.getColumn() == c.getColumn())
+                    return true;
+        //return (c.getRow() >= 0 && c.getRow() < 5 && c.getColumn() >= 0 && c.getColumn() < 5);
         return false;
     }
 
