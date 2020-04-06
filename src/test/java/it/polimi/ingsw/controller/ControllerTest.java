@@ -99,6 +99,89 @@ public class ControllerTest {
     }
 
     @Test
-    public void startTurn() {
+    public void startTurnTestGoOn() {
+        initialize();
+        controller.getMatch().getPlayers().get(0).setActive(true);
+        controller.startTurn(true);
+        assertEquals(controller.getMatch().getPlayers().get(1), controller.getMatch().getCurrentPlayer());
+    }
+
+    //TODO perchè se elimino prima il secondo player e poi il primo genero errore?
+    @Test
+    public void startTurnTestPlayerWin() {
+        initialize();
+        controller.getMatch().getPlayers().get(0).setActive(true);
+        controller.getMatch().setLosers(controller.getMatch().getPlayers().get(2));
+        controller.getMatch().setLosers(controller.getMatch().getPlayers().get(1));
+        controller.startTurn(false);
+        assertTrue(controller.getMatch().isEnded());
+        assertEquals(Status.END, controller.getMatch().getStatus());
+    }
+
+    @Test
+    public void startTurnTestSTART() {
+        initialize();
+        controller.getMatch().getPlayers().get(0).setActive(true);
+        for(Cell ce: controller.getMatch().getBoard().getField()){
+            if(ce.getRow() == 0 && ce.getColumn() == 0)
+                ce.setLevel(0);
+            else if(ce.getRow() == 0 && ce.getColumn() == 1)
+                ce.setLevel(0);
+            else if(ce.getRow() == 0 && ce.getColumn() == 2)
+                ce.setLevel(0);
+            else if(ce.getRow() == 0 && ce.getColumn() == 3)
+                ce.setLevel(0);
+            else if(ce.getRow() == 0 && ce.getColumn() == 4)
+                ce.setLevel(0);
+            else if(ce.getRow() == 1 && ce.getColumn() == 0)
+                ce.setLevel(0);
+            else if(ce.getRow() == 1 && ce.getColumn() == 1)
+                ce.setLevel(0);
+            else if(ce.getRow() == 1 && ce.getColumn() ==2)
+                ce.setLevel(0);
+            else if(ce.getRow() == 1 && ce.getColumn() == 3)
+                ce.setLevel(0);
+            else if(ce.getRow() == 1 && ce.getColumn() == 4)
+                ce.setLevel(0);
+        }
+        controller.startTurn(false);
+        //assertFalse(controller.getMatch().getCurrentPlayer().getCard().hasLost(controller.getMatch().getPlayers(),controller.getMatch().getBoard()));
+        assertEquals(Status.START, controller.getMatch().getStatus());
+    }
+
+    @Test
+    public void startTurnTestCurrentPlayerHasLost() {
+        initialize();
+        controller.getMatch().getPlayers().get(0).setActive(true);
+        controller.getMatch().getPlayers().get(0).getWorker1().move(0,0);
+        controller.getMatch().getPlayers().get(0).getWorker2().move(1,0);
+        controller.getMatch().getPlayers().get(1).getWorker1().move(2,0);
+        controller.getMatch().getPlayers().get(1).getWorker2().move(0,1);
+        controller.getMatch().getPlayers().get(2).getWorker1().move(2,1);
+        controller.getMatch().getPlayers().get(2).getWorker2().move(1,1);
+        for(Cell ce: controller.getMatch().getBoard().getField()){
+            if(ce.getRow() == 0 && ce.getColumn() == 0)
+                ce.setLevel(0);
+            else if(ce.getRow() == 1 && ce.getColumn() == 0)
+                ce.setLevel(0);
+            else if(ce.getRow() == 2 && ce.getColumn() == 0)
+                ce.setLevel(0);
+            else if(ce.getRow() == 0 && ce.getColumn() == 1)
+                ce.setLevel(0);
+            else if(ce.getRow() == 2 && ce.getColumn() == 1)
+                ce.setLevel(0);
+            else if(ce.getRow() == 1 && ce.getColumn() == 2)
+                ce.setLevel(0);
+            else if(ce.getRow() == 1 && ce.getColumn() == 1)
+                ce.setLevel(0);
+            else if(ce.getRow() == 3 && ce.getColumn() == 0)
+                ce.setLevel(0);
+            else if(ce.getRow() == 3 && ce.getColumn() == 1)
+                ce.setLevel(0);
+            else if(ce.getRow() == 0 && ce.getColumn() == 2)
+                ce.setLevel(0);
+        }
+        controller.startTurn(false);
+        assertEquals(1,controller.getMatch().getLosers().size());
     }
 }

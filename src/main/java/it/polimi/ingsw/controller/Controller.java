@@ -227,6 +227,10 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+    /**
+     * Move all the loser players into the loser list and call the end of the Match
+     *@param winner the player who have win the match
+     */
     public void endGame(Player winner){
         for(int i=0;i<match.getPlayers().size();)
         {
@@ -244,19 +248,26 @@ public class Controller implements Observer, ClientMessageHandler {
         // TODO: it will be used after lobby closing
     }
 
+    /**
+     *
+     * @param goOn if true goes to the next player, if false initialize the turn
+     */
     public void startTurn(boolean goOn){
-        if(goOn)
-            match.setNextPlayer();
+        if(goOn) match.setNextPlayer();
 
         match.getCurrentPlayer().getCard().inizializeTurn();
-        if(match.checkCurrentPlayerWin())
+        if(match.checkCurrentPlayerWin()) {
             endGame(match.getCurrentPlayer());
+        }
         else{
+
             if(match.getCurrentPlayer().getCard().hasLost(match.getPlayers(),match.getBoard())){
                 match.setLosers(match.getCurrentPlayer());
                 startTurn(false);
             }
-            else match.setStatus(Status.START);
+            else{
+                match.setStatus(Status.START);
+            }
         }
     }
 
