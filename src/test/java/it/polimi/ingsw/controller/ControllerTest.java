@@ -122,7 +122,7 @@ public class ControllerTest {
         assertEquals(controller.getMatch().getPlayers().get(1), controller.getMatch().getCurrentPlayer());
     }
 
-    //TODO perchè se elimino prima il secondo player e poi il primo genero errore?
+    //TODO perchè se elimino prima il primo player e poi il secondo genero errore?
     @Test
     public void startTurnTestPlayerWin() {
         initialize();
