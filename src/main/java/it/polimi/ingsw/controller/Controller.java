@@ -208,11 +208,10 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+    //TODO ho cambiato Status.QUESTION_M in Status.BUILT, perché devo garantire di essere nello stato di costruzione, non sono l'anserAbility
     @Override
     public void handleMessage(BuildClient message) {
-        if(match.getCurrentPlayer().getName().equals(message.name)
-                && match.getStatus().compareTo(Status.QUESTION_B) == 0
-        ){
+        if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.BUILT) == 0){
             if(match.getCurrentPlayer().getCard().build(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
                 match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
                 if(match.getStatus().equals(Status.END))
