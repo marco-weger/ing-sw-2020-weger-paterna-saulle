@@ -13,6 +13,11 @@ public class VirtualView extends Observable implements Observer, ServerMessageHa
 
     // TODO: the virtual view has to check name params of MESSAGE every time
     private ArrayList<Player> playersName;
+    private Server server;
+
+    public VirtualView(Server server){
+        this.server = server;
+    }
 
     @Override
     public void update(Object arg) {
