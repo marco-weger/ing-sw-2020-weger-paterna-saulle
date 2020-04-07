@@ -187,7 +187,7 @@ public class ControllerTest {
     public void answerAbilityClient() {
         initialize();
         playerChoseClient();
-        controller.getMatch().getPlayers().get(2).setActive(true);
+        controller.getMatch().getPlayers().get(2).setCurrent(true);
         assertEquals(controller.getMatch().getCurrentPlayer().getName(),"Giulio");
         controller.getMatch().setStatus(Status.START);
          controller.handleMessage(new AnswerAbilityClient(controller.getMatch().getCurrentPlayer().getName(), false, controller.getMatch().getStatus()));
@@ -201,7 +201,7 @@ public class ControllerTest {
         controller.getMatch().setStatus(Status.MOVED);
          controller.handleMessage(new AnswerAbilityClient(controller.getMatch().getCurrentPlayer().getName(), true, controller.getMatch().getStatus()));
          assertEquals(controller.getMatch().getStatus(), Status.QUESTION_B);
-         controller.getMatch().getPlayers().get(1).setActive(true);
+         controller.getMatch().getPlayers().get(1).setCurrent(true);
          controller.getMatch().getCurrentPlayer().getCard().setActive(true);
          assertTrue(controller.getMatch().getCurrentPlayer().getCard().isActive());
          controller.getMatch().setStatus(Status.START);
@@ -224,7 +224,7 @@ public class ControllerTest {
         controller.getMatch().getPlayers().get(2).setWorker1(new Worker(3,3));
         controller.getMatch().getPlayers().get(2).setWorker2(new Worker(4,4));
 
-        controller.getMatch().getPlayers().get(1).setActive(true);
+        controller.getMatch().getPlayers().get(1).setCurrent(true);
         controller.getMatch().setStatus(Status.QUESTION_M);
         controller.getMatch().getBoard().getCell(0,0).setLevel(2);
         controller.getMatch().getBoard().getCell(1,0).setLevel(3);
@@ -251,7 +251,7 @@ public class ControllerTest {
         controller.getMatch().getPlayers().get(2).setWorker1(new Worker(3,3));
         controller.getMatch().getPlayers().get(2).setWorker2(new Worker(4,4));
 
-        controller.getMatch().getPlayers().get(1).setActive(true);
+        controller.getMatch().getPlayers().get(1).setCurrent(true);
         controller.getMatch().setStatus(Status.QUESTION_M);
         controller.getMatch().getBoard().getCell(0,0).setLevel(2);
         controller.getMatch().getBoard().getCell(1,0).setLevel(2);
@@ -278,7 +278,7 @@ public class ControllerTest {
         controller.getMatch().getPlayers().get(2).setWorker1(new Worker(3,3));
         controller.getMatch().getPlayers().get(2).setWorker2(new Worker(4,4));
 
-        controller.getMatch().getPlayers().get(1).setActive(true);
+        controller.getMatch().getPlayers().get(1).setCurrent(true);
         controller.getMatch().setStatus(Status.QUESTION_M);
 
         controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
@@ -295,7 +295,7 @@ public class ControllerTest {
     public void BuildClient() {
         initialize();
         playerChoseClient();
-        controller.getMatch().getPlayers().get(1).setActive(true);
+        controller.getMatch().getPlayers().get(1).setCurrent(true);
         controller.getMatch().setStatus(Status.QUESTION_B);
         controller.getMatch().getPlayers().get(1).getWorker1().move(0,0);
         controller.getMatch().getPlayers().get(1).getWorker2().move(1,1);
@@ -313,7 +313,7 @@ public class ControllerTest {
         playerChoseClient();
         controller.getMatch().getPlayers().get(1).setCard(CardName.PROMETHEUS);
         controller.getMatch().getPlayers().get(1).getCard().setActive(true);
-        controller.getMatch().getPlayers().get(1).setActive(true);
+        controller.getMatch().getPlayers().get(1).setCurrent(true);
         controller.getMatch().setStatus(Status.QUESTION_B);
         controller.getMatch().getPlayers().get(1).getWorker1().move(0,0);
         controller.getMatch().getPlayers().get(1).getWorker2().move(1,1);
@@ -329,7 +329,7 @@ public class ControllerTest {
     public void BuildClientImpossible() {
         initialize();
         playerChoseClient();
-        controller.getMatch().getPlayers().get(1).setActive(true);
+        controller.getMatch().getPlayers().get(1).setCurrent(true);
         controller.getMatch().setStatus(Status.BUILT);
         controller.getMatch().getPlayers().get(1).getWorker1().move(0,0);
         controller.getMatch().getPlayers().get(1).getWorker2().move(1,1);
@@ -362,7 +362,7 @@ public class ControllerTest {
     public void startTurnTestGoOn() {
         initialize();
         playerChoseClient();
-        controller.getMatch().getPlayers().get(0).setActive(true);
+        controller.getMatch().getPlayers().get(0).setCurrent(true);
         controller.startTurn(true);
         assertEquals(controller.getMatch().getPlayers().get(1), controller.getMatch().getCurrentPlayer());
     }
@@ -371,7 +371,7 @@ public class ControllerTest {
     public void startTurnTestPlayerWin() {
         initialize();
         playerChoseClient();
-        controller.getMatch().getPlayers().get(0).setActive(true);
+        controller.getMatch().getPlayers().get(0).setCurrent(true);
         controller.getMatch().setLosers(controller.getMatch().getPlayers().get(1));
         controller.getMatch().setLosers(controller.getMatch().getPlayers().get(1));
         assertEquals(controller.getMatch().getPlayers().size(),1);
@@ -384,7 +384,7 @@ public class ControllerTest {
     public void startTurnTestSTART() {
         initialize();
         playerChoseClient();
-        controller.getMatch().getPlayers().get(0).setActive(true);
+        controller.getMatch().getPlayers().get(0).setCurrent(true);
         for(Cell ce: controller.getMatch().getBoard().getField()){
             if(ce.getRow() == 0 && ce.getColumn() == 0)
                 ce.setLevel(0);
@@ -416,7 +416,7 @@ public class ControllerTest {
     public void startTurnTestCurrentPlayerHasLost() {
         initialize();
         playerChoseClient();
-        controller.getMatch().getPlayers().get(0).setActive(true);
+        controller.getMatch().getPlayers().get(0).setCurrent(true);
         controller.getMatch().getPlayers().get(0).getWorker1().move(0,0);
         controller.getMatch().getPlayers().get(0).getWorker2().move(1,0);
         controller.getMatch().getPlayers().get(1).getWorker1().move(2,0);
