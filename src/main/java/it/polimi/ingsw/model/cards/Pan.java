@@ -2,11 +2,12 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Status;
+import it.polimi.ingsw.network.VirtualView;
 
 public class Pan extends Card {
 
-    public Pan(CardName name, boolean active, boolean opponent, boolean question, Status status) {
-        super(name, active, opponent, question, status);
+    public Pan(CardName name, boolean active, boolean opponent, boolean question, Status status, VirtualView vw) {
+        super(name, active, opponent, question, status ,vw);
     }
 
     /**

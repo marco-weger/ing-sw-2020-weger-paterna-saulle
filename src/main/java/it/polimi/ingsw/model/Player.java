@@ -7,6 +7,7 @@ import it.polimi.ingsw.commons.serverMessages.WorkerChosenServer;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.model.cards.FactoryCard;
+import it.polimi.ingsw.network.VirtualView;
 
 public class Player extends Observable {
 
@@ -30,13 +31,14 @@ public class Player extends Observable {
      */
     private boolean current;
 
-    public Player(String name)
+    public Player(String name, VirtualView vw)
     {
         this.name = name;
         this.card = null; //FactoryCard.getCard(card);
         this.worker1 = null;
         this.worker2 = null;
         this.current = false;
+        this.addObserver(vw);
     }
 
     public String getName() {
@@ -55,8 +57,8 @@ public class Player extends Observable {
      * The card is instanced by FACTORY class, all players will be notified
      * @param card value from card ENUM
      */
-    public void setCard(CardName card) {
-        this.card = FactoryCard.getCard(card);
+    public void setCard(CardName card, VirtualView vw) {
+        this.card = FactoryCard.getCard(card, vw);
         notifyObservers(new CardChosenServer(name,card));
     }
 

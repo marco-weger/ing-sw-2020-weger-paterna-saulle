@@ -11,9 +11,9 @@ import static org.junit.Assert.*;
 
 public class MatchTest {
     ArrayList<Player> p = new ArrayList<>(Arrays.asList(
-            new Player("player1"),
-            new Player("player2"),
-            new Player("player3")
+            new Player("player1",null),
+            new Player("player2",null),
+            new Player("player3",null)
     ));
 
     public void initialize(){
@@ -21,13 +21,13 @@ public class MatchTest {
             player.setWorker1(new Worker(0,0));
             player.setWorker2(new Worker(0,0));
         }
-        p.get(0).setCard(CardName.PAN);
-        p.get(1).setCard(CardName.ARTEMIS);
-        p.get(2).setCard(CardName.ATLAS);
+        p.get(0).setCard(CardName.PAN,null);
+        p.get(1).setCard(CardName.ARTEMIS,null);
+        p.get(2).setCard(CardName.ATLAS,null);
     }
     @Test
     public void getter_setter(){
-        Match m = new Match(0);
+        Match m = new Match(0,null);
 
         m.setId(1);
         assertEquals(m.getId(),1);
@@ -55,7 +55,7 @@ public class MatchTest {
     @Test
     public void testSetNextPlayer03() {
         initialize();
-        Match m = new Match(0);
+        Match m = new Match(0,null);
         m.setPlayers(p);
         m.setNextPlayer();
         assertEquals(m.getCurrentPlayer(), p.get(0));
@@ -66,7 +66,7 @@ public class MatchTest {
     @Test
     public void testSetNextPlayer13() {
         initialize();
-        Match m = new Match(0);
+        Match m = new Match(0,null);
         m.setPlayers(p);
         m.setNextPlayer();
         m.setNextPlayer();
@@ -77,7 +77,7 @@ public class MatchTest {
     @Test
     public void testSetNextPlayer23() {
         initialize();
-        Match m = new Match(0);
+        Match m = new Match(0,null);
         m.setPlayers(p);
         m.setNextPlayer();
         m.setNextPlayer();
@@ -89,7 +89,7 @@ public class MatchTest {
     @Test
     public void testSetNextPlayer02() {
         initialize();
-        Match m = new Match(0);
+        Match m = new Match(0,null);
         m.setPlayers(p);
         m.setNextPlayer();
         m.setNextPlayer();
@@ -99,7 +99,7 @@ public class MatchTest {
     @Test
     public void testSetNextPlayer12() {
         initialize();
-        Match m = new Match(0);
+        Match m = new Match(0,null);
         m.setPlayers(p);
         m.setNextPlayer();
         m.setNextPlayer();
@@ -110,7 +110,7 @@ public class MatchTest {
     @Test
     public void testCheckCurrentPlayerWin2() {
         initialize();
-        Match m = new Match(0);
+        Match m = new Match(0,null);
         m.setPlayers(p);
         m.setNextPlayer();
         m.setNextPlayer();
@@ -123,7 +123,7 @@ public class MatchTest {
     @Test
     public void testCheckCurrentPlayerWin3() {
         initialize();
-        Match m = new Match(0);
+        Match m = new Match(0,null);
         m.setPlayers(p);
         m.setNextPlayer();
         m.setLosers(p.get(1));
@@ -136,7 +136,7 @@ public class MatchTest {
     @Test
     public void testSetLoser(){
         initialize();
-        Match m = new Match(0);
+        Match m = new Match(0,null);
         m.setPlayers(p);
         m.setNextPlayer(); //0
         m.setNextPlayer(); //1

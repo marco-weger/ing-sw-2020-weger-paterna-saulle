@@ -14,7 +14,7 @@ public class PlayerTest {
     @Test
     public void setter()
     {
-        Player p = new Player("player1");
+        Player p = new Player("player1",null);
         p.setName("Marco");
         assertEquals(p.getName(),"Marco");
         p.setWorker1(new Worker(2,2));
@@ -23,13 +23,13 @@ public class PlayerTest {
         assertEquals(p.getWorker1().getColumn(),2);
         assertEquals(p.getWorker2().getRow(),3);
         assertEquals(p.getWorker2().getColumn(),1);
-        p.setCard(CardName.APOLLO);
+        p.setCard(CardName.APOLLO,null);
         assertEquals(p.getCard().getName(), CardName.APOLLO);
     }
     // current worker
     @Test
     public void current_worker(){
-        Player p = new Player("player1");
+        Player p = new Player("player1",null);
         p.setWorker1(new Worker(0,0));
         p.setWorker2(new Worker(1,1));
         p.setCurrentWorker(1);

@@ -6,6 +6,7 @@ import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
 import it.polimi.ingsw.commons.serverMessages.SomeoneLoseServer;
 import it.polimi.ingsw.commons.serverMessages.SomeoneWinServer;
 import it.polimi.ingsw.model.cards.CardName;
+import it.polimi.ingsw.network.VirtualView;
 
 import java.util.ArrayList;
 
@@ -56,7 +57,7 @@ public class Match extends Observable {
      * - LOOSERS: empty list
      * @param id the unique match id
      */
-    public Match(int id){
+    public Match(int id, VirtualView vw){
         this.id=id;
         this.board=new Board();
         this.ended=false;
@@ -64,6 +65,7 @@ public class Match extends Observable {
         this.players = new ArrayList<>();
         this.losers = new ArrayList<>();
         this.selectedCard = new ArrayList<>();
+        this.addObserver(vw);
     }
 
     public int getId() {

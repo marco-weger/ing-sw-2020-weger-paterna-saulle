@@ -1,13 +1,14 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.network.VirtualView;
 
 import java.util.ArrayList;
 
 public class Hephaestus extends Card {
 
-    public Hephaestus(CardName name, boolean active, boolean opponent, boolean question, Status status) {
-        super(name, active, opponent, question, status);
+    public Hephaestus(CardName name, boolean active, boolean opponent, boolean question, Status status, VirtualView vw) {
+        super(name, active, opponent, question, status ,vw);
     }
 
     /**

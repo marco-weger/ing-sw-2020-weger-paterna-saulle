@@ -19,11 +19,9 @@ public class Controller implements Observer, ClientMessageHandler {
     private VirtualView virtualView;
 
 
-    public Controller(Match match, VirtualView virtualView) {
-        this.match = match;
+    public Controller(VirtualView virtualView) {
         this.virtualView = virtualView;
     }
-
 
     public VirtualView getVirtualView() {
         return virtualView;
@@ -110,11 +108,11 @@ public class Controller implements Observer, ClientMessageHandler {
             match.getSelectedCard().remove(message.c);
             for (Player p:match.getPlayers()){
                 if(p.getName().equals(who)){
-                    p.setCard(message.c);
+                    p.setCard(message.c,virtualView);
                 }
             }
             if(match.getSelectedCard().size() == 1){
-                match.getPlayers().get(0).setCard(match.getSelectedCard().get(0));
+                match.getPlayers().get(0).setCard(match.getSelectedCard().get(0),virtualView);
                 match.getSelectedCard().remove(match.getSelectedCard().get(0));
 
                 if(match.getSelectedCard().size() == 0)

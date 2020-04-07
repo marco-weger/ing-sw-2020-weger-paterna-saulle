@@ -13,9 +13,9 @@ import static org.junit.Assert.*;
 
 public class MinotaurTest {
     ArrayList<Player> p = new ArrayList<>(Arrays.asList(
-            new Player("player1"),
-            new Player("player2"),
-            new Player("player3")
+            new Player("player1",null),
+            new Player("player2",null),
+            new Player("player3",null)
     ));
 
     public void initialize(){
@@ -23,9 +23,9 @@ public class MinotaurTest {
             player.setWorker1(new Worker(0,0));
             player.setWorker2(new Worker(0,0));
         }
-        p.get(0).setCard(CardName.MINOTAUR);
-        p.get(1).setCard(CardName.ARTEMIS);
-        p.get(2).setCard(CardName.ATLAS);
+        p.get(0).setCard(CardName.MINOTAUR,null);
+        p.get(1).setCard(CardName.ARTEMIS,null);
+        p.get(2).setCard(CardName.ATLAS,null);
     }
     // checkMove
     @Test

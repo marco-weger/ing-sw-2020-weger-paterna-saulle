@@ -11,9 +11,9 @@ import static org.junit.Assert.*;
 
 public class CardTest {
     ArrayList<Player> p = new ArrayList<>(Arrays.asList(
-            new Player("player1"),
-            new Player("player2"),
-            new Player("player3")
+            new Player("player1",null),
+            new Player("player2",null),
+            new Player("player3",null)
     ));
 
     public void initialize(){
@@ -21,15 +21,15 @@ public class CardTest {
             player.setWorker1(new Worker(0,0));
             player.setWorker2(new Worker(0,0));
         }
-        p.get(0).setCard(CardName.APOLLO);
-        p.get(1).setCard(CardName.ARTEMIS);
-        p.get(2).setCard(CardName.ATLAS);
+        p.get(0).setCard(CardName.APOLLO,null);
+        p.get(1).setCard(CardName.ARTEMIS,null);
+        p.get(2).setCard(CardName.ATLAS,null);
     }
     // setter
     @Test
     public void setter()
     {
-        Card c = FactoryCard.getCard(CardName.APOLLO);
+        Card c = FactoryCard.getCard(CardName.APOLLO,null);
         assertNotNull(c);
         c.setActive(true);
         assertTrue(c.isActive());
@@ -40,7 +40,7 @@ public class CardTest {
     @Test
     public void getNextStatus()
     {
-        Card c = FactoryCard.getCard(CardName.APOLLO);
+        Card c = FactoryCard.getCard(CardName.APOLLO,null);
         assertNotNull(c);
         Status s;
         s = c.getNextStatus(Status.START);
@@ -63,7 +63,7 @@ public class CardTest {
     @Test
     public void checkWin_cellNull()
     {
-        Card c = FactoryCard.getCard(CardName.APOLLO);
+        Card c = FactoryCard.getCard(CardName.APOLLO,null);
         assertNotNull(c);
         assertFalse(c.checkWin(null,new Cell(0,0,0)));
         assertFalse(c.checkWin(new Cell(0,0,0),null));
@@ -71,7 +71,7 @@ public class CardTest {
     @Test
     public void checkWin_cellOut()
     {
-        Card c = FactoryCard.getCard(CardName.APOLLO);
+        Card c = FactoryCard.getCard(CardName.APOLLO,null);
         assertNotNull(c);
         assertFalse(c.checkWin(new Cell(5,5,0),new Cell(0,0,0)));
         assertFalse(c.checkWin(new Cell(0,0,0),new Cell(5,5,0)));
@@ -79,14 +79,14 @@ public class CardTest {
     @Test
     public void checkWin_win()
     {
-        Card c = FactoryCard.getCard(CardName.APOLLO);
+        Card c = FactoryCard.getCard(CardName.APOLLO,null);
         assertNotNull(c);
         assertTrue(c.checkWin(new Cell(4,4,2),new Cell(4,3,3)));
     }
     @Test
     public void checkWin_notWin()
     {
-        Card c = FactoryCard.getCard(CardName.APOLLO);
+        Card c = FactoryCard.getCard(CardName.APOLLO,null);
         assertNotNull(c);
         assertFalse(c.checkWin(new Cell(4,4,3),new Cell(3,4,3)));
     }
@@ -94,7 +94,7 @@ public class CardTest {
     @Test
     public void checkBuild_paramsNull()
     {
-        Card c = FactoryCard.getCard(CardName.APOLLO);
+        Card c = FactoryCard.getCard(CardName.APOLLO,null);
         initialize();
         assertNotNull(c);
         assertEquals(c.checkBuild(null,new Board()).size(),0);
@@ -103,7 +103,7 @@ public class CardTest {
     @Test
     public void checkBuild_noCurrentPlayerWorker()
     {
-        Card c = FactoryCard.getCard(CardName.PAN);
+        Card c = FactoryCard.getCard(CardName.PAN,null);
         initialize();
         assertNotNull(c);
         assertEquals(c.checkBuild(p,new Board()).size(),0);
@@ -188,7 +188,7 @@ public class CardTest {
     @Test
     public void checkMove_paramsNull()
     {
-        Card c = FactoryCard.getCard(CardName.APOLLO);
+        Card c = FactoryCard.getCard(CardName.APOLLO,null);
         initialize();
         assertNotNull(c);
         ArrayList<Cell> ret = c.checkMove(p,null);
@@ -199,7 +199,7 @@ public class CardTest {
     @Test
     public void checkMove_noCurrentPlayerWorker()
     {
-        Card c = FactoryCard.getCard(CardName.PAN);
+        Card c = FactoryCard.getCard(CardName.PAN,null);
         initialize();
         assertNotNull(c);
         assertEquals(c.checkMove(p,new Board()).size(),0);
@@ -315,7 +315,7 @@ public class CardTest {
     @Test
     public void activeBlock()
     {
-        Card c = FactoryCard.getCard(CardName.APOLLO);
+        Card c = FactoryCard.getCard(CardName.APOLLO,null);
         assertNotNull(c);
         assertEquals(c.activeBlock(null,new Board(), new Worker(0,0), Status.CHOSEN).size(),0);
     }
@@ -323,18 +323,18 @@ public class CardTest {
     @Test
     public void move_null()
     {
-        Card c = FactoryCard.getCard(CardName.PAN);
+        Card c = FactoryCard.getCard(CardName.PAN,null);
         assertNotNull(c);
         c.move(null,null,null);
     }
     @Test
     public void move_error()
     {
-        Card c = FactoryCard.getCard(CardName.PAN);
+        Card c = FactoryCard.getCard(CardName.PAN,null);
         initialize();
-        p.get(0).setCard(CardName.PAN);
-        p.get(1).setCard(CardName.HEPHAESTUS);
-        p.get(2).setCard(CardName.ATHENA);
+        p.get(0).setCard(CardName.PAN,null);
+        p.get(1).setCard(CardName.HEPHAESTUS,null);
+        p.get(2).setCard(CardName.ATHENA,null);
         p.get(0).setWorker1(new Worker(2,3));
         p.get(0).setWorker2(new Worker(0,0));
         p.get(1).setWorker1(new Worker(3,4));
@@ -351,7 +351,7 @@ public class CardTest {
     @Test
     public void move()
     {
-        Card c = FactoryCard.getCard(CardName.APOLLO);
+        Card c = FactoryCard.getCard(CardName.APOLLO,null);
         initialize();
         p.get(0).setWorker1(new Worker(2,3));
         p.get(0).setWorker2(new Worker(0,0));
@@ -372,7 +372,7 @@ public class CardTest {
     @Test
     public void build_null()
     {
-        Card c = FactoryCard.getCard(CardName.PAN);
+        Card c = FactoryCard.getCard(CardName.PAN,null);
         assertNotNull(c);
         c.build(null,null,null);
     }
@@ -394,11 +394,11 @@ public class CardTest {
     @Test
     public void build()
     {
-        Card c = FactoryCard.getCard(CardName.PAN);
+        Card c = FactoryCard.getCard(CardName.PAN,null);
         initialize();
-        p.get(0).setCard(CardName.PAN);
-        p.get(1).setCard(CardName.HEPHAESTUS);
-        p.get(2).setCard(CardName.ATHENA);
+        p.get(0).setCard(CardName.PAN,null);
+        p.get(1).setCard(CardName.HEPHAESTUS,null);
+        p.get(2).setCard(CardName.ATHENA,null);
         p.get(0).setWorker1(new Worker(2,3));
         p.get(0).setWorker2(new Worker(0,0));
         p.get(1).setWorker1(new Worker(1,4));
@@ -419,8 +419,8 @@ public class CardTest {
     @Test
     public void hasLostFalse() {
         initialize();
-        p.get(0).setCard(CardName.APOLLO);
-        p.get(1).setCard(CardName.ARTEMIS);
+        p.get(0).setCard(CardName.APOLLO,null);
+        p.get(1).setCard(CardName.ARTEMIS,null);
         p.get(0).setWorker1(new Worker(0,0));
         p.get(0).setWorker2(new Worker(1,0));
         p.get(1).setWorker1(new Worker(1,4));
@@ -485,8 +485,8 @@ public class CardTest {
     @Test
     public void hasLostTrue() {
         initialize();
-        p.get(0).setCard(CardName.PAN);
-        p.get(1).setCard(CardName.ARTEMIS);
+        p.get(0).setCard(CardName.PAN,null);
+        p.get(1).setCard(CardName.ARTEMIS,null);
         p.get(0).setWorker1(new Worker(0,0));
         p.get(0).setWorker2(new Worker(1,0));
         p.get(1).setWorker1(new Worker(2,0));

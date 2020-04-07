@@ -7,6 +7,7 @@ import it.polimi.ingsw.commons.serverMessages.CheckMoveServer;
 import it.polimi.ingsw.commons.serverMessages.SomeoneLoseServer;
 import it.polimi.ingsw.commons.serverMessages.SomeoneWinServer;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.network.VirtualView;
 
 import java.util.ArrayList;
 
@@ -25,12 +26,13 @@ public class Card extends Observable {
     private final boolean question;
     private final Status status;
 
-    public Card(CardName name, boolean active, boolean opponent, boolean question, Status status) {
+    public Card(CardName name, boolean active, boolean opponent, boolean question, Status status, VirtualView vw) {
         this.name = name;
         this.active = active;
         this.opponent = opponent;
         this.question = question;
         this.status = status;
+        this.addObserver(vw);
     }
 
     public CardName getName() {

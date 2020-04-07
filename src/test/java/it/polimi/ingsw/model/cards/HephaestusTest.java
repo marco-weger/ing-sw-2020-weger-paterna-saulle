@@ -11,9 +11,9 @@ import static org.junit.Assert.assertEquals;
 
 public class HephaestusTest {
     ArrayList<Player> p = new ArrayList<>(Arrays.asList(
-            new Player("player1"),
-            new Player("player2"),
-            new Player("player3")
+            new Player("player1",null),
+            new Player("player2",null),
+            new Player("player3",null)
     ));
 
     public void initialize(){
@@ -21,9 +21,9 @@ public class HephaestusTest {
             player.setWorker1(new Worker(0,0));
             player.setWorker2(new Worker(0,0));
         }
-        p.get(0).setCard(CardName.HEPHAESTUS);
-        p.get(1).setCard(CardName.ARTEMIS);
-        p.get(2).setCard(CardName.ATLAS);
+        p.get(0).setCard(CardName.HEPHAESTUS,null);
+        p.get(1).setCard(CardName.ARTEMIS,null);
+        p.get(2).setCard(CardName.ATLAS,null);
     }
     // checkBuild
     @Test
@@ -153,7 +153,7 @@ public class HephaestusTest {
     //build
     @Test
     public void build_null() {
-        Card c = FactoryCard.getCard(CardName.HEPHAESTUS);
+        Card c = FactoryCard.getCard(CardName.HEPHAESTUS,null);
         assertNotNull(c);
         c.build(null, null, null);
     }

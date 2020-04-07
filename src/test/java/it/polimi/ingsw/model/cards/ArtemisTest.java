@@ -10,9 +10,9 @@ import static org.junit.Assert.*;
 
 public class ArtemisTest {
     ArrayList<Player> p = new ArrayList<>(Arrays.asList(
-            new Player("player1"),
-            new Player("player2"),
-            new Player("player3")
+            new Player("player1",null),
+            new Player("player2",null),
+            new Player("player3",null)
     ));
 
     public void initialize(){
@@ -20,9 +20,9 @@ public class ArtemisTest {
             player.setWorker1(new Worker(0,0));
             player.setWorker2(new Worker(0,0));
         }
-        p.get(0).setCard(CardName.ARTEMIS);
-        p.get(1).setCard(CardName.HEPHAESTUS);
-        p.get(2).setCard(CardName.DEMETER);
+        p.get(0).setCard(CardName.ARTEMIS,null);
+        p.get(1).setCard(CardName.HEPHAESTUS,null);
+        p.get(2).setCard(CardName.DEMETER,null);
     }
     //checkMove
     @Test
@@ -217,7 +217,7 @@ public class ArtemisTest {
     @Test
     public void moveNull()
     {
-        Card c = FactoryCard.getCard(CardName.ARTEMIS);
+        Card c = FactoryCard.getCard(CardName.ARTEMIS,null);
         assertNotNull(c);
         c.move(null,null,null);
     }

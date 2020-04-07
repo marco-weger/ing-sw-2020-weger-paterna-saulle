@@ -10,9 +10,9 @@ import static org.junit.Assert.*;
 
 public class AtlasTest {
     ArrayList<Player> p = new ArrayList<>(Arrays.asList(
-            new Player("player1"),
-            new Player("player2"),
-            new Player("player3")
+            new Player("player1",null),
+            new Player("player2",null),
+            new Player("player3",null)
     ));
 
     public void initialize(){
@@ -20,9 +20,9 @@ public class AtlasTest {
             player.setWorker1(new Worker(0,0));
             player.setWorker2(new Worker(0,0));
         }
-        p.get(0).setCard(CardName.ATLAS);
-        p.get(1).setCard(CardName.HEPHAESTUS);
-        p.get(2).setCard(CardName.DEMETER);
+        p.get(0).setCard(CardName.ATLAS,null);
+        p.get(1).setCard(CardName.HEPHAESTUS,null);
+        p.get(2).setCard(CardName.DEMETER,null);
     }
 
     // checkBuild
@@ -98,7 +98,7 @@ public class AtlasTest {
     //build
     @Test
     public void build_null() {
-        Card c = FactoryCard.getCard(CardName.ATLAS);
+        Card c = FactoryCard.getCard(CardName.ATLAS,null);
         assertNotNull(c);
         c.build(null, null, null);
     }
