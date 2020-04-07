@@ -24,6 +24,7 @@ public class Controller implements Observer, ClientMessageHandler {
         this.virtualView = virtualView;
     }
 
+
     public VirtualView getVirtualView() {
         return virtualView;
     }
@@ -71,6 +72,10 @@ public class Controller implements Observer, ClientMessageHandler {
 
     }
 
+    /**
+     * send the challenger cards picked from the deck
+     * @param message contains the name of the challenger and the list of the cards picked from the deck
+     */
     @Override
     public void handleMessage(ChallengerChoseClient message) {
         if(match.getStatus().compareTo(Status.CARD_CHOICE) == 0
@@ -86,6 +91,10 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+    /**
+     * send the card chosen by the current player from the picked by he challenger during the initialize phase of the match
+     * @param message contains the name of the current player and the chard chosen from the list picked by the challenger
+     */
     @Override
     public void handleMessage(PlayerChoseClient message) {
         String who = "";
@@ -117,6 +126,11 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+    /**
+     * send the start posizion of the current worker chosen by the current player during the initialize state of the match
+     * @param message contains the name of the current player and the start position chosen for the current worker
+     */
+    //FIXME impedire di mettere due worker nella stessa posizone durante la fase iniziale
     @Override
     public void handleMessage(WorkerInitializeClient message) {
         Player selected = null;
@@ -143,6 +157,10 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+    /**
+     * send the current worker chosen by the current player
+     * @param message contains the name of the current player and the current worker chosen
+     */
     @Override
     public void handleMessage(WorkerChoseClient message) {
         if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.START) == 0){
