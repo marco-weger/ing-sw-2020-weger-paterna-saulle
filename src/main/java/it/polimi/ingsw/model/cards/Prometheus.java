@@ -29,7 +29,8 @@ public class Prometheus extends Card {
             switch (current) {
                 case CHOSEN:
                     return Status.QUESTION_B;
-                case BUILT:
+                //case BUILT:
+                case QUESTION_B:
                     super.setActive(false);
                     return Status.QUESTION_M;
                 default:

@@ -217,9 +217,13 @@ public class Controller implements Observer, ClientMessageHandler {
         if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.QUESTION_B) == 0){
             if(match.getCurrentPlayer().getCard().build(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
                 match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
-                if(match.getStatus().equals(Status.END))
+                if(match.getStatus().equals(Status.BUILT))
                 {
                     startTurn(true);
+                }
+                else if(match.getStatus().equals(Status.QUESTION_M))
+                {
+                    match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(), match.getBoard());
                 }
             }
         }
