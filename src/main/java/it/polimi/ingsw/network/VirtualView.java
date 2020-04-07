@@ -2,6 +2,8 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
+import it.polimi.ingsw.commons.ClientMessage;
+import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.Player;
 
@@ -13,8 +15,14 @@ public class VirtualView extends Observable implements Observer, ServerMessageHa
     private ArrayList<Player> playersName;
 
     @Override
-    public void update(Object obj) {
+    public void update(Object arg) {
+        if( ! (arg instanceof ClientMessage))
+            throw new RuntimeException("This must be an ClientMessage object");
+        ServerMessage cm = (ServerMessage) arg;
+        cm.Accept(this);
 
+        // TODO: not sure this is the best way to call correct method... test!
+        // new Thread(() -> cm.Accept(this)).start();
     }
 
 
