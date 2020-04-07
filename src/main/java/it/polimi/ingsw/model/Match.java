@@ -155,7 +155,7 @@ public class Match extends Observable {
     }
 
     /**
-     * A method to set next player
+     * This method set next player, disable all workers and set START status
      */
     public void setNextPlayer() {
         if(getCurrentPlayer() != null){
@@ -170,6 +170,11 @@ public class Match extends Observable {
         else{
             players.get(0).setActive(true);
         }
+        for(Player p:players){
+            p.getWorker1().setActive(false);
+            p.getWorker2().setActive(false);
+        }
+        status=Status.START;
     }
 
     /**

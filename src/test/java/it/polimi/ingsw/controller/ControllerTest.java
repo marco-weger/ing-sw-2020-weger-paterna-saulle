@@ -5,12 +5,10 @@ import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.VirtualView;
 import org.junit.Test;
 
-import javax.naming.ldap.Control;
-
 import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-
 
 public class ControllerTest {
 
@@ -86,6 +84,66 @@ public class ControllerTest {
         assertEquals(controller.getMatch().getPlayers().get(0).getCard().getName(),CardName.PAN);
     }
 
+    @Test
+    public void workerInizializeClient() {
+        // initialize
+        controller = new Controller(new Match(42),null);
+        controller.getMatch().setPlayers(
+                new ArrayList<>(
+                        Arrays.asList(new Player("Marco"),new Player("Francesco"),new Player("Giulio"))
+                )
+        );
+
+        // card chose
+        controller.getMatch().setStatus(Status.CARD_CHOICE);
+        controller.handleMessage(new ChallengerChoseClient("Giulio",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
+        assertEquals(controller.getMatch().getSelectedCard().size(),0);
+        controller.handleMessage(new ChallengerChoseClient("Marco",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
+        assertTrue(controller.getMatch().getSelectedCard().containsAll(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS)));
+        controller.handleMessage(new PlayerChoseClient("Francesco",CardName.ATLAS));
+        assertNull(controller.getMatch().getPlayers().get(1).getCard());
+        controller.handleMessage(new PlayerChoseClient("Giulio",CardName.HEPHAESTUS));
+        assertEquals(controller.getMatch().getPlayers().get(2).getCard().getName(),CardName.HEPHAESTUS);
+        controller.handleMessage(new PlayerChoseClient("Francesco",CardName.HEPHAESTUS));
+        assertNull(controller.getMatch().getPlayers().get(1).getCard());
+        controller.handleMessage(new PlayerChoseClient("Francesco",CardName.ATLAS));
+        assertEquals(controller.getMatch().getPlayers().get(1).getCard().getName(),CardName.ATLAS);
+        assertEquals(controller.getMatch().getPlayers().get(0).getCard().getName(),CardName.PAN);
+
+        controller.getMatch().setStatus(Status.WORKER_CHOICE);
+        controller.handleMessage(new WorkerInizializeClient("Francesco",1,1));
+        for(Player p:controller.getMatch().getPlayers()){
+            assertNull(p.getWorker1());
+            assertNull(p.getWorker2());
+        }
+        controller.handleMessage(new WorkerInizializeClient("Marco",4,0));
+        controller.handleMessage(new WorkerInizializeClient("Marco",1,1));
+        controller.handleMessage(new WorkerInizializeClient("Francesco",2,2));
+        controller.handleMessage(new WorkerInizializeClient("Francesco",2,0));
+        controller.handleMessage(new WorkerInizializeClient("Giulio",0,4));
+        controller.handleMessage(new WorkerInizializeClient("Giulio",0,2));
+        for(Player p:controller.getMatch().getPlayers()){
+            assertEquals(p.getWorker1().getRow()+p.getWorker1().getColumn(),4);
+            assertEquals(p.getWorker2().getRow()+p.getWorker2().getColumn(),2);
+        }
+    }
+
+    @Test
+    public void workerChoseClient() {
+        workerInizializeClient();
+        controller.getMatch().setStatus(Status.START);
+        controller.handleMessage(new WorkerChoseClient("Francesco",1));
+        assertFalse(controller.getMatch().getPlayers().get(1).getWorker1().isActive());
+        assertFalse(controller.getMatch().getPlayers().get(1).getWorker2().isActive());
+        controller.handleMessage(new WorkerChoseClient("Marco",1));
+        assertTrue(controller.getMatch().getPlayers().get(0).getWorker1().isActive());
+        assertFalse(controller.getMatch().getPlayers().get(0).getWorker2().isActive());
+        controller.getMatch().setNextPlayer();
+        controller.handleMessage(new WorkerChoseClient("Francesco",2));
+        assertFalse(controller.getMatch().getPlayers().get(1).getWorker1().isActive());
+        assertTrue(controller.getMatch().getPlayers().get(1).getWorker2().isActive());
+    }
+
     //Marco=PAN
     //Francesco=ATLAS
     //Giulio=HEPHAESTUS
@@ -155,35 +213,81 @@ public class ControllerTest {
     @Test
     public void MoveClientWin(){
         initialize();
-        playerChoseClient();
-        controller.getMatch().getPlayers().get(1).setActive(true);
-        controller.getMatch().setStatus(Status.MOVED);
+        controller.getMatch().getPlayers().get(0).setCard(CardName.PAN);
         controller.getMatch().getPlayers().get(1).setCard(CardName.ATLAS);
-        controller.getMatch().getPlayers().get(1).getWorker1().move(0,0);
-        controller.getMatch().getPlayers().get(1).getWorker2().move(1,1);
-        controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
+        controller.getMatch().getPlayers().get(2).setCard(CardName.HEPHAESTUS);
+
+        controller.getMatch().getPlayers().get(0).setWorker1(new Worker(3,4));
+        controller.getMatch().getPlayers().get(0).setWorker2(new Worker(4,3));
+        controller.getMatch().getPlayers().get(1).setWorker1(new Worker(0,0));
+        controller.getMatch().getPlayers().get(1).setWorker2(new Worker(1,1));
+        controller.getMatch().getPlayers().get(2).setWorker1(new Worker(3,3));
+        controller.getMatch().getPlayers().get(2).setWorker2(new Worker(4,4));
+
+        controller.getMatch().getPlayers().get(1).setActive(true);
+        controller.getMatch().setStatus(Status.QUESTION_M);
         controller.getMatch().getBoard().getCell(0,0).setLevel(2);
         controller.getMatch().getBoard().getCell(1,0).setLevel(3);
+
+        controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
         controller.handleMessage(new MoveClient("Francesco", 1, 0));
+
         assertEquals(1, controller.getMatch().getPlayers().size());
         assertEquals("Francesco", controller.getMatch().getPlayers().get(0).getName());
         assertEquals(Status.END, controller.getMatch().getStatus());
+    }
+
+    @Test
+    public void MoveClientDoQuestion(){
+        initialize();
+        controller.getMatch().getPlayers().get(0).setCard(CardName.PAN);
+        controller.getMatch().getPlayers().get(1).setCard(CardName.ATLAS);
+        controller.getMatch().getPlayers().get(2).setCard(CardName.HEPHAESTUS);
+
+        controller.getMatch().getPlayers().get(0).setWorker1(new Worker(3,4));
+        controller.getMatch().getPlayers().get(0).setWorker2(new Worker(4,3));
+        controller.getMatch().getPlayers().get(1).setWorker1(new Worker(0,0));
+        controller.getMatch().getPlayers().get(1).setWorker2(new Worker(1,1));
+        controller.getMatch().getPlayers().get(2).setWorker1(new Worker(3,3));
+        controller.getMatch().getPlayers().get(2).setWorker2(new Worker(4,4));
+
+        controller.getMatch().getPlayers().get(1).setActive(true);
+        controller.getMatch().setStatus(Status.QUESTION_M);
+        controller.getMatch().getBoard().getCell(0,0).setLevel(2);
+        controller.getMatch().getBoard().getCell(1,0).setLevel(2);
+
+        controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
+        controller.handleMessage(new MoveClient("Francesco", 1, 0));
+
+        assertEquals(3, controller.getMatch().getPlayers().size());
+        assertEquals(Status.MOVED, controller.getMatch().getStatus());
     }
 
 
     @Test
     public void MoveClient() {
         initialize();
-        playerChoseClient();
+        controller.getMatch().getPlayers().get(0).setCard(CardName.ATHENA);
+        controller.getMatch().getPlayers().get(1).setCard(CardName.PAN);
+        controller.getMatch().getPlayers().get(2).setCard(CardName.HEPHAESTUS);
+
+        controller.getMatch().getPlayers().get(0).setWorker1(new Worker(3,4));
+        controller.getMatch().getPlayers().get(0).setWorker2(new Worker(4,3));
+        controller.getMatch().getPlayers().get(1).setWorker1(new Worker(0,0));
+        controller.getMatch().getPlayers().get(1).setWorker2(new Worker(1,1));
+        controller.getMatch().getPlayers().get(2).setWorker1(new Worker(3,3));
+        controller.getMatch().getPlayers().get(2).setWorker2(new Worker(4,4));
+
         controller.getMatch().getPlayers().get(1).setActive(true);
-        controller.getMatch().setStatus(Status.MOVED);
-        controller.getMatch().getPlayers().get(1).getWorker1().move(0, 0);
-        controller.getMatch().getPlayers().get(1).getWorker2().move(1, 1);
+        controller.getMatch().setStatus(Status.QUESTION_M);
+
         controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
+
         controller.handleMessage(new MoveClient("Francesco", 1, 0));
+
         assertEquals(1, controller.getMatch().getPlayers().get(1).getWorker1().getRow());
         assertEquals(0, controller.getMatch().getPlayers().get(1).getWorker1().getColumn());
-        assertEquals(Status.BUILT, controller.getMatch().getStatus());
+        assertEquals(Status.QUESTION_B, controller.getMatch().getStatus());
     }
 
 
@@ -192,7 +296,7 @@ public class ControllerTest {
         initialize();
         playerChoseClient();
         controller.getMatch().getPlayers().get(1).setActive(true);
-        controller.getMatch().setStatus(Status.BUILT);
+        controller.getMatch().setStatus(Status.QUESTION_B);
         controller.getMatch().getPlayers().get(1).getWorker1().move(0,0);
         controller.getMatch().getPlayers().get(1).getWorker2().move(1,1);
         controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
@@ -200,7 +304,7 @@ public class ControllerTest {
         controller.handleMessage(new BuildClient("Francesco", 1, 0));
         //assertTrue(controller.getMatch().getCurrentPlayer().getCard().build(controller.getMatch().getPlayers(),controller.getMatch().getBoard(),controller.getMatch().getBoard().getCell(1,0)));
         assertEquals(1, controller.getMatch().getBoard().getCell(1, 0).getLevel());
-        assertEquals(Status.START, controller.getMatch().getStatus());
+        assertEquals(Status.BUILT, controller.getMatch().getStatus());
     }
 
     @Test
@@ -210,7 +314,7 @@ public class ControllerTest {
         controller.getMatch().getPlayers().get(1).setCard(CardName.PROMETHEUS);
         controller.getMatch().getPlayers().get(1).getCard().setActive(true);
         controller.getMatch().getPlayers().get(1).setActive(true);
-        controller.getMatch().setStatus(Status.BUILT);
+        controller.getMatch().setStatus(Status.QUESTION_B);
         controller.getMatch().getPlayers().get(1).getWorker1().move(0,0);
         controller.getMatch().getPlayers().get(1).getWorker2().move(1,1);
         controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
@@ -218,7 +322,7 @@ public class ControllerTest {
         controller.handleMessage(new BuildClient("Francesco", 1, 0));
         //assertTrue(controller.getMatch().getCurrentPlayer().getCard().build(controller.getMatch().getPlayers(),controller.getMatch().getBoard(),controller.getMatch().getBoard().getCell(1,0)));
         assertEquals(1, controller.getMatch().getBoard().getCell(1, 0).getLevel());
-        assertEquals(Status.QUESTION_M, controller.getMatch().getStatus());
+        assertEquals(Status.BUILT, controller.getMatch().getStatus());
     }
 
     @Test
@@ -236,10 +340,15 @@ public class ControllerTest {
         assertEquals(Status.BUILT, controller.getMatch().getStatus());
     }
 
-        @Test
+    @Test
     public void endGameTest() {
         initialize();
-        controller.endGame(controller.getMatch().getPlayers().get(2));
+        playerChoseClient();
+
+        controller.getMatch().setLosers(controller.getMatch().getPlayers().get(0));
+        controller.getMatch().setLosers(controller.getMatch().getPlayers().get(0));
+        controller.startTurn(true);
+        //controller.endGame(controller.getMatch().getPlayers().get(2));
         assertEquals(2, controller.getMatch().getLosers().size());
         assertTrue(controller.getMatch().isEnded());
         assertEquals(controller.getMatch().getPlayers().get(0).getName(),"Giulio");

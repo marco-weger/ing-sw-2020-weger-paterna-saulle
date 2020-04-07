@@ -11,8 +11,6 @@ import java.util.ArrayList;
 
 public class Controller implements Observer, ClientMessageHandler {
 
-
-
     /**
      * The MODEL
      * The CONTROLLER is the only one allowed to modify the MODEL
@@ -123,22 +121,24 @@ public class Controller implements Observer, ClientMessageHandler {
     @Override
     public void handleMessage(WorkerInizializeClient message) {
         Player selected = null;
-        for(Player p:match.getPlayers()){
-            if(p.getName().equals(message.name)){
-                selected = p;
-                break;
+        int i=0;
+        while(i<match.getPlayers().size()){
+            if(match.getPlayers().get(i).getName().equals(message.name) && (match.getPlayers().get(i).getWorker1() == null || match.getPlayers().get(i).getWorker2() == null)){
+                selected = match.getPlayers().get(i);
+                i=match.getPlayers().size()+1;
             }
-            else if(p.getWorker1() == null || p.getWorker2() == null){
-                break;
+            else if(!match.getPlayers().get(i).getName().equals(message.name) && (match.getPlayers().get(i).getWorker1() == null || match.getPlayers().get(i).getWorker2() == null)){
+                selected = null;
+                i=match.getPlayers().size()+1;
+            }
+            else if(!match.getPlayers().get(i).getName().equals(message.name) && match.getPlayers().get(i).getWorker1() != null && match.getPlayers().get(i).getWorker2() != null){
+                i++;
             }
         }
-
         if(selected != null){
             if(selected.getWorker1() == null)
                 selected.setWorker1(new Worker(message.x,message.y));
-            else
-                selected.setWorker2(new Worker(message.x,message.y));
-
+            else selected.setWorker2(new Worker(message.x,message.y));
             if(match.getPlayers().get(match.getPlayers().size()-1).getWorker2() != null)
                 startTurn(true);
         }
@@ -154,9 +154,7 @@ public class Controller implements Observer, ClientMessageHandler {
                     && match.getCurrentPlayer().getCard().getStatus().compareTo(match.getStatus()) == 0
                     && match.getCurrentPlayer().getCard().activable(match.getPlayers(),match.getBoard())
             )
-            {
-                match.getCurrentPlayer().doQuestion();
-            }
+            { match.getCurrentPlayer().doQuestion(); }
             else{
                 match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
                 match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(),match.getBoard());
@@ -175,10 +173,6 @@ public class Controller implements Observer, ClientMessageHandler {
                 match.getCurrentPlayer().getCard().getCheckBuild(match.getPlayers(), match.getBoard()); }
     }
 
-    //TODO ho cambiato Status.QUESTION_M in Status.MOVE, perché devo garantire di essere nello stato di costruzione, non sono l'anserAbility
-    //TODO rivedere questo messaggio in caso di ARTHEMIS
-    //FIXME rivedere domani assolutamente!
-
     /**
      * If the player can move into that cell, with this method he can move into it.
      * after it, if the player have won, end the game
@@ -187,22 +181,20 @@ public class Controller implements Observer, ClientMessageHandler {
      */
     @Override
     public void handleMessage(MoveClient message) {
-        if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.MOVED) == 0){
+        if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.QUESTION_M) == 0){
             Cell from = match.getBoard().getCell(match.getCurrentPlayer().getCurrentWorker().getRow(),match.getCurrentPlayer().getCurrentWorker().getRow());
             if(match.getCurrentPlayer().getCard().move(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
-
                 if(match.getCurrentPlayer().getCard().checkWin(from,match.getBoard().getCell(message.x,message.y))){
                     //caso with currentplayerwin
                     endGame(match.getCurrentPlayer());
                     return;
                 }
-
                 match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
                 if(match.getCurrentPlayer().getCard().isQuestion()
                         && match.getCurrentPlayer().getCard().getStatus().compareTo(match.getStatus()) == 0
                         && match.getCurrentPlayer().getCard().activable(match.getPlayers(),match.getBoard()))
                 {
-                    //ARTHEMIS CHOOSE TO MOVE
+                    // Here i made BUILD question if necessary
                     match.getCurrentPlayer().doQuestion();
                 }
                 else
@@ -214,18 +206,15 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
-    //TODO ho cambiato Status.QUESTION_B in Status.BUILT, perché devo garantire di essere nello stato di costruzione, non sono l'anserAbility
-
     /**
      * If the player Can Build in the cell, build a tower.
      * After if the player have Prometehus card with the ability on goes to QUESTION_M
      * else, go to END and close the turn.
      * @param message a message ClientToServer with the name of the player and the cell where him wants to build.
      */
-
     @Override
     public void handleMessage(BuildClient message) {
-        if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.BUILT) == 0){
+        if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.QUESTION_B) == 0){
             if(match.getCurrentPlayer().getCard().build(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
                 match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
                 if(match.getStatus().equals(Status.END))
@@ -263,6 +252,7 @@ public class Controller implements Observer, ClientMessageHandler {
      * if the GoOne is false, but the player doesn't have won, check if the player have lost --> (in case move the player into loser list)
      * @param goOn if true goes to the next player, if false initialize the turn
      */
+    // FIXME this method must be private (to check tests)
     public void startTurn(boolean goOn){
         if(goOn) match.setNextPlayer();
 
