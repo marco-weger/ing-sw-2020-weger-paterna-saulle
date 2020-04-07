@@ -43,8 +43,13 @@ public class Controller implements Observer, ClientMessageHandler {
     public void update(Object arg){
         if( ! (arg instanceof ClientMessage))
             throw new RuntimeException("This must be an ClientMessage object");
+
         ClientMessage cm = (ClientMessage) arg;
+        System.out.println("---> FROM CLI TO CONTROLLER\n");
+        System.out.println("Type: " + cm.toString() + "\n");
+        System.out.println("Sender: " + cm.name + "\n");
         cm.Accept(this);
+        System.out.println("== : == : == : == : == : == : == : ==");
 
         // TODO: not sure this is the best way to call correct method... test!
         // new Thread(() -> cm.Accept(this)).start();

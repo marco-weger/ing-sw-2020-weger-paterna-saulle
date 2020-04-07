@@ -28,11 +28,7 @@ public class VirtualView extends Observable implements Observer {
      */
     protected void notify(ClientMessage message) {
         if (!ended) {
-            System.out.println("---> FROM CLI TO CONTROLLER\n");
-            System.out.println("Type: " + message.toString() + "\n");
-            System.out.println("Sender: " + message.name + "\n");
             notifyObservers(message);
-            System.out.println("== : == : == : == : == : == : == : ==");
         }
     }
 
