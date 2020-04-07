@@ -24,7 +24,6 @@ public class Controller implements Observer, ClientMessageHandler {
         this.virtualView = virtualView;
     }
 
-
     public VirtualView getVirtualView() {
         return virtualView;
     }
