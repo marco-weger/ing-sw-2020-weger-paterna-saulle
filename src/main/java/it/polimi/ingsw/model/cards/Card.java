@@ -57,7 +57,7 @@ public class Card extends Observable {
         return status;
     }
 
-    public void inizializeTurn(){}
+    public void initializeTurn(){}
 
     /**
      * It checks for the after move win condition

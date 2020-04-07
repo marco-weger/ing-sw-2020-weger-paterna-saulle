@@ -85,7 +85,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void workerInizializeClient() {
+    public void workerInitializeClient() {
         // initialize
         controller = new Controller(new Match(42),null);
         controller.getMatch().setPlayers(
@@ -111,17 +111,17 @@ public class ControllerTest {
         assertEquals(controller.getMatch().getPlayers().get(0).getCard().getName(),CardName.PAN);
 
         controller.getMatch().setStatus(Status.WORKER_CHOICE);
-        controller.handleMessage(new WorkerInizializeClient("Francesco",1,1));
+        controller.handleMessage(new WorkerInitializeClient("Francesco",1,1));
         for(Player p:controller.getMatch().getPlayers()){
             assertNull(p.getWorker1());
             assertNull(p.getWorker2());
         }
-        controller.handleMessage(new WorkerInizializeClient("Marco",4,0));
-        controller.handleMessage(new WorkerInizializeClient("Marco",1,1));
-        controller.handleMessage(new WorkerInizializeClient("Francesco",2,2));
-        controller.handleMessage(new WorkerInizializeClient("Francesco",2,0));
-        controller.handleMessage(new WorkerInizializeClient("Giulio",0,4));
-        controller.handleMessage(new WorkerInizializeClient("Giulio",0,2));
+        controller.handleMessage(new WorkerInitializeClient("Marco",4,0));
+        controller.handleMessage(new WorkerInitializeClient("Marco",1,1));
+        controller.handleMessage(new WorkerInitializeClient("Francesco",2,2));
+        controller.handleMessage(new WorkerInitializeClient("Francesco",2,0));
+        controller.handleMessage(new WorkerInitializeClient("Giulio",0,4));
+        controller.handleMessage(new WorkerInitializeClient("Giulio",0,2));
         for(Player p:controller.getMatch().getPlayers()){
             assertEquals(p.getWorker1().getRow()+p.getWorker1().getColumn(),4);
             assertEquals(p.getWorker2().getRow()+p.getWorker2().getColumn(),2);
@@ -130,7 +130,7 @@ public class ControllerTest {
 
     @Test
     public void workerChoseClient() {
-        workerInizializeClient();
+        workerInitializeClient();
         controller.getMatch().setStatus(Status.START);
         controller.handleMessage(new WorkerChoseClient("Francesco",1));
         assertFalse(controller.getMatch().getPlayers().get(1).getWorker1().isActive());
@@ -355,7 +355,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void inizializeMatch() {
+    public void initializeMatch() {
     }
 
     @Test

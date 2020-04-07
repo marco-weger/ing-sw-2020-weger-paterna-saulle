@@ -119,7 +119,7 @@ public class Controller implements Observer, ClientMessageHandler {
     }
 
     @Override
-    public void handleMessage(WorkerInizializeClient message) {
+    public void handleMessage(WorkerInitializeClient message) {
         Player selected = null;
         int i=0;
         while(i<match.getPlayers().size()){
@@ -246,7 +246,7 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
-    private void inizializeMatch() {
+    private void initializeMatch() {
         // TODO: it will be used after lobby closing
     }
 
@@ -260,7 +260,7 @@ public class Controller implements Observer, ClientMessageHandler {
     public void startTurn(boolean goOn){
         if(goOn) match.setNextPlayer();
 
-        match.getCurrentPlayer().getCard().inizializeTurn();
+        match.getCurrentPlayer().getCard().initializeTurn();
         if(match.checkCurrentPlayerWin()) {
             endGame(match.getCurrentPlayer());
         }

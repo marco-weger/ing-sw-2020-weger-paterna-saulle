@@ -26,19 +26,19 @@ public class AthenaTest {
     }
 
     @Test
-    public void inizializeTurn_turnoffpower() {
+    public void initializeTurn_turnoffpower() {
         initialize();
         p.get(0).getCard().setActive(true);
-        p.get(0).getCard().inizializeTurn();
+        p.get(0).getCard().initializeTurn();
         assertFalse(p.get(0).getCard().isActive());
     }
 
 
     @Test
-    public void inizializeTurn_NOpower() {
+    public void initializeTurn_NOpower() {
         initialize();
         p.get(0).getCard().setActive(false);
-        p.get(0).getCard().inizializeTurn();
+        p.get(0).getCard().initializeTurn();
         assertFalse(p.get(0).getCard().isActive());
     }
 

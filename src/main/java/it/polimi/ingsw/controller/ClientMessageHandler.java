@@ -10,7 +10,7 @@ public interface ClientMessageHandler {
 
     void handleMessage(ChallengerChoseClient message);
     void handleMessage(PlayerChoseClient message);
-    void handleMessage(WorkerInizializeClient message);
+    void handleMessage(WorkerInitializeClient message);
     void handleMessage(WorkerChoseClient message);
     void handleMessage(AnswerAbilityClient message);
     void handleMessage(MoveClient message);

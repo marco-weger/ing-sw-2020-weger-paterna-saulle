@@ -40,7 +40,7 @@ public class Athena extends Card {
      *
      */
     @Override
-    public void inizializeTurn() {
+    public void initializeTurn() {
         super.setActive(false);
     }
 }
