@@ -12,7 +12,7 @@ public enum Status {
      * - CHOSEN this state is used only if current card ability needs a question before build
      * - QUESTION_B this state is used for asking build position
      * - BUILT this state checks for after build ability
-     * - END handling of end phase of turn
+     * - END handling of end phase of the Match
      */
     CARD_CHOICE,WORKER_CHOICE,START, CHOSEN, QUESTION_M, MOVED, QUESTION_B,BUILT,END
 
