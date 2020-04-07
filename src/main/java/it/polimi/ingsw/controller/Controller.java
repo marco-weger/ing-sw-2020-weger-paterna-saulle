@@ -162,6 +162,11 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+    /**
+     * If the player has a non passive ability, it permits to send an answer to the question
+     * "would you activate the ability?" and proceed on the right path.
+     * @param message a message ClientToServer whit the name of the player, his choiche about the ability, and the status in which it activates.
+     */
     @Override
     public void handleMessage(AnswerAbilityClient message) {
         if(match.getCurrentPlayer().getName().compareTo(message.name) == 0 && match.getStatus().compareTo(message.type) == 0) {
