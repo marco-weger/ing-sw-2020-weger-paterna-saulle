@@ -28,7 +28,7 @@ public class Player extends Observable {
     /**
      * True if this is the current player
      */
-    private boolean active;
+    private boolean current;
 
     public Player(String name)
     {
@@ -36,7 +36,7 @@ public class Player extends Observable {
         this.card = null; //FactoryCard.getCard(card);
         this.worker1 = null;
         this.worker2 = null;
-        this.active = false;
+        this.current = false;
     }
 
     public String getName() {
@@ -86,12 +86,12 @@ public class Player extends Observable {
         notifyObservers(new WorkerChosenServer(name,1,worker2.getRow(),worker2.getRow()));
     }
 
-    public void setActive(boolean active){
-        this.active=active;
+    public void setCurrent(boolean current){
+        this.current = current;
     }
 
-    public boolean isActive(){
-        return active;
+    public boolean isCurrent(){
+        return current;
     }
 
     /**

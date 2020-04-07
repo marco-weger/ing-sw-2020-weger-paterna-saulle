@@ -5,7 +5,7 @@ import it.polimi.ingsw.commons.ClientMessage;
 
 import java.io.Serializable;
 
-public class WorkerInizializeClient implements ClientMessage, Serializable {
+public class WorkerInitializeClient implements ClientMessage, Serializable {
 
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
@@ -18,7 +18,7 @@ public class WorkerInizializeClient implements ClientMessage, Serializable {
      * @param y the column chosen to build
      * this method send to the server the decision of the player about the initial location of the worker
      */
-    public WorkerInizializeClient(String name, int x, int y)
+    public WorkerInitializeClient(String name, int x, int y)
     {
         this.name=name;
         this.x=x;

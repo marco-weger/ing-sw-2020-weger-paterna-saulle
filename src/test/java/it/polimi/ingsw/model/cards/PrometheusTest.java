@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.*;
 import org.junit.Test;
-import org.junit.experimental.theories.suppliers.TestedOn;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +45,7 @@ public class PrometheusTest {
         p.get(1).setWorker2(new Worker(3,3));
         p.get(2).setWorker1(new Worker(4,4));
         p.get(2).setWorker2(new Worker(3,1));
-        p.get(0).setActive(true);
+        p.get(0).setCurrent(true);
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().setActive(true);
         Board b = new Board();

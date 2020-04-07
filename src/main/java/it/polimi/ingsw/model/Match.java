@@ -115,8 +115,8 @@ public class Match extends Observable {
      * @param p select a player
      */
     public void setLosers(Player p) {
-        if(p.isActive())
-            players.get((players.indexOf(getCurrentPlayer())+1)%(players.size())).setActive(true);
+        if(p.isCurrent())
+            players.get((players.indexOf(getCurrentPlayer())+1)%(players.size())).setCurrent(true);
         getLosers().add(p);
         getPlayers().remove(p);
         if(players.size() > 1)
@@ -149,7 +149,7 @@ public class Match extends Observable {
      */
     public Player getCurrentPlayer(){
         for(Player p:players)
-            if(p.isActive())
+            if(p.isCurrent())
                 return p;
         return null;
     }
@@ -160,15 +160,15 @@ public class Match extends Observable {
     public void setNextPlayer() {
         if(getCurrentPlayer() != null){
             int i = players.indexOf(getCurrentPlayer());
-            getCurrentPlayer().setActive(false);
+            getCurrentPlayer().setCurrent(false);
             if (i < players.size()-1) {
-                players.get(i + 1).setActive(true);
+                players.get(i + 1).setCurrent(true);
             } else {
-                players.get(0).setActive(true);
+                players.get(0).setCurrent(true);
             }
         }
         else{
-            players.get(0).setActive(true);
+            players.get(0).setCurrent(true);
         }
         for(Player p:players){
             p.getWorker1().setActive(false);
