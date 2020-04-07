@@ -128,6 +128,7 @@ public class Controller implements Observer, ClientMessageHandler {
                 selected = p;
                 break;
             }
+            //TODO: control that is possible
             else if(p.getWorker1() == null || p.getWorker2() == null){
                 break;
             }

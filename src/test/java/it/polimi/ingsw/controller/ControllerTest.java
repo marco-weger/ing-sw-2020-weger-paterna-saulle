@@ -86,10 +86,6 @@ public class ControllerTest {
         assertEquals(controller.getMatch().getPlayers().get(0).getCard().getName(),CardName.PAN);
     }
 
-    //Marco=PAN
-    //Francesco=ATLAS
-    //Giulio=HEPHAESTUS
-
     @Test
     public void connectionClient() {
         initialize();
@@ -125,6 +121,54 @@ public class ControllerTest {
     //Marco=PAN
     //Francesco=ATLAS
     //Giulio=HEPHAESTUS
+
+
+    @Test
+    public void workerInizializeClient(){
+        initialize();
+        playerChoseClient();
+        controller.getMatch().getPlayers().get(0).setActive(true);
+        controller.handleMessage(new WorkerInizializeClient("Marco", 0, 0));
+        assertNotNull(controller.getMatch().getCurrentPlayer().getWorker1());
+        assertNotNull(controller.getMatch().getCurrentPlayer().getWorker2());
+        controller.getMatch().setStatus(Status.START);
+        controller.handleMessage(new WorkerInizializeClient("Marco", 0, 0));
+        assertEquals(controller.getMatch().getCurrentPlayer().getWorker1().getRow(), 0);
+        assertEquals(controller.getMatch().getCurrentPlayer().getWorker1().getColumn(), 0);
+        assertEquals(controller.getMatch().getCurrentPlayer().getWorker2().getRow(), 0);
+        assertEquals(controller.getMatch().getCurrentPlayer().getWorker2().getColumn(), 0);
+        //TODO: FIX THIS PROBLEM!!
+    }
+
+    @Test
+    public void workerChoiceClientNoQuestion(){
+        initialize();
+        playerChoseClient();
+        controller.getMatch().getPlayers().get(0).setActive(true);
+        controller.getMatch().setStatus(Status.START);
+        controller.handleMessage(new WorkerChoseClient("Marco", 2));
+        assertEquals(controller.getMatch().getCurrentPlayer().getCurrentWorker(),controller.getMatch().getCurrentPlayer().getWorker2());
+        //TODO: solve isQuestion to make this true
+        //controller.getMatch().getCurrentPlayer().getCard().activable(controller.getMatch().getPlayers(),controller.getMatch().getBoard());
+        //assertEquals(controller.getMatch().getStatus(), Status.CHOSEN);
+
+    }
+
+    @Test
+    public void workerChoiceClientQuestion(){
+        initialize();
+        playerChoseClient();
+        controller.getMatch().getPlayers().get(2).setActive(true);
+        controller.getMatch().setStatus(Status.START);
+        controller.handleMessage(new WorkerChoseClient("Giulio", 2));
+        controller.getMatch().getCurrentPlayer().getCard().activable(controller.getMatch().getPlayers(),controller.getMatch().getBoard());
+        //controller.getMatch().getCurrentPlayer().getCard().isQuestion();
+        assertEquals(controller.getMatch().getCurrentPlayer().getName(), "Giulio");
+        assertEquals(controller.getMatch().getCurrentPlayer().getCurrentWorker(),controller.getMatch().getCurrentPlayer().getWorker2());
+        assertEquals(controller.getMatch().getStatus(), Status.QUESTION_M);
+        //TODO: control cases
+    }
+
      @Test
     public void answerAbilityClient() {
         initialize();
