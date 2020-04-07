@@ -198,8 +198,6 @@ public class Card extends Observable {
             case QUESTION_B:
                 return Status.BUILT;
             case BUILT:
-                return Status.END;
-            case END:
                 return Status.START;
             default:
                 return null;

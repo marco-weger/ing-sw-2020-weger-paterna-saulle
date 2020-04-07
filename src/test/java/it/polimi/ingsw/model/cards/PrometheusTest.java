@@ -117,7 +117,7 @@ public class PrometheusTest {
         p.get(0).setWorker1(new Worker(0,0));
         p.get(0).setWorker2(new Worker(4,1));
         p.get(0).getCard().setActive(true);
-        assertEquals(Status.BUILT, p.get(0).getCard().getNextStatus(Status.QUESTION_B));
+        assertEquals(Status.QUESTION_M, p.get(0).getCard().getNextStatus(Status.QUESTION_B));
     }
 
     @Test
@@ -127,7 +127,7 @@ public class PrometheusTest {
         p.get(0).setWorker1(new Worker(0,0));
         p.get(0).setWorker2(new Worker(4,1));
         p.get(0).getCard().setActive(true);
-        assertEquals(Status.QUESTION_M, p.get(0).getCard().getNextStatus(Status.BUILT));
+        assertEquals(Status.QUESTION_M, p.get(0).getCard().getNextStatus(Status.QUESTION_B));
         assertFalse(p.get(0).getCard().isActive());
     }
 

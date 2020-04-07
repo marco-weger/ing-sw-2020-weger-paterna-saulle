@@ -304,7 +304,7 @@ public class ControllerTest {
         controller.handleMessage(new BuildClient("Francesco", 1, 0));
         //assertTrue(controller.getMatch().getCurrentPlayer().getCard().build(controller.getMatch().getPlayers(),controller.getMatch().getBoard(),controller.getMatch().getBoard().getCell(1,0)));
         assertEquals(1, controller.getMatch().getBoard().getCell(1, 0).getLevel());
-        assertEquals(Status.BUILT, controller.getMatch().getStatus());
+        assertEquals(Status.START, controller.getMatch().getStatus());
     }
 
     @Test

@@ -57,9 +57,6 @@ public class CardTest {
         assertEquals(Status.QUESTION_B, s);
         s = c.getNextStatus(Status.BUILT);
         assertNotNull(s);
-        assertEquals(Status.END, s);
-        s = c.getNextStatus(Status.END);
-        assertNotNull(s);
         assertEquals(Status.START, s);
     }
     // checkWin
