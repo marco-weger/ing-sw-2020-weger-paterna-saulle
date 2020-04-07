@@ -57,7 +57,7 @@ public class Match extends Observable {
      * - LOOSERS: empty list
      * @param id the unique match id
      */
-    public Match(int id, VirtualView vw){
+    public Match(int id, VirtualView vv){
         this.id=id;
         this.board=new Board();
         this.ended=false;
@@ -65,7 +65,7 @@ public class Match extends Observable {
         this.players = new ArrayList<>();
         this.losers = new ArrayList<>();
         this.selectedCard = new ArrayList<>();
-        this.addObserver(vw);
+        this.addObserver(vv);
     }
 
     public int getId() {

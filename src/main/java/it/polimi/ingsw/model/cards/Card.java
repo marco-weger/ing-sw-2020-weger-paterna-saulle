@@ -26,13 +26,13 @@ public class Card extends Observable {
     private final boolean question;
     private final Status status;
 
-    public Card(CardName name, boolean active, boolean opponent, boolean question, Status status, VirtualView vw) {
+    public Card(CardName name, boolean active, boolean opponent, boolean question, Status status, VirtualView vv) {
         this.name = name;
         this.active = active;
         this.opponent = opponent;
         this.question = question;
         this.status = status;
-        this.addObserver(vw);
+        this.addObserver(vv);
     }
 
     public CardName getName() {

@@ -57,8 +57,8 @@ public class Player extends Observable {
      * The card is instanced by FACTORY class, all players will be notified
      * @param card value from card ENUM
      */
-    public void setCard(CardName card, VirtualView vw) {
-        this.card = FactoryCard.getCard(card, vw);
+    public void setCard(CardName card, VirtualView vv) {
+        this.card = FactoryCard.getCard(card, vv);
         notifyObservers(new CardChosenServer(name,card));
     }
 
