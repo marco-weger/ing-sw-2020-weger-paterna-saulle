@@ -72,6 +72,10 @@ public class Controller implements Observer, ClientMessageHandler {
 
     }
 
+    /**
+     * Send the card chosen from the deck by the challenger
+     * @param message contains the name of the challenger and the list of cards picked
+     */
     @Override
     public void handleMessage(ChallengerChoseClient message) {
         if(match.getStatus().compareTo(Status.CARD_CHOICE) == 0
@@ -87,6 +91,10 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+    /**
+     * Send the card chosen by the current player
+     * @param message contains the name of the player and the card chosen
+     */
     @Override
     public void handleMessage(PlayerChoseClient message) {
         String who = "";
@@ -118,6 +126,12 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+
+    /**
+     * Send the position chosen by the player for the current worker at the first part.
+     * @param message contains the name of the player and the position for the current worker.
+     */
+    //FIXME correggere errore, due worker posizionati nella stessa casella
     @Override
     public void handleMessage(WorkerInitializeClient message) {
         Player selected = null;
@@ -144,6 +158,10 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+    /**
+     * send the current worker chosen by the current player
+     * @param message contains the name of the player and the worker chosen
+     */
     @Override
     public void handleMessage(WorkerChoseClient message) {
         if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.START) == 0){
@@ -161,6 +179,7 @@ public class Controller implements Observer, ClientMessageHandler {
             }
         }
     }
+
 
     @Override
     public void handleMessage(AnswerAbilityClient message) {
