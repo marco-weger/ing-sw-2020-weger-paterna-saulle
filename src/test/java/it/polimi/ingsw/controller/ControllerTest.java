@@ -43,7 +43,7 @@ public class ControllerTest {
         m = new Match(22);
         controller.setMatch(m);
         assertEquals(m,controller.getMatch());
-        VirtualView vv = new VirtualView();
+        VirtualView vv = new VirtualView(null);
         controller.setVirtualView(vv);
         assertEquals(vv,controller.getVirtualView());
     }

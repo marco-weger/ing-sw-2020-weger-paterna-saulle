@@ -5,7 +5,7 @@ import it.polimi.ingsw.commons.ClientMessage;
 
 import java.io.Serializable;
 
-public class DisconnectionClient implements ClientMessage, Serializable {
+public class DisconnectionClient extends ClientMessage implements Serializable {
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 

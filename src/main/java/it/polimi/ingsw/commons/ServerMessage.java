@@ -1,8 +1,9 @@
 package it.polimi.ingsw.commons;
 
-import it.polimi.ingsw.network.ServerMessageHandler;
+import it.polimi.ingsw.controller.ClientMessageHandler;
+import it.polimi.ingsw.view.ViewInterface;
 
-public interface ServerMessage {
-
-   void Accept(ServerMessageHandler smh);
+public abstract class ServerMessage {
+   public String name;
+   public abstract void Accept(ViewInterface smh);
 }

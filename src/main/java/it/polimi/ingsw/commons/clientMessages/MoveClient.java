@@ -5,12 +5,10 @@ import it.polimi.ingsw.commons.ClientMessage;
 
 import java.io.Serializable;
 
-public class MoveClient implements ClientMessage, Serializable {
-
+public class MoveClient extends ClientMessage implements Serializable {
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    public String name;
     public int x, y;
 
     /**

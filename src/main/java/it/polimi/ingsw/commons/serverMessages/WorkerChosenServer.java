@@ -1,15 +1,15 @@
 package it.polimi.ingsw.commons.serverMessages;
 
 import it.polimi.ingsw.commons.ServerMessage;
-import it.polimi.ingsw.network.ServerMessageHandler;
+import it.polimi.ingsw.view.ViewInterface;
 
 import java.io.Serializable;
 
-public class WorkerChosenServer implements ServerMessage, Serializable {
+public class WorkerChosenServer extends ServerMessage implements Serializable {
     @Override
-    public void Accept(ServerMessageHandler smh) {smh.handleMessage(this);}
+    public void Accept(ViewInterface smh) {smh.handleMessage(this);}
 
-    public String name, player;
+    public String player;
     public int worker,x,y;
 
     public WorkerChosenServer(String player, int worker, int x, int y){

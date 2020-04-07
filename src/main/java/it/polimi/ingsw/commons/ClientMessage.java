@@ -2,7 +2,8 @@ package it.polimi.ingsw.commons;
 
 import it.polimi.ingsw.controller.ClientMessageHandler;
 
-public interface ClientMessage {
+public abstract class ClientMessage {
+    public String name;
 
-    void Accept(ClientMessageHandler cmh);
+    public abstract void Accept(ClientMessageHandler cmh);
 }

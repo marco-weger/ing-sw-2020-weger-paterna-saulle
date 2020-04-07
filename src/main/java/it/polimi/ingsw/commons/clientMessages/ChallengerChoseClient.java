@@ -7,12 +7,10 @@ import it.polimi.ingsw.model.cards.CardName;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ChallengerChoseClient implements ClientMessage, Serializable {
-
+public class ChallengerChoseClient extends ClientMessage implements Serializable {
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    public String name;
     public ArrayList<CardName> c;
 
     /**

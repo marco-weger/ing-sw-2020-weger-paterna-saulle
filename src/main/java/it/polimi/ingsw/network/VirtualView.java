@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import com.sun.security.ntlm.Client;
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.commons.ClientMessage;
@@ -9,75 +10,52 @@ import it.polimi.ingsw.model.Player;
 
 import java.util.ArrayList;
 
-public class VirtualView extends Observable implements Observer, ServerMessageHandler {
+public class VirtualView extends Observable implements Observer {
 
     // TODO: the virtual view has to check name params of MESSAGE every time
     private ArrayList<Player> playersName;
     private Server server;
 
+    private boolean ended;
+
     public VirtualView(Server server){
         this.server = server;
+        this.ended = false;
+    }
+
+    /**
+     * this method sends the message to the controller
+     * @param message message to send
+     */
+    public void notify(ClientMessage message) {
+        if (!ended) {
+            System.out.println("---> FROM CLI TO CONTROLLER\n");
+            System.out.println("Type: " + message.toString() + "\n");
+            System.out.println("Sender: " + message.name + "\n");
+            // TODO: implements setChanged and notify
+            //setChanged();
+            //notifyObservers(message);
+            notifyObservers(message);
+            System.out.println("== : == : == : == : == : == : == : ==");
+        }
     }
 
     @Override
     public void update(Object arg) {
-        if( ! (arg instanceof ClientMessage))
-            throw new RuntimeException("This must be an ClientMessage object");
+        if( ! (arg instanceof ServerMessage))
+            throw new RuntimeException("This must be a ServerMessage object");
         ServerMessage cm = (ServerMessage) arg;
-        cm.Accept(this);
+        System.out.println("---> FROM MODEL TO CLI\n");
+        System.out.println("Type: " + cm.toString() + "\n");
 
-        // TODO: not sure this is the best way to call correct method... test!
-        // new Thread(() -> cm.Accept(this)).start();
+        if(cm.name.equals("")){
+            // TODO: send message to all
+            System.out.println("Receiver: ALL (empty string)\n");
+        }
+        else {
+            // TODO: send message to signle player
+            System.out.println("Receiver: " + cm.name + "\n");
+        }
     }
 
-
-    @Override
-    public void handleMessage(CheckMoveServer cms) {
-        // TODO: let client know where to move
-    }
-
-    @Override
-    public void handleMessage(CheckBuildServer cbs) {
-
-    }
-
-    @Override
-    public void handleMessage(CardChosenServer message) {
-
-    }
-
-    @Override
-    public void handleMessage(WorkerChosenServer message) {
-
-    }
-
-    @Override
-    public void handleMessage(QuestionAbilityServer message) {
-
-    }
-
-    @Override
-    public void handleMessage(CurrentStatusServer message) {
-
-    }
-
-    @Override
-    public void handleMessage(SomeoneLoseServer message) {
-
-    }
-
-    @Override
-    public void handleMessage(AvailableCardServer message) {
-
-    }
-
-    @Override
-    public void handleMessage(SomeoneWinServer message) {
-
-    }
-
-    @Override
-    public void Accept(ServerMessageHandler smh) {
-
-    }
 }

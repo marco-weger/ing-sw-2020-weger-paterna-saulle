@@ -5,11 +5,7 @@ import it.polimi.ingsw.commons.ClientMessage;
 
 import java.io.Serializable;
 
-public class ConnectionClient implements ClientMessage, Serializable {
+public class ConnectionClient extends ClientMessage implements Serializable {
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
-
-    /**
-     * this method allow the Client-Server connection
-     */
 }
