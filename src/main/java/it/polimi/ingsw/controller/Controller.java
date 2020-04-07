@@ -177,7 +177,8 @@ public class Controller implements Observer, ClientMessageHandler {
     }
 
     //TODO ho cambiato Status.QUESTION_M in Status.MOVE, perché devo garantire di essere nello stato di costruzione, non sono l'anserAbility
-    //TODO rivedere questo messaggio in caso in cui lo spostamento NON è valido. (Caso non garantito spostamento+checkbuild)
+    //TODO rivedere questo messaggio in caso di ARTHEMIS
+    //FIXME rivedere domani assolutamente!
 
     /**
      * If the player can move into that cell, with this method he can move into it.
@@ -240,7 +241,7 @@ public class Controller implements Observer, ClientMessageHandler {
      * Move all the loser players into the loser list and call the end of the Match
      *@param winner the player who have win the match
      */
-    public void endGame(Player winner){
+    private void endGame(Player winner){
         for(int i=0;i<match.getPlayers().size();)
         {
             if (match.getPlayers().get(i).getName().compareTo(winner.getName()) != 0)
@@ -253,7 +254,7 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
-    public void inizializeMatch() {
+    private void inizializeMatch() {
         // TODO: it will be used after lobby closing
     }
 

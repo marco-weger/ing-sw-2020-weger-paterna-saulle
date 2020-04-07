@@ -12,7 +12,6 @@ public class Demeter extends Card {
         lastBuild = null;
     }
 
-
     /**
      * It checks buildable cells by watchi active attribute
      * @param p list of player
