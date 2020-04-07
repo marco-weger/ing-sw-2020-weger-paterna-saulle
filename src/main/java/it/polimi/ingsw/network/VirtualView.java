@@ -33,8 +33,6 @@ public class VirtualView extends Observable implements Observer {
             System.out.println("Type: " + message.toString() + "\n");
             System.out.println("Sender: " + message.name + "\n");
             // TODO: implements setChanged and notify
-            //setChanged();
-            //notifyObservers(message);
             notifyObservers(message);
             System.out.println("== : == : == : == : == : == : == : ==");
         }
@@ -56,6 +54,7 @@ public class VirtualView extends Observable implements Observer {
             // TODO: send message to signle player
             System.out.println("Receiver: " + cm.name + "\n");
         }
+        System.out.println("== : == : == : == : == : == : == : ==");
     }
 
 }
