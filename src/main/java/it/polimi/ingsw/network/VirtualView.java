@@ -19,8 +19,17 @@ public class VirtualView extends Observable implements Observer {
     public VirtualView(Server server){
         this.server = server;
         this.ended = false;
-        addObserver(new Controller(this));
+
+        // FIXME remove Controller attribute
+        c = new Controller(this);
+        addObserver(c);
+        //addObserver(new Controller(this));
     }
+
+    // It is used to run some tests about VirtualView and Controller communication
+    // FIXME remove
+    @Deprecated
+    public Controller c;
 
     /**
      * this method sends the message to the controller

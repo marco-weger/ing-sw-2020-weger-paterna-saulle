@@ -32,12 +32,10 @@ public class Controller implements Observer, ClientMessageHandler {
     }
 
     public Match getMatch() {
-        return match;
+        return this.match;
     }
 
-    public void setMatch(Match match) {
-        this.match = match;
-    }
+    public void setMatch(Match match) { this.match = match; }
 
     @Override
     public void update(Object arg){
@@ -45,9 +43,9 @@ public class Controller implements Observer, ClientMessageHandler {
             throw new RuntimeException("This must be an ClientMessage object");
 
         ClientMessage cm = (ClientMessage) arg;
-        System.out.println("---> FROM CLI TO CONTROLLER\n");
-        System.out.println("Type: " + cm.toString() + "\n");
-        System.out.println("Sender: " + cm.name + "\n");
+        System.out.println("---> FROM CLI TO CONTROLLER");
+        System.out.println("Type: " + cm.toString());
+        System.out.println("Sender: " + cm.name);
         cm.Accept(this);
         System.out.println("== : == : == : == : == : == : == : ==");
 
@@ -57,7 +55,14 @@ public class Controller implements Observer, ClientMessageHandler {
 
     @Override
     public void handleMessage(ConnectionClient message) {
-
+        for(Player p : match.getPlayers())
+            if(p.getName().equals(message.name))
+                throw new RuntimeException("Player already connected");
+        if(match.getPlayers().size() < 3)
+            match.getPlayers().add(new Player(message.name,virtualView));
+        if(match.getPlayers().size() == 3){
+            match.setStatus(Status.CARD_CHOICE);
+        }
     }
 
     @Override

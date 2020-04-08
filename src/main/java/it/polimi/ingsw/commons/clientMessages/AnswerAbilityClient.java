@@ -16,9 +16,8 @@ public class AnswerAbilityClient extends ClientMessage implements Serializable {
     /**
      * @param name the sender
      * @param ability The decision about switch on or off the ability
-     * @param type The status of the player
+     * @param type The current status of the player
      * this method send to the server the decision of the player about switch on or not his God ability.
-     * (Usually before QUESTION_M or QUESTION_B)
      */
     public AnswerAbilityClient(String name, boolean ability, Status type)
     {

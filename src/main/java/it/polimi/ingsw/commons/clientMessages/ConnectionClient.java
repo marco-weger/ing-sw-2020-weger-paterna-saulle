@@ -8,4 +8,6 @@ import java.io.Serializable;
 public class ConnectionClient extends ClientMessage implements Serializable {
     @Override
     public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
+
+    public ConnectionClient(String name){this.name=name;}
 }

@@ -13,15 +13,15 @@ import java.util.Arrays;
 public class ControllerTest {
 
     Controller controller;
-    VirtualView vv;
+    VirtualView vw;
 
     public void initialize(){
         //create a list of players with the developers
-        vv = new VirtualView(null);
+        vw = new VirtualView(null);
         ArrayList<Player> players = new ArrayList<>(Arrays.asList(
-                new Player("Marco",vv),
-                new Player("Francesco",vv),
-                new Player("Giulio",vv)
+                new Player("Marco",vw),
+                new Player("Francesco",vw),
+                new Player("Giulio",vw)
         ));
 
         for(Player player:players){
@@ -30,20 +30,20 @@ public class ControllerTest {
         }
 
         //generate a Match
-        Match m = new Match(42,vv);
+        Match m = new Match(42,vw);
         m.setPlayers(players);
         //generate a Controller for that Match
         // TODO: pass the virtual view
-        controller = new Controller(vv);
+        controller = new Controller(vw);
         controller.setMatch(m);
     }
     @Test
     public void getter_setter(){
         initialize();
-        Match m = new Match(42,vv);
-        controller = new Controller(vv);
+        Match m = new Match(42,vw);
+        controller = new Controller(vw);
         controller.setMatch(m);
-        m = new Match(22,vv);
+        m = new Match(22,vw);
         controller.setMatch(m);
         assertEquals(m,controller.getMatch());
         VirtualView vv = new VirtualView(null);
@@ -90,12 +90,12 @@ public class ControllerTest {
     @Test
     public void workerInitializeClient() {
         // initialize
-        vv = new VirtualView(null);
-        controller = new Controller(vv);
-        controller.setMatch(new Match(42,vv));
+        vw = new VirtualView(null);
+        controller = new Controller(vw);
+        controller.setMatch(new Match(42,vw));
         controller.getMatch().setPlayers(
                 new ArrayList<>(
-                        Arrays.asList(new Player("Marco",vv),new Player("Francesco",vv),new Player("Giulio",vv))
+                        Arrays.asList(new Player("Marco",vw),new Player("Francesco",vw),new Player("Giulio",vw))
                 )
         );
         // card chose
@@ -134,7 +134,7 @@ public class ControllerTest {
 
     @Test
     public void workerChoseClient() {
-        vv = new VirtualView(null);
+        vw = new VirtualView(null);
         workerInitializeClient();
         controller.getMatch().setStatus(Status.START);
         controller.handleMessage(new WorkerChoseClient("Francesco",1));
@@ -158,7 +158,7 @@ public class ControllerTest {
         initialize();
         challengerChoseClient();
         // TODO: this message will be implemented
-        controller.handleMessage(new ConnectionClient());
+        controller.handleMessage(new ConnectionClient("Marco"));
     }
 
     @Test
@@ -218,9 +218,9 @@ public class ControllerTest {
     @Test
     public void MoveClientWin(){
         initialize();
-        controller.getMatch().getPlayers().get(0).setCard(CardName.PAN,vv);
-        controller.getMatch().getPlayers().get(1).setCard(CardName.ATLAS,vv);
-        controller.getMatch().getPlayers().get(2).setCard(CardName.HEPHAESTUS,vv);
+        controller.getMatch().getPlayers().get(0).setCard(CardName.PAN,vw);
+        controller.getMatch().getPlayers().get(1).setCard(CardName.ATLAS,vw);
+        controller.getMatch().getPlayers().get(2).setCard(CardName.HEPHAESTUS,vw);
 
         controller.getMatch().getPlayers().get(0).setWorker1(new Worker(3,4));
         controller.getMatch().getPlayers().get(0).setWorker2(new Worker(4,3));
@@ -245,9 +245,9 @@ public class ControllerTest {
     @Test
     public void MoveClientDoQuestion(){
         initialize();
-        controller.getMatch().getPlayers().get(0).setCard(CardName.PAN,vv);
-        controller.getMatch().getPlayers().get(1).setCard(CardName.ATLAS,vv);
-        controller.getMatch().getPlayers().get(2).setCard(CardName.HEPHAESTUS,vv);
+        controller.getMatch().getPlayers().get(0).setCard(CardName.PAN,vw);
+        controller.getMatch().getPlayers().get(1).setCard(CardName.ATLAS,vw);
+        controller.getMatch().getPlayers().get(2).setCard(CardName.HEPHAESTUS,vw);
 
         controller.getMatch().getPlayers().get(0).setWorker1(new Worker(3,4));
         controller.getMatch().getPlayers().get(0).setWorker2(new Worker(4,3));
@@ -272,9 +272,9 @@ public class ControllerTest {
     @Test
     public void MoveClient() {
         initialize();
-        controller.getMatch().getPlayers().get(0).setCard(CardName.ATHENA,vv);
-        controller.getMatch().getPlayers().get(1).setCard(CardName.PAN,vv);
-        controller.getMatch().getPlayers().get(2).setCard(CardName.HEPHAESTUS,vv);
+        controller.getMatch().getPlayers().get(0).setCard(CardName.ATHENA,vw);
+        controller.getMatch().getPlayers().get(1).setCard(CardName.PAN,vw);
+        controller.getMatch().getPlayers().get(2).setCard(CardName.HEPHAESTUS,vw);
 
         controller.getMatch().getPlayers().get(0).setWorker1(new Worker(3,4));
         controller.getMatch().getPlayers().get(0).setWorker2(new Worker(4,3));
@@ -316,7 +316,7 @@ public class ControllerTest {
     public void BuildClientPrometheus() {
         initialize();
         playerChoseClient();
-        controller.getMatch().getPlayers().get(1).setCard(CardName.PROMETHEUS,vv);
+        controller.getMatch().getPlayers().get(1).setCard(CardName.PROMETHEUS,vw);
         controller.getMatch().getPlayers().get(1).getCard().setActive(true);
         controller.getMatch().getPlayers().get(1).setCurrent(true);
         controller.getMatch().setStatus(Status.QUESTION_B);
