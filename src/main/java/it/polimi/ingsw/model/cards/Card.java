@@ -32,7 +32,8 @@ public class Card extends Observable {
         this.opponent = opponent;
         this.question = question;
         this.status = status;
-        this.addObserver(vv);
+        if(vv != null)
+            this.addObserver(vv);
     }
 
     public CardName getName() {

@@ -154,14 +154,6 @@ public class ControllerTest {
     //Giulio=HEPHAESTUS
 
     @Test
-    public void connectionClient() {
-        initialize();
-        challengerChoseClient();
-        // TODO: this message will be implemented
-        controller.handleMessage(new ConnectionClient("Marco"));
-    }
-
-    @Test
     public void disconnectionClient() {
         initialize();
         challengerChoseClient();

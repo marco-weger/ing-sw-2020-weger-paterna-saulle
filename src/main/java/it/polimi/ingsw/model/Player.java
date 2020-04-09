@@ -36,7 +36,7 @@ public class Player extends Observable {
      */
     String ip;
 
-    public Player(String name, String ip, VirtualView vw)
+    public Player(String name, String ip, VirtualView vv)
     {
         this.name = name;
         this.ip = ip;
@@ -44,7 +44,8 @@ public class Player extends Observable {
         this.worker1 = null;
         this.worker2 = null;
         this.current = false;
-        this.addObserver(vw);
+        if(vv != null)
+            this.addObserver(vv);
     }
 
     public String getIp() {

@@ -62,7 +62,8 @@ public class Match extends Observable {
         this.players = new ArrayList<>();
         this.losers = new ArrayList<>();
         this.selectedCard = new ArrayList<>();
-        this.addObserver(vv);
+        if(vv != null)
+            this.addObserver(vv);
     }
 
     public int getId() {
