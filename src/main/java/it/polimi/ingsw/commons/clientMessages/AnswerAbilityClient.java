@@ -6,9 +6,9 @@ import it.polimi.ingsw.model.Status;
 
 import java.io.Serializable;
 
-public class AnswerAbilityClient extends ClientMessage implements Serializable {
+public class AnswerAbilityClient extends ClientMessage {
     @Override
-    public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
+    public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
     public Status type;
     public boolean ability;

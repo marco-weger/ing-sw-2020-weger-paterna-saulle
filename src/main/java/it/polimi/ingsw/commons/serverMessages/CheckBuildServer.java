@@ -7,9 +7,9 @@ import it.polimi.ingsw.view.ViewInterface;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CheckBuildServer extends ServerMessage implements Serializable {
+public class CheckBuildServer extends ServerMessage {
     @Override
-    public void Accept(ViewInterface smh) {smh.handleMessage(this);}
+    public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
     public ArrayList<SnapCell> sc;
 

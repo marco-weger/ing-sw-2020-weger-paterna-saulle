@@ -1,10 +1,11 @@
 package it.polimi.ingsw.commons;
 
-import it.polimi.ingsw.controller.ClientMessageHandler;
 import it.polimi.ingsw.view.ViewInterface;
 
-public abstract class ServerMessage {
+import java.io.Serializable;
+
+public abstract class ServerMessage implements Serializable {
    public String name;
    public String ip;
-   public abstract void Accept(ViewInterface smh);
+   public abstract void accept(ViewInterface vi);
 }

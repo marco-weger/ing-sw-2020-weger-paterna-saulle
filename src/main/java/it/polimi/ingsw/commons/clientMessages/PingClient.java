@@ -5,8 +5,8 @@ import it.polimi.ingsw.commons.ClientMessage;
 
 import java.io.Serializable;
 
-public class PingClient extends ClientMessage implements Serializable {
+public class PingClient extends ClientMessage {
     @Override
-    public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
+    public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
 }

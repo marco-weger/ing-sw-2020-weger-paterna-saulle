@@ -7,10 +7,10 @@ import it.polimi.ingsw.model.cards.CardName;
 
 import java.io.Serializable;
 
-public class PlayerChoseClient extends ClientMessage implements Serializable {
+public class PlayerChoseClient extends ClientMessage {
 
     @Override
-    public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
+    public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
     public CardName c;
 

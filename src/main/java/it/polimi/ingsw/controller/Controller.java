@@ -50,7 +50,7 @@ public class Controller implements Observer, ClientMessageHandler {
         System.out.println("---> FROM CLI TO CONTROLLER");
         System.out.println("Type: " + cm.toString());
         System.out.println("Sender: " + cm.name);
-        cm.Accept(this);
+        cm.accept(this);
         System.out.println("== : == : == : == : == : == : == : ==");
 
         // TODO: not sure this is the best way to call correct method... test!

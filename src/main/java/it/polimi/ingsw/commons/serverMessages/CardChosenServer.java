@@ -6,9 +6,9 @@ import it.polimi.ingsw.view.ViewInterface;
 
 import java.io.Serializable;
 
-public class CardChosenServer  extends ServerMessage implements Serializable{
+public class CardChosenServer  extends ServerMessage {
     @Override
-    public void Accept(ViewInterface smh) {smh.handleMessage(this);}
+    public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
     public String player;
     public CardName cardName;

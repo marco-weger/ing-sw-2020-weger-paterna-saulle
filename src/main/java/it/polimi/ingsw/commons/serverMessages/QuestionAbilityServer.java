@@ -5,9 +5,9 @@ import it.polimi.ingsw.view.ViewInterface;
 
 import java.io.Serializable;
 
-public class QuestionAbilityServer extends ServerMessage implements Serializable {
+public class QuestionAbilityServer extends ServerMessage {
     @Override
-    public void Accept(ViewInterface smh) {smh.handleMessage(this);}
+    public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
     public QuestionAbilityServer(String name, String ip){
         this.name=name;

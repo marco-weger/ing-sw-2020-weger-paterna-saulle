@@ -5,9 +5,7 @@ import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.serverMessages.NameRequestServer;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,39 +37,36 @@ public class ServerClientHandler implements Runnable  {
     @Override
     public void run() {
         try {
-            this.in = new ObjectInputStream(this.socket.getInputStream());
-            this.out = new ObjectOutputStream(this.socket.getOutputStream());
-            Object object = null;
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+            Object object;
 
             // username req
             String name = "";
             String ip = socket.getInetAddress().toString();
 
             // TODO: if ip address has an active match lets go to the match
-            while(!(object instanceof ConnectionClient)){
+            if(socket.isConnected())
                 this.notify(new NameRequestServer());
+
+            while(socket.isConnected()){
                 object = in.readObject();
                 if(object instanceof ConnectionClient){
                     ConnectionClient cc = (ConnectionClient) object;
-                    if(cc.name.equals("") || server.isInWaitingRoom(cc.name)){
-                        object = null;
-                    }
-                    else{
+                    if(!cc.name.equals("") && !server.isInWaitingRoom(cc.name)){
                         name = cc.name;
                         cc.ip = socket.getInetAddress().toString();
                         cc.sch = this;
                         server.addPlayer((ConnectionClient) object);
                     }
                 }
-            }
-            while(socket.isConnected()){
-                object = in.readObject();
                 VirtualView vv = server.getVirtualViews().get(name+ip);
                 if(vv != null && object != null)
                     vv.notify((ClientMessage) object);
             }
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.getMessage());
+            // TODO: disconnection event
         }
     }
 

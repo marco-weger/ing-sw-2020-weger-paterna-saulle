@@ -2,8 +2,10 @@ package it.polimi.ingsw.commons;
 
 import it.polimi.ingsw.controller.ClientMessageHandler;
 
-public abstract class ClientMessage {
+import java.io.Serializable;
+
+public abstract class ClientMessage implements Serializable {
     public String name;
 
-    public abstract void Accept(ClientMessageHandler cmh);
+    public abstract void accept(ClientMessageHandler cmh);
 }

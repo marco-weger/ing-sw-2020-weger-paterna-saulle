@@ -5,10 +5,10 @@ import it.polimi.ingsw.commons.ClientMessage;
 
 import java.io.Serializable;
 
-public class WorkerChoseClient extends ClientMessage implements Serializable {
+public class WorkerChoseClient extends ClientMessage {
 
     @Override
-    public void Accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
+    public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
     public String name;
     public int worker;

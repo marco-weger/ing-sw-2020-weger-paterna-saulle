@@ -6,8 +6,6 @@ import it.polimi.ingsw.model.Player;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,8 +61,7 @@ public class Server {
         System.out.println("Server ready!");
         while (true){
             try{
-                Socket socket = serverSocket.accept();
-                executor.submit(new ServerClientHandler(socket,this));
+                executor.submit(new ServerClientHandler(serverSocket.accept(),this));
             }catch(IOException e){
                 LOGGER.log(Level.WARNING, e.getMessage());
                 break;
