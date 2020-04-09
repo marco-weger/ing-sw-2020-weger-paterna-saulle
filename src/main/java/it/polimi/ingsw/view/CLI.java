@@ -4,7 +4,6 @@ import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.network.Server;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

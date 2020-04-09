@@ -2,11 +2,12 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CardName;
-import it.polimi.ingsw.network.VirtualView;
+import it.polimi.ingsw.network.*;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -14,6 +15,7 @@ public class ControllerTest {
 
     Controller controller;
     VirtualView vw;
+
 
     public void initialize(){
         //create a list of players with the developers
@@ -37,6 +39,8 @@ public class ControllerTest {
         controller = new Controller(vw);
         controller.setMatch(m);
     }
+
+
     @Test
     public void getter_setter(){
         initialize();
@@ -152,6 +156,8 @@ public class ControllerTest {
     //Marco=PAN
     //Francesco=ATLAS
     //Giulio=HEPHAESTUS
+
+
 
     @Test
     public void disconnectionClient() {

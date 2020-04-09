@@ -54,25 +54,26 @@ public class VirtualView extends Observable implements Observer {
     }
 
     @Override
+    //TODO ho temporaneamente disattivato le print
     public void update(Object arg) {
         if( ! (arg instanceof ServerMessage))
             throw new RuntimeException("This must be a ServerMessage object");
 
         ServerMessage cm = (ServerMessage) arg;
-        System.out.println("---> FROM MODEL TO CLI");
-        System.out.println("Type: " + cm.toString());
+        //System.out.println("---> FROM MODEL TO CLI");
+        //System.out.println("Type: " + cm.toString());
 
         if(cm.name.equals("")){
             if(server != null)
                 server.sendAll(cm,this);
-            System.out.println("Receiver: ALL (empty string)");
+            //System.out.println("Receiver: ALL (empty string)");
         }
         else {
             if(server != null)
                 server.send(cm,this);
-            System.out.println("Receiver: " + cm.name);
+            //System.out.println("Receiver: " + cm.name);
         }
-        System.out.println("== : == : == : == : == : == : == : ==");
+        //System.out.println("== : == : == : == : == : == : == : ==");
     }
 
 }
