@@ -1,10 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.Observable;
-import it.polimi.ingsw.commons.serverMessages.AvailableCardServer;
-import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
-import it.polimi.ingsw.commons.serverMessages.SomeoneLoseServer;
-import it.polimi.ingsw.commons.serverMessages.SomeoneWinServer;
+import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -188,6 +185,11 @@ public class Match extends Observable {
             return true;
         }
         return false;
+    }
+
+    public void addPlayer(Player p){
+        notifyObservers(new OpponentConnection(p.getName()));
+        getPlayers().add(p);
     }
 }
 

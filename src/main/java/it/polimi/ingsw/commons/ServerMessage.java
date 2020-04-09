@@ -5,5 +5,6 @@ import it.polimi.ingsw.view.ViewInterface;
 
 public abstract class ServerMessage {
    public String name;
+   public String ip;
    public abstract void Accept(ViewInterface smh);
 }

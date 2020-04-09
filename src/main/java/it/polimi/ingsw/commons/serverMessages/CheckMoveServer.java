@@ -13,8 +13,9 @@ public class CheckMoveServer extends ServerMessage implements Serializable {
 
     public ArrayList<SnapCell> sc;
 
-    public CheckMoveServer(String name, ArrayList<SnapCell> sc){
+    public CheckMoveServer(String name, String ip, ArrayList<SnapCell> sc){
         this.name=name;
+        this.ip="";
         this.sc=sc;
     }
 }

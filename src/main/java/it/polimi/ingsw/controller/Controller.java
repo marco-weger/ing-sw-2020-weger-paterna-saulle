@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Controller implements Observer, ClientMessageHandler {
 
@@ -21,6 +22,9 @@ public class Controller implements Observer, ClientMessageHandler {
 
     public Controller(VirtualView virtualView) {
         this.virtualView = virtualView;
+        // TODO check id not exists
+        Random r = new Random();
+        this.match = new Match(Math.abs(r.nextInt(9999)) + 1,virtualView);
     }
 
     public VirtualView getVirtualView() {
@@ -59,7 +63,7 @@ public class Controller implements Observer, ClientMessageHandler {
             if(p.getName().equals(message.name))
                 throw new RuntimeException("Player already connected");
         if(match.getPlayers().size() < 3)
-            match.getPlayers().add(new Player(message.name,virtualView));
+            match.addPlayer(new Player(message.name,message.ip,virtualView));
         if(match.getPlayers().size() == 3){
             match.setStatus(Status.CARD_CHOICE);
         }

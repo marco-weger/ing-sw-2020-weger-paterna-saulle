@@ -14,6 +14,7 @@ public class WorkerChosenServer extends ServerMessage implements Serializable {
 
     public WorkerChosenServer(String player, int worker, int x, int y){
         this.name="";
+        this.ip="";
         this.worker=worker;
         this.player=player;
         this.x=x;

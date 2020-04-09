@@ -11,9 +11,9 @@ import static org.junit.Assert.*;
 
 public class CardTest {
     ArrayList<Player> p = new ArrayList<>(Arrays.asList(
-            new Player("player1",null),
-            new Player("player2",null),
-            new Player("player3",null)
+            new Player("player1","",null),
+            new Player("player2","",null),
+            new Player("player3","",null)
     ));
 
     public void initialize(){

@@ -9,7 +9,8 @@ public class QuestionAbilityServer extends ServerMessage implements Serializable
     @Override
     public void Accept(ViewInterface smh) {smh.handleMessage(this);}
 
-    public QuestionAbilityServer(String name){
+    public QuestionAbilityServer(String name, String ip){
         this.name=name;
+        this.ip=ip;
     }
 }

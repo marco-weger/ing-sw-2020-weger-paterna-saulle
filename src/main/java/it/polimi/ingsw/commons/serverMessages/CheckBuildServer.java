@@ -13,8 +13,9 @@ public class CheckBuildServer extends ServerMessage implements Serializable {
 
     public ArrayList<SnapCell> sc;
 
-    public CheckBuildServer(String name, ArrayList<SnapCell> sc){
+    public CheckBuildServer(String name, String ip, ArrayList<SnapCell> sc){
         this.name=name;
+        this.ip=ip;
         this.sc=sc;
     }
 }

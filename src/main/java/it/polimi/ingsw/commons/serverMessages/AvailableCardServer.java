@@ -15,6 +15,7 @@ public class AvailableCardServer extends ServerMessage implements Serializable {
 
     public AvailableCardServer(ArrayList<CardName> cardName){
         this.name="";
+        this.ip="";
         this.cardName=cardName;
     }
 }

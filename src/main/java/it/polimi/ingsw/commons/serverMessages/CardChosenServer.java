@@ -15,6 +15,7 @@ public class CardChosenServer  extends ServerMessage implements Serializable{
 
     public CardChosenServer(String player, CardName cardName){
         this.name="";
+        this.ip="";
         this.cardName=cardName;
         this.player=player;
     }

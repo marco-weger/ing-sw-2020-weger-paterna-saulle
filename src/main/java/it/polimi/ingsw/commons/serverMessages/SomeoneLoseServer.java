@@ -13,6 +13,7 @@ public class SomeoneLoseServer extends ServerMessage implements Serializable {
 
     public SomeoneLoseServer(String player){
         this.name="";
+        this.ip="";
         this.player=player;
     }
 }
