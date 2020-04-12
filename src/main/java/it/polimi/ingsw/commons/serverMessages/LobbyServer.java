@@ -1,20 +1,19 @@
 package it.polimi.ingsw.commons.serverMessages;
 
 import it.polimi.ingsw.commons.ServerMessage;
-import it.polimi.ingsw.model.Status;
 import it.polimi.ingsw.view.ViewInterface;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 
-public class OpponentConnection extends ServerMessage {
+public class LobbyServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public String player;
+    public ArrayList<String> players;
 
-    public OpponentConnection(String player){
+    public LobbyServer(ArrayList<String> players){
         this.name="";
         this.ip="";
-        this.player=player;
+        this.players=players;
     }
 }

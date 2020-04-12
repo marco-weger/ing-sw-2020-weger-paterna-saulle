@@ -86,17 +86,10 @@ public class Client implements Runnable{
 
     public void sendMessage(ClientMessage msg){
         try {
-            if(msg instanceof ConnectionClient)
-                System.out.println(msg.name);
-
             out.reset();
             out.writeObject(msg);
-            //out.writeObject((Object) msg);
             out.flush();
         } catch (IOException e) {
-            //System.err.println("Error while trying writeObject on client side");
-            //e.printStackTrace();
-            //userInterface.receiveEvent(new DisconnectedQuestion());
             LOGGER.log(Level.WARNING, e.getMessage());
         }
 

@@ -19,5 +19,7 @@ public enum CardName {
         this.description = description;
     }
 
+    public String getDescription(){return description;}
+
 }
 

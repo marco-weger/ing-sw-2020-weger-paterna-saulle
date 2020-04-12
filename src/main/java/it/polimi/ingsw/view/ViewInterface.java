@@ -13,5 +13,5 @@ public interface ViewInterface {
     void handleMessage(AvailableCardServer message);
     void handleMessage(SomeoneWinServer message);
     void handleMessage(NameRequestServer message);
-    void handleMessage(OpponentConnection message);
+    void handleMessage(LobbyServer message);
 }

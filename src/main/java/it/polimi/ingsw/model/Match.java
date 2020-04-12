@@ -92,10 +92,14 @@ public class Match extends Observable {
      */
     public void setStatus(Status status) {
         this.status = status;
+
         if(getCurrentPlayer() != null)
             notifyObservers(new CurrentStatusServer(getCurrentPlayer().getName(),status));
         else
             notifyObservers(new CurrentStatusServer("",status));
+
+        if(status.equals(Status.CARD_CHOICE))
+            notifyObservers(new AvailableCardServer(this.players.get(0).getName(),this.players.get(0).getIp(),new ArrayList<CardName>()));
     }
 
     public ArrayList<Player> getPlayers() {
@@ -141,7 +145,8 @@ public class Match extends Observable {
     public void setSelectedCards(ArrayList<CardName> selectedCard){
         this.selectedCard = new ArrayList<>();
         this.selectedCard.addAll(selectedCard);
-        notifyObservers(new AvailableCardServer(selectedCard));
+        int i = this.getSelectedCard().size()-1;
+        notifyObservers(new AvailableCardServer(this.getPlayers().get(i).getName(),this.getPlayers().get(i).getIp(),selectedCard));
     }
 
     /**
@@ -189,8 +194,11 @@ public class Match extends Observable {
     }
 
     public void addPlayer(Player p){
-        notifyObservers(new OpponentConnection(p.getName()));
         getPlayers().add(p);
+        ArrayList<String> names = new ArrayList<>();
+        for(Player player:players)
+            names.add(player.getName());
+        notifyObservers(new LobbyServer(names));
     }
 }
 

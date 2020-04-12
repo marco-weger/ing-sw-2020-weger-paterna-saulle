@@ -15,7 +15,7 @@ public class CheckMoveServer extends ServerMessage {
 
     public CheckMoveServer(String name, String ip, ArrayList<SnapCell> sc){
         this.name=name;
-        this.ip="";
+        this.ip=ip;
         this.sc=sc;
     }
 }

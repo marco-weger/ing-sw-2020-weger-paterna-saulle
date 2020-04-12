@@ -1,14 +1,14 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
+import it.polimi.ingsw.commons.clientMessages.ReadyClient;
 import it.polimi.ingsw.commons.serverMessages.*;
+import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CLI implements ViewInterface {
@@ -19,42 +19,20 @@ public class CLI implements ViewInterface {
     private static PrintWriter out = new PrintWriter(System.out, true);
     private static Scanner in = new Scanner(System.in);
 
+    private ArrayList<String> players;
+
     private static Logger LOGGER = Logger.getLogger("CLI");
+    Thread askSomething;
 
     public CLI(Client client){
         this.client = client;
         this.username = "";
+        this.askSomething = new Thread();
     }
 
     // TODO: could be an interface of ViewInterface
     public void displayFirstWindow() {
-        try {
-            out.println("TEST");
-            TimeUnit.MILLISECONDS.sleep(1200);
-            out.println("SANTORINI");
-            TimeUnit.MILLISECONDS.sleep(1200);
-            out.println("FIRST RUN");
-        } catch (InterruptedException e) {
-            LOGGER.log(Level.WARNING, e.getMessage());
-            Thread.currentThread().interrupt();
-        }
-
-        out.print("● TYPE YOUR USERNAME\n► ");
-        out.flush();
-        this.username = in.nextLine();
-
-        while (this.username.isEmpty() || this.username.matches("^\\s*$")){
-            out.print("● THE CHOSEN ONE IS NOT ALLOWED, TYPE YOUR USERNAME\n►");
-            this.username = in.nextLine();
-        }
-
-        out.println("● CURRENT LOBBY");
-        out.println("● "+this.username);
-
-        out.println("\nWaiting other players...\n\n");
-
-        if(client.connect())
-            in.nextLine();
+        client.connect();
     }
 
     @Override
@@ -84,7 +62,9 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(CurrentStatusServer message) {
-
+        clear();
+        printTitle();
+        // System.out.println("CURRENT STATUS IS " + message.status.toString());
     }
 
     @Override
@@ -94,7 +74,54 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(AvailableCardServer message) {
+        clear();
+        printTitle();
+        if(message.cardName.size() == 0){
+            // im the challenger
+            ArrayList<CardName> chosen = new ArrayList<>();
 
+            out.println("● YOU ARE THE CHALLENGER! CHOSE "+this.players.size()+" CARD FROM:");
+            for(CardName cn : CardName.values())
+                out.println("● "+cn.name().toUpperCase()+" - "+cn.getDescription());
+
+            // first
+            CardName read;
+            do{
+                out.print("● TYPE THE FIRST CARD\n► ");
+                out.flush();
+
+                String name = in.nextLine();
+                try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
+                catch(Exception ex){read = null;}
+            }while(read == null);
+            chosen.add(read);
+
+            // second
+            do{
+                out.print("● TYPE THE SECOND CARD\n► ");
+                out.flush();
+
+                String name = in.nextLine();
+                try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
+                catch(Exception ex){read = null;}
+            }while(read == null || chosen.contains(read));
+            chosen.add(read);
+
+            // third
+            if(this.players.size()==3){
+                do{
+                    out.print("● TYPE THE THIRD CARD\n► ");
+                    out.flush();
+                    String name = in.nextLine();
+                    try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
+                    catch(Exception ex){read = null;}
+                }while(read == null || chosen.contains(read));
+                chosen.add(read);
+            }
+
+            System.out.println("SEND DECISION");
+
+        }
     }
 
     @Override
@@ -104,14 +131,87 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(NameRequestServer message) {
-        //ConnectionClient cm = new ConnectionClient(this.username);
-        //cm.name = this.username;
-        //System.out.println(cm.name);
+        clear();
+        printTitle();
+
+        do{
+            if(message.isFirstTime)
+                out.print("● TYPE YOUR USERNAME\n► ");
+            else
+                out.print("● THE CHOSEN ONE IS NOT ALLOWED, TYPE YOUR USERNAME\n► ");
+            out.flush();
+            this.username = in.nextLine();
+            message.isFirstTime = false;
+        }while (this.username.isEmpty() || message.players.contains(this.username));
+
         client.sendMessage(new ConnectionClient(this.username));
     }
 
     @Override
-    public void handleMessage(OpponentConnection message) {
+    public void handleMessage(LobbyServer message) {
+        clear();
+        printTitle();
 
+        this.players=message.players;
+        out.println("● CURRENT LOBBY");
+        for (String name:this.players)
+            out.println("● "+name);
+
+        askIfReady();
+    }
+
+    public void askIfReady(){
+        // FIXME
+        // 1) prima opzione decidere che per avviare la partita serve sempre ol "pronto" di tutti
+        // 2) Passare parametro al thread
+        Thread askSomething = new Thread(new Runnable(){public void run(){
+            try{
+                String read;
+                do{
+                    out.print("● TYPE \"READY\" WHEN YOU ARE \n► ");
+                    out.flush();
+                    read = in.nextLine();
+                    if(read.equalsIgnoreCase("READY")){
+                        client.sendMessage(new ReadyClient(username));
+                    }
+                }while(!read.equalsIgnoreCase("READY"));
+            }
+            catch (Exception exception){
+                // nothing
+            }
+        }});
+        askSomething.start();
+    }
+
+    public void clear(){
+        if(askSomething.isAlive()){
+            askSomething.interrupt();
+            askSomething.stop();
+            out.flush();
+        }
+        for(int i=0;i<40;i++)
+            out.println();
+    }
+
+    public static void printTitle(){
+        String title = "\n" +
+                "   ▄████████    ▄████████ ███▄▄▄▄       ███      ▄██████▄     ▄████████  ▄█  ███▄▄▄▄    ▄█  \n" +
+                "  ███    ███   ███    ███ ███▀▀▀██▄ ▀█████████▄ ███    ███   ███    ███ ███  ███▀▀▀██▄ ███  \n" +
+                "  ███    █▀    ███    ███ ███   ███    ▀███▀▀██ ███    ███   ███    ███ ███▌ ███   ███ ███▌ \n" +
+                "  ███          ███    ███ ███   ███     ███   ▀ ███    ███  ▄███▄▄▄▄██▀ ███▌ ███   ███ ███▌ \n" +
+                "▀███████████ ▀███████████ ███   ███     ███     ███    ███ ▀▀███▀▀▀▀▀   ███▌ ███   ███ ███▌ \n" +
+                "         ███   ███    ███ ███   ███     ███     ███    ███ ▀███████████ ███  ███   ███ ███  \n" +
+                "   ▄█    ███   ███    ███ ███   ███     ███     ███    ███   ███    ███ ███  ███   ███ ███  \n" +
+                " ▄████████▀    ███    █▀   ▀█   █▀     ▄████▀    ▀██████▀    ███    ███ █▀    ▀█   █▀  █▀   \n" +
+                "                                                             ███    ███                     \n";
+        out.println(title);
+
+        /*
+        try {
+            TimeUnit.MILLISECONDS.sleep(1200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+         */
     }
 }

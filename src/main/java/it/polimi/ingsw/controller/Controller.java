@@ -23,8 +23,7 @@ public class Controller implements Observer, ClientMessageHandler {
     public Controller(VirtualView virtualView) {
         this.virtualView = virtualView;
         // TODO check id not exists
-        Random r = new Random();
-        this.match = new Match(Math.abs(r.nextInt(9999)) + 1,virtualView);
+        this.match = new Match(1+Math.abs(new Random().nextInt(9998)),virtualView);
     }
 
     public VirtualView getVirtualView() {
@@ -59,14 +58,10 @@ public class Controller implements Observer, ClientMessageHandler {
 
     @Override
     public void handleMessage(ConnectionClient message) {
-        for(Player p : match.getPlayers())
-            if(p.getName().equals(message.name))
-                throw new RuntimeException("Player already connected");
         if(match.getPlayers().size() < 3)
             match.addPlayer(new Player(message.name,message.ip,virtualView));
-        if(match.getPlayers().size() == 3){
-            match.setStatus(Status.CARD_CHOICE);
-        }
+        if(match.getPlayers().size() == 3)
+            startMatch();
     }
 
     @Override
@@ -215,7 +210,7 @@ public class Controller implements Observer, ClientMessageHandler {
             if(match.getCurrentPlayer().getCard().move(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
                 if(match.getCurrentPlayer().getCard().checkWin(from,match.getBoard().getCell(message.x,message.y))){
                     //caso with currentplayerwin
-                    endGame(match.getCurrentPlayer());
+                    endMatch(match.getCurrentPlayer());
                     return;
                 }
                 match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
@@ -258,11 +253,19 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+    @Override
+    public void handleMessage(ReadyClient message) {
+        if(message.start && match.getPlayers().size() > 1){
+            startMatch();
+        }
+    }
+
+
     /**
      * Move all the loser players into the loser list and call the end of the Match
      *@param winner the player who have win the match
      */
-    private void endGame(Player winner){
+    private void endMatch(Player winner){
         for(int i=0;i<match.getPlayers().size();)
         {
             if (match.getPlayers().get(i).getName().compareTo(winner.getName()) != 0)
@@ -275,8 +278,8 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
-    private void initializeMatch() {
-        // TODO: it will be used after lobby closing
+    private void startMatch() {
+        match.setStatus(Status.CARD_CHOICE);
     }
 
     /**
@@ -291,7 +294,7 @@ public class Controller implements Observer, ClientMessageHandler {
 
         match.getCurrentPlayer().getCard().initializeTurn();
         if(match.checkCurrentPlayerWin()) {
-            endGame(match.getCurrentPlayer());
+            endMatch(match.getCurrentPlayer());
         }
         else{
             if(match.getCurrentPlayer().getCard().hasLost(match.getPlayers(),match.getBoard())){

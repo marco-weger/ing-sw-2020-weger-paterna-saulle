@@ -1,21 +1,15 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.ServerMessage;
-import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.model.Player;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Timer;
-import java.util.TimerTask;
-
 
 
 public class Server {
@@ -24,12 +18,14 @@ public class Server {
 
     private int port;
     private ArrayList<Player> currentWaitingRoom;
+    private int ready;
     private VirtualView currentVirtualView;
-    private Map<String, VirtualView> virtualViews = new HashMap<>();
+    //private Map<Integer, VirtualView> virtualViews = new HashMap<>();
 
     public Server(int port){
         this.port = port;
         currentWaitingRoom = new ArrayList<>();
+        ready = 0;
     }
 
     public ArrayList<Player> getCurrentWaitingRoom() {
@@ -40,10 +36,21 @@ public class Server {
         this.currentWaitingRoom = currentWaitingRoom;
     }
 
-    public Map<String,VirtualView> getVirtualViews(){
-        return virtualViews;
+    public int getReady() {
+        return ready;
     }
 
+    public void setReady(int ready) {
+        this.ready = ready;
+    }
+
+    /*
+    public Map<Integer,VirtualView> getVirtualViews(){
+        return virtualViews;
+    }
+     */
+
+    /*
     public boolean isInWaitingRoom(String name)
     {
         for(Player p:currentWaitingRoom)
@@ -51,6 +58,7 @@ public class Server {
                 return true;
         return false;
     }
+    */
 
     public void startServer() throws IOException {
         //It creates threads when necessary, otherwise it re-uses existing one when possible
@@ -65,7 +73,17 @@ public class Server {
         System.out.println("Server ready!");
         while (true){
             try{
-                executor.submit(new ServerClientHandler(serverSocket.accept(),this));
+                Socket socket = serverSocket.accept();
+
+                if(this.currentWaitingRoom.size() == 0){
+                    currentVirtualView = new VirtualView(this);
+                    ready = 0;
+                }
+
+                System.out.println("[NEW USER] - " + socket.getRemoteSocketAddress().toString());
+
+                this.currentWaitingRoom.add(new Player(socket.getRemoteSocketAddress().toString(), socket.getInetAddress().toString(), currentVirtualView));
+                executor.submit(new ServerClientHandler(socket,this,currentVirtualView));
             }catch(IOException e){
                 LOGGER.log(Level.WARNING, e.getMessage());
                 break;
@@ -86,39 +104,8 @@ public class Server {
      * @param vv the virtual view
      */
     public void send(ServerMessage s, VirtualView vv){
-        vv.getConnectedPlayers().get(s.name+s.ip).notify(s);
-    }
-
-    public void addPlayer(ConnectionClient cc)
-    {
-        if(this.currentWaitingRoom.size() == 0) {
-            currentVirtualView = new VirtualView(this);
-            this.currentWaitingRoom.add(new Player(cc.name, cc.ip, currentVirtualView));
-            //FIXME la notify della currentVirtualView crea problemi attualmente
-            //currentVirtualView.notify(cc);
-            virtualViews.put(cc.name + cc.ip, currentVirtualView);
-            System.out.println("\nnew waiting room created, added first player   " + cc.name + "   [addPlayer Method in Server]");
-            return;
-        }
-
-        if(this.currentWaitingRoom.size() == 3)
-        {
-            //currentVirtualView = null;
-            currentWaitingRoom = new ArrayList<>();
-        }
-        else if(currentWaitingRoom.size() == 2){
-
-            TimerTask task = new TimerTask() {
-                public void run() {
-                    //FIXME dobbiamo inserire il server nell'addPlayer
-                    System.out.println("Inizia la partita");
-                }
-            };
-            Timer timer = new Timer("Timer");
-            // aspetta 100 secondi prima dell'esecuzione
-            timer.schedule(task, 100000 );
-
-        }
+        if(s!=null && vv != null)
+            vv.getConnectedPlayers().get(s.ip).notify(s);
     }
 
     /**
@@ -144,7 +131,9 @@ public class Server {
         this.currentVirtualView = currentVirtualView;
     }
 
+    /*
     public void setVirtualViews(Map<String, VirtualView> virtualViews) {
         this.virtualViews = virtualViews;
     }
+     */
 }
