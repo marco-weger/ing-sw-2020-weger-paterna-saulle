@@ -6,8 +6,6 @@ import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -222,7 +220,7 @@ public class CLI implements ViewInterface, Runnable {
         while (!interrupted) {
             try {
                 if(System.in.available() > 0){
-                    read = in.nextLine(); //new Scanner(System.in)
+                    read = in.nextLine();
                     if(read.equalsIgnoreCase("READY")) {
                         client.sendMessage(new ReadyClient(username));
                         interrupted = true;
@@ -238,24 +236,4 @@ public class CLI implements ViewInterface, Runnable {
             }
         }
     }
-
-    /*
-    new Runnable(){public void run(){
-        try{
-            String read;
-
-
-            do{
-                out.print("● TYPE \"READY\" WHEN YOU ARE \n► ");
-                out.flush();
-                read = in.nextLine();
-                if(read.equalsIgnoreCase("READY")){
-                    client.sendMessage(new ReadyClient(username));
-                }
-            }while(!read.equalsIgnoreCase("READY"));
-        }
-        catch (Exception exception){
-            // nothing
-        }
-    }}*/
 }
