@@ -6,12 +6,15 @@ import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
-public class CLI implements ViewInterface {
+public class CLI implements ViewInterface, Runnable {
 
     Client client;
     String username;
@@ -23,6 +26,7 @@ public class CLI implements ViewInterface {
 
     private static Logger LOGGER = Logger.getLogger("CLI");
     Thread askSomething;
+    boolean interrupted;
 
     public CLI(Client client){
         this.client = client;
@@ -164,30 +168,14 @@ public class CLI implements ViewInterface {
         // FIXME
         // 1) prima opzione decidere che per avviare la partita serve sempre ol "pronto" di tutti
         // 2) Passare parametro al thread
-        Thread askSomething = new Thread(new Runnable(){public void run(){
-            try{
-                String read;
-                do{
-                    out.print("● TYPE \"READY\" WHEN YOU ARE \n► ");
-                    out.flush();
-                    read = in.nextLine();
-                    if(read.equalsIgnoreCase("READY")){
-                        client.sendMessage(new ReadyClient(username));
-                    }
-                }while(!read.equalsIgnoreCase("READY"));
-            }
-            catch (Exception exception){
-                // nothing
-            }
-        }});
+        this.interrupted=false;
+        askSomething = new Thread(this);
         askSomething.start();
     }
 
     public void clear(){
         if(askSomething.isAlive()){
-            askSomething.interrupt();
-            askSomething.stop();
-            out.flush();
+            this.interrupted=true;
         }
         for(int i=0;i<40;i++)
             out.println();
@@ -214,4 +202,60 @@ public class CLI implements ViewInterface {
         }
          */
     }
+
+    /**
+     * When an object implementing interface <code>Runnable</code> is used
+     * to create a thread, starting the thread causes the object's
+     * <code>run</code> method to be called in that separately executing
+     * thread.
+     * <p>
+     * The general contract of the method <code>run</code> is that it may
+     * take any action whatsoever.
+     *
+     * @see Thread#run()
+     */
+    @Override
+    public void run() {
+        String read;
+        out.print("● TYPE \"READY\" WHEN YOU ARE \n► ");
+        out.flush();
+        while (!interrupted) {
+            try {
+                if(System.in.available() > 0){
+                    read = in.nextLine(); //new Scanner(System.in)
+                    if(read.equalsIgnoreCase("READY")) {
+                        client.sendMessage(new ReadyClient(username));
+                        interrupted = true;
+                        break;
+                    }
+                    else{
+                        out.print("● TYPE \"READY\" WHEN YOU ARE \n► ");
+                        out.flush();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /*
+    new Runnable(){public void run(){
+        try{
+            String read;
+
+
+            do{
+                out.print("● TYPE \"READY\" WHEN YOU ARE \n► ");
+                out.flush();
+                read = in.nextLine();
+                if(read.equalsIgnoreCase("READY")){
+                    client.sendMessage(new ReadyClient(username));
+                }
+            }while(!read.equalsIgnoreCase("READY"));
+        }
+        catch (Exception exception){
+            // nothing
+        }
+    }}*/
 }
