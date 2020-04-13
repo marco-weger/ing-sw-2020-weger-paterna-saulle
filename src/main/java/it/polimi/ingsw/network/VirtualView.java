@@ -6,24 +6,39 @@ import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.clientMessages.ReadyClient;
-import it.polimi.ingsw.commons.serverMessages.AvailableCardServer;
 import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.model.Status;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class VirtualView extends Observable implements Observer {
 
-    // TODO: the virtual view has to check name params of MESSAGE every time
+    /**
+     * The main server
+     */
     private Server server;
+
+    /**
+     * True if the game is ended
+     */
     private boolean ended;
-    private Map<String, ServerClientHandler> connectedPlayers;
+
+    /**
+     * All players in this game
+     */
+    private ArrayList<ServerClientHandler> connectedPlayers;
+
+    /**
+     * Current status of the game, start from NAME_CHOICE
+     */
+    private Status currentStatus;
 
     public VirtualView(Server server){
         this.server = server;
         this.ended = false;
-        this.connectedPlayers = new HashMap<>();
+        this.connectedPlayers = new ArrayList<>();
+        this.currentStatus = Status.NAME_CHOICE;
 
         // FIXME remove Controller attribute
         c = new Controller(this);
@@ -36,22 +51,24 @@ public class VirtualView extends Observable implements Observer {
     @Deprecated
     public Controller c;
 
-    protected Map<String, ServerClientHandler> getConnectedPlayers(){
-        return connectedPlayers;
+    protected ArrayList<ServerClientHandler> getConnectedPlayers(){ return connectedPlayers; }
+
+    public Status getCurrentStatus() {
+        return currentStatus;
     }
 
     /**
-     * this method sends the message to the controller
-     * @param message message to send
+     * This method sends the message to the controller
+     * @param message the message to send
      */
     protected void notify(ClientMessage message) {
-        if(message instanceof ConnectionClient){
-            connectedPlayers.put(((ConnectionClient) message).ip,((ConnectionClient) message).sch);
+        if(message instanceof ConnectionClient){ // if it is a new player i add to list
+            connectedPlayers.add(((ConnectionClient) message).sch);
         }
-        else if(message instanceof ReadyClient)
+        else if(message instanceof ReadyClient) // if it is ready i increment counter on Server
         {
             server.setReady(server.getReady()+1);
-            if(server.getReady() == server.getCurrentWaitingRoom().size() && server.getReady() > 1)
+            if(server.getReady() == this.connectedPlayers.size() && server.getReady() > 1)
                 ((ReadyClient) message).start = true;
         }
 
@@ -60,33 +77,29 @@ public class VirtualView extends Observable implements Observer {
         }
     }
 
-    //TODO ho temporaneamente disattivato le print
+    /**
+     * This method get a message from model and forward it property client
+     * @param arg a ServerMessage instance
+     */
     @Override
     public void update(Object arg) {
         if( ! (arg instanceof ServerMessage))
             throw new RuntimeException("This must be a ServerMessage object");
 
         ServerMessage sm = (ServerMessage) arg;
-        //System.out.println("---> FROM MODEL TO CLI");
-        //System.out.println("Type: " + cm.toString());
-
-        if(sm.name.equals("")){
-            if(server != null)
-                server.sendAll(sm,this);
-            //System.out.println("Receiver: ALL (empty string)");
-        }
-        else {
-            if(server != null)
-                server.send(sm,this);
-            //System.out.println("Receiver: " + cm.name);
-        }
-
-        /*
         if(sm instanceof CurrentStatusServer)
-        {
-            server.send(new AvailableCardServer(this.connectedPlayers.get),this)
+            currentStatus = ((CurrentStatusServer) sm).status;
+
+        System.out.println("[SENT] - " + sm.toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + " - " + (sm.name.equals("") ? "ALL" : sm.name));
+
+        if(server != null){
+            if(sm.name.equals("")){
+                server.sendAll(sm,this);
+            }
+            else{
+                server.send(sm,this);
+            }
         }
-         */
     }
 
 }

@@ -14,8 +14,7 @@ public class CardChosenServer  extends ServerMessage {
     public CardName cardName;
 
     public CardChosenServer(String player, CardName cardName){
-        this.name="";
-        this.ip="";
+        super("");
         this.cardName=cardName;
         this.player=player;
     }

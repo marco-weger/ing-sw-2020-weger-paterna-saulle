@@ -2,11 +2,12 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
-import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.view.CLI;
 
 import javax.swing.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

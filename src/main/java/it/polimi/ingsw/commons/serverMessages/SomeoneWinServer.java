@@ -12,8 +12,7 @@ public class SomeoneWinServer extends ServerMessage {
     public String player;
 
     public SomeoneWinServer(String player){
-        this.name="";
-        this.ip="";
+        super("");
         this.player=player;
     }
 }

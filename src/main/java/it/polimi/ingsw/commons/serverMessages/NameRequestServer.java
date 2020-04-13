@@ -14,6 +14,7 @@ public class NameRequestServer extends ServerMessage {
     public boolean isFirstTime;
 
     public NameRequestServer(ArrayList<String> players, boolean isFirstTime){
+        super("");
         this.players = players;
         this.isFirstTime = isFirstTime;
     }

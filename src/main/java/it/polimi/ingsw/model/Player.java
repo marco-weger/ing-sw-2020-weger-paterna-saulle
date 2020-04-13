@@ -34,12 +34,12 @@ public class Player extends Observable {
     /**
      * The ip address string
      */
-    String ip;
+    //String ip;
 
     public Player(String name, String ip, VirtualView vv)
     {
         this.name = name;
-        this.ip = ip;
+        //this.ip = ip;
         this.card = null; //FactoryCard.getCard(card);
         this.worker1 = null;
         this.worker2 = null;
@@ -48,13 +48,12 @@ public class Player extends Observable {
             this.addObserver(vv);
     }
 
-    public String getIp() {
-        return ip;
-    }
+    /*
+    public String getIp() { return ip; }
 
     public void setIp(String ip) {
         this.ip = ip;
-    }
+    }*/
 
     public String getName() {
         return name;
@@ -138,6 +137,6 @@ public class Player extends Observable {
      * When called notify the view that it's the moment to make the quest to user
      */
     public void doQuestion(){
-        notifyObservers(new QuestionAbilityServer(name,ip));
+        notifyObservers(new QuestionAbilityServer(name));
     }
 }

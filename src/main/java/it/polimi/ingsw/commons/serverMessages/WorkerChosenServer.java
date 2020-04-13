@@ -13,8 +13,7 @@ public class WorkerChosenServer extends ServerMessage {
     public int worker,x,y;
 
     public WorkerChosenServer(String player, int worker, int x, int y){
-        this.name="";
-        this.ip="";
+        super("");
         this.worker=worker;
         this.player=player;
         this.x=x;

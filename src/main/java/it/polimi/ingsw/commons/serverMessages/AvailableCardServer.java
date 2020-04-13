@@ -17,9 +17,8 @@ public class AvailableCardServer extends ServerMessage {
      * The challenger will receive this message with an empty ArrayList
      * @param cardName list of available
      */
-    public AvailableCardServer(String name, String ip, ArrayList<CardName> cardName){
-        this.name=name;
-        this.ip=ip;
+    public AvailableCardServer(String name, ArrayList<CardName> cardName){
+        super(name);
         this.cardName=cardName;
     }
 }

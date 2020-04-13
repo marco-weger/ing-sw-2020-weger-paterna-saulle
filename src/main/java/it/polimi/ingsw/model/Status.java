@@ -14,6 +14,6 @@ public enum Status {
      * - BUILT this state checks for after build ability
      * - END handling of end phase of the Match
      */
-    CARD_CHOICE,WORKER_CHOICE,START, CHOSEN, QUESTION_M, MOVED, QUESTION_B,BUILT,END
+    NAME_CHOICE,CARD_CHOICE,WORKER_CHOICE,START, CHOSEN, QUESTION_M, MOVED, QUESTION_B,BUILT,END
 
 }

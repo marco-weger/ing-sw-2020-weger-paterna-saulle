@@ -9,8 +9,7 @@ public class QuestionAbilityServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public QuestionAbilityServer(String name, String ip){
-        this.name=name;
-        this.ip=ip;
+    public QuestionAbilityServer(String name){
+        super(name);
     }
 }

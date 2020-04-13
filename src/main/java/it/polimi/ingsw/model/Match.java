@@ -58,7 +58,7 @@ public class Match extends Observable {
         this.id=id;
         this.board=new Board();
         this.ended=false;
-        this.status=Status.CARD_CHOICE;
+        this.status=Status.NAME_CHOICE;
         this.players = new ArrayList<>();
         this.losers = new ArrayList<>();
         this.selectedCard = new ArrayList<>();
@@ -99,7 +99,7 @@ public class Match extends Observable {
             notifyObservers(new CurrentStatusServer("",status));
 
         if(status.equals(Status.CARD_CHOICE))
-            notifyObservers(new AvailableCardServer(this.players.get(0).getName(),this.players.get(0).getIp(),new ArrayList<CardName>()));
+            notifyObservers(new AvailableCardServer(this.players.get(0).getName(),new ArrayList<CardName>()));
     }
 
     public ArrayList<Player> getPlayers() {
@@ -146,7 +146,7 @@ public class Match extends Observable {
         this.selectedCard = new ArrayList<>();
         this.selectedCard.addAll(selectedCard);
         int i = this.getSelectedCard().size()-1;
-        notifyObservers(new AvailableCardServer(this.getPlayers().get(i).getName(),this.getPlayers().get(i).getIp(),selectedCard));
+        notifyObservers(new AvailableCardServer(this.getPlayers().get(i).getName(),selectedCard));
     }
 
     /**

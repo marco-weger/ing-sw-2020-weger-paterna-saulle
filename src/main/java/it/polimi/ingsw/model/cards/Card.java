@@ -219,7 +219,7 @@ public class Card extends Observable {
             snap.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));
         for(Player player:p){
             if(player.getCard().name.compareTo(this.name) == 0){
-                notifyObservers(new CheckMoveServer(player.getName(),player.getIp(),snap));
+                notifyObservers(new CheckMoveServer(player.getName(),snap));
             }
         }
         return snap;
@@ -237,7 +237,7 @@ public class Card extends Observable {
             snap.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));
         for(Player player:p){
             if(player.getCard().name.compareTo(this.name) == 0){
-                notifyObservers(new CheckBuildServer(player.getName(),player.getIp(),snap));
+                notifyObservers(new CheckBuildServer(player.getName(),snap));
             }
         }
         return snap;

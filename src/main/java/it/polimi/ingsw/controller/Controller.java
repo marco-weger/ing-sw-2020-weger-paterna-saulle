@@ -46,11 +46,9 @@ public class Controller implements Observer, ClientMessageHandler {
             throw new RuntimeException("This must be an ClientMessage object");
 
         ClientMessage cm = (ClientMessage) arg;
-        System.out.println("---> FROM CLI TO CONTROLLER");
-        System.out.println("Type: " + cm.toString());
-        System.out.println("Sender: " + cm.name);
         cm.accept(this);
-        System.out.println("== : == : == : == : == : == : == : ==");
+
+        System.out.println("[RECEIVED] - " + cm.toString().substring(cm.toString().lastIndexOf('.')+1,cm.toString().lastIndexOf('@')) + " - " + (cm.name.equals("") ? "ALL" : cm.name));
 
         // TODO: not sure this is the best way to call correct method... test!
         // new Thread(() -> cm.Accept(this)).start();

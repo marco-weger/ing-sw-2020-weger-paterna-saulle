@@ -12,8 +12,7 @@ public class SomeoneLoseServer extends ServerMessage {
     public String player;
 
     public SomeoneLoseServer(String player){
-        this.name="";
-        this.ip="";
+        super("");
         this.player=player;
     }
 }

@@ -12,8 +12,7 @@ public class LobbyServer extends ServerMessage {
     public ArrayList<String> players;
 
     public LobbyServer(ArrayList<String> players){
-        this.name="";
-        this.ip="";
+        super("");
         this.players=players;
     }
 }
