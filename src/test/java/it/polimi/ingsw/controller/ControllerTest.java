@@ -1,4 +1,5 @@
 package it.polimi.ingsw.controller;
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CardName;
@@ -7,7 +8,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,9 +21,9 @@ public class ControllerTest {
         //create a list of players with the developers
         vw = new VirtualView(null);
         ArrayList<Player> players = new ArrayList<>(Arrays.asList(
-                new Player("Marco","",vw),
-                new Player("Francesco","",vw),
-                new Player("Giulio","",vw)
+                new Player("Marco",vw),
+                new Player("Francesco",vw),
+                new Player("Giulio",vw)
         ));
 
         for(Player player:players){
@@ -99,7 +99,7 @@ public class ControllerTest {
         controller.setMatch(new Match(42,vw));
         controller.getMatch().setPlayers(
                 new ArrayList<>(
-                        Arrays.asList(new Player("Marco","",vw),new Player("Francesco","",vw),new Player("Giulio","",vw))
+                        Arrays.asList(new Player("Marco",vw),new Player("Francesco",vw),new Player("Giulio",vw))
                 )
         );
         // card chose

@@ -2,10 +2,9 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.commons.SnapCell;
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.serverMessages.CheckBuildServer;
 import it.polimi.ingsw.commons.serverMessages.CheckMoveServer;
-import it.polimi.ingsw.commons.serverMessages.SomeoneLoseServer;
-import it.polimi.ingsw.commons.serverMessages.SomeoneWinServer;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 

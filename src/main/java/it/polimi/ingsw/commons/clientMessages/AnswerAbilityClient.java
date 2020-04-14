@@ -2,9 +2,7 @@ package it.polimi.ingsw.commons.clientMessages;
 
 import it.polimi.ingsw.controller.ClientMessageHandler;
 import it.polimi.ingsw.commons.ClientMessage;
-import it.polimi.ingsw.model.Status;
-
-import java.io.Serializable;
+import it.polimi.ingsw.commons.Status;
 
 public class AnswerAbilityClient extends ClientMessage {
     @Override

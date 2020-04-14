@@ -13,9 +13,9 @@ import static org.junit.Assert.*;
 
 public class ApolloTest {
     ArrayList<Player> p = new ArrayList<>(Arrays.asList(
-            new Player("player1","",null),
-            new Player("player2","",null),
-            new Player("player3","",null)
+            new Player("player1",null),
+            new Player("player2",null),
+            new Player("player3",null)
     ));
 
     public void initialize(){
@@ -104,8 +104,6 @@ public class ApolloTest {
         assertNotNull(p);
         assertNotNull(b);
         ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,b);
-        //for(Cell c:ret)
-        //    System.out.println(c.getRow() + " - " + c.getColumn());
         assertEquals(ret.size(),2);
         for(Cell c:ret)
             assertTrue((c.getRow() == 1 && c.getColumn() == 2) || (c.getRow() == 2 && c.getColumn() == 2));

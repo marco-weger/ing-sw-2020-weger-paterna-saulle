@@ -21,29 +21,29 @@ public class Server {
     private int port;
 
     /**
-     * A counter of ready player (a ready player has correctly set username and is ready to start the match)
-     */
-    private int ready;
-
-    /**
      * VirtualView linked of current lobby
      */
-    private VirtualView currentVirtualView;
+    private VirtualView currentVirtualView2;
+    private VirtualView currentVirtualView3;
 
     /**
      * All VirtualViews instanced
      */
-    private ArrayList<VirtualView> virtualViews;
+    private ArrayList<VirtualView> virtualViews2;
+    private ArrayList<VirtualView> virtualViews3;
 
     public Server(int port){
         this.port = port;
-        currentVirtualView = new VirtualView(this);
-        virtualViews = new ArrayList<>();
-        virtualViews.add(currentVirtualView); // add the first VirtualView
-        ready = 0;
+        currentVirtualView2 = new VirtualView(this);
+        currentVirtualView3 = new VirtualView(this);
+        virtualViews2 = new ArrayList<>();
+        virtualViews3 = new ArrayList<>();
+        virtualViews2.add(currentVirtualView2); // add the first VirtualView
+        virtualViews3.add(currentVirtualView3); // add the first VirtualView
     }
 
-    public ArrayList<VirtualView> getVirtualViews() { return virtualViews; }
+    public ArrayList<VirtualView> getVirtualViews2() { return virtualViews2; }
+    public ArrayList<VirtualView> getVirtualViews3() { return virtualViews3; }
 
     /**
      * It iterates on all VirtualViews and all ServerClientHandlers
@@ -51,7 +51,12 @@ public class Server {
      */
     public ArrayList<String> getPlayers(){
         ArrayList<String> players = new ArrayList<>();
-        for(VirtualView vv : getVirtualViews()){
+        for(VirtualView vv : getVirtualViews2()){
+            for(ServerClientHandler sch : vv.getConnectedPlayers()){
+                players.add(sch.getName());
+            }
+        }
+        for(VirtualView vv : getVirtualViews3()){
             for(ServerClientHandler sch : vv.getConnectedPlayers()){
                 players.add(sch.getName());
             }
@@ -59,20 +64,17 @@ public class Server {
         return players;
     }
 
-    public VirtualView getCurrentVirtualView(){ return currentVirtualView; }
+    public VirtualView getCurrentVirtualView2(){ return currentVirtualView2; }
+    public VirtualView getCurrentVirtualView3(){ return currentVirtualView3; }
 
-    public void newCurrentVirtualView(){
-        this.currentVirtualView=new VirtualView(this);
-        virtualViews.add(this.currentVirtualView);
-        this.ready = 0;
+    public void newCurrentVirtualView2(){
+        this.currentVirtualView2=new VirtualView(this);
+        virtualViews2.add(this.currentVirtualView2);
     }
 
-    public int getReady() {
-        return ready;
-    }
-
-    public void setReady(int ready) {
-        this.ready = ready;
+    public void newCurrentVirtualView3(){
+        this.currentVirtualView3=new VirtualView(this);
+        virtualViews3.add(this.currentVirtualView3);
     }
 
     /**
@@ -88,7 +90,7 @@ public class Server {
             LOGGER.log(Level.WARNING, e.getMessage());
             return;
         }
-        System.out.println("[READY]");
+        System.out.println("[READY ON PORT "+port+"]");
         while (true){
             try{
                 Socket socket = serverSocket.accept();
@@ -136,7 +138,8 @@ public class Server {
      * @param args usually it takes no args
      */
     public static void main(String[] args) {
-        Server server = new Server(1234);
+        int port = 1234;
+        Server server = new Server(port);
         // TODO: chose a singular port
         server.startServer();
     }

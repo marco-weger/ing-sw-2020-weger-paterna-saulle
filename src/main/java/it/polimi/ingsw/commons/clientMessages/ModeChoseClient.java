@@ -2,8 +2,9 @@ package it.polimi.ingsw.commons.clientMessages;
 
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.controller.ClientMessageHandler;
+import it.polimi.ingsw.network.ServerClientHandler;
 
-public class ReadyClient extends ClientMessage {
+public class ModeChoseClient extends ClientMessage {
     /**
      * Controller doesn't use this message
      * @param cmh nullable
@@ -12,13 +13,12 @@ public class ReadyClient extends ClientMessage {
     @Deprecated
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    /**
-     * Usinig this parameter the controller know if its the moment to start the match
-     */
-    public boolean start;
+    public int mode;
+    public ServerClientHandler sch;
 
-    public ReadyClient(String name){
+    public ModeChoseClient(String name, int mode){
         this.name=name;
-        this.start=false;
+        this.mode=mode;
+        this.sch=null;
     }
 }

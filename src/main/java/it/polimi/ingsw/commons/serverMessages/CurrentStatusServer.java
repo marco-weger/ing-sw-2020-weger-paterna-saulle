@@ -1,10 +1,8 @@
 package it.polimi.ingsw.commons.serverMessages;
 
 import it.polimi.ingsw.commons.ServerMessage;
-import it.polimi.ingsw.model.Status;
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.view.ViewInterface;
-
-import java.io.Serializable;
 
 public class CurrentStatusServer extends ServerMessage {
     @Override

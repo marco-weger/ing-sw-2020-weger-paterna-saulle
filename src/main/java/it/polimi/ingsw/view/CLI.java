@@ -1,34 +1,33 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
-import it.polimi.ingsw.commons.clientMessages.ReadyClient;
+import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
 import it.polimi.ingsw.commons.serverMessages.*;
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
-public class CLI implements ViewInterface, Runnable {
+public class CLI implements ViewInterface {
 
     Client client;
     String username;
+
+    private Board board;
 
     private static Scanner in = new Scanner(System.in);
 
     private ArrayList<String> players;
 
     private static Logger LOGGER = Logger.getLogger("CLI");
-    Thread askSomething;
-    boolean interrupted;
 
     public CLI(Client client){
         this.client = client;
         this.username = "";
-        this.askSomething = new Thread();
-        this.interrupted=false;
+        this.board = new Board();
     }
 
     // TODO: could be an interface of ViewInterface
@@ -164,24 +163,30 @@ public class CLI implements ViewInterface, Runnable {
         println("CURRENT LOBBY");
         for (String name:this.players)
             println("- "+name);
-
-        if(!interrupted)
-            askIfReady();
     }
 
-    public void askIfReady(){
-        // FIXME
-        // 1) prima opzione decidere che per avviare la partita serve sempre ol "pronto" di tutti
-        // 2) Passare parametro al thread
-        this.interrupted=false;
-        askSomething = new Thread(this);
-        askSomething.start();
+    @Override
+    public void handleMessage(ModeRequestServer message) {
+        clear();
+        printTitle();
+
+        int mode;
+        do{
+            print("CHOSE GAME MODE (2 OR 3 PLAYERS) [CLI/GUI]" + TextFormatting.INPUT);
+            String stringMode = in.nextLine();
+            try
+            {
+                mode = Integer.parseInt(stringMode);
+            }catch(Exception e)
+            {
+                mode = 0;
+            }
+        }while (mode != 2 && mode != 3);
+
+        client.sendMessage(new ModeChoseClient(this.username,mode));
     }
 
     public void clear(){
-        while(askSomething.isAlive()){
-            this.interrupted=true;
-        }
         for(int i=0;i<40;i++)
             println("");
     }
@@ -205,45 +210,6 @@ public class CLI implements ViewInterface, Runnable {
             e.printStackTrace();
         }
          */
-    }
-
-    /**
-     * When an object implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
-     * <code>run</code> method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
-     */
-    @Override
-    public void run() {
-        String read;
-        print("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
-        while (!interrupted) {
-            try {
-                //Scanner s = new Scanner(System.in);
-                //s.hasNext()
-                if(System.in.available() > 0){
-                //if(s.hasNext()){
-                    // new Scanner(System.in).nextLine();
-                    read = new Scanner(System.in).nextLine(); //in.nextLine();
-                    if(read.equalsIgnoreCase("READY")) {
-                        client.sendMessage(new ReadyClient(username));
-                        interrupted = true;
-                        break;
-                    }
-                    else{
-                        print("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                interrupted = true;
-            }
-        }
     }
 
     public static void println(String string){

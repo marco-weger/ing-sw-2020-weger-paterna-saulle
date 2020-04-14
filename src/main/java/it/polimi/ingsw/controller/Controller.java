@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.commons.ClientMessage;
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CardName;
@@ -47,19 +48,13 @@ public class Controller implements Observer, ClientMessageHandler {
 
         ClientMessage cm = (ClientMessage) arg;
         cm.accept(this);
-
-        System.out.println("[RECEIVED] - " + cm.toString().substring(cm.toString().lastIndexOf('.')+1,cm.toString().lastIndexOf('@')) + " - " + (cm.name.equals("") ? "ALL" : cm.name));
-
         // TODO: not sure this is the best way to call correct method... test!
         // new Thread(() -> cm.Accept(this)).start();
     }
 
     @Override
     public void handleMessage(ConnectionClient message) {
-        if(match.getPlayers().size() < 3)
-            match.addPlayer(new Player(message.name,message.ip,virtualView));
-        if(match.getPlayers().size() == 3)
-            startMatch();
+
     }
 
     @Override
@@ -252,12 +247,13 @@ public class Controller implements Observer, ClientMessageHandler {
     }
 
     @Override
-    public void handleMessage(ReadyClient message) {
-        if(message.start && match.getPlayers().size() > 1){
+    public void handleMessage(ModeChoseClient message) {
+        if(match.getPlayers().size() < message.mode)
+            match.addPlayer(new Player(message.name,virtualView));
+        else System.err.println("!ERROR!");
+        if(match.getPlayers().size() == message.mode)
             startMatch();
-        }
     }
-
 
     /**
      * Move all the loser players into the loser list and call the end of the Match

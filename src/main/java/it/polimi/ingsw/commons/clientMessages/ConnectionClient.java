@@ -10,13 +10,7 @@ public class ConnectionClient extends ClientMessage{
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    public String ip;
-    public ServerClientHandler sch;
-
     public ConnectionClient(String name){
         this.name=name;
-        //this.name= ""//new String(name.toString());
-        this.ip="";
-        sch = null;
     }
 }

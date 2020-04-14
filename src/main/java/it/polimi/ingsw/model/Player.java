@@ -31,15 +31,9 @@ public class Player extends Observable {
      */
     private boolean current;
 
-    /**
-     * The ip address string
-     */
-    //String ip;
-
-    public Player(String name, String ip, VirtualView vv)
+    public Player(String name, VirtualView vv)
     {
         this.name = name;
-        //this.ip = ip;
         this.card = null; //FactoryCard.getCard(card);
         this.worker1 = null;
         this.worker2 = null;
@@ -47,13 +41,6 @@ public class Player extends Observable {
         if(vv != null)
             this.addObserver(vv);
     }
-
-    /*
-    public String getIp() { return ip; }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }*/
 
     public String getName() {
         return name;

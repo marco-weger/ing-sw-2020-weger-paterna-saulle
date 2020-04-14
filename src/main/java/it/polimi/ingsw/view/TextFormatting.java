@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 public enum TextFormatting {
 
     INPUT("► "),
+    SEPARATOR("-"),
 
     COLOR_BLACK("\u001B[30m"),
     COLOR_RED("\u001B[31m"),

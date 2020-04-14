@@ -5,10 +5,10 @@ import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
-import it.polimi.ingsw.commons.clientMessages.ReadyClient;
+import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
 import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.model.Status;
+import it.polimi.ingsw.commons.Status;
 
 import java.util.ArrayList;
 
@@ -62,14 +62,8 @@ public class VirtualView extends Observable implements Observer {
      * @param message the message to send
      */
     protected void notify(ClientMessage message) {
-        if(message instanceof ConnectionClient){ // if it is a new player i add to list
-            connectedPlayers.add(((ConnectionClient) message).sch);
-        }
-        else if(message instanceof ReadyClient) // if it is ready i increment counter on Server
-        {
-            server.setReady(server.getReady()+1);
-            if(server.getReady() == this.connectedPlayers.size() && server.getReady() > 1)
-                ((ReadyClient) message).start = true;
+        if(message instanceof ModeChoseClient){ // if it is a new player i add to list
+            connectedPlayers.add(((ModeChoseClient) message).sch);
         }
 
         if (!ended) {

@@ -3,8 +3,10 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
+import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
+import it.polimi.ingsw.commons.serverMessages.ModeRequestServer;
 import it.polimi.ingsw.commons.serverMessages.NameRequestServer;
-import it.polimi.ingsw.model.Status;
+import it.polimi.ingsw.commons.Status;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -95,19 +97,31 @@ public class ServerClientHandler implements Runnable  {
                     // send to client request for name an wait for answer
                     this.notify(new NameRequestServer(tmpName.equals("FIRST")));
                     object = in.readObject();
+                    if(object instanceof ClientMessage)
+                        System.out.println("[RECEIVED] - " + object.toString().substring(object.toString().lastIndexOf('.')+1,
+                                object.toString().lastIndexOf('@')) + " - " + (((ClientMessage) object).name.equals("") ? "ALL" : ((ClientMessage) object).name));
 
                     if(object instanceof ConnectionClient){
                         // complete the message with ip address and ServerClientHandler
                         ConnectionClient cc = (ConnectionClient) object;
                         tmpName = cc.name;
-                        cc.ip = socket.getRemoteSocketAddress().toString();
-                        cc.sch = this;
 
                         // check if a player with same name exists
-                        for(VirtualView vv : server.getVirtualViews()){
+                        for(VirtualView vv : server.getVirtualViews2()){
                             for(ServerClientHandler sch : vv.getConnectedPlayers()){
                                 if(sch.getName().equals(cc.name)){
                                     // TODO check for existent match or disconnected... reconnect!
+                                    // TODO if it has lost, new match!!!
+                                    tmpName = "";
+                                    break;
+                                }
+                            }
+                        }
+                        for(VirtualView vv : server.getVirtualViews3()){
+                            for(ServerClientHandler sch : vv.getConnectedPlayers()){
+                                if(sch.getName().equals(cc.name)){
+                                    // TODO check for existent match or disconnected... reconnect!
+                                    // TODO if it has lost, new match!!!
                                     tmpName = "";
                                     break;
                                 }
@@ -116,27 +130,50 @@ public class ServerClientHandler implements Runnable  {
                     } else tmpName = "";
                 }while(tmpName.isEmpty()); // loop until the name is invalid
 
-                // username validated ... TODO check for persistence
                 this.name=tmpName;
 
-                // this part set up new match
-                if(!server.getCurrentVirtualView().getCurrentStatus().equals(Status.NAME_CHOICE)){
-                    server.newCurrentVirtualView();
-                }
-                virtualView = server.getCurrentVirtualView();
+                do{
+                    //mode request
+                    this.notify(new ModeRequestServer());
+                    object = in.readObject();
+                    if(object instanceof ClientMessage)
+                        System.out.println("[RECEIVED] - " + object.toString().substring(object.toString().lastIndexOf('.')+1,
+                                object.toString().lastIndexOf('@')) + " - " + (((ClientMessage) object).name.equals("") ? "ALL" : ((ClientMessage) object).name));
+
+                    if(object instanceof ModeChoseClient){
+                        ((ModeChoseClient) object).sch = this;
+                        if(((ModeChoseClient) object).mode == 2){
+                            // this part set up new match
+                            if(!server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE)){
+                                server.newCurrentVirtualView2();
+                            }
+                            virtualView = server.getCurrentVirtualView2();
+                        }
+                        else if(((ModeChoseClient) object).mode == 3){
+                            // this part set up new match
+                            if(!server.getCurrentVirtualView3().getCurrentStatus().equals(Status.NAME_CHOICE)){
+                                server.newCurrentVirtualView3();
+                            }
+                            virtualView = server.getCurrentVirtualView3();
+                        }
+                    }
+                }while(!(object instanceof ModeChoseClient));
                 virtualView.notify((ClientMessage) object);
             }
 
             // standard cycle to read
             while(socket.isConnected()){
                 object = in.readObject();
+                if(object instanceof ClientMessage)
+                    System.out.println("[RECEIVED] - " + object.toString().substring(object.toString().lastIndexOf('.')+1,
+                        object.toString().lastIndexOf('@')) + " - " + (((ClientMessage) object).name.equals("") ? "ALL" : ((ClientMessage) object).name));
 
                 if(virtualView != null && object != null)
                     virtualView.notify((ClientMessage) object);
             }
         } catch (IOException | ClassNotFoundException e) {
             LOGGER.log(Level.WARNING, e.getMessage());
-            // TODO disconnection event
+            System.err.println("DISCONNESSO");
         }
     }
 

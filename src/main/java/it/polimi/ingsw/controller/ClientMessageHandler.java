@@ -15,5 +15,5 @@ public interface ClientMessageHandler {
     void handleMessage(AnswerAbilityClient message);
     void handleMessage(MoveClient message);
     void handleMessage(BuildClient message);
-    void handleMessage(ReadyClient message);
+    void handleMessage(ModeChoseClient message);
 }

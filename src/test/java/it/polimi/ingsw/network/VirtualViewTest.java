@@ -1,11 +1,9 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.clientMessages.*;
-import it.polimi.ingsw.commons.serverMessages.QuestionAbilityServer;
 import it.polimi.ingsw.model.Match;
 
-import it.polimi.ingsw.model.Status;
-import it.polimi.ingsw.model.cards.Card;
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.cards.CardName;
 import org.junit.Test;
 

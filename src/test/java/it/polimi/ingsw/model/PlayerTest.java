@@ -14,7 +14,7 @@ public class PlayerTest {
     @Test
     public void setter()
     {
-        Player p = new Player("player1","",null);
+        Player p = new Player("player1",null);
         p.setName("Marco");
         assertEquals(p.getName(),"Marco");
         p.setWorker1(new Worker(2,2));
@@ -29,7 +29,7 @@ public class PlayerTest {
     // current worker
     @Test
     public void current_worker(){
-        Player p = new Player("player1","",null);
+        Player p = new Player("player1",null);
         p.setWorker1(new Worker(0,0));
         p.setWorker2(new Worker(1,1));
         p.setCurrentWorker(1);

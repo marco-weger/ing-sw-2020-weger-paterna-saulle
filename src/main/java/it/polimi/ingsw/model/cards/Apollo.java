@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -31,13 +32,13 @@ public class Apollo extends Card {
                 player.setCurrentWorker(1);
                 int x = player.getWorker1().getRow() - actived.getRow();
                 int y = player.getWorker1().getColumn() - actived.getColumn();
-                if(Math.abs(x) <= 1 && Math.abs(y) <= 1 && player.getCard().checkBuild(p,b).size() > 0)
+                if(Math.abs(x) <= 1 && Math.abs(y) <= 1 && b.getCell(player.getWorker1().getRow(),player.getWorker1().getColumn()).getLevel() <= actived.getLevel(b)+1 && player.getCard().checkBuild(p,b).size() > 0)
                     ret.add(b.getCell(player.getWorker1().getRow(), player.getWorker1().getColumn()));
 
                 player.setCurrentWorker(2);
                 x = player.getWorker2().getRow() - actived.getRow();
                 y = player.getWorker2().getColumn() - actived.getColumn();
-                if(Math.abs(x) <= 1 && Math.abs(y) <= 1 && player.getCard().checkBuild(p,b).size() > 0)
+                if(Math.abs(x) <= 1 && Math.abs(y) <= 1 && b.getCell(player.getWorker2().getRow(),player.getWorker2().getColumn()).getLevel() <= actived.getLevel(b)+1 && player.getCard().checkBuild(p,b).size() > 0)
                     ret.add(b.getCell(player.getWorker2().getRow(), player.getWorker2().getColumn()));
 
                 player.setCurrentWorker(0);

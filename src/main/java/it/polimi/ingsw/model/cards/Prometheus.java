@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 

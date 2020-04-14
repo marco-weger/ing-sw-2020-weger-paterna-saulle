@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.Cell;
-import it.polimi.ingsw.model.Status;
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.network.VirtualView;
 
 public class Pan extends Card {
