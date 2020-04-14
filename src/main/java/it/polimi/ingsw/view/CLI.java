@@ -30,11 +30,26 @@ public class CLI implements ViewInterface, Runnable {
         this.client = client;
         this.username = "";
         this.askSomething = new Thread();
+        this.interrupted=false;
     }
 
     // TODO: could be an interface of ViewInterface
     public void displayFirstWindow() {
-        client.connect();
+        // TODO get from config file
+        String ip = "127.0.0.1";
+        int port = 1234;
+        while(!client.connect(ip, port))
+        {
+            System.out.println("Server unreachable!");
+            System.out.print("Type new ip address" + TextFormatting.getInputLine());
+            System.out.flush();
+            ip = new Scanner(System.in).nextLine();
+            System.out.print("Type new port" + TextFormatting.getInputLine());
+            System.out.flush();
+            try {
+                port = Integer.parseInt(new Scanner(System.in).nextLine());
+            } catch (NumberFormatException nfe) { port = 1234; }
+        }
     }
 
     @Override
@@ -82,14 +97,15 @@ public class CLI implements ViewInterface, Runnable {
             // im the challenger
             ArrayList<CardName> chosen = new ArrayList<>();
 
-            out.println("● YOU ARE THE CHALLENGER! CHOSE "+this.players.size()+" CARD FROM:");
+            out.println("YOU ARE THE CHALLENGER! CHOSE "+this.players.size()+" CARD FROM:");
             for(CardName cn : CardName.values())
-                out.println("● "+cn.name().toUpperCase()+" - "+cn.getDescription());
+                out.println("- "+cn.name().toUpperCase()+" - "+cn.getDescription());
+            out.flush();
 
             // first
             CardName read;
             do{
-                out.print("● TYPE THE FIRST CARD\n► ");
+                out.print("TYPE THE FIRST CARD" + TextFormatting.INPUT);
                 out.flush();
 
                 String name = in.nextLine();
@@ -100,7 +116,7 @@ public class CLI implements ViewInterface, Runnable {
 
             // second
             do{
-                out.print("● TYPE THE SECOND CARD\n► ");
+                out.print("TYPE THE SECOND CARD" + TextFormatting.INPUT);
                 out.flush();
 
                 String name = in.nextLine();
@@ -112,7 +128,7 @@ public class CLI implements ViewInterface, Runnable {
             // third
             if(this.players.size()==3){
                 do{
-                    out.print("● TYPE THE THIRD CARD\n► ");
+                    out.print("TYPE THE THIRD CARD" + TextFormatting.INPUT);
                     out.flush();
                     String name = in.nextLine();
                     try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
@@ -122,7 +138,7 @@ public class CLI implements ViewInterface, Runnable {
             }
 
             System.out.println("SEND DECISION");
-
+            out.flush();
         }
     }
 
@@ -138,13 +154,13 @@ public class CLI implements ViewInterface, Runnable {
 
         do{
             if(message.isFirstTime)
-                out.print("● TYPE YOUR USERNAME\n► ");
+                out.print("TYPE YOUR USERNAME" + TextFormatting.INPUT);
             else
-                out.print("● THE CHOSEN ONE IS NOT ALLOWED, TYPE YOUR USERNAME\n► ");
+                out.print("THE CHOSEN ONE IS NOT ALLOWED, TYPE YOUR USERNAME" + TextFormatting.getInputLine());
             out.flush();
             this.username = in.nextLine();
             message.isFirstTime = false;
-        }while (this.username.isEmpty() || message.players.contains(this.username));
+        }while (this.username.isEmpty());
 
         client.sendMessage(new ConnectionClient(this.username));
     }
@@ -155,11 +171,12 @@ public class CLI implements ViewInterface, Runnable {
         printTitle();
 
         this.players=message.players;
-        out.println("● CURRENT LOBBY");
+        out.println("CURRENT LOBBY");
         for (String name:this.players)
-            out.println("● "+name);
+            out.println("- "+name);
 
-        askIfReady();
+        if(!interrupted)
+            askIfReady();
     }
 
     public void askIfReady(){
@@ -172,7 +189,7 @@ public class CLI implements ViewInterface, Runnable {
     }
 
     public void clear(){
-        if(askSomething.isAlive()){
+        while(askSomething.isAlive()){
             this.interrupted=true;
         }
         for(int i=0;i<40;i++)
@@ -180,17 +197,17 @@ public class CLI implements ViewInterface, Runnable {
     }
 
     public static void printTitle(){
-        String title = "\n" +
-                "   ▄████████    ▄████████ ███▄▄▄▄       ███      ▄██████▄     ▄████████  ▄█  ███▄▄▄▄    ▄█  \n" +
-                "  ███    ███   ███    ███ ███▀▀▀██▄ ▀█████████▄ ███    ███   ███    ███ ███  ███▀▀▀██▄ ███  \n" +
-                "  ███    █▀    ███    ███ ███   ███    ▀███▀▀██ ███    ███   ███    ███ ███▌ ███   ███ ███▌ \n" +
-                "  ███          ███    ███ ███   ███     ███   ▀ ███    ███  ▄███▄▄▄▄██▀ ███▌ ███   ███ ███▌ \n" +
-                "▀███████████ ▀███████████ ███   ███     ███     ███    ███ ▀▀███▀▀▀▀▀   ███▌ ███   ███ ███▌ \n" +
-                "         ███   ███    ███ ███   ███     ███     ███    ███ ▀███████████ ███  ███   ███ ███  \n" +
-                "   ▄█    ███   ███    ███ ███   ███     ███     ███    ███   ███    ███ ███  ███   ███ ███  \n" +
-                " ▄████████▀    ███    █▀   ▀█   █▀     ▄████▀    ▀██████▀    ███    ███ █▀    ▀█   █▀  █▀   \n" +
-                "                                                             ███    ███                     \n";
-        out.println(title);
+        out.print( TextFormatting.initialize()
+                + "                          ad88888ba        db        888b      88 888888888888 ,ad8888ba,   88888888ba  88 888b      88 88                           \n" +
+                "                         d8\"     \"8b      d88b       8888b     88      88     d8\"'    `\"8b  88      \"8b 88 8888b     88 88                           \n" +
+                "                         Y8,             d8'`8b      88 `8b    88      88    d8'        `8b 88      ,8P 88 88 `8b    88 88                           \n" +
+                "                         `Y8aaaaa,      d8'  `8b     88  `8b   88      88    88          88 88aaaaaa8P' 88 88  `8b   88 88                           \n" +
+                "                           `\"\"\"\"\"8b,   d8YaaaaY8b    88   `8b  88      88    88          88 88\"\"\"\"88'   88 88   `8b  88 88                           \n" +
+                "                                 `8b  d8\"\"\"\"\"\"\"\"8b   88    `8b 88      88    Y8,        ,8P 88    `8b   88 88    `8b 88 88                           \n" +
+                "                         Y8a     a8P d8'        `8b  88     `8888      88     Y8a.    .a8P  88     `8b  88 88     `8888 88                           \n" +
+                "                          \"Y88888P\" d8'          `8b 88      `888      88      `\"Y8888Y\"'   88      `8b 88 88      `888 88                           \n"
+        );
+        out.flush();
 
         /*
         try {
@@ -215,24 +232,29 @@ public class CLI implements ViewInterface, Runnable {
     @Override
     public void run() {
         String read;
-        out.print("● TYPE \"READY\" WHEN YOU ARE \n► ");
+        out.print("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
         out.flush();
         while (!interrupted) {
             try {
+                //Scanner s = new Scanner(System.in);
+                //s.hasNext()
                 if(System.in.available() > 0){
-                    read = in.nextLine();
+                //if(s.hasNext()){
+                    // new Scanner(System.in).nextLine();
+                    read = new Scanner(System.in).nextLine(); //in.nextLine();
                     if(read.equalsIgnoreCase("READY")) {
                         client.sendMessage(new ReadyClient(username));
                         interrupted = true;
                         break;
                     }
                     else{
-                        out.print("● TYPE \"READY\" WHEN YOU ARE \n► ");
+                        out.print("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
                         out.flush();
                     }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                interrupted = true;
             }
         }
     }

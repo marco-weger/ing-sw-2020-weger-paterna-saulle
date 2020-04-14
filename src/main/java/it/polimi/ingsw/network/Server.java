@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.ServerMessage;
-import it.polimi.ingsw.model.Status;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -60,6 +59,14 @@ public class Server {
         return players;
     }
 
+    public VirtualView getCurrentVirtualView(){ return currentVirtualView; }
+
+    public void newCurrentVirtualView(){
+        this.currentVirtualView=new VirtualView(this);
+        virtualViews.add(this.currentVirtualView);
+        this.ready = 0;
+    }
+
     public int getReady() {
         return ready;
     }
@@ -87,14 +94,8 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 System.out.println("[NEW USER] - " + socket.getRemoteSocketAddress().toString());
 
-                // this part set up new match
-                if(!currentVirtualView.getCurrentStatus().equals(Status.NAME_CHOICE)){
-                    currentVirtualView = new VirtualView(this);
-                    virtualViews.add(currentVirtualView);
-                    ready = 0;
-                }
-
-                executor.submit(new ServerClientHandler(socket,this,currentVirtualView));
+                //executor.submit(new ServerClientHandler(socket,this,currentVirtualView));
+                executor.submit(new ServerClientHandler(socket,this));
             }catch(IOException e){
                 LOGGER.log(Level.WARNING, e.getMessage());
                 break;

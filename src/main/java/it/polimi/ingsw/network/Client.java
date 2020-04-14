@@ -3,12 +3,13 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.TextFormatting;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -36,36 +37,38 @@ public class Client implements Runnable{
     public static void main(String[] args){
         Client client = new Client();
 
-        int answer = JOptionPane.showOptionDialog(null,"Choose the version","Santorini",
-                JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE,null,new String[]{"CLI", "GUI"},"CLI");
+        CLI.printTitle();
 
-        if(answer == 0){
-            CLI view = new CLI(client);
-            client.setView(view);
-            view.displayFirstWindow();
-        }
-        else if(answer == 1){
-            // TODO run gui
-            System.out.println("RUN GUI...");
-        }
+        String version;
+        do{
+            System.out.print("Choose the version [CLI/GUI]" + TextFormatting.getInputLine());
+            System.out.flush();
+            version = new Scanner(System.in).nextLine();
+
+            if(version.equals("CLI")){
+                CLI view = new CLI(client);
+                client.setView(view);
+                view.displayFirstWindow();
+            }
+            else if(version.equals("GUI")){
+                // TODO run gui
+                System.out.println("RUN GUI...");
+            }
+        }while(!version.equals("CLI") && !version.equals("GUI"));
     }
 
-    public boolean connect() {
+    public boolean connect(String ip, int port) {
         try {
-            socket = new Socket("127.0.0.1", 1234);
+            socket = new Socket(ip,port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
             ExecutorService executor = Executors.newCachedThreadPool();
             executor.submit(this);
-            //sendMessage(cc);
             return true;
-        } catch (Exception e) {
-            // TODO: display error
-            //view.displayConnectionErrorClient(loginMessage);
-            //System.out.println(socket.isConnected());
+        } catch (IOException e) {
+            return false;
         }
-        return false;
     }
 
     @Override

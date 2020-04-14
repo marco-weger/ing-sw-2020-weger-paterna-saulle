@@ -4,6 +4,7 @@ import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.serverMessages.NameRequestServer;
+import it.polimi.ingsw.model.Status;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -46,10 +47,18 @@ public class ServerClientHandler implements Runnable  {
      */
     private String name;
 
+    @Deprecated
     public ServerClientHandler (Socket socket, Server server, VirtualView virtualView){
         this.socket = socket;
         this.server = server;
         this.virtualView = virtualView;
+        this.name = socket.getRemoteSocketAddress().toString();
+    }
+
+    public ServerClientHandler (Socket socket, Server server){
+        this.socket = socket;
+        this.server = server;
+        this.virtualView = null;
         this.name = socket.getRemoteSocketAddress().toString();
     }
 
@@ -84,7 +93,7 @@ public class ServerClientHandler implements Runnable  {
 
                 do{
                     // send to client request for name an wait for answer
-                    this.notify(new NameRequestServer(server.getPlayers(),tmpName.equals("FIRST")));
+                    this.notify(new NameRequestServer(tmpName.equals("FIRST")));
                     object = in.readObject();
 
                     if(object instanceof ConnectionClient){
@@ -98,6 +107,7 @@ public class ServerClientHandler implements Runnable  {
                         for(VirtualView vv : server.getVirtualViews()){
                             for(ServerClientHandler sch : vv.getConnectedPlayers()){
                                 if(sch.getName().equals(cc.name)){
+                                    // TODO check for existent match or disconnected... reconnect!
                                     tmpName = "";
                                     break;
                                 }
@@ -106,8 +116,14 @@ public class ServerClientHandler implements Runnable  {
                     } else tmpName = "";
                 }while(tmpName.isEmpty()); // loop until the name is invalid
 
+                // username validated ... TODO check for persistence
                 this.name=tmpName;
-                //server.getPlayers().add(((ConnectionClient) object).name);
+
+                // this part set up new match
+                if(!server.getCurrentVirtualView().getCurrentStatus().equals(Status.NAME_CHOICE)){
+                    server.newCurrentVirtualView();
+                }
+                virtualView = server.getCurrentVirtualView();
                 virtualView.notify((ClientMessage) object);
             }
 
