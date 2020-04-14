@@ -1,5 +1,5 @@
 
-# Prova Finale Ingegneria del Software 2020
+# Final project of Software Engegniring 2020
 ## Gruppo CG13
 
 This final project was made between March and July 2020 as our final thesis project at Politecnico di Milano. <br>
