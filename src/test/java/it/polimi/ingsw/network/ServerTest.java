@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class ServerTest {
 
-    Server CG13 = new Server (1234);
+    Server CG13 = new Server ();
 
     /**
      * QuickStart Server ---> ControllerTest Allows Parallel Exectuions

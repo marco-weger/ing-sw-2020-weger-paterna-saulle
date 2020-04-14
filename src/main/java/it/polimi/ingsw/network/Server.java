@@ -1,10 +1,16 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.ServerMessage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,14 +38,14 @@ public class Server {
     private ArrayList<VirtualView> virtualViews2;
     private ArrayList<VirtualView> virtualViews3;
 
-    public Server(int port){
-        this.port = port;
-        currentVirtualView2 = new VirtualView(this);
-        currentVirtualView3 = new VirtualView(this);
-        virtualViews2 = new ArrayList<>();
-        virtualViews3 = new ArrayList<>();
-        virtualViews2.add(currentVirtualView2); // add the first VirtualView
-        virtualViews3.add(currentVirtualView3); // add the first VirtualView
+    public Server(){
+        this.port = 1234;
+        this.currentVirtualView2 = new VirtualView(this);
+        this.currentVirtualView3 = new VirtualView(this);
+        this.virtualViews2 = new ArrayList<>();
+        this.virtualViews3 = new ArrayList<>();
+        this.virtualViews2.add(currentVirtualView2); // add the first VirtualView
+        this.virtualViews3.add(currentVirtualView3); // add the first VirtualView
     }
 
     public ArrayList<VirtualView> getVirtualViews2() { return virtualViews2; }
@@ -138,10 +144,75 @@ public class Server {
      * @param args usually it takes no args
      */
     public static void main(String[] args) {
+        // default values
         int port = 1234;
-        Server server = new Server(port);
+
+        Server server = new Server();
+
+        // json read
+        JSONParser jsonParser = new JSONParser();
+
+        File file = server.getFileFromResources("config/server.json");
+        try {
+            printFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        try (FileReader reader = new FileReader(server.getClass().getClassLoader().getResource("config/server.json").getFile()))
+        {
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+
+            JSONObject employeeList = (JSONObject) obj;
+            System.out.println(employeeList);
+
+            //Iterate over employee array
+            //employeeList.forEach( emp -> parseEmployeeObject( (JSONObject) emp ) );
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        server.port = port;
+
+        //run server
         // TODO: chose a singular port
         server.startServer();
+    }
+
+    // get file from classpath, resources folder
+    private File getFileFromResources(String fileName) {
+
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        URL resource = classLoader.getResource(fileName);
+        if (resource == null) {
+            throw new IllegalArgumentException("file is not found!");
+        } else {
+            return new File(resource.getFile());
+        }
+
+    }
+
+    private static void printFile(File file) throws IOException {
+
+        if (file == null) return;
+
+        try (FileReader reader = new FileReader(file);
+             BufferedReader br = new BufferedReader(reader)) {
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        }
     }
 
 }
