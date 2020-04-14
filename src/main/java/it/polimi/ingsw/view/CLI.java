@@ -237,7 +237,6 @@ public class CLI implements ViewInterface, Runnable {
                     }
                     else{
                         print("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
-                        print("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
                     }
                 }
             } catch (IOException e) {
