@@ -62,6 +62,17 @@ public enum TextFormatting {
         return TextFormatting.BACKGROUND_BRIGHT_YELLOW.toString() + TextFormatting.COLOR_BRIGHT_RED + TextFormatting.BOLD;
     }
 
+    public static String winner()
+    {
+        return TextFormatting.BACKGROUND_GREEN.toString() + TextFormatting.COLOR_BRIGHT_WHITE + TextFormatting.BOLD;
+    }
+
+    public static String loser()
+    {
+        return TextFormatting.BACKGROUND_RED.toString() + TextFormatting.COLOR_BRIGHT_WHITE + TextFormatting.BOLD;
+    }
+
+
     public static String getInputLine(){
         return "\n" + TextFormatting.RESET + TextFormatting.COLOR_BRIGHT_YELLOW + TextFormatting.INPUT;
     }

@@ -1,10 +1,12 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -77,6 +79,24 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(SomeoneLoseServer message) {
+        if(this.username == message.name){
+            print(TextFormatting.loser()
+                    +
+                    "                                                     888                                              \n" +
+                    "                                                     888                                              \n" +
+                    "                                                     888                                              \n" +
+                    "  d8b d8b d8b       888  888  .d88b.  888  888       888  .d88b.  .d8888b   .d88b.        d8b d8b d8b \n" +
+                    "  Y8P Y8P Y8P       888  888 d88\"\"88b 888  888       888 d88\"\"88b 88K      d8P  Y8b       Y8P Y8P Y8P \n" +
+                    "                    888  888 888  888 888  888       888 888  888 \"Y8888b. 88888888                   \n" +
+                    "  d8b d8b d8b       Y88b 888 Y88..88P Y88b 888       888 Y88..88P      X88 Y8b.           d8b d8b d8b \n" +
+                    "  Y8P Y8P Y8P        \"Y88888  \"Y88P\"   \"Y88888       888  \"Y88P\"   88888P'  \"Y8888        Y8P Y8P Y8P \n" +
+                    "                         888                                                                          \n" +
+                    "                    Y8b d88P                                                                          \n" +
+                    "                     \"Y88P\"                                                                           \n"
+            );
+        }
+        else
+            println(TextFormatting.loser() + message.name + "have lost");
 
     }
 
@@ -130,8 +150,39 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(SomeoneWinServer message) {
+        if(this.username == message.name) {
+            print(TextFormatting.winner()
+                    +
+                    "                                               Y88b   d88P  .d88888b.  888     888       888       888 8888888 888b    888                                                      \n" +
+                    "        o            o            o             Y88b d88P  d88P' 'Y88b 888     888       888   o   888   888   8888b   888             o            o            o              \n" +
+                    "       d8b          d8b          d8b             Y88o88P   888     888 888     888       888  d8b  888   888   88888b  888            d8b          d8b          d8b             \n" +
+                    "      d888b        d888b        d888b             Y888P    888     888 888     888       888 d888b 888   888   888Y88b 888           d888b        d888b        d888b            \n" +
+                    "  'Y888888888P''Y888888888P''Y888888888P'          888     888     888 888     888       888d88888b888   888   888 Y88b888       'Y888888888P''Y888888888P''Y888888888P'        \n" +
+                    "    'Y88888P'    'Y88888P''    'Y88888P'           888     888     888 888     888       88888P Y88888   888   888  Y88888         'Y88888P'    'Y88888P'    'Y88888P'          \n" +
+                    "    d88P'Y88b    d88P'Y88b    d88P'Y88b            888     Y88b. .d88P Y88b. .d88P       8888P   Y8888   888   888   Y8888         d88P'Y88b    d88P'Y88b    d88P'Y88b          \n" +
+                    "   dP'     'Yb  dP'     'Yb  dP'     'Yb           888      'Y88888P'   'Y88888P'        888P     Y888 8888888 888    Y888        dP'     'Yb  dP'     'Yb  dP'     'Yb         \n"
+            );
+        }
+        else{
+            print(TextFormatting.loser()
+                    +
+                    "                                                     888                                              \n" +
+                    "                                                     888                                              \n" +
+                    "                                                     888                                              \n" +
+                    "  d8b d8b d8b       888  888  .d88b.  888  888       888  .d88b.  .d8888b   .d88b.        d8b d8b d8b \n" +
+                    "  Y8P Y8P Y8P       888  888 d88\"\"88b 888  888       888 d88\"\"88b 88K      d8P  Y8b       Y8P Y8P Y8P \n" +
+                    "                    888  888 888  888 888  888       888 888  888 \"Y8888b. 88888888                   \n" +
+                    "  d8b d8b d8b       Y88b 888 Y88..88P Y88b 888       888 Y88..88P      X88 Y8b.           d8b d8b d8b \n" +
+                    "  Y8P Y8P Y8P        \"Y88888  \"Y88P\"   \"Y88888       888  \"Y88P\"   88888P'  \"Y8888        Y8P Y8P Y8P \n" +
+                    "                         888                                                                          \n" +
+                    "                    Y8b d88P                                                                          \n" +
+                    "                     \"Y88P\"                                                                           \n"
+            );
 
-    }
+            }
+        }
+
+
 
     @Override
     public void handleMessage(NameRequestServer message) {
@@ -225,5 +276,20 @@ public class CLI implements ViewInterface {
     public static void print(String string){
         System.out.print(string);
         System.out.flush();
+    }
+
+    public void boardPrint(){
+        for(int i = 0; 0<=i && i<client.getBoard().size(); i++){
+            print("CELL [" + client.getBoard().get(i).row + TextFormatting.SEPARATOR + client.getBoard().get(i).column + "], LEVEL: " + client.getBoard().get(i).level + ", WORKER N°: ");
+            if(client.getWorkers().size()==0)
+                print("NO PLAYERS\n");
+            for(int j = 0; 0<=j && j<client.getWorkers().size(); j++){
+                if(client.getBoard().get(i).row == client.getWorkers().get(j).row && client.getBoard().get(i).column == client.getWorkers().get(j).column)
+                    print(client.getWorkers().get(j).n + " OF " + client.getWorkers().get(j).name + "\n");
+                else
+                    print("NONE\n");
+            }
+        }
+
     }
 }
