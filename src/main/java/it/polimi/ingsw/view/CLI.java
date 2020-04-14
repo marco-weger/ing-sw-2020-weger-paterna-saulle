@@ -38,10 +38,10 @@ public class CLI implements ViewInterface, Runnable {
         int port = 1234;
         while(!client.connect(ip, port))
         {
-            outln("Server unreachable!");
-            out("Type new ip address" + TextFormatting.getInputLine());
+            println("Server unreachable!");
+            print("Type new ip address" + TextFormatting.getInputLine());
             ip = new Scanner(System.in).nextLine();
-            out("Type new port" + TextFormatting.getInputLine());
+            print("Type new port" + TextFormatting.getInputLine());
             try {
                 port = Integer.parseInt(new Scanner(System.in).nextLine());
             } catch (NumberFormatException nfe) { port = 1234; }
@@ -93,14 +93,14 @@ public class CLI implements ViewInterface, Runnable {
             // im the challenger
             ArrayList<CardName> chosen = new ArrayList<>();
 
-            outln("YOU ARE THE CHALLENGER! CHOSE "+this.players.size()+" CARD FROM:");
+            println("YOU ARE THE CHALLENGER! CHOSE "+this.players.size()+" CARD FROM:");
             for(CardName cn : CardName.values())
-                outln("- "+cn.name().toUpperCase()+" - "+cn.getDescription());
+                println("- "+cn.name().toUpperCase()+" - "+cn.getDescription());
 
             // first
             CardName read;
             do{
-                out("TYPE THE FIRST CARD" + TextFormatting.INPUT);
+                print("TYPE THE FIRST CARD" + TextFormatting.INPUT);
 
                 String name = in.nextLine();
                 try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
@@ -110,7 +110,7 @@ public class CLI implements ViewInterface, Runnable {
 
             // second
             do{
-                out("TYPE THE SECOND CARD" + TextFormatting.INPUT);
+                print("TYPE THE SECOND CARD" + TextFormatting.INPUT);
 
                 String name = in.nextLine();
                 try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
@@ -121,7 +121,7 @@ public class CLI implements ViewInterface, Runnable {
             // third
             if(this.players.size()==3){
                 do{
-                    out("TYPE THE THIRD CARD" + TextFormatting.INPUT);
+                    print("TYPE THE THIRD CARD" + TextFormatting.INPUT);
                     String name = in.nextLine();
                     try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
                     catch(Exception ex){read = null;}
@@ -129,7 +129,7 @@ public class CLI implements ViewInterface, Runnable {
                 chosen.add(read);
             }
 
-            outln("SEND DECISION");
+            println("SEND DECISION");
         }
     }
 
@@ -145,9 +145,9 @@ public class CLI implements ViewInterface, Runnable {
 
         do{
             if(message.isFirstTime)
-                out("TYPE YOUR USERNAME" + TextFormatting.INPUT);
+                print("TYPE YOUR USERNAME" + TextFormatting.INPUT);
             else
-                out("THE CHOSEN ONE IS NOT ALLOWED, TYPE YOUR USERNAME" + TextFormatting.getInputLine());
+                print("THE CHOSEN ONE IS NOT ALLOWED, TYPE YOUR USERNAME" + TextFormatting.getInputLine());
             this.username = in.nextLine();
             message.isFirstTime = false;
         }while (this.username.isEmpty());
@@ -161,9 +161,9 @@ public class CLI implements ViewInterface, Runnable {
         printTitle();
 
         this.players=message.players;
-        outln("CURRENT LOBBY");
+        println("CURRENT LOBBY");
         for (String name:this.players)
-            outln("- "+name);
+            println("- "+name);
 
         if(!interrupted)
             askIfReady();
@@ -183,11 +183,11 @@ public class CLI implements ViewInterface, Runnable {
             this.interrupted=true;
         }
         for(int i=0;i<40;i++)
-            outln("");
+            println("");
     }
 
     public static void printTitle(){
-        out( TextFormatting.initialize()
+        print( TextFormatting.initialize()
                 + "                          ad88888ba        db        888b      88 888888888888 ,ad8888ba,   88888888ba  88 888b      88 88                           \n" +
                 "                         d8\"     \"8b      d88b       8888b     88      88     d8\"'    `\"8b  88      \"8b 88 8888b     88 88                           \n" +
                 "                         Y8,             d8'`8b      88 `8b    88      88    d8'        `8b 88      ,8P 88 88 `8b    88 88                           \n" +
@@ -221,7 +221,7 @@ public class CLI implements ViewInterface, Runnable {
     @Override
     public void run() {
         String read;
-        out("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
+        print("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
         while (!interrupted) {
             try {
                 //Scanner s = new Scanner(System.in);
@@ -236,8 +236,8 @@ public class CLI implements ViewInterface, Runnable {
                         break;
                     }
                     else{
-                        out("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
-                        out("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
+                        print("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
+                        print("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
                     }
                 }
             } catch (IOException e) {
@@ -247,11 +247,11 @@ public class CLI implements ViewInterface, Runnable {
         }
     }
 
-    public static void outln(String string){
+    public static void println(String string){
         System.out.println(string);
         System.out.flush();
     }
-    public static void out(String string){
+    public static void print(String string){
         System.out.print(string);
         System.out.flush();
     }
