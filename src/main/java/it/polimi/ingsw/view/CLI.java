@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
 import it.polimi.ingsw.commons.serverMessages.*;
@@ -225,5 +226,20 @@ public class CLI implements ViewInterface {
     public static void print(String string){
         System.out.print(string);
         System.out.flush();
+    }
+
+    public void boardPrint(){
+        for(int i = 0; 0<=i && i<client.getBoard().size(); i++){
+            print("CELL [" + client.getBoard().get(i).row + TextFormatting.SEPARATOR + client.getBoard().get(i).column + "], LEVEL: " + client.getBoard().get(i).level + ", WORKER N°: ");
+            if(client.getWorkers().size()==0)
+                print("NO PLAYERS\n");
+            for(int j = 0; 0<=j && j<client.getWorkers().size(); j++){
+                if(client.getBoard().get(i).row == client.getWorkers().get(j).row && client.getBoard().get(i).column == client.getWorkers().get(j).column)
+                    print(client.getWorkers().get(j).n + " OF " + client.getWorkers().get(j).name + "\n");
+                else
+                    print("NONE\n");
+            }
+        }
+
     }
 }
