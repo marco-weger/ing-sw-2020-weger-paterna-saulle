@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Logger;
@@ -17,7 +16,6 @@ public class CLI implements ViewInterface, Runnable {
     Client client;
     String username;
 
-    private static PrintWriter out = new PrintWriter(System.out, true);
     private static Scanner in = new Scanner(System.in);
 
     private ArrayList<String> players;
@@ -40,12 +38,10 @@ public class CLI implements ViewInterface, Runnable {
         int port = 1234;
         while(!client.connect(ip, port))
         {
-            System.out.println("Server unreachable!");
-            System.out.print("Type new ip address" + TextFormatting.getInputLine());
-            System.out.flush();
+            outln("Server unreachable!");
+            out("Type new ip address" + TextFormatting.getInputLine());
             ip = new Scanner(System.in).nextLine();
-            System.out.print("Type new port" + TextFormatting.getInputLine());
-            System.out.flush();
+            out("Type new port" + TextFormatting.getInputLine());
             try {
                 port = Integer.parseInt(new Scanner(System.in).nextLine());
             } catch (NumberFormatException nfe) { port = 1234; }
@@ -97,16 +93,14 @@ public class CLI implements ViewInterface, Runnable {
             // im the challenger
             ArrayList<CardName> chosen = new ArrayList<>();
 
-            out.println("YOU ARE THE CHALLENGER! CHOSE "+this.players.size()+" CARD FROM:");
+            outln("YOU ARE THE CHALLENGER! CHOSE "+this.players.size()+" CARD FROM:");
             for(CardName cn : CardName.values())
-                out.println("- "+cn.name().toUpperCase()+" - "+cn.getDescription());
-            out.flush();
+                outln("- "+cn.name().toUpperCase()+" - "+cn.getDescription());
 
             // first
             CardName read;
             do{
-                out.print("TYPE THE FIRST CARD" + TextFormatting.INPUT);
-                out.flush();
+                out("TYPE THE FIRST CARD" + TextFormatting.INPUT);
 
                 String name = in.nextLine();
                 try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
@@ -116,8 +110,7 @@ public class CLI implements ViewInterface, Runnable {
 
             // second
             do{
-                out.print("TYPE THE SECOND CARD" + TextFormatting.INPUT);
-                out.flush();
+                out("TYPE THE SECOND CARD" + TextFormatting.INPUT);
 
                 String name = in.nextLine();
                 try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
@@ -128,8 +121,7 @@ public class CLI implements ViewInterface, Runnable {
             // third
             if(this.players.size()==3){
                 do{
-                    out.print("TYPE THE THIRD CARD" + TextFormatting.INPUT);
-                    out.flush();
+                    out("TYPE THE THIRD CARD" + TextFormatting.INPUT);
                     String name = in.nextLine();
                     try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
                     catch(Exception ex){read = null;}
@@ -137,8 +129,7 @@ public class CLI implements ViewInterface, Runnable {
                 chosen.add(read);
             }
 
-            System.out.println("SEND DECISION");
-            out.flush();
+            outln("SEND DECISION");
         }
     }
 
@@ -154,10 +145,9 @@ public class CLI implements ViewInterface, Runnable {
 
         do{
             if(message.isFirstTime)
-                out.print("TYPE YOUR USERNAME" + TextFormatting.INPUT);
+                out("TYPE YOUR USERNAME" + TextFormatting.INPUT);
             else
-                out.print("THE CHOSEN ONE IS NOT ALLOWED, TYPE YOUR USERNAME" + TextFormatting.getInputLine());
-            out.flush();
+                out("THE CHOSEN ONE IS NOT ALLOWED, TYPE YOUR USERNAME" + TextFormatting.getInputLine());
             this.username = in.nextLine();
             message.isFirstTime = false;
         }while (this.username.isEmpty());
@@ -171,9 +161,9 @@ public class CLI implements ViewInterface, Runnable {
         printTitle();
 
         this.players=message.players;
-        out.println("CURRENT LOBBY");
+        outln("CURRENT LOBBY");
         for (String name:this.players)
-            out.println("- "+name);
+            outln("- "+name);
 
         if(!interrupted)
             askIfReady();
@@ -193,11 +183,11 @@ public class CLI implements ViewInterface, Runnable {
             this.interrupted=true;
         }
         for(int i=0;i<40;i++)
-            out.println();
+            outln("");
     }
 
     public static void printTitle(){
-        out.print( TextFormatting.initialize()
+        out( TextFormatting.initialize()
                 + "                          ad88888ba        db        888b      88 888888888888 ,ad8888ba,   88888888ba  88 888b      88 88                           \n" +
                 "                         d8\"     \"8b      d88b       8888b     88      88     d8\"'    `\"8b  88      \"8b 88 8888b     88 88                           \n" +
                 "                         Y8,             d8'`8b      88 `8b    88      88    d8'        `8b 88      ,8P 88 88 `8b    88 88                           \n" +
@@ -207,7 +197,6 @@ public class CLI implements ViewInterface, Runnable {
                 "                         Y8a     a8P d8'        `8b  88     `8888      88     Y8a.    .a8P  88     `8b  88 88     `8888 88                           \n" +
                 "                          \"Y88888P\" d8'          `8b 88      `888      88      `\"Y8888Y\"'   88      `8b 88 88      `888 88                           \n"
         );
-        out.flush();
 
         /*
         try {
@@ -232,8 +221,7 @@ public class CLI implements ViewInterface, Runnable {
     @Override
     public void run() {
         String read;
-        out.print("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
-        out.flush();
+        out("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
         while (!interrupted) {
             try {
                 //Scanner s = new Scanner(System.in);
@@ -248,8 +236,8 @@ public class CLI implements ViewInterface, Runnable {
                         break;
                     }
                     else{
-                        out.print("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
-                        out.flush();
+                        out("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
+                        out("TYPE \"READY\" WHEN YOU ARE" + TextFormatting.INPUT);
                     }
                 }
             } catch (IOException e) {
@@ -257,5 +245,14 @@ public class CLI implements ViewInterface, Runnable {
                 interrupted = true;
             }
         }
+    }
+
+    public static void outln(String string){
+        System.out.println(string);
+        System.out.flush();
+    }
+    public static void out(String string){
+        System.out.print(string);
+        System.out.flush();
     }
 }
