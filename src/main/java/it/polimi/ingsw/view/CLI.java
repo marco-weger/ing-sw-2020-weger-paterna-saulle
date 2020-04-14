@@ -16,8 +16,6 @@ public class CLI implements ViewInterface {
     Client client;
     String username;
 
-    private Board board;
-
     private static Scanner in = new Scanner(System.in);
 
     private ArrayList<String> players;
@@ -27,7 +25,6 @@ public class CLI implements ViewInterface {
     public CLI(Client client){
         this.client = client;
         this.username = "";
-        this.board = new Board();
     }
 
     // TODO: could be an interface of ViewInterface
