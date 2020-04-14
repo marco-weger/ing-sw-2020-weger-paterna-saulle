@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.commons.SnapCell;
+import it.polimi.ingsw.commons.SnapWorker;
+import it.polimi.ingsw.commons.serverMessages.BuiltServer;
+
 public class Worker {
 
     /**

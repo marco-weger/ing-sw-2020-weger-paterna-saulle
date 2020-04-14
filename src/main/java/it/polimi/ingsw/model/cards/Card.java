@@ -2,9 +2,12 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.commons.SnapCell;
+import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.commons.serverMessages.BuiltServer;
 import it.polimi.ingsw.commons.serverMessages.CheckBuildServer;
 import it.polimi.ingsw.commons.serverMessages.CheckMoveServer;
+import it.polimi.ingsw.commons.serverMessages.MovedServer;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -147,6 +150,7 @@ public class Card extends Observable {
                             available.removeAll(player.getCard().activeBlock(p, b,  current.getCurrentWorker(),Status.QUESTION_M));
                     if (available.contains(to)) {
                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                        notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
                         return true;
                     }
                 }
@@ -174,6 +178,7 @@ public class Card extends Observable {
                             available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_B));
                     if(available.contains(to)){
                         available.get(available.indexOf(to)).setLevel(available.get(available.indexOf(to)).getLevel()+1);
+                        notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(to)).getRow(),available.get(available.indexOf(to)).getColumn(),available.get(available.indexOf(to)).getLevel())));
                         return true;
                     }
                 }

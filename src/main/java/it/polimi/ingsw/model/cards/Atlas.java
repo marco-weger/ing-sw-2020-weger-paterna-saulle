@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.commons.serverMessages.BuiltServer;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -37,6 +39,7 @@ public class Atlas extends Card {
                         else {
                             available.get(available.indexOf(in)).setLevel(available.get(available.indexOf(in)).getLevel()+1);
                         }
+                        notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(in)).getRow(),available.get(available.indexOf(in)).getColumn(),available.get(available.indexOf(in)).getLevel())));
                         return true;
                     }
                 }

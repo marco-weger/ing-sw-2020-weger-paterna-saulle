@@ -15,4 +15,7 @@ public interface ViewInterface {
     void handleMessage(NameRequestServer message);
     void handleMessage(LobbyServer message);
     void handleMessage(ModeRequestServer message);
+
+    void handleMessage(BuiltServer message);
+    void handleMessage(MovedServer message);
 }

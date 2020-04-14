@@ -3,7 +3,6 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
 import it.polimi.ingsw.commons.serverMessages.*;
-import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 
@@ -181,6 +180,16 @@ public class CLI implements ViewInterface {
         }while (mode != 2 && mode != 3);
 
         client.sendMessage(new ModeChoseClient(this.username,mode));
+    }
+
+    @Override
+    public void handleMessage(BuiltServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(MovedServer message) {
+
     }
 
     public void clear(){

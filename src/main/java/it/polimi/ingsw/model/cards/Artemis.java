@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.commons.serverMessages.MovedServer;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -63,6 +65,7 @@ public class Artemis extends Card {
                     //thus, the control if "to" equals the current worker starting point.
                     if (available.contains(to) && !((current.getCurrentWorker().getRow()==to.getRow()) && current.getCurrentWorker().getColumn()==to.getColumn())) {
                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                        notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
                         return true;
                     }
                 }

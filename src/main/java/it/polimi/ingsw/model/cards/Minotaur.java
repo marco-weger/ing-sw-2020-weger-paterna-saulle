@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.commons.serverMessages.MovedServer;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -77,6 +79,7 @@ public class Minotaur extends Card {
                                     if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
                                         player.getWorker1().move(x, y);
                                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                                        notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
                                         return true;
                                     }
                                 }
@@ -86,6 +89,7 @@ public class Minotaur extends Card {
                                     if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
                                         player.getWorker2().move(x, y);
                                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                                        notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
                                         return true;
                                     }
                                 }

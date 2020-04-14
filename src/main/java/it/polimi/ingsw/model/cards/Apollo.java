@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.commons.serverMessages.MovedServer;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -69,11 +71,13 @@ public class Apollo extends Card {
                                 if(player.getWorker1().getRow() == to.getRow() && player.getWorker1().getRow() == to.getRow()){
                                     player.getWorker1().move(current.getCurrentWorker().getRow(), current.getCurrentWorker().getColumn());
                                     current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                                    notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
                                     return true;
                                 }
                                 else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getRow() == to.getRow()){
                                     player.getWorker2().move(current.getCurrentWorker().getRow(), current.getCurrentWorker().getColumn());
                                     current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                                    notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
                                     return true;
                                 }
                             }

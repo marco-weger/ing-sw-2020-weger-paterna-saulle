@@ -46,11 +46,15 @@ public class Board {
      * @param level the level
      */
     protected void build(Cell c, int level){
-        if(c != null)
-            if(isCellInBoard(c) && level >= 0 && level <= 4)
-                for(Cell inBoard : field)
-                    if(c.getRow() == inBoard.getRow() && c.getColumn() == inBoard.getColumn())
+        if(c != null){
+            if(isCellInBoard(c) && level >= 0 && level <= 4){
+                for(Cell inBoard : field){
+                    if(c.getRow() == inBoard.getRow() && c.getColumn() == inBoard.getColumn()){
                         inBoard.setLevel(level);
+                    }
+                }
+            }
+        }
     }
 
     /**
