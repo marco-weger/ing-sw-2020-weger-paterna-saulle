@@ -4,20 +4,22 @@ import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapWorker;
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.view.CLI;
 import it.polimi.ingsw.view.TextFormatting;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Client implements Runnable{
@@ -28,6 +30,9 @@ public class Client implements Runnable{
     ObjectOutputStream out;
     protected ArrayList<SnapCell> board;
     protected ArrayList<SnapWorker> workers;
+
+    String ip;
+    int port;
 
     private static Logger LOGGER = Logger.getLogger("Client");
 
@@ -49,8 +54,44 @@ public class Client implements Runnable{
         return workers;
     }
 
+    public void setIp(String ip){
+        this.ip = ip;
+    }
+
+    public void setPort(int port){
+        this.port=port;
+    }
+
     public static void main(String[] args){
         Client client = new Client();
+
+        // json read
+        JSONParser jsonParser = new JSONParser();
+        JSONObject config = null;
+
+        try (FileReader reader = new FileReader(Objects.requireNonNull(client.getClass().getClassLoader().getResource("config.json")).getFile()))
+        {
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+            config = (JSONObject) obj;
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
+
+        if(config != null){
+            try {
+                if (config.containsKey("ip"))
+                    client.setIp(config.get("ip").toString());
+            }catch (Exception e){
+                client.setIp("127.0.0.1");
+            }
+            try {
+                if (config.containsKey("port"))
+                    client.setPort(Integer.parseInt(config.get("port").toString()));
+            }catch (Exception e){
+                client.setPort(1234);
+            }
+        }
 
         CLI.printTitle();
 
@@ -80,7 +121,7 @@ public class Client implements Runnable{
         }while(!version.equals("CLI") && !version.equals("GUI"));
     }
 
-    public boolean connect(String ip, int port) {
+    public boolean connect() {
         try {
             socket = new Socket(ip,port);
             out = new ObjectOutputStream(socket.getOutputStream());
@@ -105,10 +146,8 @@ public class Client implements Runnable{
             }
         }
         catch (IOException | ClassNotFoundException e){
-            //System.err.println("Error while receiving new Question object through SOCKET");
-            //e.printStackTrace();
-            //userInterface.receiveEvent(new DisconnectedQuestion());
-            LOGGER.log(Level.WARNING, e.getMessage());
+            System.out.println("ERROR! SERVER UNAVAILABLE...");
+            System.exit(0);
         }
     }
 
@@ -118,8 +157,8 @@ public class Client implements Runnable{
             out.writeObject(msg);
             out.flush();
         } catch (IOException e) {
-            LOGGER.log(Level.WARNING, e.getMessage());
+            System.out.println("ERROR! SERVER UNAVAILABLE...");
+            System.exit(0);
         }
-
     }
 }

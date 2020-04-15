@@ -1,10 +1,8 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.commons.SnapCell;
-import it.polimi.ingsw.commons.SnapWorker;
-import it.polimi.ingsw.commons.serverMessages.BuiltServer;
+import java.io.Serializable;
 
-public class Worker {
+public class Worker implements Serializable {
 
     /**
      * Position of worker

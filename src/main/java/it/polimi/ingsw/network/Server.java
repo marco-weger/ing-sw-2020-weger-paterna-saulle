@@ -1,7 +1,8 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.ServerMessage;
-import org.json.simple.JSONArray;
+import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.model.Match;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -9,9 +10,8 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -44,8 +44,6 @@ public class Server {
         this.currentVirtualView3 = new VirtualView(this);
         this.virtualViews2 = new ArrayList<>();
         this.virtualViews3 = new ArrayList<>();
-        this.virtualViews2.add(currentVirtualView2); // add the first VirtualView
-        this.virtualViews3.add(currentVirtualView3); // add the first VirtualView
     }
 
     public ArrayList<VirtualView> getVirtualViews2() { return virtualViews2; }
@@ -58,14 +56,10 @@ public class Server {
     public ArrayList<String> getPlayers(){
         ArrayList<String> players = new ArrayList<>();
         for(VirtualView vv : getVirtualViews2()){
-            for(ServerClientHandler sch : vv.getConnectedPlayers()){
-                players.add(sch.getName());
-            }
+            players.addAll(vv.getConnectedPlayers().keySet());
         }
         for(VirtualView vv : getVirtualViews3()){
-            for(ServerClientHandler sch : vv.getConnectedPlayers()){
-                players.add(sch.getName());
-            }
+            players.addAll(vv.getConnectedPlayers().keySet());
         }
         return players;
     }
@@ -96,7 +90,14 @@ public class Server {
             LOGGER.log(Level.WARNING, e.getMessage());
             return;
         }
+
+        loadMatch();
+
+        this.virtualViews2.add(currentVirtualView2); // add the first VirtualView
+        this.virtualViews3.add(currentVirtualView3); // add the first VirtualView
+
         System.out.println("[READY ON PORT "+port+"]");
+
         while (true){
             try{
                 Socket socket = serverSocket.accept();
@@ -104,6 +105,8 @@ public class Server {
 
                 //executor.submit(new ServerClientHandler(socket,this,currentVirtualView));
                 executor.submit(new ServerClientHandler(socket,this));
+
+                //saveVirtualView(virtualViews2,virtualViews3);
             }catch(IOException e){
                 LOGGER.log(Level.WARNING, e.getMessage());
                 break;
@@ -123,7 +126,7 @@ public class Server {
      * @param vv the virtual view
      */
     public void sendAll(ServerMessage s, VirtualView vv){
-        for(Object sch : vv.getConnectedPlayers())
+        for(Object sch : vv.getConnectedPlayers().values())
             ((ServerClientHandler) sch).notify(s);
     }
 
@@ -134,7 +137,7 @@ public class Server {
      */
     public void send(ServerMessage s, VirtualView vv){
         if(s!=null && vv != null)
-            for(ServerClientHandler sch : vv.getConnectedPlayers())
+            for(ServerClientHandler sch : vv.getConnectedPlayers().values())
                 if(sch.getName().equals(s.name))
                     sch.notify(s);
     }
@@ -144,75 +147,71 @@ public class Server {
      * @param args usually it takes no args
      */
     public static void main(String[] args) {
-        // default values
-        int port = 1234;
-
         Server server = new Server();
 
         // json read
         JSONParser jsonParser = new JSONParser();
+        JSONObject config = null;
 
-        File file = server.getFileFromResources("config/server.json");
-        try {
-            printFile(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        try (FileReader reader = new FileReader(server.getClass().getClassLoader().getResource("config/server.json").getFile()))
+        try (FileReader reader = new FileReader(Objects.requireNonNull(server.getClass().getClassLoader().getResource("config.json")).getFile()))
         {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
-
-            JSONObject employeeList = (JSONObject) obj;
-            System.out.println(employeeList);
-
-            //Iterate over employee array
-            //employeeList.forEach( emp -> parseEmployeeObject( (JSONObject) emp ) );
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+            config = (JSONObject) obj;
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
 
-
-        server.port = port;
+        if(config != null){
+            try {
+                if (config.containsKey("port"))
+                    server.port = Integer.parseInt(config.get("port").toString());
+            }catch (Exception e){
+                server.port = 1234;
+            }
+        }
 
         //run server
         // TODO: chose a singular port
         server.startServer();
     }
 
-    // get file from classpath, resources folder
-    private File getFileFromResources(String fileName) {
-
-        ClassLoader classLoader = getClass().getClassLoader();
-
-        URL resource = classLoader.getResource(fileName);
-        if (resource == null) {
-            throw new IllegalArgumentException("file is not found!");
-        } else {
-            return new File(resource.getFile());
-        }
-
-    }
-
-    private static void printFile(File file) throws IOException {
-
-        if (file == null) return;
-
-        try (FileReader reader = new FileReader(file);
-             BufferedReader br = new BufferedReader(reader)) {
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
+    public void loadMatch(){
+        ObjectInputStream objIn;
+        ArrayList<String> toDelete = new ArrayList<>();
+        try {
+            if(new File("saved-match").exists()){
+                for (final File fileEntry : Objects.requireNonNull(new File("saved-match").listFiles())) {
+                    if (!fileEntry.isDirectory()) {
+                        objIn = new ObjectInputStream(new FileInputStream(fileEntry.getAbsolutePath()));
+                        Object obj = objIn.readObject();
+                        if(obj instanceof Match) {
+                            if (!((Match) obj).getStatus().equals(Status.NAME_CHOICE) && !((Match) obj).getStatus().equals(Status.END)){
+                                if (((Match) obj).getPlayers().size() + ((Match) obj).getLosers().size() == 2) {
+                                    Object sm = objIn.readObject();
+                                    if(sm instanceof ServerMessage)
+                                        virtualViews2.add(new VirtualView(this, (Match) obj, (ServerMessage) sm));
+                                } else if (((Match) obj).getPlayers().size() + ((Match) obj).getLosers().size() == 3) {
+                                    Object sm = objIn.readObject();
+                                    if(sm instanceof ServerMessage)
+                                        virtualViews2.add(new VirtualView(this, (Match) obj, (ServerMessage) sm));
+                                }
+                            } else if(((Match) obj).getStatus().equals(Status.NAME_CHOICE)) {
+                                toDelete.add(fileEntry.getAbsolutePath());
+                            }
+                        }
+                        objIn.close();
+                    }
+                }
             }
+            System.out.println("[2 PLAYERS] - "+virtualViews2.size()+" loaded");
+            System.out.println("[3 PLAYERS] - "+virtualViews3.size()+" loaded");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("[2 PLAYERS MATCH] - "+virtualViews2.size()+" match loaded");
+            System.out.println("[3 PLAYERS MATCH] - "+virtualViews3.size()+" match loaded");
+            System.out.println(e.toString());
         }
+        for(String file : toDelete)
+            new File(file).delete();
     }
-
 }

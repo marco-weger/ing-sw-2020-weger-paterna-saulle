@@ -1,8 +1,9 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cell{
+public class Cell implements Serializable {
 
     /**
      * The level is a value from 0 (no buildings) to 4 (dome)

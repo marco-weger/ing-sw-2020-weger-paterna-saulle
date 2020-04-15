@@ -10,9 +10,11 @@ public class LobbyServer extends ServerMessage {
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
     public ArrayList<String> players;
+    public boolean loaded;
 
     public LobbyServer(ArrayList<String> players){
         super("");
         this.players=players;
+        this.loaded=false;
     }
 }

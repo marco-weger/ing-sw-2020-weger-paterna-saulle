@@ -9,7 +9,9 @@ import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.model.cards.FactoryCard;
 import it.polimi.ingsw.network.VirtualView;
 
-public class Player extends Observable {
+import java.io.Serializable;
+
+public class Player extends Observable implements Serializable {
 
     /**
      * Username

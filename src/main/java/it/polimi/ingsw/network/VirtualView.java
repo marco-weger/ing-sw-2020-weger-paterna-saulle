@@ -6,11 +6,16 @@ import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
+import it.polimi.ingsw.commons.clientMessages.ReConnectionClient;
 import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.model.Match;
+import it.polimi.ingsw.model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class VirtualView extends Observable implements Observer {
 
@@ -27,17 +32,21 @@ public class VirtualView extends Observable implements Observer {
     /**
      * All players in this game
      */
-    private ArrayList<ServerClientHandler> connectedPlayers;
+    private HashMap<String, ServerClientHandler> connectedPlayers;
 
     /**
      * Current status of the game, start from NAME_CHOICE
      */
     private Status currentStatus;
 
+    private ServerMessage lastMessage;
+
     public VirtualView(Server server){
         this.server = server;
+
         this.ended = false;
-        this.connectedPlayers = new ArrayList<>();
+        this.connectedPlayers = new HashMap<>();
+
         this.currentStatus = Status.NAME_CHOICE;
 
         // FIXME remove Controller attribute
@@ -46,12 +55,31 @@ public class VirtualView extends Observable implements Observer {
         //addObserver(new Controller(this));
     }
 
+    /**
+     * Constructor used for load game
+     * @param server the SERVER
+     * @param match the MATCH
+     */
+    public VirtualView(Server server, Match match, ServerMessage lastMessage){
+        this.server = server;
+        this.ended = match.isEnded();
+
+        this.connectedPlayers = new HashMap<>();
+        for(Player p : match.getPlayers())
+            connectedPlayers.put(p.getName(),null);
+
+        this.currentStatus = match.getStatus();
+        addObserver(new Controller(this,match));
+
+        this.lastMessage=lastMessage;
+    }
+
     // It is used to run some tests about VirtualView and Controller communication
     // FIXME remove
     @Deprecated
     public Controller c;
 
-    protected ArrayList<ServerClientHandler> getConnectedPlayers(){ return connectedPlayers; }
+    protected HashMap<String, ServerClientHandler> getConnectedPlayers(){ return connectedPlayers; }
 
     public Status getCurrentStatus() {
         return currentStatus;
@@ -63,7 +91,13 @@ public class VirtualView extends Observable implements Observer {
      */
     protected void notify(ClientMessage message) {
         if(message instanceof ModeChoseClient){ // if it is a new player i add to list
-            connectedPlayers.add(((ModeChoseClient) message).sch);
+            connectedPlayers.put(message.name,((ModeChoseClient) message).sch);
+        } else if(message instanceof ReConnectionClient){ // if it is a new player i add to list
+            connectedPlayers.remove(message.name);
+            connectedPlayers.put(message.name,((ReConnectionClient) message).sch);
+            if(!this.getConnectedPlayers().containsValue(null)){
+                this.update(lastMessage);
+            }
         }
 
         if (!ended) {

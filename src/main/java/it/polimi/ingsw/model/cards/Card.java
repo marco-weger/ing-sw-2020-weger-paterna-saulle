@@ -11,9 +11,10 @@ import it.polimi.ingsw.commons.serverMessages.MovedServer;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Card extends Observable {
+public class Card extends Observable implements Serializable {
 
     /**
      * Active is related to the ability.

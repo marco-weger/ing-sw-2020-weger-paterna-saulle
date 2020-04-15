@@ -1,14 +1,16 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.Observable;
+import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.VirtualView;
 
+import java.io.*;
 import java.util.ArrayList;
 
-public class Match extends Observable {
+public class Match extends Observable implements Serializable {
 
     /**
      * Unique id to discriminate the match
@@ -200,6 +202,24 @@ public class Match extends Observable {
         for(Player player:players)
             names.add(player.getName());
         notifyObservers(new LobbyServer(names));
+    }
+
+    public void saveToFile(ServerMessage sm){
+        FileOutputStream out;
+        ObjectOutputStream objOut;
+
+        if(!new File("saved-match").exists())
+            new File("saved-match").mkdir();
+
+        try {
+            out = new FileOutputStream("saved-match\\"+String.format("%07d" , this.getId())+".santorini");
+            objOut = new ObjectOutputStream(out);
+            objOut.writeObject(this);
+            objOut.writeObject(sm);
+            objOut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

@@ -1,9 +1,10 @@
 package it.polimi.ingsw.network;
-
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
+import it.polimi.ingsw.commons.clientMessages.ReConnectionClient;
+import it.polimi.ingsw.commons.serverMessages.LobbyServer;
 import it.polimi.ingsw.commons.serverMessages.ModeRequestServer;
 import it.polimi.ingsw.commons.serverMessages.NameRequestServer;
 import it.polimi.ingsw.commons.Status;
@@ -12,10 +13,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ServerClientHandler implements Runnable  {
+public class ServerClientHandler implements Runnable {
 
     private static Logger LOGGER = Logger.getLogger("ServerClientHandler");
 
@@ -92,7 +95,7 @@ public class ServerClientHandler implements Runnable  {
             // the "if" manage name setup, it's a singular part of the game because it's necessary to guarantee unique names
             if(socket.isConnected()){
                 String tmpName = "FIRST";
-
+                boolean load = false;
                 do{
                     // send to client request for name an wait for answer
                     this.notify(new NameRequestServer(tmpName.equals("FIRST")));
@@ -108,20 +111,26 @@ public class ServerClientHandler implements Runnable  {
 
                         // check if a player with same name exists
                         for(VirtualView vv : server.getVirtualViews2()){
-                            for(ServerClientHandler sch : vv.getConnectedPlayers()){
-                                if(sch.getName().equals(cc.name)){
-                                    // TODO check for existent match or disconnected... reconnect!
-                                    // TODO if it has lost, new match!!!
+                            if(vv.getConnectedPlayers().containsKey(cc.name)){
+                                if(vv.getConnectedPlayers().get(cc.name) == null){
+                                    // TODO if you are a loser you log watching
+                                    System.out.println("MUST LOAD THE MATCH...");
+                                    load = true;
+                                    virtualView = vv;
+                                }else{ // its a duplicate
                                     tmpName = "";
                                     break;
                                 }
                             }
                         }
                         for(VirtualView vv : server.getVirtualViews3()){
-                            for(ServerClientHandler sch : vv.getConnectedPlayers()){
-                                if(sch.getName().equals(cc.name)){
-                                    // TODO check for existent match or disconnected... reconnect!
-                                    // TODO if it has lost, new match!!!
+                            if(vv.getConnectedPlayers().containsKey(cc.name)){
+                                if(vv.getConnectedPlayers().get(cc.name) == null){
+                                    // TODO if you are a loser you log watching
+                                    System.out.println("MUST LOAD THE MATCH...");
+                                    load = true;
+                                    virtualView = vv;
+                                }else{ // its a duplicate
                                     tmpName = "";
                                     break;
                                 }
@@ -132,32 +141,43 @@ public class ServerClientHandler implements Runnable  {
 
                 this.name=tmpName;
 
-                do{
-                    //mode request
-                    this.notify(new ModeRequestServer());
-                    object = in.readObject();
-                    if(object instanceof ClientMessage)
-                        System.out.println("[RECEIVED] - " + object.toString().substring(object.toString().lastIndexOf('.')+1,
-                                object.toString().lastIndexOf('@')) + " - " + (((ClientMessage) object).name.equals("") ? "ALL" : ((ClientMessage) object).name));
+                if(load){
+                    object = new ReConnectionClient(this.name,this);
+                    ArrayList<String> names = new ArrayList<>();
+                    //for(String name : virtualView.getConnectedPlayers().keySet())
+                    //    names.add(name);
+                    virtualView.getConnectedPlayers().keySet().addAll(Collections.singleton(name));
+                    LobbyServer ls = new LobbyServer(names);
+                    ls.loaded = true;
+                    this.notify(ls);
+                }else{
+                    do{
+                        //mode request
+                        this.notify(new ModeRequestServer());
+                        object = in.readObject();
+                        if(object instanceof ClientMessage)
+                            System.out.println("[RECEIVED] - " + object.toString().substring(object.toString().lastIndexOf('.')+1,
+                                    object.toString().lastIndexOf('@')) + " - " + (((ClientMessage) object).name.equals("") ? "ALL" : ((ClientMessage) object).name));
 
-                    if(object instanceof ModeChoseClient){
-                        ((ModeChoseClient) object).sch = this;
-                        if(((ModeChoseClient) object).mode == 2){
-                            // this part set up new match
-                            if(!server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE)){
-                                server.newCurrentVirtualView2();
+                        if(object instanceof ModeChoseClient){
+                            ((ModeChoseClient) object).sch = this;
+                            if(((ModeChoseClient) object).mode == 2){
+                                // this part set up new match
+                                if(!server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE)){
+                                    server.newCurrentVirtualView2();
+                                }
+                                virtualView = server.getCurrentVirtualView2();
                             }
-                            virtualView = server.getCurrentVirtualView2();
-                        }
-                        else if(((ModeChoseClient) object).mode == 3){
-                            // this part set up new match
-                            if(!server.getCurrentVirtualView3().getCurrentStatus().equals(Status.NAME_CHOICE)){
-                                server.newCurrentVirtualView3();
+                            else if(((ModeChoseClient) object).mode == 3){
+                                // this part set up new match
+                                if(!server.getCurrentVirtualView3().getCurrentStatus().equals(Status.NAME_CHOICE)){
+                                    server.newCurrentVirtualView3();
+                                }
+                                virtualView = server.getCurrentVirtualView3();
                             }
-                            virtualView = server.getCurrentVirtualView3();
                         }
-                    }
-                }while(!(object instanceof ModeChoseClient));
+                    }while(!(object instanceof ModeChoseClient));
+                }
                 virtualView.notify((ClientMessage) object);
             }
 

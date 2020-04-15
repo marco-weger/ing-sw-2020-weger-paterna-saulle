@@ -30,18 +30,15 @@ public class CLI implements ViewInterface {
 
     // TODO: could be an interface of ViewInterface
     public void displayFirstWindow() {
-        // TODO get from config file
-        String ip = "127.0.0.1";
-        int port = 1234;
-        while(!client.connect(ip, port))
+        while(!client.connect())
         {
             println("Server unreachable!");
             print("Type new ip address" + TextFormatting.getInputLine());
-            ip = new Scanner(System.in).nextLine();
+            client.setIp(new Scanner(System.in).nextLine());
             print("Type new port" + TextFormatting.getInputLine());
             try {
-                port = Integer.parseInt(new Scanner(System.in).nextLine());
-            } catch (NumberFormatException nfe) { port = 1234; }
+                client.setPort(Integer.parseInt(new Scanner(System.in).nextLine()));
+            } catch (NumberFormatException nfe) { client.setPort(1234); }
         }
     }
 
@@ -79,7 +76,7 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(SomeoneLoseServer message) {
-        if(this.username == message.name){
+        if(this.username.equals(message.name)){
             print(TextFormatting.loser()
                     +
                     "                                                     888                                              \n" +
@@ -150,7 +147,7 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(SomeoneWinServer message) {
-        if(this.username == message.name) {
+        if(this.username.equals(message.name)) {
             print(TextFormatting.winner()
                     +
                     "                                               Y88b   d88P  .d88888b.  888     888       888       888 8888888 888b    888                                                      \n" +
@@ -207,6 +204,7 @@ public class CLI implements ViewInterface {
         printTitle();
 
         this.players=message.players;
+        println("MATCH LOADED... KEEP WAITING FOR OTHERS RECONNECTION!");
         println("CURRENT LOBBY");
         for (String name:this.players)
             println("- "+name);

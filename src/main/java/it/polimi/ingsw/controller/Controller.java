@@ -4,11 +4,15 @@ import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.clientMessages.*;
+import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.VirtualView;
 
+import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class Controller implements Observer, ClientMessageHandler {
@@ -23,8 +27,27 @@ public class Controller implements Observer, ClientMessageHandler {
 
     public Controller(VirtualView virtualView) {
         this.virtualView = virtualView;
-        // TODO check id not exists
-        this.match = new Match(1+Math.abs(new Random().nextInt(9998)),virtualView);
+        boolean go = false;
+        int id;
+        do {
+            id = 1 + Math.abs(new Random().nextInt(9999998));
+            if(new File("saved-match").listFiles() != null)
+                for(File file: Objects.requireNonNull(new File("saved-match").listFiles()))
+                    if(file.getName().contains(String.format("%07d" , id)))
+                        go = true;
+        }while(go);
+        this.match = new Match(id,virtualView);
+        this.match.saveToFile(new CurrentStatusServer("",Status.NAME_CHOICE));
+    }
+
+    /**
+     * Constructor used for load game
+     * @param virtualView the VIRTUALVIEW
+     * @param match the MATCH
+     */
+    public Controller(VirtualView virtualView, Match match) {
+        this.virtualView = virtualView;
+        this.match = match;
     }
 
     public VirtualView getVirtualView() {
@@ -64,7 +87,7 @@ public class Controller implements Observer, ClientMessageHandler {
 
     @Override
     public void handleMessage(ReConnectionClient message) {
-
+        System.out.println(message.name + " IZBACK!");
     }
 
     @Override
