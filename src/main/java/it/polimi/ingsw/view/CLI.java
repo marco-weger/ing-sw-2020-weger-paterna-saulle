@@ -48,7 +48,7 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(CheckMoveServer message) {
         clear();
-        println("CELL AVAILABLE FOR MOVEMENT: ");
+        println("Cells available for move: ");
         if(message.name.equals(this.username)){
             for (int i=0; 0<=i && i<message.sc.size(); i++) {
                 println(""+message.sc.get(i).row + TextFormatting.SEPARATOR + message.sc.get(i).column);
@@ -74,7 +74,7 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(CheckBuildServer message) {
         clear();
-        println("CELL AVAILABLE FOR BUILD: ");
+        println("Cells available for build: ");
         if(message.name.equals(this.username)){
             for (int i=0; 0<=i && i<message.sc.size(); i++) {
                 println(""+message.sc.get(i).row + TextFormatting.SEPARATOR + message.sc.get(i).column);
@@ -99,12 +99,18 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(CardChosenServer message) {
-
+       clear();
+       if(message.name.equals(this.username))
+           println("Card chosen correctly!");
+       println("Player "+ message.player + " has chosen " + message.cardName);
     }
 
     @Override
     public void handleMessage(WorkerChosenServer message) {
-
+        clear();
+        if(message.name.equals(this.username))
+            println("Worker chosen correctly!");
+        println("Player "+ message.player + " has chosen " + message.worker + "in position:" + message.x + TextFormatting.SEPARATOR + message.y);
     }
 
     @Override
