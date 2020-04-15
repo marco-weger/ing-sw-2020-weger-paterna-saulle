@@ -5,6 +5,7 @@ import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.clientMessages.AnswerAbilityClient;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
+import it.polimi.ingsw.commons.clientMessages.MoveClient;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
@@ -13,6 +14,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Logger;
+
 
 public class CLI implements ViewInterface {
 
@@ -45,12 +47,54 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(CheckMoveServer message) {
-
+        clear();
+        println("CELL AVAILABLE FOR MOVEMENT: ");
+        if(message.name.equals(this.username)){
+            for (int i=0; 0<=i && i<message.sc.size(); i++) {
+                println(""+message.sc.get(i).row + TextFormatting.SEPARATOR + message.sc.get(i).column);
+            }
+            //whit out [] parentheses!!
+            print("Type [ROW" + TextFormatting.SEPARATOR +"COLUMN] where you want to move: " + TextFormatting.getInputLine());
+            String movingCell = in.nextLine();
+            while(!(movingCell.contains(TextFormatting.SEPARATOR.toString()) && (int) movingCell.charAt(0) <= 4 && (int) movingCell.charAt(2) <= 4)){
+                println("Please insert a valid pair!");
+                for (int i=0; 0<=i && i<message.sc.size(); i++) {
+                    println(""+message.sc.get(i).row + TextFormatting.SEPARATOR + message.sc.get(i).column);
+                }
+                print("Type [ROW" + TextFormatting.SEPARATOR +"COLUMN] where you want to move: " + TextFormatting.getInputLine());
+                movingCell = in.nextLine();
+            }
+            String[] s = movingCell.split(TextFormatting.SEPARATOR.toString());
+            String movingRow = s[0];
+            String movingColumn = s[1];
+            client.sendMessage(new MoveClient(this.username, movingRow.charAt(0), movingColumn.charAt(0)));
+        }
     }
 
     @Override
     public void handleMessage(CheckBuildServer message) {
-
+        clear();
+        println("CELL AVAILABLE FOR BUILD: ");
+        if(message.name.equals(this.username)){
+            for (int i=0; 0<=i && i<message.sc.size(); i++) {
+                println(""+message.sc.get(i).row + TextFormatting.SEPARATOR + message.sc.get(i).column);
+            }
+            //whit out [] parentheses!!
+            print("Type [ROW" + TextFormatting.SEPARATOR +"COLUMN] where you want to build: " + TextFormatting.getInputLine());
+            String buildingCell = in.nextLine();
+            while(!(buildingCell.contains(TextFormatting.SEPARATOR.toString()) && (int)buildingCell.charAt(0) <= 4 && (int)buildingCell.charAt(2) <= 4)) {
+                println("Please insert a valid pair!");
+                for (int i=0; 0<=i && i<message.sc.size(); i++) {
+                    println(""+message.sc.get(i).row + TextFormatting.SEPARATOR + message.sc.get(i).column);
+                }
+                print("Type [ROW" + TextFormatting.SEPARATOR +"COLUMN] where you want to build: " + TextFormatting.getInputLine());
+                buildingCell = in.nextLine();
+            }
+            String[] s = buildingCell.split(TextFormatting.SEPARATOR.toString());
+            String buildingRow = s[0];
+            String buildingColumn = s[1];
+            client.sendMessage(new MoveClient(this.username, buildingRow.charAt(0), buildingColumn.charAt(0)));
+        }
     }
 
     @Override
