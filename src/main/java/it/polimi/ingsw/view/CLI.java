@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.commons.SnapCell;
+import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.commons.clientMessages.AnswerAbilityClient;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
 import it.polimi.ingsw.commons.serverMessages.*;
@@ -64,18 +66,33 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(QuestionAbilityServer message) {
-
-    }
+        clear();
+        do {
+            println("Want to use the Ability of your God [YES/NO] " + TextFormatting.INPUT);
+            String answer = in.nextLine();
+                if (answer.toUpperCase().equals("YES")) {
+                    AnswerAbilityClient mex = new AnswerAbilityClient(username, true, Status.CHOSEN);
+                    client.sendMessage(mex);
+                    break;
+                }
+                if (answer.toUpperCase().equals("NO")) {
+                    AnswerAbilityClient mex = new AnswerAbilityClient(username, false, Status.CHOSEN);
+                    client.sendMessage(mex);
+                    break;
+                }
+            }while(true);
+        }
 
     @Override
     public void handleMessage(CurrentStatusServer message) {
         clear();
-        printTitle();
-        // System.out.println("CURRENT STATUS IS " + message.status.toString());
+        //printTitle();
+         println("CURRENT STATUS IS " + message.status.toString());
     }
 
     @Override
     public void handleMessage(SomeoneLoseServer message) {
+        clear();
         if(this.username.equals(message.name)){
             print(TextFormatting.loser()
                     +
@@ -147,7 +164,8 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(SomeoneWinServer message) {
-        if(this.username.equals(message.name)) {
+        clear();
+        if(this.username .equals(message.name)) {
             print(TextFormatting.winner()
                     +
                     "                                               Y88b   d88P  .d88888b.  888     888       888       888 8888888 888b    888                                                      \n" +
