@@ -35,7 +35,6 @@ public class ControllerTest {
         Match m = new Match(42,vw);
         m.setPlayers(players);
         //generate a Controller for that Match
-        // TODO: pass the virtual view
         controller = new Controller(vw);
         controller.setMatch(m);
     }

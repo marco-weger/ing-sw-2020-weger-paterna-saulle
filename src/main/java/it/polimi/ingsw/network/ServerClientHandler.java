@@ -90,8 +90,6 @@ public class ServerClientHandler implements Runnable {
             in = new ObjectInputStream(socket.getInputStream());
 
             Object object;
-            // TODO: if ip address has an active match lets go to the match
-
             // the "if" manage name setup, it's a singular part of the game because it's necessary to guarantee unique names
             if(socket.isConnected()){
                 String tmpName = "FIRST";
@@ -113,7 +111,7 @@ public class ServerClientHandler implements Runnable {
                         for(VirtualView vv : server.getVirtualViews2()){
                             if(vv.getConnectedPlayers().containsKey(cc.name)){
                                 if(vv.getConnectedPlayers().get(cc.name) == null){
-                                    // TODO if you are a loser you log watching
+                                    // TODO if you are a loser you go watching
                                     System.out.println("MUST LOAD THE MATCH...");
                                     load = true;
                                     virtualView = vv;
@@ -126,7 +124,7 @@ public class ServerClientHandler implements Runnable {
                         for(VirtualView vv : server.getVirtualViews3()){
                             if(vv.getConnectedPlayers().containsKey(cc.name)){
                                 if(vv.getConnectedPlayers().get(cc.name) == null){
-                                    // TODO if you are a loser you log watching
+                                    // TODO if you are a loser you go watching
                                     System.out.println("MUST LOAD THE MATCH...");
                                     load = true;
                                     virtualView = vv;

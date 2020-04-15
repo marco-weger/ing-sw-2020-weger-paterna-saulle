@@ -9,5 +9,5 @@ public class DisconnectionClient extends ClientMessage {
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    //TODO chiarire questo metodo.
+    // TODO use this method
 }

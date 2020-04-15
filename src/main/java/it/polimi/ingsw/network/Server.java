@@ -172,7 +172,6 @@ public class Server {
         }
 
         //run server
-        // TODO: chose a singular port
         server.startServer();
     }
 
@@ -209,7 +208,6 @@ public class Server {
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("[2 PLAYERS MATCH] - "+virtualViews2.size()+" match loaded");
             System.out.println("[3 PLAYERS MATCH] - "+virtualViews3.size()+" match loaded");
-            System.out.println(e.toString());
         }
         for(String file : toDelete)
             new File(file).delete();

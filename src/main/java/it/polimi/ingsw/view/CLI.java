@@ -30,7 +30,6 @@ public class CLI implements ViewInterface {
         this.username = "";
     }
 
-    // TODO: could be an interface of ViewInterface
     public void displayFirstWindow() {
         while(!client.connect())
         {
@@ -87,6 +86,8 @@ public class CLI implements ViewInterface {
     public void handleMessage(CurrentStatusServer message) {
         clear();
         //printTitle();
+        // TODO when WORKER_CHOSE and my turn the client must validate the position!!!
+
          println("CURRENT STATUS IS " + message.status.toString());
     }
 
