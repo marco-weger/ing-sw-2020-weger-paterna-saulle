@@ -36,7 +36,14 @@ public class Client implements Runnable{
 
     private static Logger LOGGER = Logger.getLogger("Client");
 
-    public Client(){}
+    public Client(){
+        board = new ArrayList<>();
+        for(int i=0; i<5; i++){
+            for(int j=0; j<5; j++)
+                board.add(new SnapCell(i,j,0));
+        }
+        workers=new ArrayList<>();
+    }
 
     public CLI getView() {
         return view;
@@ -65,6 +72,31 @@ public class Client implements Runnable{
     public static void main(String[] args){
         Client client = new Client();
 
+        readParams(client);
+
+        CLI.printTitle();
+
+        String version;
+        do{
+            System.out.print("Choose the version [CLI/GUI]" + TextFormatting.getInputLine());
+            System.out.flush();
+            version = new Scanner(System.in).nextLine();
+
+            if(version.equals("CLI")){
+                CLI view = new CLI(client);
+                client.setView(view);
+                view.displayFirstWindow();
+                //temporary printCLI
+                view.boardPrint();
+            }
+            else if(version.equals("GUI")){
+                // TODO run gui
+                System.out.println("RUN GUI...");
+            }
+        }while(!version.equals("CLI") && !version.equals("GUI"));
+    }
+
+    public static void readParams(Client client){
         // json read
         JSONParser jsonParser = new JSONParser();
         JSONObject config = null;
@@ -92,33 +124,6 @@ public class Client implements Runnable{
                 client.setPort(1234);
             }
         }
-
-        CLI.printTitle();
-
-        String version;
-        do{
-            System.out.print("Choose the version [CLI/GUI]" + TextFormatting.getInputLine());
-            System.out.flush();
-            version = new Scanner(System.in).nextLine();
-
-            if(version.equals("CLI")){
-                client.board = new ArrayList<>();
-                for(int i=0; i<5; i++){
-                    for(int j=0; j<5; j++)
-                        client.board.add(new SnapCell(i,j,0));
-                }
-                client.workers=new ArrayList<>();
-                CLI view = new CLI(client);
-                client.setView(view);
-                view.displayFirstWindow();
-                //temporary printCLI
-                view.boardPrint();
-            }
-            else if(version.equals("GUI")){
-                // TODO run gui
-                System.out.println("RUN GUI...");
-            }
-        }while(!version.equals("CLI") && !version.equals("GUI"));
     }
 
     public boolean connect() {
