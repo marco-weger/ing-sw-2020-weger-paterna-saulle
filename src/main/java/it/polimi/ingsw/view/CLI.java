@@ -403,15 +403,15 @@ public class CLI implements ViewInterface {
             else print[shift] += printSymbol("┼");
             print[shift]+= printSymbol("───────────");
             if(cell.level == 4){
-                print[shift + 1] += printSymbol("│") + color.get(cell.level-1) + "           " + TextFormatting.RESET;
+                print[shift + 1] += printSymbol("│") + color.get(cell.level-1) + "          " + cell.level + TextFormatting.RESET;
                 print[shift + 2] += printSymbol("│") + color.get(cell.level-1) + "   " +color.get(cell.level)+ "     "+color.get(cell.level-1)+"   " + TextFormatting.RESET;
                 print[shift + 3] += printSymbol("│") + color.get(cell.level-1) + "   " +color.get(cell.level)+ "     "+color.get(cell.level-1)+"   " + TextFormatting.RESET;
                 print[shift + 4] += printSymbol("│") + color.get(cell.level-1) + "           " + TextFormatting.RESET;
             }
             else {
-                print[shift + 1] += printSymbol("│") + color.get(cell.level) + "           " + TextFormatting.RESET;
-                print[shift + 2] += printSymbol("│") + color.get(cell.level) + "    " + printUserSymbol(cell)+printUserSymbol(cell)+printUserSymbol(cell) + color.get(cell.level) + "    " + TextFormatting.RESET;
-                print[shift + 3] += printSymbol("│") + color.get(cell.level) + "    " + printUserSymbol(cell)+printUserSymbol(cell)+printUserSymbol(cell) + color.get(cell.level) + "    " + TextFormatting.RESET;
+                print[shift + 1] += printSymbol("│") + color.get(cell.level) + "          " + cell.level + TextFormatting.RESET;
+                print[shift + 2] += printSymbol("│") + color.get(cell.level) + "   " + printUserSymbol(cell)+ color.get(cell.level) + "   " + TextFormatting.RESET;
+                print[shift + 3] += printSymbol("│") + color.get(cell.level) + "   " + printUserSymbol(cell)+ color.get(cell.level) + "   " + TextFormatting.RESET;
                 print[shift + 4] += printSymbol("│") + color.get(cell.level) + "           " + TextFormatting.RESET;
             }
             if(cell.column == 4){
@@ -434,12 +434,12 @@ public class CLI implements ViewInterface {
     public String printUserSymbol(SnapCell cell){
         for(SnapWorker sw : client.getWorkers()){
             if(sw.row == cell.row && sw.column == cell.column){
-                return TextFormatting.BOLD + playersColor.get(players.indexOf(sw.name)) + playerSymbols.get(players.indexOf(sw.name)) + TextFormatting.RESET;
+                return TextFormatting.BOLD + playersColor.get(players.indexOf(sw.name)) + " " + playerSymbols.get(players.indexOf(sw.name)) + playerSymbols.get(players.indexOf(sw.name)) + playerSymbols.get(players.indexOf(sw.name)) + " " + TextFormatting.RESET;
             }
         }
-        return " ";
+        return "     ";
     }
     public String printSymbol(String symbol){
-        return TextFormatting.BACKGROUND_YELLOW.toString() + TextFormatting.COLOR_BLACK + symbol + TextFormatting.RESET;
+        return TextFormatting.BACKGROUND_YELLOW.toString() + TextFormatting.COLOR_BRIGHT_BLACK + symbol + TextFormatting.RESET;
     }
 }
