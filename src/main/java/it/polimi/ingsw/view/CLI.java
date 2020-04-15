@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.commons.SnapCell;
+import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.clientMessages.AnswerAbilityClient;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
@@ -11,7 +12,10 @@ import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 import org.w3c.dom.Text;
 
+import javax.swing.text.TabExpander;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -24,12 +28,34 @@ public class CLI implements ViewInterface {
     private static Scanner in = new Scanner(System.in);
 
     private ArrayList<String> players;
+    private ArrayList<Character> playerSymbols;
+    private ArrayList<String> playersColor;
+
+    private static String GREEK = "ΓΔΘΛΠΣΦΨΩ";
 
     private static Logger LOGGER = Logger.getLogger("CLI");
 
     public CLI(Client client){
         this.client = client;
         this.username = "";
+        this.players = new ArrayList<>();
+        this.playerSymbols = new ArrayList<>();
+        for(int i=0; i<3; i++)
+        {
+            Character c;
+            boolean go;
+            do{
+                go = false;
+                c = GREEK.charAt(Math.abs(new Random().nextInt(GREEK.length())));
+                if(!playerSymbols.contains(c))
+                    playerSymbols.add(c);
+                else go = true;
+            }while(go);
+        }
+        playersColor = new ArrayList<>();
+        playersColor.add(TextFormatting.BACKGROUND_BRIGHT_RED.toString()+TextFormatting.COLOR_BLACK);
+        playersColor.add(TextFormatting.BACKGROUND_BRIGHT_CYAN.toString()+TextFormatting.COLOR_BLACK);
+        playersColor.add(TextFormatting.BACKGROUND_BRIGHT_PURPLE.toString()+TextFormatting.COLOR_BLACK);
     }
 
     public void displayFirstWindow() {
@@ -44,6 +70,8 @@ public class CLI implements ViewInterface {
             } catch (NumberFormatException nfe) { client.setPort(1234); }
         }
     }
+
+    public ArrayList<String> getPlayers(){ return players; }
 
     @Override
     public void handleMessage(CheckMoveServer message) {
@@ -346,6 +374,7 @@ public class CLI implements ViewInterface {
     }
 
     public void boardPrint(){
+        /*
         for(int i = 0; 0<=i && i<client.getBoard().size(); i++){
             print("CELL [" + client.getBoard().get(i).row + TextFormatting.SEPARATOR + client.getBoard().get(i).column + "], LEVEL: " + client.getBoard().get(i).level + ", WORKER N°: ");
             if(client.getWorkers().size()==0)
@@ -357,6 +386,66 @@ public class CLI implements ViewInterface {
                     print("NONE\n");
             }
         }
+        */
+        String[] print = new String[26];
+        Arrays.fill(print, "");
 
+        ArrayList<String> color = new ArrayList<>();
+        color.add(TextFormatting.BACKGROUND_YELLOW.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 0
+        color.add(TextFormatting.BACKGROUND_BRIGHT_WHITE.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 1
+        color.add(TextFormatting.BACKGROUND_BRIGHT_BLACK.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 2
+        color.add(TextFormatting.BACKGROUND_BLACK.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 3
+        color.add(TextFormatting.BACKGROUND_BLUE.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 4
+
+        for(SnapCell cell : client.getBoard())
+        {
+            int shift = cell.row*5;
+            if(cell.row == 0 && cell.column == 0)
+                print[shift] += printSymbol("╭");
+            else if(cell.column == 0)
+                print[shift] += printSymbol("├");
+            else if(cell.row == 0)
+                print[shift] += printSymbol("┬");
+            else print[shift] += printSymbol("┼");
+            print[shift]+= printSymbol("───────────");
+            if(cell.level == 4){
+                print[shift + 1] += printSymbol("│") + color.get(cell.level-1) + "          " + cell.level + TextFormatting.RESET;
+                print[shift + 2] += printSymbol("│") + color.get(cell.level-1) + "   " +color.get(cell.level)+ "     "+color.get(cell.level-1)+"   " + TextFormatting.RESET;
+                print[shift + 3] += printSymbol("│") + color.get(cell.level-1) + "   " +color.get(cell.level)+ "     "+color.get(cell.level-1)+"   " + TextFormatting.RESET;
+                print[shift + 4] += printSymbol("│") + color.get(cell.level-1) + "           " + TextFormatting.RESET;
+            }
+            else {
+                print[shift + 1] += printSymbol("│") + color.get(cell.level) + "          " + cell.level + TextFormatting.RESET;
+                print[shift + 2] += printSymbol("│") + color.get(cell.level) + "   " + printUserSymbol(cell)+ color.get(cell.level) + "   " + TextFormatting.RESET;
+                print[shift + 3] += printSymbol("│") + color.get(cell.level) + "   " + printUserSymbol(cell)+ color.get(cell.level) + "   " + TextFormatting.RESET;
+                print[shift + 4] += printSymbol("│") + color.get(cell.level) + "           " + TextFormatting.RESET;
+            }
+            if(cell.column == 4){
+                if(cell.row == 0)
+                    print[shift]+=printSymbol("╮");
+                else print[shift]+=printSymbol("┤");
+                print[shift+1]+=printSymbol("│");
+                print[shift+2]+=printSymbol("│");
+                print[shift+3]+=printSymbol("│");
+                print[shift+4]+=printSymbol("│");
+            }
+        }
+        print[25]+=printSymbol("╰───────────┴───────────┴───────────┴───────────┴───────────╯");
+
+        println("        A           B           C           D           E      ");
+        for(int i=0; i<print.length; i++)
+            println(((i-3)%5 == 0 ? (i-3)/5+1 : " ")+" "+print[i]+TextFormatting.RESET);
+    }
+
+    public String printUserSymbol(SnapCell cell){
+        for(SnapWorker sw : client.getWorkers()){
+            if(sw.row == cell.row && sw.column == cell.column){
+                return TextFormatting.BOLD + playersColor.get(players.indexOf(sw.name)) + " " + playerSymbols.get(players.indexOf(sw.name)) + playerSymbols.get(players.indexOf(sw.name)) + playerSymbols.get(players.indexOf(sw.name)) + " " + TextFormatting.RESET;
+            }
+        }
+        return "     ";
+    }
+    public String printSymbol(String symbol){
+        return TextFormatting.BACKGROUND_YELLOW.toString() + TextFormatting.COLOR_BRIGHT_BLACK + symbol + TextFormatting.RESET;
     }
 }
