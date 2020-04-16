@@ -5,6 +5,7 @@ import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.SnapPlayer;
 import it.polimi.ingsw.view.TextFormatting;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,6 +18,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,8 +30,12 @@ public class Client implements Runnable{
     private Socket socket;
     ObjectInputStream in;
     ObjectOutputStream out;
+    String username;
     protected ArrayList<SnapCell> board;
     protected ArrayList<SnapWorker> workers;
+    protected ArrayList<SnapPlayer> players;
+
+    private static String GREEK = "ΓΔΘΛΠΣΦΨΩ";
 
     String ip;
     int port;
@@ -37,13 +43,18 @@ public class Client implements Runnable{
     private static Logger LOGGER = Logger.getLogger("Client");
 
     public Client(){
-        board = new ArrayList<>();
+        this.board = new ArrayList<>();
         for(int i=0; i<5; i++){
             for(int j=0; j<5; j++)
                 board.add(new SnapCell(i,j,0));
         }
-        workers=new ArrayList<>();
+        this.workers=new ArrayList<>();
+        this.players = new ArrayList<>();
     }
+
+    public ArrayList<SnapPlayer> getPlayers(){ return players; }
+
+    public void resetPlayers(){ players = new ArrayList<>(); }
 
     public CLI getView() {
         return view;
@@ -69,12 +80,29 @@ public class Client implements Runnable{
         this.port=port;
     }
 
+    public String getUsername(){ return this.username; }
+
+    public void setUsername(String username){ this.username=username; }
+
+    public char getMyCode(){
+        char c;
+        boolean go = false;
+        do{
+            c = GREEK.charAt(Math.abs(new Random().nextInt(GREEK.length())));
+            for(SnapPlayer p : players){
+                if (p.symbol == c) {
+                    go = true;
+                    break;
+                }
+            }
+        }while(go);
+        return c;
+    }
+
     public static void main(String[] args){
         Client client = new Client();
 
         readParams(client);
-
-        CLI.printTitle();
 
         String version;
         do{
@@ -87,7 +115,7 @@ public class Client implements Runnable{
                 client.setView(view);
                 view.displayFirstWindow();
                 //temporary printCLI
-                view.boardPrint();
+                view.printTable();
             }
             else if(version.equals("GUI")){
                 // TODO run gui

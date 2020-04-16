@@ -10,12 +10,9 @@ import it.polimi.ingsw.commons.clientMessages.MoveClient;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
-import org.w3c.dom.Text;
 
-import javax.swing.text.TabExpander;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -23,39 +20,22 @@ import java.util.logging.Logger;
 public class CLI implements ViewInterface {
 
     Client client;
-    String username;
+
+    ArrayList<String> color;
 
     private static Scanner in = new Scanner(System.in);
-
-    private ArrayList<String> players;
-    private ArrayList<Character> playerSymbols;
-    private ArrayList<String> playersColor;
-
-    private static String GREEK = "ΓΔΘΛΠΣΦΨΩ";
 
     private static Logger LOGGER = Logger.getLogger("CLI");
 
     public CLI(Client client){
         this.client = client;
-        this.username = "";
-        this.players = new ArrayList<>();
-        this.playerSymbols = new ArrayList<>();
-        for(int i=0; i<3; i++)
-        {
-            Character c;
-            boolean go;
-            do{
-                go = false;
-                c = GREEK.charAt(Math.abs(new Random().nextInt(GREEK.length())));
-                if(!playerSymbols.contains(c))
-                    playerSymbols.add(c);
-                else go = true;
-            }while(go);
-        }
-        playersColor = new ArrayList<>();
-        playersColor.add(TextFormatting.BACKGROUND_BRIGHT_RED.toString()+TextFormatting.COLOR_BLACK);
-        playersColor.add(TextFormatting.BACKGROUND_BRIGHT_CYAN.toString()+TextFormatting.COLOR_BLACK);
-        playersColor.add(TextFormatting.BACKGROUND_BRIGHT_PURPLE.toString()+TextFormatting.COLOR_BLACK);
+
+        color = new ArrayList<>();
+        color.add(TextFormatting.BACKGROUND_YELLOW.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 0
+        color.add(TextFormatting.BACKGROUND_BRIGHT_WHITE.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 1
+        color.add(TextFormatting.BACKGROUND_BRIGHT_BLACK.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 2
+        color.add(TextFormatting.BACKGROUND_BLACK.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 3
+        color.add(TextFormatting.BACKGROUND_BLUE.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 4
     }
 
     public void displayFirstWindow() {
@@ -71,13 +51,11 @@ public class CLI implements ViewInterface {
         }
     }
 
-    public ArrayList<String> getPlayers(){ return players; }
-
     @Override
     public void handleMessage(CheckMoveServer message) {
         clear();
         println("Cells available for move: ");
-        if(message.name.equals(this.username)){
+        if(message.name.equals(client.getUsername())){
             for (int i=0; 0<=i && i<message.sc.size(); i++) {
                 println(""+message.sc.get(i).row + TextFormatting.SEPARATOR + message.sc.get(i).column);
             }
@@ -95,7 +73,7 @@ public class CLI implements ViewInterface {
             String[] s = movingCell.split(TextFormatting.SEPARATOR.toString());
             String movingRow = s[0];
             String movingColumn = s[1];
-            client.sendMessage(new MoveClient(this.username, movingRow.charAt(0), movingColumn.charAt(0)));
+            client.sendMessage(new MoveClient(client.getUsername(), movingRow.charAt(0), movingColumn.charAt(0)));
         }
     }
 
@@ -103,7 +81,7 @@ public class CLI implements ViewInterface {
     public void handleMessage(CheckBuildServer message) {
         clear();
         println("Cells available for build: ");
-        if(message.name.equals(this.username)){
+        if(message.name.equals(client.getUsername())){
             for (int i=0; 0<=i && i<message.sc.size(); i++) {
                 println(""+message.sc.get(i).row + TextFormatting.SEPARATOR + message.sc.get(i).column);
             }
@@ -121,22 +99,24 @@ public class CLI implements ViewInterface {
             String[] s = buildingCell.split(TextFormatting.SEPARATOR.toString());
             String buildingRow = s[0];
             String buildingColumn = s[1];
-            client.sendMessage(new MoveClient(this.username, buildingRow.charAt(0), buildingColumn.charAt(0)));
+            client.sendMessage(new MoveClient(client.getUsername(), buildingRow.charAt(0), buildingColumn.charAt(0)));
         }
     }
 
     @Override
     public void handleMessage(CardChosenServer message) {
        clear();
-       if(message.name.equals(this.username))
+       if(message.name.equals(this.client.getUsername()))
            println("Card chosen correctly!");
        println("Player "+ message.player + " has chosen " + message.cardName);
+       getPlayerbyName(message.player).card = message.cardName;
+       // playersCard.set(players.indexOf(message.player),message.cardName); // TODO test this part
     }
 
     @Override
     public void handleMessage(WorkerChosenServer message) {
         clear();
-        if(message.name.equals(this.username))
+        if(message.name.equals(this.client.getUsername()))
             println("Worker chosen correctly!");
         println("Player "+ message.player + " has chosen " + message.worker + "in position:" + message.x + TextFormatting.SEPARATOR + message.y);
     }
@@ -148,12 +128,12 @@ public class CLI implements ViewInterface {
             println("Want to use the Ability of your God [YES/NO] " + TextFormatting.INPUT);
             String answer = in.nextLine();
                 if (answer.toUpperCase().equals("YES")) {
-                    AnswerAbilityClient mex = new AnswerAbilityClient(username, true, Status.CHOSEN);
+                    AnswerAbilityClient mex = new AnswerAbilityClient(client.getUsername(), true, Status.CHOSEN);
                     client.sendMessage(mex);
                     break;
                 }
                 if (answer.toUpperCase().equals("NO")) {
-                    AnswerAbilityClient mex = new AnswerAbilityClient(username, false, Status.CHOSEN);
+                    AnswerAbilityClient mex = new AnswerAbilityClient(client.getUsername(), false, Status.CHOSEN);
                     client.sendMessage(mex);
                     break;
                 }
@@ -172,7 +152,7 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(SomeoneLoseServer message) {
         clear();
-        if(this.username.equals(message.name)){
+        if(this.client.getUsername().equals(message.name)){
             print(TextFormatting.loser()
                     +
                     "                                                     888                                              \n" +
@@ -201,7 +181,7 @@ public class CLI implements ViewInterface {
             // im the challenger
             ArrayList<CardName> chosen = new ArrayList<>();
 
-            println("YOU ARE THE CHALLENGER! CHOSE "+this.players.size()+" CARD FROM:");
+            println("YOU ARE THE CHALLENGER! CHOSE "+client.getPlayers().size()+" CARD FROM:");
             for(CardName cn : CardName.values())
                 println("- "+cn.name().toUpperCase()+" - "+cn.getDescription());
 
@@ -227,7 +207,7 @@ public class CLI implements ViewInterface {
             chosen.add(read);
 
             // third
-            if(this.players.size()==3){
+            if(client.getPlayers().size()==3){
                 do{
                     print("TYPE THE THIRD CARD" + TextFormatting.INPUT);
                     String name = in.nextLine();
@@ -244,7 +224,7 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(SomeoneWinServer message) {
         clear();
-        if(this.username .equals(message.name)) {
+        if(this.client.getUsername() .equals(message.name)) {
             print(TextFormatting.winner()
                     +
                     "                                               Y88b   d88P  .d88888b.  888     888       888       888 8888888 888b    888                                                      \n" +
@@ -288,11 +268,11 @@ public class CLI implements ViewInterface {
                 print("TYPE YOUR USERNAME" + TextFormatting.INPUT);
             else
                 print("THE CHOSEN ONE IS NOT ALLOWED, TYPE YOUR USERNAME" + TextFormatting.getInputLine());
-            this.username = in.nextLine();
+            this.client.setUsername(in.nextLine());
             message.isFirstTime = false;
-        }while (this.username.isEmpty());
+        }while (this.client.getUsername().isEmpty());
 
-        client.sendMessage(new ConnectionClient(this.username));
+        client.sendMessage(new ConnectionClient(this.client.getUsername()));
     }
 
     @Override
@@ -300,11 +280,15 @@ public class CLI implements ViewInterface {
         clear();
         printTitle();
 
-        this.players=message.players;
-        println("MATCH LOADED... KEEP WAITING FOR OTHERS RECONNECTION!");
+        client.resetPlayers(); // = new ArrayList<>();
+        for(String s : message.players)
+            client.getPlayers().add(new SnapPlayer(s,client.getMyCode(),client.getPlayers().size()));
+
+        if(message.loaded)
+            println("MATCH LOADED... KEEP WAITING FOR OTHERS RECONNECTION!");
         println("CURRENT LOBBY");
-        for (String name:this.players)
-            println("- "+name);
+        for (SnapPlayer p:client.getPlayers())
+            println("- "+p.name);
     }
 
     @Override
@@ -325,7 +309,7 @@ public class CLI implements ViewInterface {
             }
         }while (mode != 2 && mode != 3);
 
-        client.sendMessage(new ModeChoseClient(this.username,mode));
+        client.sendMessage(new ModeChoseClient(this.client.getUsername(),mode));
     }
 
     @Override
@@ -343,17 +327,18 @@ public class CLI implements ViewInterface {
             println("");
     }
 
-    public static void printTitle(){
-        print( TextFormatting.initialize()
-                + "                          ad88888ba        db        888b      88 888888888888 ,ad8888ba,   88888888ba  88 888b      88 88                           \n" +
-                "                         d8\"     \"8b      d88b       8888b     88      88     d8\"'    `\"8b  88      \"8b 88 8888b     88 88                           \n" +
-                "                         Y8,             d8'`8b      88 `8b    88      88    d8'        `8b 88      ,8P 88 88 `8b    88 88                           \n" +
-                "                         `Y8aaaaa,      d8'  `8b     88  `8b   88      88    88          88 88aaaaaa8P' 88 88  `8b   88 88                           \n" +
-                "                           `\"\"\"\"\"8b,   d8YaaaaY8b    88   `8b  88      88    88          88 88\"\"\"\"88'   88 88   `8b  88 88                           \n" +
-                "                                 `8b  d8\"\"\"\"\"\"\"\"8b   88    `8b 88      88    Y8,        ,8P 88    `8b   88 88    `8b 88 88                           \n" +
-                "                         Y8a     a8P d8'        `8b  88     `8888      88     Y8a.    .a8P  88     `8b  88 88     `8888 88                           \n" +
-                "                          \"Y88888P\" d8'          `8b 88      `888      88      `\"Y8888Y\"'   88      `8b 88 88      `888 88                           \n"
-        );
+    public void printTitle(){
+        println(color.get(0)+"                             ____    _    _   _ _____ ___  ____  ___ _   _ ___                             " + TextFormatting.RESET);
+        println(color.get(0)+"                            / ___|  / \\  | \\ | |_   _/ _ \\|  _ \\|_ _| \\ | |_ _|                            " + TextFormatting.RESET);
+        println(color.get(0)+"                            \\___ \\ / _ \\ |  \\| | | || | | | |_) || ||  \\| || |                             " + TextFormatting.RESET);
+        println(color.get(0)+"                             ___) / ___ \\| |\\  | | || |_| |  _ < | || |\\  || |                             " + TextFormatting.RESET);
+        println(color.get(0)+"                            |____/_/   \\_\\_| \\_| |_| \\___/|_| \\_\\___|_| \\_|___|                            " + TextFormatting.RESET);
+        //char[] charArray = new char[107];
+        //Arrays.fill(charArray, ' ');
+        //println(color.get(0)+new String(charArray)+TextFormatting.RESET);
+        println(color.get(0)+"·················•·················•·················•·················•·················•·················"+TextFormatting.RESET);
+        //println(color.get(0)+new String(charArray)+TextFormatting.RESET);
+
 
         /*
         try {
@@ -373,29 +358,11 @@ public class CLI implements ViewInterface {
         System.out.flush();
     }
 
-    public void boardPrint(){
-        /*
-        for(int i = 0; 0<=i && i<client.getBoard().size(); i++){
-            print("CELL [" + client.getBoard().get(i).row + TextFormatting.SEPARATOR + client.getBoard().get(i).column + "], LEVEL: " + client.getBoard().get(i).level + ", WORKER N°: ");
-            if(client.getWorkers().size()==0)
-                print("NO PLAYERS\n");
-            for(int j = 0; 0<=j && j<client.getWorkers().size(); j++){
-                if(client.getBoard().get(i).row == client.getWorkers().get(j).row && client.getBoard().get(i).column == client.getWorkers().get(j).column)
-                    print(client.getWorkers().get(j).n + " OF " + client.getWorkers().get(j).name + "\n");
-                else
-                    print("NONE\n");
-            }
-        }
-        */
+    public void printTable(){
         String[] print = new String[26];
-        Arrays.fill(print, "");
 
-        ArrayList<String> color = new ArrayList<>();
-        color.add(TextFormatting.BACKGROUND_YELLOW.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 0
-        color.add(TextFormatting.BACKGROUND_BRIGHT_WHITE.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 1
-        color.add(TextFormatting.BACKGROUND_BRIGHT_BLACK.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 2
-        color.add(TextFormatting.BACKGROUND_BLACK.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 3
-        color.add(TextFormatting.BACKGROUND_BLUE.toString() + TextFormatting.COLOR_BRIGHT_BLACK); // lv 4
+        for(int i=0;i<print.length;i++)
+            print[i] = color.get(0) + ((i-3)%5 == 0 ? (i-3)/5+1 : " ")+" ";
 
         for(SnapCell cell : client.getBoard())
         {
@@ -408,6 +375,7 @@ public class CLI implements ViewInterface {
                 print[shift] += printSymbol("┬");
             else print[shift] += printSymbol("┼");
             print[shift]+= printSymbol("───────────");
+
             if(cell.level == 4){
                 print[shift + 1] += printSymbol("│") + color.get(cell.level-1) + "          " + cell.level + TextFormatting.RESET;
                 print[shift + 2] += printSymbol("│") + color.get(cell.level-1) + "   " +color.get(cell.level)+ "     "+color.get(cell.level-1)+"   " + TextFormatting.RESET;
@@ -432,20 +400,116 @@ public class CLI implements ViewInterface {
         }
         print[25]+=printSymbol("╰───────────┴───────────┴───────────┴───────────┴───────────╯");
 
-        println("        A           B           C           D           E      ");
-        for(int i=0; i<print.length; i++)
-            println(((i-3)%5 == 0 ? (i-3)/5+1 : " ")+" "+print[i]+TextFormatting.RESET);
+        String[] tmp = new String[27];
+
+        // add header
+        tmp[0]=(color.get(0)+"        A           B           C           D           E      "+TextFormatting.RESET);
+        System.arraycopy(print, 0, tmp, 1, print.length);
+        print = tmp;
+
+        print = printPlayers(print);
+
+        for (String s : print) println(s + TextFormatting.RESET);
+    }
+
+    public String[] printPlayers(String[] print){
+        for(int i=0;i<print.length;i++)
+            print[i] += color.get(0) + "      ";
+
+        int factor = 9;
+        for(int i=0;i<client.getPlayers().size();i++){
+            String name = client.getPlayers().get(i).symbol +"  "+client.getPlayers().get(i).name+"  "
+                    +client.getPlayers().get(i).symbol;
+
+            if(client.getPlayers().get(i).card != null)
+                name += "  "+client.getPlayers().get(i).card.name()+"  "+client.getPlayers().get(i).symbol;
+
+            print[factor*i] += client.getPlayers().get(i).color+"╭────────────────────────────────────╮"+TextFormatting.RESET;
+
+            print[factor*i+1] += client.getPlayers().get(i).color+"│";
+
+            for(int k=0;k<(36-(name).length())/2;k++)
+                print[factor*i+1] += " ";
+            print[factor*i+1] += name;
+            for(int k=0;k<(36-(name).length())/2;k++)
+                print[factor*i+1] += " ";
+
+            print[factor*i+1] += name.length()%2 == 1 ? " │" : "│";
+            print[factor*i+1] += TextFormatting.RESET;
+            print[factor*i+2] += client.getPlayers().get(i).color+"├────────────────────────────────────┤"+TextFormatting.RESET;
+
+            if(client.getPlayers().get(i).card == null) {
+                print[factor*i+3] += client.getPlayers().get(i).color+"│                                    │"+TextFormatting.RESET;
+                print[factor*i+4] += client.getPlayers().get(i).color+"│                                    │"+TextFormatting.RESET;
+                print[factor*i+5] += client.getPlayers().get(i).color+"│           GOD NOT CHOSEN           │"+TextFormatting.RESET;
+                print[factor*i+6] += client.getPlayers().get(i).color+"│                                    │"+TextFormatting.RESET;
+                print[factor*i+7] += client.getPlayers().get(i).color+"│                                    │"+TextFormatting.RESET;
+                print[factor*i+8] += client.getPlayers().get(i).color+"╰────────────────────────────────────╯"+TextFormatting.RESET;
+            }
+            else {
+
+                String descr = client.getPlayers().get(i).card.getDescription();
+                String[] descrs = descr.split(" ");
+                int k = 0;
+                String[] toPrint = new String[5];
+                Arrays.fill(toPrint, "");
+
+                for(int w=0;w<toPrint.length;w++){
+                    while((toPrint[w]).length() < 32 && k<descrs.length){
+                        if((toPrint[w]+descrs[k]).length() < 32)
+                        {
+                            toPrint[w] += descrs[k++]+" ";
+                        }
+                        else
+                        {
+                            StringBuilder tmp = new StringBuilder(toPrint[w]);
+                            for(int j=0;j<(36-toPrint[w].length())/2;j++)
+                                tmp.insert(0, " ");
+                            for(int j=0;j<(36-toPrint[w].length())/2;j++)
+                                tmp.append(" ");
+                            toPrint[w] = tmp.toString();
+                            if(toPrint[w].length()%2!=0) toPrint[w] += " ";
+                        }
+                    }
+                    if(toPrint[w].length()<36){
+                        StringBuilder tmp = new StringBuilder(toPrint[w]);
+                        for(int j=0;j<(36-toPrint[w].length())/2;j++)
+                            tmp.insert(0, " ");
+                        for(int j=0;j<(36-toPrint[w].length())/2;j++)
+                            tmp.append(" ");
+                        toPrint[w] = tmp.toString();
+                        if(toPrint[w].length()%2!=0) toPrint[w] += " ";
+                    }
+                }
+
+                print[factor*i+3] += client.getPlayers().get(i).color+"│"+toPrint[0]+"│"+TextFormatting.RESET;
+                print[factor*i+4] += client.getPlayers().get(i).color+"│"+toPrint[1]+"│"+TextFormatting.RESET;
+                print[factor*i+5] += client.getPlayers().get(i).color+"│"+toPrint[2]+"│"+TextFormatting.RESET;
+                print[factor*i+6] += client.getPlayers().get(i).color+"│"+toPrint[3]+"│"+TextFormatting.RESET;
+                print[factor*i+7] += client.getPlayers().get(i).color+"│"+toPrint[4]+"│"+TextFormatting.RESET;
+                print[factor*i+8] += client.getPlayers().get(i).color+"╰────────────────────────────────────╯"+TextFormatting.RESET;
+            }
+        }
+
+        return print;
     }
 
     public String printUserSymbol(SnapCell cell){
         for(SnapWorker sw : client.getWorkers()){
             if(sw.row == cell.row && sw.column == cell.column){
-                return TextFormatting.BOLD + playersColor.get(players.indexOf(sw.name)) + " " + playerSymbols.get(players.indexOf(sw.name)) + playerSymbols.get(players.indexOf(sw.name)) + playerSymbols.get(players.indexOf(sw.name)) + " " + TextFormatting.RESET;
+                return TextFormatting.BOLD + getPlayerbyName(sw.name).color + " "
+                        + getPlayerbyName(sw.name).symbol + getPlayerbyName(sw.name).symbol + getPlayerbyName(sw.name).symbol + " " + TextFormatting.RESET;
             }
         }
         return "     ";
     }
     public String printSymbol(String symbol){
         return TextFormatting.BACKGROUND_YELLOW.toString() + TextFormatting.COLOR_BRIGHT_BLACK + symbol + TextFormatting.RESET;
+    }
+    public SnapPlayer getPlayerbyName(String name){
+        for(SnapPlayer p : client.getPlayers())
+            if(p.name.equals(name))
+                return p;
+        return null;
     }
 }

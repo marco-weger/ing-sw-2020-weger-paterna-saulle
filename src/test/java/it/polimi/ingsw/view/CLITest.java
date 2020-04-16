@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapWorker;
+import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 import org.junit.Test;
 
@@ -18,9 +19,32 @@ public class CLITest {
         c.getWorkers().add(new SnapWorker(2,0,"FRA",1));
         c.getWorkers().add(new SnapWorker(0,1,"FRA",2));
         CLI view = new CLI(c);
-        view.getPlayers().add("MARCO");
-        view.getPlayers().add("GIULIO");
-        view.getPlayers().add("FRA");
-        view.boardPrint();
+        c.getPlayers().add(new SnapPlayer("MARCO",c.getMyCode(),0));
+        c.getPlayers().add(new SnapPlayer("GIULIO",c.getMyCode(),1));
+        c.getPlayers().add(new SnapPlayer("FRA",c.getMyCode(),2));
+        c.getPlayers().get(2).card = CardName.ARTEMIS;
+        c.getPlayers().get(1).card = CardName.MINOTAUR;
+        view.printTable();
+    }
+
+    @Test
+    public void printTitleBoardTest(){
+        Client c = new Client();
+        for(SnapCell sc : c.getBoard())
+            sc.level = sc.row;
+        c.getWorkers().add(new SnapWorker(0,0,"MARCO",1));
+        c.getWorkers().add(new SnapWorker(0,2,"MARCO",2));
+        c.getWorkers().add(new SnapWorker(1,4,"GIULIO",1));
+        c.getWorkers().add(new SnapWorker(3,4,"GIULIO",2));
+        c.getWorkers().add(new SnapWorker(2,0,"FRA",1));
+        c.getWorkers().add(new SnapWorker(0,1,"FRA",2));
+        CLI view = new CLI(c);
+        c.getPlayers().add(new SnapPlayer("MARCO",c.getMyCode(),0));
+        c.getPlayers().add(new SnapPlayer("GIULIO",c.getMyCode(),1));
+        c.getPlayers().add(new SnapPlayer("FRA",c.getMyCode(),2));
+        c.getPlayers().get(2).card = CardName.ARTEMIS;
+        c.getPlayers().get(1).card = CardName.MINOTAUR;
+        view.printTitle();
+        view.printTable();
     }
 }
