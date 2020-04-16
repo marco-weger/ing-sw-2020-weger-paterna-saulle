@@ -3,10 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
-import it.polimi.ingsw.commons.clientMessages.AnswerAbilityClient;
-import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
-import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
-import it.polimi.ingsw.commons.clientMessages.MoveClient;
+import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
@@ -116,9 +113,65 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(WorkerChosenServer message) {
         clear();
-        if(message.name.equals(this.client.getUsername()))
+        client.getWorkers().add(new SnapWorker(message.x,message.y,message.player,message.worker));
+        printTitle();
+        printTable();
+
+        if(message.player.equals(this.client.getUsername())){
             println("Worker chosen correctly!");
-        println("Player "+ message.player + " has chosen " + message.worker + "in position:" + message.x + TextFormatting.SEPARATOR + message.y);
+            if(message.worker==1){
+                boolean go;
+                int x,y;
+                do{
+                    print("TYPE THE POSITION OF SECOND WORKER [x-y]" + TextFormatting.INPUT);
+                    String tmp = in.nextLine();
+                    String[] tmps = tmp.split("-");
+                    try{
+                        x = Integer.parseInt(tmps[0]);
+                        y = Integer.parseInt(tmps[0]);
+                        go = x < 1 || x > 6 || y < 1 || y > 6;
+                        for(SnapWorker sw : client.getWorkers()){
+                            if (sw.row == x - 1 && sw.column == y - 1) {
+                                go = true;
+                                break;
+                            }
+                        }
+                        if(!go)
+                            client.sendMessage(new WorkerInitializeClient(client.getUsername(),x,y));
+                    }
+                    catch(Exception e){go = true;}
+                }while(go);
+            }
+        }
+        else{
+            for(int i=0;i<client.getPlayers().size();i++){
+                if(client.getPlayers().get(i).name.equals(message.player) &&
+                        client.getPlayers().get((i+1)%client.getPlayers().size()).name.equals(client.getUsername()) &&
+                        message.worker == 2){
+                    boolean go;
+                    int x,y;
+                    do{
+                        print("TYPE THE POSITION OF FIRST WORKER [x-y]" + TextFormatting.INPUT);
+                        String tmp = in.nextLine();
+                        String[] tmps = tmp.split("-");
+                        try{
+                            x = Integer.parseInt(tmps[0]);
+                            y = Integer.parseInt(tmps[0]);
+                            go = x < 1 || x > 5 || y < 1 || y > 5;
+                            for(SnapWorker sw : client.getWorkers()){
+                                if (sw.row == x-1 && sw.column == y-1) {
+                                    go = true;
+                                    break;
+                                }
+                            }
+                            if(!go)
+                                client.sendMessage(new WorkerInitializeClient(client.getUsername(),x-1,y-1));
+                        }
+                        catch(Exception e){go = true;}
+                    }while(go);
+                }
+            }
+        }
     }
 
     @Override
@@ -127,18 +180,18 @@ public class CLI implements ViewInterface {
         do {
             println("Want to use the Ability of your God [YES/NO] " + TextFormatting.INPUT);
             String answer = in.nextLine();
-                if (answer.toUpperCase().equals("YES")) {
-                    AnswerAbilityClient mex = new AnswerAbilityClient(client.getUsername(), true, Status.CHOSEN);
-                    client.sendMessage(mex);
-                    break;
-                }
-                if (answer.toUpperCase().equals("NO")) {
-                    AnswerAbilityClient mex = new AnswerAbilityClient(client.getUsername(), false, Status.CHOSEN);
-                    client.sendMessage(mex);
-                    break;
-                }
-            }while(true);
-        }
+            if (answer.toUpperCase().equals("YES")) {
+                AnswerAbilityClient mex = new AnswerAbilityClient(client.getUsername(), true, Status.CHOSEN);
+                client.sendMessage(mex);
+                break;
+            }
+            if (answer.toUpperCase().equals("NO")) {
+                AnswerAbilityClient mex = new AnswerAbilityClient(client.getUsername(), false, Status.CHOSEN);
+                client.sendMessage(mex);
+                break;
+            }
+        }while(true);
+    }
 
     @Override
     public void handleMessage(CurrentStatusServer message) {
@@ -147,6 +200,39 @@ public class CLI implements ViewInterface {
         // TODO when WORKER_CHOSE and my turn the client must validate the position!!!
 
          println("CURRENT STATUS IS " + message.status.toString());
+         println("CURRENT PLAYER IS " + message.player);
+
+         if(message.player.equals(client.getUsername())){
+             println("IT'S YOUR TURN!");
+             if(message.status.equals(Status.WORKER_CHOICE))
+             {
+                 clear();
+                 printTitle();
+                 printTable();
+                 boolean go;
+                 int x,y;
+                 do{
+                     print("TYPE THE POSITION OF FIRST WORKER [x-y]" + TextFormatting.INPUT);
+                     String tmp = in.nextLine();
+                     String[] tmps = tmp.split("-");
+                     try{
+                         x = Integer.parseInt(tmps[0]);
+                         y = Integer.parseInt(tmps[0]);
+                         go = x < 1 || x > 5 || y < 1 || y > 5;
+                         for(SnapWorker sw : client.getWorkers()){
+                             if (sw.row == x-1 && sw.column == y-1) {
+                                 go = true;
+                                 break;
+                             }
+                         }
+                         if(!go)
+                             client.sendMessage(new WorkerInitializeClient(client.getUsername(),x-1,y-1));
+                     }
+                     catch(Exception e){go = true;}
+                 }while(go);
+
+             }
+         }
     }
 
     @Override
@@ -217,7 +303,28 @@ public class CLI implements ViewInterface {
                 chosen.add(read);
             }
 
-            println("SEND DECISION");
+            client.sendMessage(new ChallengerChoseClient(client.getUsername(), chosen));
+        }
+        else {
+            println("CHOSE ONE CARD FROM:");
+            for(CardName cn : CardName.values())
+                if(message.cardName.contains(cn))
+                    println("- "+cn.name().toUpperCase()+" - "+cn.getDescription());
+
+            // first
+            CardName read;
+            do{
+                print("TYPE THE CARD" + TextFormatting.INPUT);
+
+                String name = in.nextLine();
+                try{
+                    read=Enum.valueOf(CardName.class,name.toUpperCase());
+                    if(!message.cardName.contains(read))
+                        read = null;
+                }
+                catch(Exception ex){read = null;}
+            }while(read == null);
+            client.sendMessage(new PlayerChoseClient(client.getUsername(), read));
         }
     }
 

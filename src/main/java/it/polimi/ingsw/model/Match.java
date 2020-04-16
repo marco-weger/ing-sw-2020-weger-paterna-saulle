@@ -96,6 +96,9 @@ public class Match extends Observable implements Serializable {
     public void setStatus(Status status) {
         this.status = status;
 
+        if(status.equals(Status.WORKER_CHOICE) && getCurrentPlayer() == null)
+            players.get(0).setCurrent(true);
+
         if(getCurrentPlayer() != null)
             notifyObservers(new CurrentStatusServer(getCurrentPlayer().getName(),status));
         else

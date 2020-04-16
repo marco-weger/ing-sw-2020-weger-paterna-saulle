@@ -137,6 +137,7 @@ public class Controller implements Observer, ClientMessageHandler {
                 }
             }
             if(match.getSelectedCard().size() == 1){
+                // start worker initializing
                 match.getPlayers().get(0).setCard(match.getSelectedCard().get(0),virtualView);
                 match.getSelectedCard().remove(match.getSelectedCard().get(0));
 
