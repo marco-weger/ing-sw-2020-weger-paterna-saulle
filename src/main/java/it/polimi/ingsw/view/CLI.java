@@ -304,6 +304,7 @@ public class CLI implements ViewInterface {
             }
 
             client.sendMessage(new ChallengerChoseClient(client.getUsername(), chosen));
+            println("...WAITING YOUR OPPONENT'S CHOICE...");
         }
         else {
             println("CHOSE ONE CARD FROM:");
@@ -325,6 +326,7 @@ public class CLI implements ViewInterface {
                 catch(Exception ex){read = null;}
             }while(read == null);
             client.sendMessage(new PlayerChoseClient(client.getUsername(), read));
+            println("...WAITING YOUR OPPONENT'S CHOICE...");
         }
     }
 
