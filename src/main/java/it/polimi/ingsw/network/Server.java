@@ -151,25 +151,24 @@ public class Server {
 
         // json read
         JSONParser jsonParser = new JSONParser();
-        JSONObject config = null;
+        JSONObject config;
 
         try (FileReader reader = new FileReader(Objects.requireNonNull(server.getClass().getClassLoader().getResource("config.json")).getFile()))
         {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
             config = (JSONObject) obj;
-        } catch (ParseException | IOException e) {
-            e.printStackTrace();
-        }
 
-        if(config != null){
-            try {
+            if(config != null) {
                 if (config.containsKey("port"))
                     server.port = Integer.parseInt(config.get("port").toString());
-            }catch (Exception e){
-                server.port = 1234;
             }
+        } catch (Exception e) {
+            // default params
+            server.port = 1234;
         }
+
+
 
         //run server
         server.startServer();
