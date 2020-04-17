@@ -9,7 +9,6 @@ import it.polimi.ingsw.view.SnapPlayer;
 import it.polimi.ingsw.view.TextFormatting;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -141,7 +140,7 @@ public class Client implements Runnable{
                 if (config.containsKey("ip"))
                     client.setIp(config.get("ip").toString());
             }
-        } catch (ParseException | IOException e) {
+        } catch (Exception e) {
             // default params
             client.setPort(1234);
             client.setIp("127.0.0.1");
