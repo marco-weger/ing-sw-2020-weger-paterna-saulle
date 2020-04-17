@@ -127,31 +127,27 @@ public class Client implements Runnable{
     public static void readParams(Client client){
         // json read
         JSONParser jsonParser = new JSONParser();
-        JSONObject config = null;
+        JSONObject config;
 
         try (FileReader reader = new FileReader(Objects.requireNonNull(client.getClass().getClassLoader().getResource("config.json")).getFile()))
         {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
             config = (JSONObject) obj;
-        } catch (ParseException | IOException e) {
-            e.printStackTrace();
-        }
 
-        if(config != null){
-            try {
-                if (config.containsKey("ip"))
-                    client.setIp(config.get("ip").toString());
-            }catch (Exception e){
-                client.setIp("127.0.0.1");
-            }
-            try {
+            if(config != null){
                 if (config.containsKey("port"))
                     client.setPort(Integer.parseInt(config.get("port").toString()));
-            }catch (Exception e){
-                client.setPort(1234);
+                if (config.containsKey("ip"))
+                    client.setIp(config.get("ip").toString());
             }
+        } catch (ParseException | IOException e) {
+            // default params
+            client.setPort(1234);
+            client.setIp("127.0.0.1");
         }
+
+
     }
 
     public boolean connect() {

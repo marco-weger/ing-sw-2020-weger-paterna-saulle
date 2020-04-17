@@ -5,7 +5,6 @@ import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.Match;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.ServerSocket;
