@@ -215,31 +215,13 @@ public class CLI implements ViewInterface {
                  clear();
                  printTitle();
                  printTable();
-                 boolean go;
-                 int x;
-                 String coord = "ABCDE";
-                 String y = " ";
-                 do{
-                     print("TYPE THE POSITION OF FIRST WORKER [x-y]" + TextFormatting.input());
-                     String tmp = in.nextLine();
-                     String[] tmps = tmp.split("-");
-                     try{
-                         x = Integer.parseInt(tmps[0]);
-                         y = tmps[1];
-                         go = x < 1 || x > 6 || (y.isEmpty()) || !(coord.contains(y));
-                         for(SnapWorker sw : client.getWorkers()){
-                             if (sw.row == x-1 && sw.column == coord.indexOf(y)) {
-                                 go = false;
-                                 break;
-                             }
-                         }
-                         if(!go)
-                             client.sendMessage(new WorkerInitializeClient(client.getUsername(),x-1,coord.indexOf(y)));
-                             println("coordinata X = " + x + "coordinata Y = " + coord.indexOf(y));
-                     }
-                     catch(Exception e){go = true; System.err.println(e.getMessage());}
-                 }while(go);
 
+                 // first worker of the match
+                 SnapCell c;
+                 do {
+                     c = workerInitialize(1);
+                 }while(c == null);
+                 client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
              }
              clear();
              printTitle();
@@ -276,8 +258,32 @@ public class CLI implements ViewInterface {
 
 
              }
-         }
+    }
 
+    public SnapCell workerInitialize(int i){
+        boolean go;
+        int x, y;
+        do{
+            print("TYPE THE POSITION OF "+(i==1 ? "FIRST" : "SECOND" )+" WORKER [x-y]" + TextFormatting.input());
+            String tmp = in.nextLine();
+            String[] tmps = tmp.split("-");
+            try{
+                x = Integer.parseInt(tmps[0]) -1;
+                y = "ABCDE".contains(tmps[1]) && tmps[1].length() == 1 ? "ABCDE".indexOf(tmps[1]) : -1;
+                go = x < 0 || x > 5 || y < 0 || y > 5;
+                for(SnapWorker sw : client.getWorkers()){
+                    if (sw.row == x && sw.column == y) {
+                        go = false;
+                        break;
+                    }
+                }
+                if(!go)
+                    return new SnapCell(x,y,-1);
+            }
+            catch(Exception e){go = true; System.err.println(e.getMessage());}
+        }while(go);
+        return null;
+    }
 
     @Override
     public void handleMessage(SomeoneLoseServer message) {

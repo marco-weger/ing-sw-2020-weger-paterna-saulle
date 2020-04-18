@@ -75,7 +75,7 @@ public class Player extends Observable implements Serializable {
      */
     public void setWorker1(Worker worker1) {
         this.worker1 = worker1;
-        notifyObservers(new WorkerChosenServer(name,1,worker1.getRow(),worker1.getRow()));
+        notifyObservers(new WorkerChosenServer(name,1,worker1.getRow(),worker1.getColumn()));
     }
 
     public Worker getWorker2() {
@@ -88,7 +88,7 @@ public class Player extends Observable implements Serializable {
      */
     public void setWorker2(Worker worker2) {
         this.worker2 = worker2;
-        notifyObservers(new WorkerChosenServer(name,2,worker2.getRow(),worker2.getRow()));
+        notifyObservers(new WorkerChosenServer(name,2,worker2.getRow(),worker2.getColumn()));
     }
 
     public void setCurrent(boolean current){

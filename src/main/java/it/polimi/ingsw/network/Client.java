@@ -101,9 +101,11 @@ public class Client implements Runnable{
     public static void main(String[] args){
         Client client = new Client();
 
+        /*
         for(TextFormatting t : TextFormatting.values()){
             System.out.println(t + "------" +t.name() + "------" + TextFormatting.RESET);
         }
+         */
 
         readParams(client);
 
