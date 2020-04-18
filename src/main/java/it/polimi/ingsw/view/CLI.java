@@ -123,7 +123,9 @@ public class CLI implements ViewInterface {
             println("Worker chosen correctly!");
             if(message.worker==1){
                 boolean go;
-                int x,y;
+                String coord = "ABCDE";
+                int x;
+                String y;
                 do{
                     print("TYPE THE POSITION OF SECOND WORKER [x-y]" + TextFormatting.input());
                     print("TYPE THE POSITION OF SECOND WORKER [x-y]" + TextFormatting.input());
@@ -131,16 +133,16 @@ public class CLI implements ViewInterface {
                     String[] tmps = tmp.split("-");
                     try{
                         x = Integer.parseInt(tmps[0]);
-                        y = Integer.parseInt(tmps[0]);
-                        go = x < 1 || x > 6 || y < 1 || y > 6;
+                        y = tmps[1];
+                        go = x < 1 || x > 6 || (y.isEmpty()) || !(coord.contains(y));
                         for(SnapWorker sw : client.getWorkers()){
-                            if (sw.row == x - 1 && sw.column == y - 1) {
-                                go = true;
+                            if (sw.row == x-1 && sw.column == coord.indexOf(y)) {
+                                go = false;
                                 break;
                             }
                         }
                         if(!go)
-                            client.sendMessage(new WorkerInitializeClient(client.getUsername(),x,y));
+                            client.sendMessage(new WorkerInitializeClient(client.getUsername(),x,coord.indexOf(y)));
                     }
                     catch(Exception e){go = true;}
                 }while(go);
@@ -152,25 +154,27 @@ public class CLI implements ViewInterface {
                         client.getPlayers().get((i+1)%client.getPlayers().size()).name.equals(client.getUsername()) &&
                         message.worker == 2){
                     boolean go;
-                    int x,y;
+                    int x;
+                    String coord = "ABCDE";
+                    String y = " ";
                     do{
                         print("TYPE THE POSITION OF FIRST WORKER [x-y]" + TextFormatting.input());
                         String tmp = in.nextLine();
                         String[] tmps = tmp.split("-");
                         try{
                             x = Integer.parseInt(tmps[0]);
-                            y = Integer.parseInt(tmps[0]);
-                            go = x < 1 || x > 5 || y < 1 || y > 5;
+                            y = tmps[1];
+                            go = x < 1 || x > 6 || (y.isEmpty()) || !(coord.contains(y));
                             for(SnapWorker sw : client.getWorkers()){
-                                if (sw.row == x-1 && sw.column == y-1) {
-                                    go = true;
+                                if (sw.row == x-1 && sw.column == coord.indexOf(y)) {
+                                    go = false;
                                     break;
                                 }
                             }
                             if(!go)
-                                client.sendMessage(new WorkerInitializeClient(client.getUsername(),x-1,y-1));
+                                client.sendMessage(new WorkerInitializeClient(client.getUsername(),x-1,coord.indexOf(y)));
                         }
-                        catch(Exception e){go = true;}
+                        catch(Exception e){go = true; System.err.println("MANNAGGIA OH"); }
                     }while(go);
                 }
             }
@@ -210,25 +214,27 @@ public class CLI implements ViewInterface {
                  printTitle();
                  printTable();
                  boolean go;
-                 int x,y;
+                 int x;
+                 String coord = "ABCDE";
+                 String y = " ";
                  do{
                      print("TYPE THE POSITION OF FIRST WORKER [x-y]" + TextFormatting.input());
                      String tmp = in.nextLine();
                      String[] tmps = tmp.split("-");
                      try{
                          x = Integer.parseInt(tmps[0]);
-                         y = Integer.parseInt(tmps[0]);
-                         go = x < 1 || x > 5 || y < 1 || y > 5;
+                         y = tmps[1];
+                         go = x < 1 || x > 6 || (y.isEmpty()) || !(coord.contains(y));
                          for(SnapWorker sw : client.getWorkers()){
-                             if (sw.row == x-1 && sw.column == y-1) {
+                             if (sw.row == x-1 && sw.column == coord.indexOf(y)) {
                                  go = false;
                                  break;
                              }
                          }
                          if(!go)
-                             client.sendMessage(new WorkerInitializeClient(client.getUsername(),x-1,y-1));
+                             client.sendMessage(new WorkerInitializeClient(client.getUsername(),x-1,coord.indexOf(y)));
                      }
-                     catch(Exception e){go = true;}
+                     catch(Exception e){go = true; System.err.println(e.getMessage());}
                  }while(go);
 
              }
@@ -236,7 +242,9 @@ public class CLI implements ViewInterface {
              printTitle();
              printTable();
              boolean go;
-             int x,y;
+             int x;
+             String y;
+             String coord = "ABCDE";
              int num = 0;
              if(message.status.equals(Status.START)) {
                  do {
@@ -245,12 +253,10 @@ public class CLI implements ViewInterface {
                      String[] tmps = tmp.split("-");
                      try {
                          x = Integer.parseInt(tmps[0]);
-                         y = Integer.parseInt(tmps[0]);
-                         go = x < 1 || x > 5 || y < 1 || y > 5;
-                         for (SnapWorker sw : client.getWorkers()) {
-                             if (sw.row == x - 1 && sw.column == y - 1) {
-                                 num = sw.n;
-
+                         y = tmps[1];
+                         go = x < 1 || x > 6 || (y.isEmpty()) || !(coord.contains(y));
+                         for(SnapWorker sw : client.getWorkers()){
+                             if (sw.row == x-1 && sw.column == coord.indexOf(y)) {
                                  go = false;
                                  break;
                              }
