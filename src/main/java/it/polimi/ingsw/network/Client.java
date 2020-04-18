@@ -125,12 +125,12 @@ public class Client implements Runnable{
     }
 
     public static void readParams(Client client){
-        // json read
-        JSONParser jsonParser = new JSONParser();
-        JSONObject config;
-
         try (FileReader reader = new FileReader(Objects.requireNonNull(client.getClass().getClassLoader().getResource("config.json")).getFile()))
         {
+            // json read
+            JSONParser jsonParser = new JSONParser();
+            JSONObject config;
+
             //Read JSON file
             Object obj = jsonParser.parse(reader);
             config = (JSONObject) obj;

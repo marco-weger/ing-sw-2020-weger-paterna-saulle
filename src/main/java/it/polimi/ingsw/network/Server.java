@@ -148,12 +148,12 @@ public class Server {
     public static void main(String[] args) {
         Server server = new Server();
 
-        // json read
-        JSONParser jsonParser = new JSONParser();
-        JSONObject config;
-
         try (FileReader reader = new FileReader(Objects.requireNonNull(server.getClass().getClassLoader().getResource("config.json")).getFile()))
         {
+            // json read
+            JSONParser jsonParser = new JSONParser();
+            JSONObject config;
+
             //Read JSON file
             Object obj = jsonParser.parse(reader);
             config = (JSONObject) obj;
