@@ -25,8 +25,11 @@ public class VirtualViewTest {
         assertNotNull(vv.c.getMatch());
         assertEquals(vv.c.getMatch().getId(),43);
         vv.notify(new ConnectionClient("Marco"));
+        vv.notify((new ModeChoseClient("Marco",3)));
         vv.notify(new ConnectionClient("Giulio"));
+        vv.notify((new ModeChoseClient("Giulio",3)));
         vv.notify(new ConnectionClient("Francesco"));
+        vv.notify((new ModeChoseClient("Francesco",3)));
         assertEquals(vv.c.getMatch().getStatus(), Status.CARD_CHOICE);
         vv.notify(new ChallengerChoseClient("Marco", new ArrayList<>(Arrays.asList(CardName.MINOTAUR, CardName.ATLAS, CardName.DEMETER))));
         assertEquals(vv.c.getMatch().getSelectedCard().size(), 3);
@@ -51,6 +54,7 @@ public class VirtualViewTest {
         assertEquals(vv.c.getMatch().getPlayers().get(2).getWorker1().getRow() + vv.c.getMatch().getPlayers().get(2).getWorker1().getColumn(), 2);
         assertEquals(vv.c.getMatch().getPlayers().get(2).getWorker1().getRow() + vv.c.getMatch().getPlayers().get(2).getWorker1().getColumn(), 2);
         assertEquals(Status.START,vv.c.getMatch().getStatus());
+        System.out.println(vv.c.getMatch().getCurrentPlayer().getName());
         vv.notify(new WorkerChoseClient("Marco",2));
         assertEquals(3,vv.c.getMatch().getCurrentPlayer().getCurrentWorker().getRow());
         assertEquals(Status.QUESTION_M,vv.c.getMatch().getStatus());

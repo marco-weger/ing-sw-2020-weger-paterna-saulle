@@ -182,7 +182,7 @@ public class Controller implements Observer, ClientMessageHandler {
                 selected.setWorker1(new Worker(message.x,message.y));
             else selected.setWorker2(new Worker(message.x,message.y));
             if(match.getPlayers().get(match.getPlayers().size()-1).getWorker2() != null)
-                startTurn(true);
+                startTurn(false);
         }
     }
 

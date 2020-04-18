@@ -27,7 +27,8 @@ public class CLITest {
         //c.getPlayers().add(new SnapPlayer("FRA",c.getMyCode(),2));
         c.getPlayers().get(0).card = CardName.ARTEMIS;
         c.getPlayers().get(1).card = CardName.MINOTAUR;
-        view.printTable();
+        c.getPlayers().get(0).card = CardName.PAN;
+        //view.printTable();
     }
 
     @Test
@@ -47,8 +48,10 @@ public class CLITest {
         c.getPlayers().add(new SnapPlayer("FRA",c.getMyCode(),2));
         c.getPlayers().get(2).card = CardName.ARTEMIS;
         c.getPlayers().get(1).card = CardName.MINOTAUR;
+        //FIXME se printiamo la table dopo la Title si imputtana
+        //view.printTable();
         view.printTitle();
-        view.printTable();
+        //view.printTable();
     }
     @Test
     public void printCard(){

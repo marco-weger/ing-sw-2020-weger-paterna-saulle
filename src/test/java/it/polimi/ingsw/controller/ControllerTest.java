@@ -140,16 +140,18 @@ public class ControllerTest {
         vw = new VirtualView(null);
         workerInitializeClient();
         controller.getMatch().setStatus(Status.START);
-        controller.handleMessage(new WorkerChoseClient("Francesco",1));
-        assertFalse(controller.getMatch().getPlayers().get(1).getWorker1().isActive());
-        assertFalse(controller.getMatch().getPlayers().get(1).getWorker2().isActive());
+        controller.getMatch().getPlayers().get(0).setCurrent(true);
         controller.handleMessage(new WorkerChoseClient("Marco",1));
         assertTrue(controller.getMatch().getPlayers().get(0).getWorker1().isActive());
         assertFalse(controller.getMatch().getPlayers().get(0).getWorker2().isActive());
         controller.getMatch().setNextPlayer();
-        controller.handleMessage(new WorkerChoseClient("Francesco",2));
-        assertFalse(controller.getMatch().getPlayers().get(1).getWorker1().isActive());
-        assertTrue(controller.getMatch().getPlayers().get(1).getWorker2().isActive());
+        controller.handleMessage(new WorkerChoseClient("Francesco",1));
+        assertTrue(controller.getMatch().getPlayers().get(1).getWorker1().isActive());
+        assertFalse(controller.getMatch().getPlayers().get(1).getWorker2().isActive());
+        controller.getMatch().setNextPlayer();
+        controller.handleMessage(new WorkerChoseClient("Giulio",2));
+        assertFalse(controller.getMatch().getPlayers().get(2).getWorker1().isActive());
+        assertTrue(controller.getMatch().getPlayers().get(2).getWorker2().isActive());
     }
 
     //Marco=PAN
@@ -189,6 +191,8 @@ public class ControllerTest {
     public void answerAbilityClient() {
         initialize();
         playerChoseClient();
+         controller.getMatch().getPlayers().get(0).setCurrent(false);
+         controller.getMatch().getPlayers().get(1).setCurrent(false);
         controller.getMatch().getPlayers().get(2).setCurrent(true);
         assertEquals(controller.getMatch().getCurrentPlayer().getName(),"Giulio");
         controller.getMatch().setStatus(Status.START);
@@ -297,6 +301,7 @@ public class ControllerTest {
     public void BuildClient() {
         initialize();
         playerChoseClient();
+        controller.getMatch().getPlayers().get(0).setCurrent(false);
         controller.getMatch().getPlayers().get(1).setCurrent(true);
         controller.getMatch().setStatus(Status.QUESTION_B);
         controller.getMatch().getPlayers().get(1).getWorker1().move(0,0);
@@ -313,6 +318,7 @@ public class ControllerTest {
     public void BuildClientPrometheus() {
         initialize();
         playerChoseClient();
+        controller.getMatch().getPlayers().get(0).setCurrent(false);
         controller.getMatch().getPlayers().get(1).setCard(CardName.PROMETHEUS,vw);
         controller.getMatch().getPlayers().get(1).getCard().setActive(true);
         controller.getMatch().getPlayers().get(1).setCurrent(true);
@@ -331,6 +337,7 @@ public class ControllerTest {
     public void BuildClientImpossible() {
         initialize();
         playerChoseClient();
+        controller.getMatch().getPlayers().get(0).setCurrent(false);
         controller.getMatch().getPlayers().get(1).setCurrent(true);
         controller.getMatch().setStatus(Status.BUILT);
         controller.getMatch().getPlayers().get(1).getWorker1().move(0,0);
