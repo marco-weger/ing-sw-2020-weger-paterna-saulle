@@ -228,11 +228,17 @@ public class Match extends Observable implements Serializable {
             new File("saved-match").mkdir();
 
         try {
-            out = new FileOutputStream(new File("saved-match/"+String.format("%07d" , this.getId())+".santorini"));//System.getProperty("user.dir")+"\\saved-match\\"+String.format("%07d" , this.getId())+".santorini");
+
+            String path = System.getProperty("user.dir")+File.separatorChar+"saved-match" + File.separatorChar + String.format("%07d" , this.getId())+".santorini";
+            File f = new File(path);
+            out = new FileOutputStream(f);
             objOut = new ObjectOutputStream(out);
             objOut.writeObject(this);
+            objOut.flush();
             objOut.writeObject(sm);
+            objOut.flush();
             objOut.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
