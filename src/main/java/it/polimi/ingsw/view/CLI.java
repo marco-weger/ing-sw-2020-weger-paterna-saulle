@@ -142,7 +142,8 @@ public class CLI implements ViewInterface {
                             }
                         }
                         if(!go)
-                            client.sendMessage(new WorkerInitializeClient(client.getUsername(),x,coord.indexOf(y)));
+                            client.sendMessage(new WorkerInitializeClient(client.getUsername(),x-1,coord.indexOf(y)));
+                        println("coordinata X = " + x + "coordinata Y = " + coord.indexOf(y));
                     }
                     catch(Exception e){go = true;}
                 }while(go);
@@ -173,6 +174,7 @@ public class CLI implements ViewInterface {
                             }
                             if(!go)
                                 client.sendMessage(new WorkerInitializeClient(client.getUsername(),x-1,coord.indexOf(y)));
+                            println("coordinata X = " + x + "coordinata Y = " + coord.indexOf(y));
                         }
                         catch(Exception e){go = true; System.err.println("MANNAGGIA OH"); }
                     }while(go);
@@ -233,6 +235,7 @@ public class CLI implements ViewInterface {
                          }
                          if(!go)
                              client.sendMessage(new WorkerInitializeClient(client.getUsername(),x-1,coord.indexOf(y)));
+                             println("coordinata X = " + x + "coordinata Y = " + coord.indexOf(y));
                      }
                      catch(Exception e){go = true; System.err.println(e.getMessage());}
                  }while(go);
@@ -263,6 +266,8 @@ public class CLI implements ViewInterface {
                          }
                          if (!go)
                              client.sendMessage(new WorkerChoseClient(client.getUsername(),num));
+                         println("coordinata X = " + x + "coordinata Y = " + coord.indexOf(y));
+                         println("hai scelto il worker" + num + "correttamente");
                      } catch (Exception e) {
                          go = true;
                      }
