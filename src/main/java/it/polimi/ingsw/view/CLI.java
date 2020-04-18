@@ -120,64 +120,27 @@ public class CLI implements ViewInterface {
         printTable();
 
         if(message.player.equals(this.client.getUsername())){
-            println("Worker chosen correctly!");
             if(message.worker==1){
-                boolean go;
-                String coord = "ABCDE";
-                int x;
-                String y;
-                do{
-                    print("TYPE THE POSITION OF SECOND WORKER [x-y]" + TextFormatting.input());
-                    print("TYPE THE POSITION OF SECOND WORKER [x-y]" + TextFormatting.input());
-                    String tmp = in.nextLine();
-                    String[] tmps = tmp.split("-");
-                    try{
-                        x = Integer.parseInt(tmps[0]);
-                        y = tmps[1];
-                        go = x < 1 || x > 6 || (y.isEmpty()) || !(coord.contains(y));
-                        for(SnapWorker sw : client.getWorkers()){
-                            if (sw.row == x-1 && sw.column == coord.indexOf(y)) {
-                                go = false;
-                                break;
-                            }
-                        }
-                        if(!go)
-                            client.sendMessage(new WorkerInitializeClient(client.getUsername(),x-1,coord.indexOf(y)));
-                        println("coordinata X = " + x + "coordinata Y = " + coord.indexOf(y));
-                    }
-                    catch(Exception e){go = true;}
-                }while(go);
+                // second worker
+                SnapCell c;
+                do {
+                    c = workerInitialize(2);
+                }while(c == null);
+                client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
             }
         }
         else{
-            for(int i=0;i<client.getPlayers().size();i++){
+            for(int i=0;i<client.getPlayers().size()-1;i++){
                 if(client.getPlayers().get(i).name.equals(message.player) &&
-                        client.getPlayers().get((i+1)%client.getPlayers().size()).name.equals(client.getUsername()) &&
+                        client.getPlayers().get(i+1).name.equals(client.getUsername()) &&
                         message.worker == 2){
-                    boolean go;
-                    int x;
-                    String coord = "ABCDE";
-                    String y = " ";
-                    do{
-                        print("TYPE THE POSITION OF FIRST WORKER [x-y]" + TextFormatting.input());
-                        String tmp = in.nextLine();
-                        String[] tmps = tmp.split("-");
-                        try{
-                            x = Integer.parseInt(tmps[0]);
-                            y = tmps[1];
-                            go = x < 1 || x > 6 || (y.isEmpty()) || !(coord.contains(y));
-                            for(SnapWorker sw : client.getWorkers()){
-                                if (sw.row == x-1 && sw.column == coord.indexOf(y)) {
-                                    go = false;
-                                    break;
-                                }
-                            }
-                            if(!go)
-                                client.sendMessage(new WorkerInitializeClient(client.getUsername(),x-1,coord.indexOf(y)));
-                            println("coordinata X = " + x + "coordinata Y = " + coord.indexOf(y));
-                        }
-                        catch(Exception e){go = true; System.err.println("MANNAGGIA OH"); }
-                    }while(go);
+                    System.out.println("ASD") ;
+                    // first worker
+                    SnapCell c;
+                    do {
+                        c = workerInitialize(1);
+                    }while(c == null);
+                    client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
                 }
             }
         }
@@ -223,15 +186,16 @@ public class CLI implements ViewInterface {
                  }while(c == null);
                  client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
              }
-             clear();
-             printTitle();
-             printTable();
-             boolean go;
-             int x;
-             String y;
-             String coord = "ABCDE";
-             int num = 0;
              if(message.status.equals(Status.START)) {
+                 // FIXME dont work
+                 clear();
+                 printTitle();
+                 printTable();
+                 boolean go;
+                 int x;
+                 String y;
+                 String coord = "ABCDE";
+                 int num = 0;
                  do {
                      print("CHOSE THE WORKER [x-y]" + TextFormatting.input());
                      String tmp = in.nextLine();
