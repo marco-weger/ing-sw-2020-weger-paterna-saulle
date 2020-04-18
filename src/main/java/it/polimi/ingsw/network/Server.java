@@ -201,9 +201,11 @@ public class Server {
                     }
                 }
             }
+            System.out.println("[SAVED DIR] - "+"saved-match/");
             System.out.println("[2 PLAYERS] - "+virtualViews2.size()+" loaded");
             System.out.println("[3 PLAYERS] - "+virtualViews3.size()+" loaded");
         } catch (IOException | ClassNotFoundException e) {
+            System.out.println("[SAVED DIR] - "+"saved-match/");
             System.out.println("[2 PLAYERS MATCH] - "+virtualViews2.size()+" match loaded");
             System.out.println("[3 PLAYERS MATCH] - "+virtualViews3.size()+" match loaded");
         }
