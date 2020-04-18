@@ -81,8 +81,13 @@ public class Controller implements Observer, ClientMessageHandler {
     }
 
     @Override
-    public void handleMessage(DisconnectionClient event) {
-
+    public void handleMessage(DisconnectionClient message) {
+        if(this.match.getStatus().equals(Status.NAME_CHOICE)){
+            this.match.removePlayer(message.name);
+        }
+        else{
+            System.out.println("\tHA PERSO " + message.name);
+        }
     }
 
     @Override

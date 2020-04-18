@@ -15,11 +15,11 @@ public class SnapPlayer {
 
         // color settings
         if(i==0)
-            this.color = (TextFormatting.BACKGROUND_RED.toString()+TextFormatting.COLOR_BLACK);
+            this.color = (TextFormatting.BACKGROUND_BRIGHT_RED.toString()+TextFormatting.COLOR_BLACK);
         if(i==1)
-            this.color = (TextFormatting.BACKGROUND_CYAN.toString()+TextFormatting.COLOR_BLACK);
+            this.color = (TextFormatting.BACKGROUND_BRIGHT_YELLOW.toString()+TextFormatting.COLOR_BLACK);
         if(i==2)
-            this.color = (TextFormatting.BACKGROUND_PURPLE.toString()+TextFormatting.COLOR_BLACK);
+            this.color = (TextFormatting.BACKGROUND_BRIGHT_PURPLE.toString()+TextFormatting.COLOR_BLACK);
 
         card=null;
     }

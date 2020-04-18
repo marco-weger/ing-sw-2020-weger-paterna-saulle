@@ -207,6 +207,19 @@ public class Match extends Observable implements Serializable {
         notifyObservers(new LobbyServer(names));
     }
 
+    public void removePlayer(String name){
+        if(getStatus().equals(Status.NAME_CHOICE)){
+            for(int i = 0; i<getPlayers().size(); i++)
+                if(getPlayers().get(i).getName().equals(name))
+                    getPlayers().remove(getPlayers().get(i));
+
+            ArrayList<String> names = new ArrayList<>();
+            for(Player player:players)
+                names.add(player.getName());
+            notifyObservers(new LobbyServer(names));
+        }
+    }
+
     public void saveToFile(ServerMessage sm){
         FileOutputStream out;
         ObjectOutputStream objOut;

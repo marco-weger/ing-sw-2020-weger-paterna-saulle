@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
+import it.polimi.ingsw.commons.clientMessages.DisconnectionClient;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
 import it.polimi.ingsw.commons.clientMessages.ReConnectionClient;
 import it.polimi.ingsw.commons.serverMessages.LobbyServer;
@@ -103,37 +104,39 @@ public class ServerClientHandler implements Runnable {
                                 object.toString().lastIndexOf('@')) + " - " + (((ClientMessage) object).name.equals("") ? "ALL" : ((ClientMessage) object).name));
 
                     if(object instanceof ConnectionClient){
-                        // complete the message with ip address and ServerClientHandler
-                        ConnectionClient cc = (ConnectionClient) object;
-                        tmpName = cc.name;
+                        if(((ConnectionClient) object).name.length() <= 12) {
+                            // complete the message with ip address and ServerClientHandler
+                            ConnectionClient cc = (ConnectionClient) object;
+                            tmpName = cc.name;
 
-                        // check if a player with same name exists
-                        for(VirtualView vv : server.getVirtualViews2()){
-                            if(vv.getConnectedPlayers().containsKey(cc.name)){
-                                if(vv.getConnectedPlayers().get(cc.name) == null){
-                                    // TODO if you are a loser you go watching
-                                    System.out.println("MUST LOAD THE MATCH...");
-                                    load = true;
-                                    virtualView = vv;
-                                }else{ // its a duplicate
-                                    tmpName = "";
-                                    break;
+                            // check if a player with same name exists
+                            for (VirtualView vv : server.getVirtualViews2()) {
+                                if (vv.getConnectedPlayers().containsKey(cc.name)) {
+                                    if (vv.getConnectedPlayers().get(cc.name) == null) {
+                                        // TODO if you are a loser you go watching
+                                        System.out.println("MUST LOAD THE MATCH...");
+                                        load = true;
+                                        virtualView = vv;
+                                    } else { // its a duplicate
+                                        tmpName = "";
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                        for(VirtualView vv : server.getVirtualViews3()){
-                            if(vv.getConnectedPlayers().containsKey(cc.name)){
-                                if(vv.getConnectedPlayers().get(cc.name) == null){
-                                    // TODO if you are a loser you go watching
-                                    System.out.println("MUST LOAD THE MATCH...");
-                                    load = true;
-                                    virtualView = vv;
-                                }else{ // its a duplicate
-                                    tmpName = "";
-                                    break;
+                            for (VirtualView vv : server.getVirtualViews3()) {
+                                if (vv.getConnectedPlayers().containsKey(cc.name)) {
+                                    if (vv.getConnectedPlayers().get(cc.name) == null) {
+                                        // TODO if you are a loser you go watching
+                                        System.out.println("MUST LOAD THE MATCH...");
+                                        load = true;
+                                        virtualView = vv;
+                                    } else { // its a duplicate
+                                        tmpName = "";
+                                        break;
+                                    }
                                 }
                             }
-                        }
+                        } else tmpName = "";
                     } else tmpName = "";
                 }while(tmpName.isEmpty()); // loop until the name is invalid
 
@@ -190,8 +193,13 @@ public class ServerClientHandler implements Runnable {
                     virtualView.notify((ClientMessage) object);
             }
         } catch (IOException | ClassNotFoundException e) {
-            LOGGER.log(Level.WARNING, e.getMessage());
-            System.err.println("DISCONNESSO");
+            System.out.println("[DISCONNECTED USER] - " + socket.getRemoteSocketAddress().toString());
+            if(virtualView != null){
+                if(virtualView.getCurrentStatus().equals(Status.NAME_CHOICE)){
+                    virtualView.getConnectedPlayers().remove(this.name);
+                    virtualView.notify(new DisconnectionClient(this.name));
+                }
+            }
         }
     }
 

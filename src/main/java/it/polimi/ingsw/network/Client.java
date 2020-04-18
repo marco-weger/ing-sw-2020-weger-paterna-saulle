@@ -101,20 +101,21 @@ public class Client implements Runnable{
     public static void main(String[] args){
         Client client = new Client();
 
+        for(TextFormatting t : TextFormatting.values()){
+            System.out.println(t + "------" +t.name() + "------" + TextFormatting.RESET);
+        }
+
         readParams(client);
 
         String version;
         do{
-            System.out.print("Choose the version [CLI/GUI]" + TextFormatting.getInputLine());
-            System.out.flush();
+            System.out.print("Choose the version [CLI/GUI] " + TextFormatting.input() );
             version = new Scanner(System.in).nextLine();
 
             if(version.equals("CLI")){
                 CLI view = new CLI(client);
                 client.setView(view);
                 view.displayFirstWindow();
-                //temporary printCLI
-                view.printTable();
             }
             else if(version.equals("GUI")){
                 // TODO run gui
@@ -145,8 +146,6 @@ public class Client implements Runnable{
             client.setPort(1234);
             client.setIp("127.0.0.1");
         }
-
-
     }
 
     public boolean connect() {

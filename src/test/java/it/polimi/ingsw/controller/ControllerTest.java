@@ -163,7 +163,7 @@ public class ControllerTest {
         initialize();
         challengerChoseClient();
         // TODO: this message will be implemented
-        controller.handleMessage(new DisconnectionClient());
+        //controller.handleMessage(new DisconnectionClient());
     }
 
     @Test

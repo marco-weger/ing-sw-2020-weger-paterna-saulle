@@ -72,8 +72,7 @@ public enum TextFormatting {
         return TextFormatting.BACKGROUND_RED.toString() + TextFormatting.COLOR_BRIGHT_WHITE + TextFormatting.BOLD;
     }
 
-
-    public static String getInputLine(){
-        return "\n" + TextFormatting.RESET + TextFormatting.COLOR_BRIGHT_YELLOW + TextFormatting.INPUT;
+    public static String input(){
+        return TextFormatting.INPUT + TextFormatting.COLOR_BRIGHT_GREEN.toString();
     }
 }

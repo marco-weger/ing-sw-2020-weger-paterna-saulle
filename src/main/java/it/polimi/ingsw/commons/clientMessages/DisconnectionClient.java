@@ -9,5 +9,7 @@ public class DisconnectionClient extends ClientMessage {
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    // TODO use this method
+    public DisconnectionClient(String name){
+        this.name=name;
+    }
 }
