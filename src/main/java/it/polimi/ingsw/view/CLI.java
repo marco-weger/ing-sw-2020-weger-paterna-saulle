@@ -126,6 +126,7 @@ public class CLI implements ViewInterface {
                 int x,y;
                 do{
                     print("TYPE THE POSITION OF SECOND WORKER [x-y]" + TextFormatting.input());
+                    print("TYPE THE POSITION OF SECOND WORKER [x-y]" + TextFormatting.input());
                     String tmp = in.nextLine();
                     String[] tmps = tmp.split("-");
                     try{
@@ -220,7 +221,7 @@ public class CLI implements ViewInterface {
                          go = x < 1 || x > 5 || y < 1 || y > 5;
                          for(SnapWorker sw : client.getWorkers()){
                              if (sw.row == x-1 && sw.column == y-1) {
-                                 go = true;
+                                 go = false;
                                  break;
                              }
                          }
@@ -231,8 +232,41 @@ public class CLI implements ViewInterface {
                  }while(go);
 
              }
+             clear();
+             printTitle();
+             printTable();
+             boolean go;
+             int x,y;
+             int num = 0;
+             if(message.status.equals(Status.START)) {
+                 do {
+                     print("CHOSE THE WORKER [x-y]" + TextFormatting.input());
+                     String tmp = in.nextLine();
+                     String[] tmps = tmp.split("-");
+                     try {
+                         x = Integer.parseInt(tmps[0]);
+                         y = Integer.parseInt(tmps[0]);
+                         go = x < 1 || x > 5 || y < 1 || y > 5;
+                         for (SnapWorker sw : client.getWorkers()) {
+                             if (sw.row == x - 1 && sw.column == y - 1) {
+                                 num = sw.n;
+
+                                 go = false;
+                                 break;
+                             }
+                         }
+                         if (!go)
+                             client.sendMessage(new WorkerChoseClient(client.getUsername(),num));
+                     } catch (Exception e) {
+                         go = true;
+                     }
+                 } while (go);
+             }
+
+
+             }
          }
-    }
+
 
     @Override
     public void handleMessage(SomeoneLoseServer message) {
