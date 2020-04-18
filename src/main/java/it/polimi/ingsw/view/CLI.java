@@ -122,9 +122,16 @@ public class CLI implements ViewInterface {
         if(message.player.equals(this.client.getUsername())){
             if(message.worker==1){
                 // second worker
+                print("Type the position of second worker [x-y] " + TextFormatting.input());
                 SnapCell c;
                 do {
-                    c = workerInitialize(2);
+                    c = readCell();
+                    for(SnapWorker sw : client.getWorkers()){
+                        if (sw.row == c.row && sw.column == c.column) {
+                            c = null;
+                            break;
+                        }
+                    }
                 }while(c == null);
                 client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
             }
@@ -136,9 +143,16 @@ public class CLI implements ViewInterface {
                         message.worker == 2){
                     System.out.println("ASD") ;
                     // first worker
+                    print("Type the position of first worker [x-y] " + TextFormatting.input());
                     SnapCell c;
                     do {
-                        c = workerInitialize(1);
+                        c = readCell();
+                        for(SnapWorker sw : client.getWorkers()){
+                            if (sw.row == c.row && sw.column == c.column) {
+                                c = null;
+                                break;
+                            }
+                        }
                     }while(c == null);
                     client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
                 }
@@ -180,9 +194,16 @@ public class CLI implements ViewInterface {
                  printTable();
 
                  // first worker of the match
+                 print("Type the position of first worker [x-y] " + TextFormatting.input());
                  SnapCell c;
                  do {
-                     c = workerInitialize(1);
+                     c = readCell();
+                     for(SnapWorker sw : client.getWorkers()){
+                         if (sw.row == c.row && sw.column == c.column) {
+                             c = null;
+                             break;
+                         }
+                     }
                  }while(c == null);
                  client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
              }
@@ -224,23 +245,16 @@ public class CLI implements ViewInterface {
              }
     }
 
-    public SnapCell workerInitialize(int i){
+    public SnapCell readCell(){
         boolean go;
         int x, y;
         do{
-            print("TYPE THE POSITION OF "+(i==1 ? "FIRST" : "SECOND" )+" WORKER [x-y]" + TextFormatting.input());
             String tmp = in.nextLine();
             String[] tmps = tmp.split("-");
             try{
                 x = Integer.parseInt(tmps[0]) -1;
                 y = "ABCDE".contains(tmps[1]) && tmps[1].length() == 1 ? "ABCDE".indexOf(tmps[1]) : -1;
-                go = x < 0 || x > 5 || y < 0 || y > 5;
-                for(SnapWorker sw : client.getWorkers()){
-                    if (sw.row == x && sw.column == y) {
-                        go = false;
-                        break;
-                    }
-                }
+                go = x < 0 || x > 4 || y < 0;
                 if(!go)
                     return new SnapCell(x,y,-1);
             }
