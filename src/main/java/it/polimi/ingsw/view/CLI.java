@@ -206,6 +206,7 @@ public class CLI implements ViewInterface {
                          go = x < 1 || x > 6 || (y.isEmpty()) || !(coord.contains(y));
                          for(SnapWorker sw : client.getWorkers()){
                              if (sw.row == x-1 && sw.column == coord.indexOf(y)) {
+                                 num=sw.n;
                                  go = false;
                                  break;
                              }
