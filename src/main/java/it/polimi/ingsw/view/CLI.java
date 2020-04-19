@@ -51,11 +51,10 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(CheckMoveServer message) { // tested
         if(message.name.equals(client.getUsername())){
-            /*
-            for (int i=0; 0<=i && i<message.sc.size(); i++) {
-                println(""+message.sc.get(i).row + TextFormatting.SEPARATOR + message.sc.get(i).column);
-            }
-            */
+            for(SnapCell cell : message.sc)
+                print(TextFormatting.COLOR_RED+
+                        "("+cell.row + "-" + cell.column+") "+TextFormatting.RESET);
+            println("END.");
             boolean go = true;
             do{
                 print(colorCPU+"Type cell where you want to move [x-y] " + TextFormatting.input());
@@ -75,11 +74,10 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(CheckBuildServer message) { // tested
         if(message.name.equals(client.getUsername())){
-            /*
-            for (int i=0; 0<=i && i<message.sc.size(); i++) {
-                println(""+message.sc.get(i).row + TextFormatting.SEPARATOR + message.sc.get(i).column);
-            }
-            */
+            for(SnapCell cell : message.sc)
+                print(TextFormatting.COLOR_RED+
+                        "("+cell.row + "-" + cell.column+") "+TextFormatting.RESET);
+            println("END.");
             boolean go = true;
             do{
                 print(colorCPU+"Type cell where you want to build [x-y] " + TextFormatting.input());
