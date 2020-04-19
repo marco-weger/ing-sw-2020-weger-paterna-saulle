@@ -240,7 +240,7 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(SomeoneLoseServer message) { // TODO test
         clear();
-        if(this.client.getUsername().equals(message.name)){
+        if(this.client.getUsername().equals(message.player)){
             print(TextFormatting.loser()
                     +
                     "                                                     888                                              \n" +
@@ -257,7 +257,7 @@ public class CLI implements ViewInterface {
             );
         }
         else
-            println(TextFormatting.loser() + message.name + "have lost");
+            println(TextFormatting.loser() + message.name + "has lost");
 
     }
 
@@ -330,7 +330,7 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(SomeoneWinServer message) { // TODO test
         clear();
-        if(this.client.getUsername() .equals(message.name)) {
+        if(this.client.getUsername().equals(message.player)) {
             print(TextFormatting.winner()
                     +
                     "                                               Y88b   d88P  .d88888b.  888     888       888       888 8888888 888b    888                                                      \n" +
