@@ -11,15 +11,10 @@ import it.polimi.ingsw.view.SnapPlayer;
 import it.polimi.ingsw.view.TextFormatting;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.w3c.dom.Text;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -115,7 +110,7 @@ public class Client implements Runnable{
         String version;
         do{
             System.out.print(TextFormatting.RESET + "Choose the version [CLI/GUI] " + TextFormatting.input() );
-            version = new Scanner(System.in).nextLine();
+            version = new Scanner(System.in).nextLine().toUpperCase();
 
             if(version.equals("CLI")){
                 CLI view = new CLI(client);
@@ -130,7 +125,7 @@ public class Client implements Runnable{
     }
 
     public static void readParams(Client client){
-        try (FileReader reader = new FileReader(Objects.requireNonNull(client.getClass().getClassLoader().getResource("config.json")).getFile()))
+        try (FileReader reader = new FileReader("resources"+File.separator+"config.json"))
         {
             // json read
             JSONParser jsonParser = new JSONParser();
@@ -174,9 +169,9 @@ public class Client implements Runnable{
                 ServerMessage msg = (ServerMessage) in.readObject();
                 System.out.println(msg.toString());
                 if(msg instanceof MovedServer){
-                    System.out.println(TextFormatting.COLOR_RED.toString() + ((MovedServer) msg).sw.row + " - " + ((MovedServer) msg).sw.column + TextFormatting.RESET);
+                    //System.out.println(TextFormatting.COLOR_RED.toString() + ((MovedServer) msg).sw.row + " - " + ((MovedServer) msg).sw.column + TextFormatting.RESET);
                     for(SnapWorker worker : getWorkers()){
-                        if(worker.name.equals(msg.name) && worker.n == ((MovedServer) msg).sw.n){
+                        if(worker.name.equals(((MovedServer) msg).sw.name) && worker.n == ((MovedServer) msg).sw.n){
                             worker.row = ((MovedServer) msg).sw.row;
                             worker.column = ((MovedServer) msg).sw.column;
                         }
@@ -192,7 +187,8 @@ public class Client implements Runnable{
             }
         }
         catch (IOException | ClassNotFoundException e){
-            System.out.println("ERROR! SERVER UNAVAILABLE...");
+            System.out.println("R ERROR! SERVER UNAVAILABLE...");
+            System.out.println(e.getMessage());
             System.exit(0);
         }
     }
@@ -203,7 +199,8 @@ public class Client implements Runnable{
             out.writeObject(msg);
             out.flush();
         } catch (IOException e) {
-            System.out.println("ERROR! SERVER UNAVAILABLE...");
+            System.out.println("W ERROR! SERVER UNAVAILABLE...");
+            System.out.println(e.getMessage());
             System.exit(0);
         }
     }

@@ -224,12 +224,12 @@ public class Match extends Observable implements Serializable {
         FileOutputStream out;
         ObjectOutputStream objOut;
 
-        if(!new File("saved-match").exists())
-            new File("saved-match").mkdir();
+        if(!new File("resources" +File.separatorChar+"saved-match").exists())
+            new File("resources" +File.separatorChar+"saved-match").mkdir();
 
         try {
 
-            String path = System.getProperty("user.dir")+File.separatorChar+"saved-match" + File.separatorChar + String.format("%07d" , this.getId())+".santorini";
+            String path = System.getProperty("user.dir")+File.separatorChar+"resources" +File.separatorChar+"saved-match" + File.separatorChar + String.format("%07d" , this.getId())+".santorini";
             File f = new File(path);
             out = new FileOutputStream(f);
             objOut = new ObjectOutputStream(out);

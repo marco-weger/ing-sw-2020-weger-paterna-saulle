@@ -10,7 +10,6 @@ public class MovedServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public String players;
     public SnapWorker sw;
 
     public MovedServer(SnapWorker sw){

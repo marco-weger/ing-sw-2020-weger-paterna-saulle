@@ -22,16 +22,14 @@ public class CLI implements ViewInterface {
     ArrayList<String> color;
     String colorCPU;
 
-    private static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-
     public CLI(Client client){
         this.client = client;
 
         color = new ArrayList<>();
         color.add(TextFormatting.BACKGROUND_CYAN.toString() + TextFormatting.COLOR_BLACK); // lv 0
-        color.add(TextFormatting.BACKGROUND_WHITE.toString() + TextFormatting.COLOR_BLACK); // lv 1
-        color.add(TextFormatting.BACKGROUND_BRIGHT_BLUE.toString() + TextFormatting.COLOR_BLACK); // lv 2
-        color.add(TextFormatting.BACKGROUND_WHITE.toString() + TextFormatting.COLOR_BLACK); // lv 3
+        color.add(TextFormatting.BACKGROUND_BRIGHT_WHITE.toString() + TextFormatting.COLOR_BLACK); // lv 1
+        color.add(TextFormatting.BACKGROUND_WHITE.toString() + TextFormatting.COLOR_BLACK); // lv 2
+        color.add(TextFormatting.BACKGROUND_BRIGHT_BLUE.toString() + TextFormatting.COLOR_BLACK); // lv 3
         color.add(TextFormatting.BACKGROUND_BLUE.toString() + TextFormatting.COLOR_BLACK); // lv 4
 
         colorCPU = TextFormatting.COLOR_CYAN.toString();
@@ -235,6 +233,7 @@ public class CLI implements ViewInterface {
                      println(colorCPU+"Waiting for opponent's choice..."+ TextFormatting.RESET);
                      break;
                  default:
+                     println(colorCPU+"Opponent turn, "+message.name+" is playing..."+ TextFormatting.RESET);
                      break;
              }
          }
@@ -276,7 +275,7 @@ public class CLI implements ViewInterface {
             // first
             CardName read;
             do{
-                print(colorCPU+"Type the first card [uppercase name] " + TextFormatting.input());
+                print(colorCPU+"Type the first card [name] " + TextFormatting.input());
 
                 String name = read();
                 try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
@@ -286,7 +285,7 @@ public class CLI implements ViewInterface {
 
             // second
             do{
-                print(colorCPU+"Type the second card [uppercase name] " + TextFormatting.input());
+                print(colorCPU+"Type the second card [name] " + TextFormatting.input());
 
                 String name = read();
                 try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
@@ -297,7 +296,7 @@ public class CLI implements ViewInterface {
             // third
             if(client.getPlayers().size()==3){
                 do{
-                    print(colorCPU+"Type the third card [uppercase name] " + TextFormatting.input());
+                    print(colorCPU+"Type the third card [name] " + TextFormatting.input());
                     String name = read();
                     try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
                     catch(Exception ex){read = null;}
@@ -426,7 +425,7 @@ public class CLI implements ViewInterface {
     }
 
     public void clear(){
-        for(int i=0;i<30;i++)
+        for(int i=0;i<60;i++)
             println("");
     }
 
@@ -465,7 +464,7 @@ public class CLI implements ViewInterface {
     }
     public String read(){
         try {
-            return in.readLine();//in.nextLine();
+            return new BufferedReader(new InputStreamReader(System.in)).readLine().toUpperCase();
         } catch (IOException e) {
             //e.printStackTrace();
             return "";
@@ -474,19 +473,17 @@ public class CLI implements ViewInterface {
     public SnapCell readCell(){
         boolean go;
         int x, y;
-        do{
-            try{
-                String tmp = read();
-                String[] tmps = tmp.split("-");
-                x = Integer.parseInt(tmps[0]) -1;
-                y = "ABCDE".contains(tmps[1]) && tmps[1].length() == 1 ? "ABCDE".indexOf(tmps[1]) : -1;
-                go = x < 0 || x > 4 || y < 0;
-                if(!go)
-                    return new SnapCell(x,y,-1);
-            }
-            catch(Exception e){go = true; System.err.println(e.getMessage());}
-        }while(go);
-        return null;
+        try{
+            String tmp = read();
+            String[] tmps = tmp.split("-");
+            x = Integer.parseInt(tmps[0]) -1;
+            y = "ABCDE".contains(tmps[1]) && tmps[1].length() == 1 ? "ABCDE".indexOf(tmps[1]) : -1;
+            go = x < 0 || x > 4 || y < 0;
+            if(!go)
+                return new SnapCell(x,y,-1);
+            return null;
+        }
+        catch(Exception e){return null;}
     }
 
     public void printTable(){
@@ -632,7 +629,7 @@ public class CLI implements ViewInterface {
     public String printUserSymbol(SnapCell cell){
         for(SnapWorker sw : client.getWorkers()){
             if(sw.row == cell.row && sw.column == cell.column){
-                return TextFormatting.BOLD + getPlayerbyName(sw.name).color + " "
+                return getPlayerbyName(sw.name).color + " "
                         + getPlayerbyName(sw.name).symbol + getPlayerbyName(sw.name).symbol + getPlayerbyName(sw.name).symbol + " " + TextFormatting.RESET;
             }
         }

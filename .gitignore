@@ -10,4 +10,6 @@ dependency-reduced-pom.xml
 # Maven
 log/
 target/
-saved-match/
+
+# Others
+/resources/saved-match/

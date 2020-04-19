@@ -148,7 +148,7 @@ public class Server {
     public static void main(String[] args) {
         Server server = new Server();
 
-        try (FileReader reader = new FileReader(Objects.requireNonNull(server.getClass().getClassLoader().getResource("config.json")).getFile()))
+        try (FileReader reader = new FileReader("resources"+File.separator+"config.json"))
         {
             // json read
             JSONParser jsonParser = new JSONParser();
@@ -163,6 +163,7 @@ public class Server {
                     server.port = Integer.parseInt(config.get("port").toString());
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             // default params
             server.port = 1234;
         }
@@ -177,8 +178,8 @@ public class Server {
         ObjectInputStream objIn;
         ArrayList<String> toDelete = new ArrayList<>();
         try {
-            if(new File("saved-match").exists()){
-                for (final File fileEntry : Objects.requireNonNull(new File("saved-match").listFiles())) {
+            if(new File("resources"+File.separator+"saved-match").exists()){
+                for (final File fileEntry : Objects.requireNonNull(new File("resources"+File.separator+"saved-match").listFiles())) {
                     if (!fileEntry.isDirectory()) {
                         objIn = new ObjectInputStream(new FileInputStream(fileEntry.getAbsolutePath()));
                         Object obj = objIn.readObject();
