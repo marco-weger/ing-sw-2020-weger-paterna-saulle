@@ -3,16 +3,12 @@ package it.polimi.ingsw.commons.clientMessages;
 import it.polimi.ingsw.controller.ClientMessageHandler;
 import it.polimi.ingsw.commons.ClientMessage;
 
-import java.io.Serializable;
-
 public class WorkerChoseClient extends ClientMessage {
 
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    public String name;
     public int worker;
-
 
     /**
      * @param name the name of the player

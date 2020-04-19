@@ -4,7 +4,6 @@ import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
-import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
 import it.polimi.ingsw.commons.clientMessages.ReConnectionClient;
 import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
@@ -13,8 +12,6 @@ import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Player;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class VirtualView extends Observable implements Observer {

@@ -20,4 +20,9 @@ public class SnapCell implements Serializable {
         this.level=level;
     }
 
+    @Override
+    public String toString(){
+        return this.row+"-"+this.column;
+    }
+
 }

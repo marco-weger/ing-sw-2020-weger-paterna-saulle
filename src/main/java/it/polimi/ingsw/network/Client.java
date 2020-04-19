@@ -4,11 +4,14 @@ import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapWorker;
+import it.polimi.ingsw.commons.serverMessages.BuiltServer;
+import it.polimi.ingsw.commons.serverMessages.MovedServer;
 import it.polimi.ingsw.view.CLI;
 import it.polimi.ingsw.view.SnapPlayer;
 import it.polimi.ingsw.view.TextFormatting;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.w3c.dom.Text;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -111,7 +114,7 @@ public class Client implements Runnable{
 
         String version;
         do{
-            System.out.print("Choose the version [CLI/GUI] " + TextFormatting.input() );
+            System.out.print(TextFormatting.RESET + "Choose the version [CLI/GUI] " + TextFormatting.input() );
             version = new Scanner(System.in).nextLine();
 
             if(version.equals("CLI")){
@@ -169,8 +172,22 @@ public class Client implements Runnable{
         try {
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) in.readObject();
-                // TODO: if modified, board.print etc. necessity of messages that notify the update
                 System.out.println(msg.toString());
+                if(msg instanceof MovedServer){
+                    System.out.println(TextFormatting.COLOR_RED.toString() + ((MovedServer) msg).sw.row + " - " + ((MovedServer) msg).sw.column + TextFormatting.RESET);
+                    for(SnapWorker worker : getWorkers()){
+                        if(worker.name.equals(msg.name) && worker.n == ((MovedServer) msg).sw.n){
+                            worker.row = ((MovedServer) msg).sw.row;
+                            worker.column = ((MovedServer) msg).sw.column;
+                        }
+                    }
+                }else if(msg instanceof BuiltServer){
+                    for(SnapCell cell : getBoard()){
+                        if(cell.toString().equals(((BuiltServer) msg).sc.toString())){
+                            cell.level = ((BuiltServer) msg).sc.level;
+                        }
+                    }
+                }
                 msg.accept(view);
             }
         }

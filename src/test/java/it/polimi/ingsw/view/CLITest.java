@@ -28,7 +28,7 @@ public class CLITest {
         c.getPlayers().get(0).card = CardName.ARTEMIS;
         c.getPlayers().get(1).card = CardName.MINOTAUR;
         c.getPlayers().get(0).card = CardName.PAN;
-        //view.printTable();
+        view.printTable();
     }
 
     @Test
