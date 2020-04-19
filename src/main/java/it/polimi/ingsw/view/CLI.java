@@ -156,19 +156,19 @@ public class CLI implements ViewInterface {
     public void handleMessage(QuestionAbilityServer message) { // TODO test
         clear();
         do {
-            println(colorCPU+"Want to use the Ability of your God [YES/NO] " + TextFormatting.input());
+            println(colorCPU+"Do you want to use the Ability of your God? [YES/NO] " + TextFormatting.input());
             String answer = read();
             if (answer.toUpperCase().equals("YES")) {
-                AnswerAbilityClient mex = new AnswerAbilityClient(client.getUsername(), true, Status.CHOSEN);
-                client.sendMessage(mex);
+                client.sendMessage(new AnswerAbilityClient(client.getUsername(), true, message.status));
                 break;
             }
             if (answer.toUpperCase().equals("NO")) {
-                AnswerAbilityClient mex = new AnswerAbilityClient(client.getUsername(), false, Status.CHOSEN);
-                client.sendMessage(mex);
+                client.sendMessage(new AnswerAbilityClient(client.getUsername(), false, message.status));
                 break;
             }
         }while(true);
+        println(colorCPU+"Request Send!..... loading.... " + TextFormatting.input());
+
     }
 
     @Override
