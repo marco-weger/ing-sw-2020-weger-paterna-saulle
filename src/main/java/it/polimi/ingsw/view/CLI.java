@@ -240,23 +240,12 @@ public class CLI implements ViewInterface {
     public void handleMessage(SomeoneLoseServer message) { // TODO test
         clear();
         if(this.client.getUsername().equals(message.player)){
-            print(TextFormatting.loser()
-                    +
-                    "                                                     888                                              \n" +
-                    "                                                     888                                              \n" +
-                    "                                                     888                                              \n" +
-                    "  d8b d8b d8b       888  888  .d88b.  888  888       888  .d88b.  .d8888b   .d88b.        d8b d8b d8b \n" +
-                    "  Y8P Y8P Y8P       888  888 d88\"\"88b 888  888       888 d88\"\"88b 88K      d8P  Y8b       Y8P Y8P Y8P \n" +
-                    "                    888  888 888  888 888  888       888 888  888 \"Y8888b. 88888888                   \n" +
-                    "  d8b d8b d8b       Y88b 888 Y88..88P Y88b 888       888 Y88..88P      X88 Y8b.           d8b d8b d8b \n" +
-                    "  Y8P Y8P Y8P        \"Y88888  \"Y88P\"   \"Y88888       888  \"Y88P\"   88888P'  \"Y8888        Y8P Y8P Y8P \n" +
-                    "                         888                                                                          \n" +
-                    "                    Y8b d88P                                                                          \n" +
-                    "                     \"Y88P\"                                                                           \n"
-            );
+            printLose();
         }
         else
             println(TextFormatting.loser() + message.name + "has lost");
+
+        endMatch();
 
     }
 
@@ -330,37 +319,10 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(SomeoneWinServer message) { // TODO test
         clear();
-        if(this.client.getUsername().equals(message.player)) {
-            print(TextFormatting.winner()
-                    +
-                    "                                               Y88b   d88P  .d88888b.  888     888       888       888 8888888 888b    888                                                      \n" +
-                    "        o            o            o             Y88b d88P  d88P' 'Y88b 888     888       888   o   888   888   8888b   888             o            o            o              \n" +
-                    "       d8b          d8b          d8b             Y88o88P   888     888 888     888       888  d8b  888   888   88888b  888            d8b          d8b          d8b             \n" +
-                    "      d888b        d888b        d888b             Y888P    888     888 888     888       888 d888b 888   888   888Y88b 888           d888b        d888b        d888b            \n" +
-                    "  'Y888888888P''Y888888888P''Y888888888P'          888     888     888 888     888       888d88888b888   888   888 Y88b888       'Y888888888P''Y888888888P''Y888888888P'        \n" +
-                    "    'Y88888P'    'Y88888P''    'Y88888P'           888     888     888 888     888       88888P Y88888   888   888  Y88888         'Y88888P'    'Y88888P'    'Y88888P'          \n" +
-                    "    d88P'Y88b    d88P'Y88b    d88P'Y88b            888     Y88b. .d88P Y88b. .d88P       8888P   Y8888   888   888   Y8888         d88P'Y88b    d88P'Y88b    d88P'Y88b          \n" +
-                    "   dP'     'Yb  dP'     'Yb  dP'     'Yb           888      'Y88888P'   'Y88888P'        888P     Y888 8888888 888    Y888        dP'     'Yb  dP'     'Yb  dP'     'Yb         \n"
-            );
-        }
-        else{
-            print(TextFormatting.loser()
-                    +
-                    "                                                     888                                              \n" +
-                    "                                                     888                                              \n" +
-                    "                                                     888                                              \n" +
-                    "  d8b d8b d8b       888  888  .d88b.  888  888       888  .d88b.  .d8888b   .d88b.        d8b d8b d8b \n" +
-                    "  Y8P Y8P Y8P       888  888 d88\"\"88b 888  888       888 d88\"\"88b 88K      d8P  Y8b       Y8P Y8P Y8P \n" +
-                    "                    888  888 888  888 888  888       888 888  888 \"Y8888b. 88888888                   \n" +
-                    "  d8b d8b d8b       Y88b 888 Y88..88P Y88b 888       888 Y88..88P      X88 Y8b.           d8b d8b d8b \n" +
-                    "  Y8P Y8P Y8P        \"Y88888  \"Y88P\"   \"Y88888       888  \"Y88P\"   88888P'  \"Y8888        Y8P Y8P Y8P \n" +
-                    "                         888                                                                          \n" +
-                    "                    Y8b d88P                                                                          \n" +
-                    "                     \"Y88P\"                                                                           \n"
-            );
-
-            }
-        }
+        if(this.client.getUsername().equals(message.player))
+            printWin();
+        else printLose();
+    }
 
 
 
@@ -422,17 +384,73 @@ public class CLI implements ViewInterface {
         printTable();
     }
 
+    public void endMatch(){
+        String str;
+        do{
+            str = "";
+            print(colorCPU + "Type [CONTINUE] if you want to start a new game, [QUIT] if you want to close the game " + TextFormatting.input());
+            try {
+                if(System.in.available() > 0){
+                    str = read();
+                    if(str.equalsIgnoreCase("CONTINUE")){
+                        // TODO new lobby
+                        System.out.println(colorCPU + "MUST IMPLEMENT NEW LOBBY!" + TextFormatting.RESET);
+                    } else if(str.equalsIgnoreCase("QUIT")){
+                        System.out.println(colorCPU + "Thank you for playing Santorini!" + TextFormatting.RESET);
+                        System.exit(1);
+                    }
+                }
+            } catch (IOException e) {
+                str = "";
+            }
+        }while (!str.equals("CONTINUE"));
+    }
+
+    // ********************************************************************************************************* //
+
+
     public void clear(){
         for(int i=0;i<60;i++)
             println("");
     }
 
-    // ********************************************************************************************************* //
-
     public void startEasterEgg(String name){
         if(name.toUpperCase().equals("NIKE")){
             println("PRINT EASTER EGG!");
         }
+    }
+
+    public void printLose(){
+        println(TextFormatting.loser()
+                +
+                "                                                     888                                              \n" +
+                "                                                     888                                              \n" +
+                "                                                     888                                              \n" +
+                "  d8b d8b d8b       888  888  .d88b.  888  888       888  .d88b.  .d8888b   .d88b.        d8b d8b d8b \n" +
+                "  Y8P Y8P Y8P       888  888 d88\"\"88b 888  888       888 d88\"\"88b 88K      d8P  Y8b       Y8P Y8P Y8P \n" +
+                "                    888  888 888  888 888  888       888 888  888 \"Y8888b. 88888888                   \n" +
+                "  d8b d8b d8b       Y88b 888 Y88..88P Y88b 888       888 Y88..88P      X88 Y8b.           d8b d8b d8b \n" +
+                "  Y8P Y8P Y8P        \"Y88888  \"Y88P\"   \"Y88888       888  \"Y88P\"   88888P'  \"Y8888        Y8P Y8P Y8P \n" +
+                "                         888                                                                          \n" +
+                "                    Y8b d88P                                                                          \n" +
+                "                     \"Y88P\"                                                                           \n"
+        );
+        endMatch();
+    }
+
+    public void printWin(){
+        println(TextFormatting.winner()
+                +
+                "                                               Y88b   d88P  .d88888b.  888     888       888       888 8888888 888b    888                                                      \n" +
+                "        o            o            o             Y88b d88P  d88P' 'Y88b 888     888       888   o   888   888   8888b   888             o            o            o              \n" +
+                "       d8b          d8b          d8b             Y88o88P   888     888 888     888       888  d8b  888   888   88888b  888            d8b          d8b          d8b             \n" +
+                "      d888b        d888b        d888b             Y888P    888     888 888     888       888 d888b 888   888   888Y88b 888           d888b        d888b        d888b            \n" +
+                "  'Y888888888P''Y888888888P''Y888888888P'          888     888     888 888     888       888d88888b888   888   888 Y88b888       'Y888888888P''Y888888888P''Y888888888P'        \n" +
+                "    'Y88888P'    'Y88888P''    'Y88888P'           888     888     888 888     888       88888P Y88888   888   888  Y88888         'Y88888P'    'Y88888P'    'Y88888P'          \n" +
+                "    d88P'Y88b    d88P'Y88b    d88P'Y88b            888     Y88b. .d88P Y88b. .d88P       8888P   Y8888   888   888   Y8888         d88P'Y88b    d88P'Y88b    d88P'Y88b          \n" +
+                "   dP'     'Yb  dP'     'Yb  dP'     'Yb           888      'Y88888P'   'Y88888P'        888P     Y888 8888888 888    Y888        dP'     'Yb  dP'     'Yb  dP'     'Yb         \n"
+        );
+        endMatch();
     }
 
     public void printTitle(){
@@ -683,7 +701,7 @@ public class CLI implements ViewInterface {
 
         toPrint[3] = color.get(0)+"│"+toPrint[3]+"│"+"      While waiting I advise you to read the rules:";
         toPrint[4] = color.get(0)+"│"+toPrint[4]+"│"+"      www.ultraboardgames.com/santorini/game-rules.php";
-        toPrint[5] = color.get(0)+"│"+toPrint[5]+"│"+"      There is an easter egg, try to find it!";
+        toPrint[5] = color.get(0)+"│"+toPrint[5]+"│";
         toPrint[6] = color.get(0)+"╰────────────────────────────────────╯";
 
         for (String s : toPrint){
