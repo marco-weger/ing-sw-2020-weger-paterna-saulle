@@ -7,6 +7,7 @@ import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -152,7 +153,6 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(QuestionAbilityServer message) { // TODO test
-        clear();
         do {
             println(colorCPU+"Do you want to use the Ability of your God? [YES/NO] " + TextFormatting.input());
             String answer = read();
@@ -538,7 +538,7 @@ public class CLI implements ViewInterface {
         for (String s : print) println(s + TextFormatting.RESET);
     }
 
-    public String[] printPlayers(String[] print){
+    public String[] printPlayers(@NotNull String[] print){
         for(int i=0;i<print.length;i++)
             print[i] += color.get(0) + "      ";
 
