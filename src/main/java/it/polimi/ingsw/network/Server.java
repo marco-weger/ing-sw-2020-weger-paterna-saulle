@@ -116,7 +116,8 @@ public class Server {
             }
         }while (go);
 
-        loadMatch();
+        // TODO use this function
+        // loadMatch();
 
         this.virtualViews2.add(currentVirtualView2); // add the first VirtualView
         this.virtualViews3.add(currentVirtualView3); // add the first VirtualView
