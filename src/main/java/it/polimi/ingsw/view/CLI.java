@@ -7,11 +7,7 @@ import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -22,6 +18,8 @@ public class CLI implements ViewInterface {
 
     ArrayList<String> color;
     String colorCPU;
+
+    Scanner in;
 
     public CLI(Client client){
         this.client = client;
@@ -34,6 +32,8 @@ public class CLI implements ViewInterface {
         color.add(TextFormatting.BACKGROUND_BLUE.toString() + TextFormatting.COLOR_BLACK); // lv 4
 
         colorCPU = TextFormatting.COLOR_CYAN.toString();
+
+        in = new Scanner(System.in);
     }
 
     public void displayFirstWindow() { // tested
@@ -155,7 +155,7 @@ public class CLI implements ViewInterface {
     public void handleMessage(QuestionAbilityServer message) { // TODO test
         do {
             println(colorCPU+"Do you want to use the Ability of your God? [YES/NO] " + TextFormatting.input());
-            String answer = read();
+            String answer = in.nextLine();
             if (answer.toUpperCase().equals("YES")) {
                 client.sendMessage(new AnswerAbilityClient(client.getUsername(), true, message.status));
                 break;
@@ -183,6 +183,7 @@ public class CLI implements ViewInterface {
                         do { // first worker of the match
                             print(colorCPU + "Type the position of first worker [x-y] " + TextFormatting.input());
                             c = readCell();
+                            println(c.row + "+" + c.column);
                             for(SnapWorker sw : client.getWorkers()){
                                 if (sw.row == c.row && sw.column == c.column) {
                                     c = null;
@@ -197,18 +198,20 @@ public class CLI implements ViewInterface {
                         printTitle();
                         printTable();
                         boolean go = true;
+                        println(message.worker1 + "-"+ message.worker2);
+                        print(colorCPU+"Chose the worker to play with [x-y] " + TextFormatting.input());
                         do {
-                            print(colorCPU+"Chose the worker to play with [x-y] " + TextFormatting.input());
                             c = readCell();
                             if(c != null){
                                 for(SnapWorker sw : client.getWorkers()){
-                                    if (sw.row == c.row && sw.column == c.column && sw.name.equals(client.getUsername())){
+                                    if (sw.row == c.row && sw.column == c.column && sw.name.equals(client.getUsername()) && (message.worker1 && sw.n == 1 || message.worker2 && sw.n == 2)){
                                         client.sendMessage(new WorkerChoseClient(client.getUsername(),sw.n));
                                         go = false;
                                         break;
                                     }
                                 }
                             }
+                            print(colorCPU+"Selected worker isn't valid, chose the worker to play with [x-y] " + TextFormatting.input());
                         } while(go);
                         break;
                     /*
@@ -240,15 +243,25 @@ public class CLI implements ViewInterface {
         for(SnapPlayer sp : client.getPlayers())
             if(sp.name.equals(message.player))
                 sp.loser = true;
+
+        ArrayList<SnapWorker> toDelete = new ArrayList<>();
+        for(SnapWorker sw : client.getWorkers())
+            if(sw.name.equals(message.player))
+                toDelete.add(sw);
+        client.getWorkers().remove(toDelete);
+
+
         if(this.client.getUsername().equals(message.player)){
             clear();
             printLose();
+            endMatch();
         }
-        else
-            println(TextFormatting.loser() + message.player + "has lost!" + TextFormatting.RESET);
-
-        endMatch();
-
+        else{
+            clear();
+            printTitle();
+            printTable();
+            println(TextFormatting.loser() + message.player + " has lost!" + TextFormatting.RESET);
+        }
     }
 
     @Override
@@ -265,7 +278,7 @@ public class CLI implements ViewInterface {
             do{
                 print(colorCPU+"Type the first card [name] " + TextFormatting.input());
 
-                String name = read();
+                String name = in.nextLine();
                 startEasterEgg(name);
                 try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
                 catch(Exception ex){read = null;}
@@ -275,7 +288,7 @@ public class CLI implements ViewInterface {
             // second
             do{
                 print(colorCPU+"Type the second card [name] " + TextFormatting.input());
-                String name = read();
+                String name = in.nextLine();
                 startEasterEgg(name);
                 try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
                 catch(Exception ex){read = null;}
@@ -286,7 +299,7 @@ public class CLI implements ViewInterface {
             if(client.getPlayers().size()==3){
                 do{
                     print(colorCPU+"Type the third card [name] " + TextFormatting.input());
-                    String name = read();
+                    String name = in.nextLine();
                     startEasterEgg(name);
                     try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
                     catch(Exception ex){read = null;}
@@ -304,7 +317,7 @@ public class CLI implements ViewInterface {
             CardName read;
             do{
                 print(colorCPU+"Type the chosen one [name] " + TextFormatting.input());
-                String name = read();
+                String name = in.nextLine();
                 startEasterEgg(name);
                 try{
                     read=Enum.valueOf(CardName.class,name.toUpperCase());
@@ -337,7 +350,8 @@ public class CLI implements ViewInterface {
                 print(colorCPU + "Type your username (max 12 characters) " + TextFormatting.input());
             else
                 print(colorCPU + "The chosen one is not allowed, type new username (max 12 characters) " + TextFormatting.input());
-            this.client.setUsername(read());
+
+            this.client.setUsername(in.nextLine());
             message.isFirstTime = false;
         }while (this.client.getUsername().isEmpty() || this.client.getUsername().length() > 12);
         client.sendMessage(new ConnectionClient(this.client.getUsername()));
@@ -345,11 +359,10 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(LobbyServer message) { // tested
-        System.out.println("TRY TO COMMENT HERE BUG TO RESOLVE A BAG!");
-        client.resetPlayers();
-        for(String s : message.players)
-            client.getPlayers().add(new SnapPlayer(s,client.getMyCode(),client.getPlayers().size()));
-        /*
+        //System.out.println("TRY TO COMMENT HERE BUG TO RESOLVE A BAG!");
+        //client.resetPlayers();
+        //for(String s : message.players)
+        //    client.getPlayers().add(new SnapPlayer(s,client.getMyCode(),client.getPlayers().size()));
         clear();
         printTitle();
         try{
@@ -358,7 +371,6 @@ public class CLI implements ViewInterface {
                 client.getPlayers().add(new SnapPlayer(s,client.getMyCode(),client.getPlayers().size()));
             printLobby(message.loaded);
         }catch (Exception e){println(e.getMessage());}
-        */
     }
 
     @Override
@@ -366,9 +378,9 @@ public class CLI implements ViewInterface {
         int mode;
         do{
             print(colorCPU + "Chose game mode (2 or 3 players) [2/3] " + TextFormatting.input());
-            String stringMode = read();
             try
             {
+                String stringMode = in.nextLine();
                 mode = Integer.parseInt(stringMode);
             }catch(Exception e)
             {
@@ -492,19 +504,14 @@ public class CLI implements ViewInterface {
         System.out.print(string);
         System.out.flush();
     }
-    public String read(){
-        try {
-            return new BufferedReader(new InputStreamReader(System.in)).readLine().toUpperCase();
-        } catch (IOException e) {
-            //e.printStackTrace();
-            return "";
-        }
-    }
+    //public String read(){
+    //    return ; //new BufferedReader(new InputStreamReader(System.in)).readLine().toUpperCase();
+    //}
     public SnapCell readCell(){
         boolean go;
         int x, y;
         try{
-            String tmp = read();
+            String tmp = in.nextLine().toUpperCase();
             String[] tmps = tmp.split("-");
             x = Integer.parseInt(tmps[0]) -1;
             y = "ABCDE".contains(tmps[1]) && tmps[1].length() == 1 ? "ABCDE".indexOf(tmps[1]) : -1;
@@ -573,7 +580,7 @@ public class CLI implements ViewInterface {
             endMatch();
     }
 
-    public String[] printPlayers(@NotNull String[] print){
+    public String[] printPlayers(String[] print){
         for(int i=0;i<print.length;i++)
             print[i] += color.get(0) + "      ";
 
@@ -605,6 +612,14 @@ public class CLI implements ViewInterface {
                 print[factor*i+5] += client.getPlayers().get(i).color+"│           GOD NOT CHOSEN           │"+TextFormatting.RESET;
                 print[factor*i+6] += client.getPlayers().get(i).color+"│                                    │"+TextFormatting.RESET;
                 print[factor*i+7] += client.getPlayers().get(i).color+"│                                    │"+TextFormatting.RESET;
+                print[factor*i+8] += client.getPlayers().get(i).color+"╰────────────────────────────────────╯"+TextFormatting.RESET;
+            }
+            else if (client.getPlayers().get(i).loser){
+                print[factor*i+3] += client.getPlayers().get(i).color+"│        _                           │" +TextFormatting.RESET;
+                print[factor*i+4] += client.getPlayers().get(i).color+"│       | | ___  ___  ___ _ __       │"+TextFormatting.RESET;
+                print[factor*i+5] += client.getPlayers().get(i).color+"│       | |/ _ \\/ __|/ _ \\ '__|      │"+TextFormatting.RESET;
+                print[factor*i+6] += client.getPlayers().get(i).color+"│       | | (_) \\__ \\  __/ |         │"+TextFormatting.RESET;
+                print[factor*i+7] += client.getPlayers().get(i).color+"│       |_|\\___/|___/\\___|_|         │"+TextFormatting.RESET;
                 print[factor*i+8] += client.getPlayers().get(i).color+"╰────────────────────────────────────╯"+TextFormatting.RESET;
             }
             else {

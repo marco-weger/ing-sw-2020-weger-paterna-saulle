@@ -99,13 +99,23 @@ public class Match extends Observable implements Serializable {
         if(status.equals(Status.WORKER_CHOICE) && getCurrentPlayer() == null)
             players.get(0).setCurrent(true);
 
-        if(getCurrentPlayer() != null)
-            notifyObservers(new CurrentStatusServer(getCurrentPlayer().getName(),status));
+        if(getCurrentPlayer() != null){
+            CurrentStatusServer message = new CurrentStatusServer(getCurrentPlayer().getName(),status);
+            if (status.equals(Status.START)){
+                getCurrentPlayer().setCurrentWorker(1);
+                message.worker1 = getCurrentPlayer().getCard().checkMove(players,board).size() > 0;
+                getCurrentPlayer().setCurrentWorker(2);
+                message.worker2 = getCurrentPlayer().getCard().checkMove(players,board).size() > 0;
+                getCurrentPlayer().setCurrentWorker(0);
+            }
+            notifyObservers(message);
+        }
         else
             notifyObservers(new CurrentStatusServer("",status));
 
         if(status.equals(Status.CARD_CHOICE))
             notifyObservers(new AvailableCardServer(this.players.get(0).getName(),new ArrayList<CardName>()));
+
     }
 
     public ArrayList<Player> getPlayers() {

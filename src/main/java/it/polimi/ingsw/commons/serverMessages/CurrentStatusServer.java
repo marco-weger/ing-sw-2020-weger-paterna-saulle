@@ -12,6 +12,16 @@ public class CurrentStatusServer extends ServerMessage {
     public Status status;
 
     /**
+     * True if the player could move the first worker
+     */
+    public boolean worker1;
+
+    /**
+     * True if the player could move the second worker
+     */
+    public boolean worker2;
+
+    /**
      * The player receives this message upon a request of the server,
      * informing him of the current status.
      * @param player name of the player

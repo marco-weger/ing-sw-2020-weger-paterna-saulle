@@ -201,6 +201,9 @@ public class Controller implements Observer, ClientMessageHandler {
     @Override
     public void handleMessage(WorkerChoseClient message) {
         if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.START) == 0){
+            //match.getCurrentPlayer().setCurrentWorker(message.worker);
+            //match.getCurrentPlayer().getCard().(match.getPlayers(),match.getBoard());
+
             match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
             match.getCurrentPlayer().setCurrentWorker(message.worker);
 

@@ -82,7 +82,7 @@ public class Card extends Observable implements Serializable {
      * @param b board
      * @return list of cells where active worker could build
      */
-    protected ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b)
+    public ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b)
     {
         if(p == null || b == null) return new ArrayList<>();
         Worker actived = null;
@@ -102,7 +102,7 @@ public class Card extends Observable implements Serializable {
      * @param b board
      * @return list of cells where active worker could move
      */
-    protected ArrayList<Cell> checkMove(ArrayList<Player> p, Board b){
+    public ArrayList<Cell> checkMove(ArrayList<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
         for(Player player:p)

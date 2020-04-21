@@ -24,10 +24,12 @@ public class CLITest {
         CLI view = new CLI(c);
         c.getPlayers().add(new SnapPlayer("MARCO",c.getMyCode(),0));
         c.getPlayers().add(new SnapPlayer("GIULIO",c.getMyCode(),1));
+        c.getPlayers().get(0).loser = true;
         //c.getPlayers().add(new SnapPlayer("FRA",c.getMyCode(),2));
         c.getPlayers().get(0).card = CardName.ARTEMIS;
         c.getPlayers().get(1).card = CardName.MINOTAUR;
         c.getPlayers().get(0).card = CardName.PAN;
+        c.setUsername(c.getPlayers().get(0).name);
         view.printTable();
     }
     /*

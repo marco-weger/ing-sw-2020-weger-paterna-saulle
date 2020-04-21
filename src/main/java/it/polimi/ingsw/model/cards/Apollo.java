@@ -21,7 +21,7 @@ public class Apollo extends Card {
      * @return list of available cells
      */
     @Override
-    protected ArrayList<Cell> checkMove(ArrayList<Player> p, Board b){
+    public ArrayList<Cell> checkMove(ArrayList<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
         for(Player player:p)

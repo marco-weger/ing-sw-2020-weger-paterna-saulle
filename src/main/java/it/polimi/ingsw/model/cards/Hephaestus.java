@@ -21,7 +21,7 @@ public class Hephaestus extends Card {
      * @return where to build
      */
     @Override
-    protected ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b) {
+    public ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b) {
         if(p == null || b == null) return new ArrayList<>();
         Worker actived = null;
         for(Player player:p)
