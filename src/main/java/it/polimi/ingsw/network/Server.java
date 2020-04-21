@@ -166,7 +166,6 @@ public class Server {
             for(ServerClientHandler sch : vv.getConnectedPlayers().values()){
                 if(sch.getName().equals(sm.name)){
                     sch.notify(sm);
-                    System.out.println("[SENT] - " + sm.toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + " - " + sm.name);
                 }
             }
         }

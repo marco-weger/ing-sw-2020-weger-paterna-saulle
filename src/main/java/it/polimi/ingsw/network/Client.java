@@ -15,7 +15,6 @@ import org.json.simple.parser.JSONParser;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,8 +30,6 @@ public class Client implements Runnable{
     protected ArrayList<SnapCell> board;
     protected ArrayList<SnapWorker> workers;
     protected ArrayList<SnapPlayer> players;
-
-    private static String GREEK = "ΓΔΘΛΠΣΦΨΩ";
 
     String ip;
     int port;
@@ -50,8 +47,6 @@ public class Client implements Runnable{
     }
 
     public ArrayList<SnapPlayer> getPlayers(){ return players; }
-
-    public void resetPlayers(){ players = new ArrayList<>(); }
 
     public CLI getView() {
         return view;
@@ -88,29 +83,28 @@ public class Client implements Runnable{
         return null;
     }
 
-    public char getMyCode(){
-        char c;
-        boolean go = false;
-        do{
-            c = GREEK.charAt(Math.abs(new Random().nextInt(GREEK.length())));
-            for(SnapPlayer p : players){
-                if (p.symbol == c) {
-                    go = true;
-                    break;
-                }
+    public void removeWorkers(ArrayList<SnapWorker> snapWorkers){
+        for(SnapWorker sw : snapWorkers)
+            this.workers.remove(sw);
+    }
+
+    public void setPlayers(ArrayList<String> names){
+        //System.out.println("START SETT");
+        try{
+            this.players = new ArrayList<>();
+            for (String name : names) {
+                this.players.add(new SnapPlayer(name));
+                //System.out.println("\t"+this.players.get(i).symbol + " - " + this.players.get(i).name);
             }
-        }while(go);
-        return c;
+
+        }catch (Exception e){
+            System.exit(-1);
+        }
+        //System.out.println("END SETT...");
     }
 
     public static void main(String[] args){
         Client client = new Client();
-
-        /*
-        for(TextFormatting t : TextFormatting.values()){
-            System.out.println(t + "------" +t.name() + "------" + TextFormatting.RESET);
-        }
-         */
 
         readParams(client);
 

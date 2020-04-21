@@ -22,8 +22,11 @@ public class CLITest {
         //c.getWorkers().add(new SnapWorker(2,0,"FRA",1));
         //c.getWorkers().add(new SnapWorker(0,1,"FRA",2));
         CLI view = new CLI(c);
-        c.getPlayers().add(new SnapPlayer("MARCO",c.getMyCode(),0));
-        c.getPlayers().add(new SnapPlayer("GIULIO",c.getMyCode(),1));
+        c.getPlayers().add(new SnapPlayer("MARCO"));
+        c.getPlayers().add(new SnapPlayer("GIULIO"));
+        c.getPlayers().get(0).symbol= "@";
+        c.getPlayers().get(0).symbol= "+";
+        // OK COLOR
         c.getPlayers().get(0).loser = true;
         //c.getPlayers().add(new SnapPlayer("FRA",c.getMyCode(),2));
         c.getPlayers().get(0).card = CardName.ARTEMIS;

@@ -226,6 +226,8 @@ public class ServerClientHandler implements Runnable {
             out.reset();
             out.writeObject(message);
             out.flush();
+            if(message.name.length() > 0)
+                System.out.println("[SENT] - " + message.toString().substring(message.toString().lastIndexOf('.')+1,message.toString().lastIndexOf('@')) + " - " + message.name);
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, e.getMessage());
         }

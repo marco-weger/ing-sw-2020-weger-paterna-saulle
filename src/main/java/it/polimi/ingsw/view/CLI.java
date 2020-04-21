@@ -10,6 +10,7 @@ import it.polimi.ingsw.network.Client;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 public class CLI implements ViewInterface {
@@ -20,6 +21,8 @@ public class CLI implements ViewInterface {
     String colorCPU;
 
     Scanner in;
+
+    String symbols;
 
     public CLI(Client client){
         this.client = client;
@@ -32,6 +35,8 @@ public class CLI implements ViewInterface {
         color.add(TextFormatting.BACKGROUND_BLUE.toString() + TextFormatting.COLOR_BLACK); // lv 4
 
         colorCPU = TextFormatting.COLOR_CYAN.toString();
+        symbols = getMyCode(3);
+        println(symbols);
 
         in = new Scanner(System.in);
     }
@@ -248,7 +253,7 @@ public class CLI implements ViewInterface {
         for(SnapWorker sw : client.getWorkers())
             if(sw.name.equals(message.player))
                 toDelete.add(sw);
-        client.getWorkers().remove(toDelete);
+        client.removeWorkers(toDelete);
 
 
         if(this.client.getUsername().equals(message.player)){
@@ -350,8 +355,9 @@ public class CLI implements ViewInterface {
                 print(colorCPU + "Type your username (max 12 characters) " + TextFormatting.input());
             else
                 print(colorCPU + "The chosen one is not allowed, type new username (max 12 characters) " + TextFormatting.input());
-
-            this.client.setUsername(in.nextLine());
+            String username = in.nextLine();
+            print(colorCPU + "Validating username... " + TextFormatting.RESET);
+            this.client.setUsername(username);
             message.isFirstTime = false;
         }while (this.client.getUsername().isEmpty() || this.client.getUsername().length() > 12);
         client.sendMessage(new ConnectionClient(this.client.getUsername()));
@@ -359,18 +365,26 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(LobbyServer message) { // tested
-        //System.out.println("TRY TO COMMENT HERE BUG TO RESOLVE A BAG!");
-        //client.resetPlayers();
-        //for(String s : message.players)
-        //    client.getPlayers().add(new SnapPlayer(s,client.getMyCode(),client.getPlayers().size()));
         clear();
         printTitle();
         try{
-            client.resetPlayers();
-            for(String s : message.players)
-                client.getPlayers().add(new SnapPlayer(s,client.getMyCode(),client.getPlayers().size()));
+            client.setPlayers(message.players);
+            //println("DID IT!");
+            // color
+            for(int i=0;i<client.getPlayers().size();i++){
+                client.getPlayers().get(i).symbol = symbols.charAt(i)+"";
+                if(i==0)
+                    client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_RED.toString()+TextFormatting.COLOR_BLACK);
+                else if(i==1)
+                    client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_YELLOW.toString()+TextFormatting.COLOR_BLACK);
+                else if(i==2)
+                    client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_PURPLE.toString()+TextFormatting.COLOR_BLACK);
+            }
+
             printLobby(message.loaded);
-        }catch (Exception e){println(e.getMessage());}
+        }catch (Exception e){
+            println(e.getMessage());
+        }
     }
 
     @Override
@@ -432,6 +446,26 @@ public class CLI implements ViewInterface {
 
     // ********************************************************************************************************* //
 
+    private static String GREEK = "ΓΔΘΛΠΣΦΨΩ";
+    public String getMyCode(int k){
+        try {
+            StringBuilder ret = new StringBuilder();
+            String tmp;
+            for(int j=0; j<k; j++){
+                boolean go = false;
+                do {
+                    tmp = GREEK.charAt(Math.abs(new Random().nextInt(GREEK.length()))) + "";
+                    if (ret.toString().contains(tmp))
+                        go = true;
+                } while (go);
+                ret.append(tmp);
+            }
+            System.out.println("GETMYCODE");
+            return ret.toString();
+        } catch (Exception ex){
+            return "@";
+        }
+    }
 
     public void clear(){
         for(int i=0;i<60;i++)
@@ -694,49 +728,50 @@ public class CLI implements ViewInterface {
     }
 
     public void printLobby(Boolean loaded){
-        String[] toPrint = new String[7];
-        Arrays.fill(toPrint, "");
+        try {
+            String[] toPrint = new String[7];
+            Arrays.fill(toPrint, "");
 
-        toPrint[0] = color.get(0)+"╭────────────────────────────────────╮";
-        toPrint[1] = color.get(0)+"│               LOBBY                │";
-        if(loaded)
-            toPrint[1] += "      Match resumed... Keep waiting for other reconnection!";
+            toPrint[0] = color.get(0) + "╭────────────────────────────────────╮";
+            toPrint[1] = color.get(0) + "│               LOBBY                │";
+            if (loaded)
+                toPrint[1] += "      Match resumed... Keep waiting for other reconnection!";
 
-        toPrint[2] = color.get(0)+"├────────────────────────────────────┤";
+            toPrint[2] = color.get(0) + "├────────────────────────────────────┤";
 
-        StringBuilder tmp;
+            StringBuilder tmp;
 
-        for(int i=0;i<3; i++){
-            if(i<client.getPlayers().size()){
-                toPrint[i+3] = client.getPlayers().get(i).symbol +"  "+client.getPlayers().get(i).name+"  "+client.getPlayers().get(i).symbol;
+            for (int i = 0; i < 3; i++) {
+                if (i < client.getPlayers().size()) {
+                    toPrint[i + 3] = client.getPlayers().get(i).symbol + "  " + client.getPlayers().get(i).name + "  " + client.getPlayers().get(i).symbol;
 
-                if(client.getPlayers().get(i).card != null)
-                    toPrint[i+3] += "  "+client.getPlayers().get(i).card.name()+"  "+client.getPlayers().get(i).symbol;
+                    if (client.getPlayers().get(i).card != null)
+                        toPrint[i + 3] += "  " + client.getPlayers().get(i).card.name() + "  " + client.getPlayers().get(i).symbol;
+                }
             }
-        }
 
-        for(int i=0;i<3; i++){
-            tmp = new StringBuilder(toPrint[3+i]);
-            for(int j=0;j<(36-toPrint[3+i].length())/2;j++)
-                tmp.insert(0, " ");
-            for(int j=0;j<(36-toPrint[3+i].length())/2;j++)
-                tmp.append(" ");
-            toPrint[3+i] = tmp.toString();
-            if(toPrint[3+i].length()%2!=0) toPrint[3+i] += " ";
-        }
+            for (int i = 0; i < 3; i++) {
+                tmp = new StringBuilder(toPrint[3 + i]);
+                for (int j = 0; j < (36 - toPrint[3 + i].length()) / 2; j++)
+                    tmp.insert(0, " ");
+                for (int j = 0; j < (36 - toPrint[3 + i].length()) / 2; j++)
+                    tmp.append(" ");
+                toPrint[3 + i] = tmp.toString();
+                if (toPrint[3 + i].length() % 2 != 0) toPrint[3 + i] += " ";
+            }
 
-        toPrint[3] = color.get(0)+"│"+toPrint[3]+"│"+"      While waiting I advise you to read the rules:";
-        toPrint[4] = color.get(0)+"│"+toPrint[4]+"│"+"      www.ultraboardgames.com/santorini/game-rules.php";
-        toPrint[5] = color.get(0)+"│"+toPrint[5]+"│";
-        toPrint[6] = color.get(0)+"╰────────────────────────────────────╯";
+            toPrint[3] = color.get(0) + "│" + toPrint[3] + "│" + "      While waiting I advise you to read the rules:";
+            toPrint[4] = color.get(0) + "│" + toPrint[4] + "│" + "      www.ultraboardgames.com/santorini/game-rules.php";
+            toPrint[5] = color.get(0) + "│" + toPrint[5] + "│";
+            toPrint[6] = color.get(0) + "╰────────────────────────────────────╯";
 
-        for (String s : toPrint){
-            tmp = new StringBuilder(s);
-            while(tmp.length() < 117)
-                tmp.append(" ");
-            println(tmp.toString()+TextFormatting.RESET);
-        }
-
+            for (String s : toPrint) {
+                tmp = new StringBuilder(s);
+                while (tmp.length() < 117)
+                    tmp.append(" ");
+                println(tmp.toString() + TextFormatting.RESET);
+            }
+        } catch (Exception ex){ println(ex.getMessage());}
         //println(color.get(0)+"·················•·················•·················•·················•·················•·················"+TextFormatting.RESET);
     }
 
