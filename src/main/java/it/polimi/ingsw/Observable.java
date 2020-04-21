@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.commons.ServerMessage;
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.Match;
 
 import java.util.ArrayList;
@@ -27,7 +28,8 @@ public class Observable {
         for(Observer i : observers)
             i.update(obj);
         if(this instanceof Match && obj instanceof ServerMessage)
-            ((Match) this).saveToFile((ServerMessage) obj);
+            if(!((Match) this).getStatus().equals(Status.NAME_CHOICE))
+                ((Match) this).saveToFile((ServerMessage) obj);
     }
 
 }
