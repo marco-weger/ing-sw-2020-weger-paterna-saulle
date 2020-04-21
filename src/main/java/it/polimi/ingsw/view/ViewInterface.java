@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.commons.serverMessages.*;
 
 public interface ViewInterface {
+
     void handleMessage(CheckMoveServer message);
     void handleMessage(CheckBuildServer message);
     void handleMessage(CardChosenServer message);
@@ -15,7 +16,7 @@ public interface ViewInterface {
     void handleMessage(NameRequestServer message);
     void handleMessage(LobbyServer message);
     void handleMessage(ModeRequestServer message);
-
     void handleMessage(BuiltServer message);
     void handleMessage(MovedServer message);
+
 }

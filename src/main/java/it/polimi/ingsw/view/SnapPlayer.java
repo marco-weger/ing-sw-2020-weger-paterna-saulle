@@ -23,6 +23,7 @@ public class SnapPlayer {
 
         card=null;
     }
+
     public SnapPlayer(String name, char code){
         this.name=name;
         this.symbol=code;
