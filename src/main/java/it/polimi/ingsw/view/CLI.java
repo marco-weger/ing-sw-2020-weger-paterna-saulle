@@ -386,15 +386,16 @@ public class CLI implements ViewInterface {
 
     public void endMatch(){
         String str;
+        str = "";
+        print(colorCPU + "Type [CONTINUE] if you want to start a new game, [QUIT] if you want to close the game " + TextFormatting.input());
         do{
-            str = "";
-            print(colorCPU + "Type [CONTINUE] if you want to start a new game, [QUIT] if you want to close the game " + TextFormatting.input());
             try {
                 if(System.in.available() > 0){
                     str = read();
                     if(str.equalsIgnoreCase("CONTINUE")){
                         // TODO new lobby
                         System.out.println(colorCPU + "MUST IMPLEMENT NEW LOBBY!" + TextFormatting.RESET);
+                        break;
                     } else if(str.equalsIgnoreCase("QUIT")){
                         System.out.println(colorCPU + "Thank you for playing Santorini!" + TextFormatting.RESET);
                         System.exit(1);

@@ -187,6 +187,7 @@ public class Client implements Runnable{
                 }
                 msg.accept(view);
             }
+            System.out.println("ERROR! END CYCLE...");
         }
         catch (IOException | ClassNotFoundException e){
             System.out.println("R ERROR! SERVER UNAVAILABLE...");

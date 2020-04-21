@@ -115,8 +115,6 @@ public class Server {
                 else return;
             }
         }while (go);
-        if(serverSocket == null)
-            return;
 
         loadMatch();
 
@@ -149,24 +147,29 @@ public class Server {
 
     /**
      * It sends the server message to all clients
-     * @param s the message
+     * @param sm the message
      * @param vv the virtual view
      */
-    public void sendAll(ServerMessage s, VirtualView vv){
+    public void sendAll(ServerMessage sm, VirtualView vv){
         for(Object sch : vv.getConnectedPlayers().values())
-            ((ServerClientHandler) sch).notify(s);
+            ((ServerClientHandler) sch).notify(sm);
+        System.out.println("[SENT] - " + sm.toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + " - ALL");
     }
 
     /**
      * It sends the server message to the client set in the message
-     * @param s the message
+     * @param sm the message
      * @param vv the virtual view
      */
-    public void send(ServerMessage s, VirtualView vv){
-        if(s!=null && vv != null)
-            for(ServerClientHandler sch : vv.getConnectedPlayers().values())
-                if(sch.getName().equals(s.name))
-                    sch.notify(s);
+    public void send(ServerMessage sm, VirtualView vv){
+        if(sm!=null && vv != null){
+            for(ServerClientHandler sch : vv.getConnectedPlayers().values()){
+                if(sch.getName().equals(sm.name)){
+                    sch.notify(sm);
+                    System.out.println("[SENT] - " + sm.toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + " - " + sm.name);
+                }
+            }
+        }
     }
 
     /**

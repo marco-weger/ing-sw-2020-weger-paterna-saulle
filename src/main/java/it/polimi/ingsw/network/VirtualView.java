@@ -115,8 +115,6 @@ public class VirtualView extends Observable implements Observer {
         if(sm instanceof CurrentStatusServer)
             currentStatus = ((CurrentStatusServer) sm).status;
 
-        System.out.println("[SENT] - " + sm.toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + " - " + (sm.name.equals("") ? "ALL" : sm.name));
-
         if(server != null){
             if(sm.name.equals("")){
                 server.sendAll(sm,this);
