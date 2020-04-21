@@ -1,7 +1,0 @@
-{
-  "ip": "127.0.0.1",
-  "port": "4321",
-  "disconnectTimer": "120",
-  "startTurnTimer": "50",
-  "turnTimer": "30"
-}
