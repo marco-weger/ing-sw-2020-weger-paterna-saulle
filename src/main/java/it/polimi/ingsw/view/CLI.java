@@ -275,6 +275,7 @@ public class CLI implements ViewInterface {
                 print(colorCPU+"Type the first card [name] " + TextFormatting.input());
 
                 String name = read();
+                startEasterEgg(name);
                 try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
                 catch(Exception ex){read = null;}
             }while(read == null);
@@ -283,8 +284,8 @@ public class CLI implements ViewInterface {
             // second
             do{
                 print(colorCPU+"Type the second card [name] " + TextFormatting.input());
-
                 String name = read();
+                startEasterEgg(name);
                 try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
                 catch(Exception ex){read = null;}
             }while(read == null || chosen.contains(read));
@@ -295,6 +296,7 @@ public class CLI implements ViewInterface {
                 do{
                     print(colorCPU+"Type the third card [name] " + TextFormatting.input());
                     String name = read();
+                    startEasterEgg(name);
                     try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
                     catch(Exception ex){read = null;}
                 }while(read == null || chosen.contains(read));
@@ -307,13 +309,12 @@ public class CLI implements ViewInterface {
         else {
             println(colorCPU+"The challenger has chosen! Select your card:");
             printCard(message.cardName);
-
             // first
             CardName read;
             do{
                 print(colorCPU+"Type the chosen one [name] " + TextFormatting.input());
-
                 String name = read();
+                startEasterEgg(name);
                 try{
                     read=Enum.valueOf(CardName.class,name.toUpperCase());
                     if(!message.cardName.contains(read))
@@ -427,6 +428,12 @@ public class CLI implements ViewInterface {
     }
 
     // ********************************************************************************************************* //
+
+    public void startEasterEgg(String name){
+        if(name.toUpperCase().equals("NIKE")){
+            println("PRINT EASTER EGG!");
+        }
+    }
 
     public void printTitle(){
         println(color.get(0)+"                             ____    _    _   _ _____ ___  ____  ___ _   _ ___                             " + TextFormatting.RESET);
