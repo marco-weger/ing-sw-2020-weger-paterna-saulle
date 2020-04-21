@@ -10,6 +10,13 @@ public class NameRequestServer extends ServerMessage {
     //public ArrayList<String> players;
     public boolean isFirstTime;
 
+    /**
+     * It informs the server if the player has already entered the server
+     * or is the first connection.
+     * (this is for permanence and connection handling purpose)
+     * @param isFirstTime if the player has already made a connection
+     */
+
     public NameRequestServer(boolean isFirstTime){
         super("");
         //this.players = players;

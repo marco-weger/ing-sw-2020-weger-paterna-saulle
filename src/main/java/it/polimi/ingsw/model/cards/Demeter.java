@@ -17,7 +17,7 @@ public class Demeter extends Card {
     }
 
     /**
-     * It checks buildable cells by watchi active attribute
+     * It checks buildable cells by watching active attribute
      * @param p list of player
      * @param b board
      * @return where to build

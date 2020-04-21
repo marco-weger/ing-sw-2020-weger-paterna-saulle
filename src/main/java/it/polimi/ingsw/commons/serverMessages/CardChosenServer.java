@@ -13,6 +13,11 @@ public class CardChosenServer  extends ServerMessage {
     public String player;
     public CardName cardName;
 
+    /**
+     * The player receives the card chosen
+     * @param cardName name of the card
+     * @param player name of the player
+     */
     public CardChosenServer(String player, CardName cardName){
         super("");
         this.cardName=cardName;

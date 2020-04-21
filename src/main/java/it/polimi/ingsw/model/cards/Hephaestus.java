@@ -15,7 +15,7 @@ public class Hephaestus extends Card {
     }
 
     /**
-     * It checks for availabl cells
+     * It checks for available cells
      * @param p list of player
      * @param b board
      * @return where to build

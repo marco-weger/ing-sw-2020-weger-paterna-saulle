@@ -12,6 +12,11 @@ public class BuiltServer extends ServerMessage {
 
     public SnapCell sc;
 
+    /**
+     * The players receive this message with the modified board, after a built
+     * @param sc cell modified after built
+     */
+
     public BuiltServer(SnapCell sc){
         super("");
         this.sc = sc;

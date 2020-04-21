@@ -13,6 +13,13 @@ public class QuestionAbilityServer extends ServerMessage {
     public String name;
     public Status status;
 
+    /**
+     * The player receives this message when his card
+     * needs him to decide to use the ability in a certain status
+     * (only made if the card needs it).
+     * @param status current status of the player
+     * @param name player name
+     */
 
     public QuestionAbilityServer(String name, Status status){
         super(name);

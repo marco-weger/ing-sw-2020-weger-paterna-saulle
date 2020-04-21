@@ -12,6 +12,12 @@ public class LobbyServer extends ServerMessage {
     public ArrayList<String> players;
     public boolean loaded;
 
+    /**
+     * The players receive this message after choosing which mode
+     * they want to play.
+     * @param players list of players in current Lobby
+     */
+
     public LobbyServer(ArrayList<String> players){
         super("");
         this.players=players;

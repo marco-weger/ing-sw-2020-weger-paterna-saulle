@@ -79,6 +79,12 @@ public class Controller implements Observer, ClientMessageHandler {
 
     }
 
+    /**
+     * Disconnection is handled by removing someone from the list of players
+     * if it happens before the start of the game, else it counts as losing.
+     * @param message sent when someone disconnects from server
+     */
+
     @Override
     public void handleMessage(DisconnectionClient message) {
         if(this.match.getStatus().equals(Status.NAME_CHOICE)){
@@ -88,6 +94,11 @@ public class Controller implements Observer, ClientMessageHandler {
             System.out.println("\tHA PERSO " + message.name);
         }
     }
+
+    /**
+     * Reconnection notifies that the player has returned to the game
+     * @param message sent when someone reconnects on server
+     */
 
     @Override
     public void handleMessage(ReConnectionClient message) {
@@ -207,6 +218,11 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+    /**
+     * send the answer to the player if the card need it (ability == true)
+     * @param message contains the name of the current player, if the ability is passive or not and the current status
+     */
+
     @Override
     public void handleMessage(AnswerAbilityClient message) {
         if(match.getCurrentPlayer().getName().compareTo(message.name) == 0 && match.getStatus().compareTo(message.type) == 0) {
@@ -278,6 +294,14 @@ public class Controller implements Observer, ClientMessageHandler {
             }
         }
     }
+
+    /**
+     * If the lobby is "not full", add player to the current lobby
+     * (the Lobby can't properly be full because the game starts immediately after the quota for the mode
+     * is reached, thus it start a new Lobby when the current is full and start the game for the
+     * ex-current Lobby).
+     * @param message contains the name of the current player, and the mode that he has chosen
+     */
 
     @Override
     public void handleMessage(ModeChoseClient message) {

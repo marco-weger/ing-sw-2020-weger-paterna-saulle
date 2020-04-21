@@ -13,6 +13,11 @@ public class CheckMoveServer extends ServerMessage {
 
     public ArrayList<SnapCell> sc;
 
+    /**
+     * The player receives a list of movable cells
+     * @param sc list of cells in board (snapshot of the board)
+     */
+
     public CheckMoveServer(String name, ArrayList<SnapCell> sc){
         super(name);
         this.sc=sc;

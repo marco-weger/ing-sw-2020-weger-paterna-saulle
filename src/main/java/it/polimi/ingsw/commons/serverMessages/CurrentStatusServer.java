@@ -11,6 +11,13 @@ public class CurrentStatusServer extends ServerMessage {
     public String player;
     public Status status;
 
+    /**
+     * The player receives this message upon a request of the server,
+     * informing him of the current status.
+     * @param player name of the player
+     * @param status current status of the player
+     */
+
     public CurrentStatusServer(String player, Status status){
         super("");
         this.status=status;

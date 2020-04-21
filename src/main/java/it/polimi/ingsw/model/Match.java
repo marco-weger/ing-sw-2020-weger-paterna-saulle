@@ -54,7 +54,7 @@ public class Match extends Observable implements Serializable {
      * - STATUS: CARD_CHOICE
      * - PLAYERS: empty list
      * - SELECTEDCARD: empty list
-     * - LOOSERS: empty list
+     * - LOSERS: empty list
      * @param id the unique match id
      */
     public Match(int id, VirtualView vv){
@@ -199,6 +199,11 @@ public class Match extends Observable implements Serializable {
         return false;
     }
 
+    /**
+     * When a player is added to the list players
+     * it notifies the Lobby
+     */
+
     public void addPlayer(Player p){
         getPlayers().add(p);
         ArrayList<String> names = new ArrayList<>();
@@ -206,6 +211,11 @@ public class Match extends Observable implements Serializable {
             names.add(player.getName());
         notifyObservers(new LobbyServer(names));
     }
+
+    /**
+     * When a player is removed to the list players
+     * on the Initial phase, it notifies the Lobby
+     */
 
     public void removePlayer(String name){
         if(getStatus().equals(Status.NAME_CHOICE)){
@@ -219,6 +229,10 @@ public class Match extends Observable implements Serializable {
             notifyObservers(new LobbyServer(names));
         }
     }
+
+    /**
+     * Saving the match in file for server persistence purpose
+     */
 
     public void saveToFile(ServerMessage sm){
         FileOutputStream out;
