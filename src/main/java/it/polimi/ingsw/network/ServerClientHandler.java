@@ -136,10 +136,22 @@ public class ServerClientHandler implements Runnable {
                                     }
                                 }
                             }
+                            // check on current vv (you cant be disconnected in the current lobby)
+                            if (server.getCurrentVirtualView2().getConnectedPlayers().containsKey(cc.name)) {
+                                tmpName = "";
+                            }
+                            if (server.getCurrentVirtualView3().getConnectedPlayers().containsKey(cc.name)) {
+                                tmpName = "";
+                            }
+                            // check on floating players
+                            if (server.getPendingPlayers().contains(cc.name)) {
+                                tmpName = "";
+                            }
                         } else tmpName = "";
                     } else tmpName = "";
                 }while(tmpName.isEmpty()); // loop until the name is invalid
 
+                server.getPendingPlayers().add(tmpName);
                 this.name=tmpName;
 
                 if(load){
@@ -168,6 +180,7 @@ public class ServerClientHandler implements Runnable {
                                     server.newCurrentVirtualView2();
                                 }
                                 virtualView = server.getCurrentVirtualView2();
+                                server.getPendingPlayers().remove(this.name);
                             }
                             else if(((ModeChoseClient) object).mode == 3){
                                 // this part set up new match
@@ -175,6 +188,7 @@ public class ServerClientHandler implements Runnable {
                                     server.newCurrentVirtualView3();
                                 }
                                 virtualView = server.getCurrentVirtualView3();
+                                server.getPendingPlayers().remove(this.name);
                             }
                         }
                     }while(!(object instanceof ModeChoseClient));

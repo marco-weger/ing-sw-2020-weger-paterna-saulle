@@ -37,16 +37,21 @@ public class Server {
     private ArrayList<VirtualView> virtualViews2;
     private ArrayList<VirtualView> virtualViews3;
 
+    private ArrayList<String> pendingPlayers;
+
     public Server(){
         this.port = 1234;
         this.currentVirtualView2 = new VirtualView(this);
         this.currentVirtualView3 = new VirtualView(this);
         this.virtualViews2 = new ArrayList<>();
         this.virtualViews3 = new ArrayList<>();
+        this.pendingPlayers = new ArrayList<>();
     }
 
     public ArrayList<VirtualView> getVirtualViews2() { return virtualViews2; }
     public ArrayList<VirtualView> getVirtualViews3() { return virtualViews3; }
+
+    public ArrayList<String> getPendingPlayers() { return pendingPlayers; }
 
     /**
      * It iterates on all VirtualViews and all ServerClientHandlers
@@ -192,7 +197,7 @@ public class Server {
                                 } else if (((Match) obj).getPlayers().size() + ((Match) obj).getLosers().size() == 3) {
                                     Object sm = objIn.readObject();
                                     if(sm instanceof ServerMessage)
-                                        virtualViews2.add(new VirtualView(this, (Match) obj, (ServerMessage) sm));
+                                        virtualViews3.add(new VirtualView(this, (Match) obj, (ServerMessage) sm));
                                 }
                             } else if(((Match) obj).getStatus().equals(Status.NAME_CHOICE)) {
                                 toDelete.add(fileEntry.getAbsolutePath());

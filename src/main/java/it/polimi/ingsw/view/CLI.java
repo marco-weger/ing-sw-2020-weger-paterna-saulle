@@ -311,7 +311,7 @@ public class CLI implements ViewInterface {
             // first
             CardName read;
             do{
-                print(colorCPU+"Type the chosen one [uppercase name] " + TextFormatting.input());
+                print(colorCPU+"Type the chosen one [name] " + TextFormatting.input());
 
                 String name = read();
                 try{
@@ -502,7 +502,7 @@ public class CLI implements ViewInterface {
             print[shift]+= printSymbol("───────────");
 
             if(cell.level == 4){
-                print[shift + 1] += printSymbol("│") + color.get(cell.level-1) + "          ˟" + TextFormatting.RESET;
+                print[shift + 1] += printSymbol("│") + color.get(cell.level-1) + "          4" + TextFormatting.RESET;
                 print[shift + 2] += printSymbol("│") + color.get(cell.level-1) + "   " +color.get(cell.level)+ "     "+color.get(cell.level-1)+"   " + TextFormatting.RESET;
                 print[shift + 3] += printSymbol("│") + color.get(cell.level-1) + "   " +color.get(cell.level)+ "     "+color.get(cell.level-1)+"   " + TextFormatting.RESET;
                 print[shift + 4] += printSymbol("│") + color.get(cell.level-1) + "           " + TextFormatting.RESET;
