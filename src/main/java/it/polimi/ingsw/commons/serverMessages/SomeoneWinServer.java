@@ -11,6 +11,11 @@ public class SomeoneWinServer extends ServerMessage {
 
     public String player;
 
+    /**
+     * The players receive this message when someone win
+     * @param player name of the winner
+     */
+
     public SomeoneWinServer(String player){
         super("");
         this.player=player;

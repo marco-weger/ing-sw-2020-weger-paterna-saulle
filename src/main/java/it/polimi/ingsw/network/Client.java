@@ -39,6 +39,8 @@ public class Client implements Runnable{
 
     private static Logger LOGGER = Logger.getLogger("Client");
 
+
+
     public Client(){
         this.board = new ArrayList<>();
         for(int i=0; i<5; i++){

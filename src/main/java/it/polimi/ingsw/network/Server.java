@@ -174,6 +174,10 @@ public class Server {
         server.startServer();
     }
 
+    /**
+     * Loads the match from a file
+     */
+
     public void loadMatch(){
         ObjectInputStream objIn;
         ArrayList<String> toDelete = new ArrayList<>();

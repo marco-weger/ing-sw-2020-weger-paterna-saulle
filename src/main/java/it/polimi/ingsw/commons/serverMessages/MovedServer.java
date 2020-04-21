@@ -12,6 +12,11 @@ public class MovedServer extends ServerMessage {
 
     public SnapWorker sw;
 
+    /**
+     * The players receive this message whit the modified board, after a movement
+     * @param sw list of workers in board (snapshot of the workers)
+     */
+
     public MovedServer(SnapWorker sw){
         super("");
         this.sw = sw;

@@ -13,6 +13,11 @@ public class CheckBuildServer extends ServerMessage {
 
     public ArrayList<SnapCell> sc;
 
+    /**
+     * The player receives a list of buildable cells
+     * @param sc list of cells in board (snapshot of the board)
+     */
+
     public CheckBuildServer(String name, ArrayList<SnapCell> sc){
         super(name);
         this.sc=sc;
