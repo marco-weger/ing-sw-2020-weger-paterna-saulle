@@ -8,6 +8,9 @@ import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -20,7 +23,7 @@ public class CLI implements ViewInterface {
     ArrayList<String> color;
     String colorCPU;
 
-    Scanner in;
+    BufferedReader in;
 
     String symbols;
 
@@ -38,7 +41,7 @@ public class CLI implements ViewInterface {
         symbols = getMyCode(3);
         //println(symbols);
 
-        in = new Scanner(System.in);
+        in = new BufferedReader(new InputStreamReader(System.in));
     }
 
     public void displayFirstWindow() { // tested
@@ -160,7 +163,12 @@ public class CLI implements ViewInterface {
     public void handleMessage(QuestionAbilityServer message) { // TODO test
         do {
             println(colorCPU+"Do you want to use the Ability of your God? [YES/NO] " + TextFormatting.input());
-            String answer = in.nextLine();
+            String answer;
+            try {
+                answer = in.readLine();
+            } catch (IOException e) {
+                answer = "";
+            }
             if (answer.toUpperCase().equals("YES")) {
                 client.sendMessage(new AnswerAbilityClient(client.getUsername(), true, message.status));
                 break;
@@ -283,7 +291,12 @@ public class CLI implements ViewInterface {
             do{
                 print(colorCPU+"Type the first card [name] " + TextFormatting.input());
 
-                String name = in.nextLine();
+                String name;
+                try {
+                    name = in.readLine();
+                } catch (IOException e) {
+                    name = "";
+                }
                 startEasterEgg(name);
                 try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
                 catch(Exception ex){read = null;}
@@ -293,7 +306,12 @@ public class CLI implements ViewInterface {
             // second
             do{
                 print(colorCPU+"Type the second card [name] " + TextFormatting.input());
-                String name = in.nextLine();
+                String name;
+                try {
+                    name = in.readLine();
+                } catch (IOException e) {
+                    name = "";
+                }
                 startEasterEgg(name);
                 try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
                 catch(Exception ex){read = null;}
@@ -304,7 +322,12 @@ public class CLI implements ViewInterface {
             if(client.getPlayers().size()==3){
                 do{
                     print(colorCPU+"Type the third card [name] " + TextFormatting.input());
-                    String name = in.nextLine();
+                    String name;
+                    try {
+                        name = in.readLine();
+                    } catch (IOException e) {
+                        name = "";
+                    }
                     startEasterEgg(name);
                     try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
                     catch(Exception ex){read = null;}
@@ -322,7 +345,12 @@ public class CLI implements ViewInterface {
             CardName read;
             do{
                 print(colorCPU+"Type the chosen one [name] " + TextFormatting.input());
-                String name = in.nextLine();
+                String name;
+                try {
+                    name = in.readLine();
+                } catch (IOException e) {
+                    name = "";
+                }
                 startEasterEgg(name);
                 try{
                     read=Enum.valueOf(CardName.class,name.toUpperCase());
@@ -355,7 +383,12 @@ public class CLI implements ViewInterface {
                 print(colorCPU + "Type your username (max 12 characters) " + TextFormatting.input());
             else
                 print(colorCPU + "The chosen one is not allowed, type new username (max 12 characters) " + TextFormatting.input());
-            String username = in.nextLine();
+            String username;
+            try {
+                username = in.readLine();
+            } catch (IOException e) {
+                username = "";
+            }
             print(colorCPU + "Validating username... " + TextFormatting.RESET);
             this.client.setUsername(username);
             message.isFirstTime = false;
@@ -394,7 +427,7 @@ public class CLI implements ViewInterface {
             print(colorCPU + "Chose game mode (2 or 3 players) [2/3] " + TextFormatting.input());
             try
             {
-                String stringMode = in.nextLine();
+                String stringMode = in.readLine();
                 mode = Integer.parseInt(stringMode);
             }catch(Exception e)
             {
@@ -544,7 +577,7 @@ public class CLI implements ViewInterface {
         boolean go;
         int x, y;
         try{
-            String tmp = in.nextLine().toUpperCase();
+            String tmp = in.readLine().toUpperCase();
             String[] tmps = tmp.split("-");
             x = Integer.parseInt(tmps[0]) -1;
             y = "ABCDE".contains(tmps[1]) && tmps[1].length() == 1 ? "ABCDE".indexOf(tmps[1]) : -1;

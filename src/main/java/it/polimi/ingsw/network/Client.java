@@ -111,7 +111,11 @@ public class Client implements Runnable{
         String version;
         do{
             System.out.print(TextFormatting.RESET + "Choose the version [CLI/GUI] " + TextFormatting.input() );
-            version = new Scanner(System.in).nextLine().toUpperCase();
+            try {
+                version = new BufferedReader(new InputStreamReader(System.in)).readLine().toUpperCase();
+            } catch (IOException e) {
+                version = "";
+            }
 
             if(version.equals("CLI")){
                 CLI view = new CLI(client);
