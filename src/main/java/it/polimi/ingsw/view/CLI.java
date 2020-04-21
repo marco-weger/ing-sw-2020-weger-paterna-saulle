@@ -369,9 +369,9 @@ public class CLI implements ViewInterface {
         printTitle();
         do{
             if(message.isFirstTime)
-                print(colorCPU + "Type your username (max 12 characters)" + TextFormatting.input());
+                print(colorCPU + "Type your username (max 12 characters) " + TextFormatting.input());
             else
-                print(colorCPU + "The chosen one is not allowed, type new username (max 12 characters)" + TextFormatting.input());
+                print(colorCPU + "The chosen one is not allowed, type new username (max 12 characters) " + TextFormatting.input());
             this.client.setUsername(read());
             message.isFirstTime = false;
         }while (this.client.getUsername().isEmpty() || this.client.getUsername().length() > 12);

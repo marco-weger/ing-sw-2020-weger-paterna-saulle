@@ -26,17 +26,28 @@ public class Server {
     private int port;
 
     /**
-     * VirtualView linked of current lobby
+     * VirtualView linked of current lobby (2 players)
      */
     private VirtualView currentVirtualView2;
+
+    /**
+     * VirtualView linked of current lobby (3 players)
+     */
     private VirtualView currentVirtualView3;
 
     /**
-     * All VirtualViews instanced
+     * All VirtualViews of 2 players mode instanced
      */
     private ArrayList<VirtualView> virtualViews2;
+
+    /**
+     * All VirtualViews of 3 players mode instanced
+     */
     private ArrayList<VirtualView> virtualViews3;
 
+    /**
+     * List of players who chose the name but not the mode
+     */
     private ArrayList<String> pendingPlayers;
 
     public Server(){
@@ -87,13 +98,25 @@ public class Server {
     public void startServer(){
         //It creates threads when necessary, otherwise it re-uses existing one when possible
         ExecutorService executor = Executors.newCachedThreadPool();
-        ServerSocket serverSocket;
-        try{
-            serverSocket = new ServerSocket(port);
-        }catch (IOException e){
-            LOGGER.log(Level.WARNING, e.getMessage());
+        ServerSocket serverSocket = null;
+
+        boolean go;
+
+        // if port is unavailable is start searching a free a port from port+1 and so on
+        do {
+            go=false;
+            try{
+                serverSocket = new ServerSocket(port);
+            }catch (IOException e){
+                if(e.getMessage().contains("Address already in use")){
+                    port++;
+                    go=true;
+                }
+                else return;
+            }
+        }while (go);
+        if(serverSocket == null)
             return;
-        }
 
         loadMatch();
 
@@ -168,12 +191,10 @@ public class Server {
                     server.port = Integer.parseInt(config.get("port").toString());
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
             // default params
             server.port = 1234;
         }
-
-
 
         //run server
         server.startServer();
