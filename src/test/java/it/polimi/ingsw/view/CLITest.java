@@ -30,7 +30,7 @@ public class CLITest {
         c.getPlayers().get(0).card = CardName.PAN;
         view.printTable();
     }
-
+    /*
     @Test
     public void printTitleBoardTest(){
         Client c = new Client();
@@ -48,7 +48,6 @@ public class CLITest {
         c.getPlayers().add(new SnapPlayer("FRA",c.getMyCode(),2));
         c.getPlayers().get(2).card = CardName.ARTEMIS;
         c.getPlayers().get(1).card = CardName.MINOTAUR;
-        //FIXME se printiamo la table dopo la Title si imputtana
         //view.printTable();
         view.printTitle();
         //view.printTable();
@@ -68,12 +67,10 @@ public class CLITest {
         c.getPlayers().add(new SnapPlayer("MARCO",c.getMyCode(),0));
         c.getPlayers().add(new SnapPlayer("GIULIO",c.getMyCode(),1));
         c.getPlayers().add(new SnapPlayer("FRA",c.getMyCode(),2));
-        //c.getPlayers().get(2).card = CardName.ARTEMIS;
-        //c.getPlayers().get(1).card = CardName.MINOTAUR;
-        //view.printTable();
         view.clear();
         view.printTitle();
         view.printLobby(false);
         CLI.printCard(new ArrayList<>(Arrays.asList(CardName.values())));
     }
+     */
 }

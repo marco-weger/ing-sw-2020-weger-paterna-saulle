@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class ControllerTest {
 
@@ -354,8 +355,8 @@ public class ControllerTest {
         initialize();
         playerChoseClient();
 
-        controller.getMatch().setLosers(controller.getMatch().getPlayers().get(0));
-        controller.getMatch().setLosers(controller.getMatch().getPlayers().get(0));
+        controller.getMatch().setLosers(new ArrayList<>(Collections.singletonList(controller.getMatch().getPlayers().get(0))));
+        controller.getMatch().setLosers(new ArrayList<>(Collections.singletonList(controller.getMatch().getPlayers().get(0))));
         controller.startTurn(true);
         //controller.endGame(controller.getMatch().getPlayers().get(2));
         assertEquals(2, controller.getMatch().getLosers().size());
@@ -381,9 +382,8 @@ public class ControllerTest {
         initialize();
         playerChoseClient();
         controller.getMatch().getPlayers().get(0).setCurrent(true);
-        controller.getMatch().setLosers(controller.getMatch().getPlayers().get(1));
-        controller.getMatch().setLosers(controller.getMatch().getPlayers().get(1));
-        assertEquals(controller.getMatch().getPlayers().size(),1);
+        controller.getMatch().setLosers(new ArrayList<>(Arrays.asList(controller.getMatch().getPlayers().get(1),controller.getMatch().getPlayers().get(2))));
+        assertEquals(1,controller.getMatch().getPlayers().size());
         controller.startTurn(false);
         assertTrue(controller.getMatch().isEnded());
         assertEquals(Status.END, controller.getMatch().getStatus());

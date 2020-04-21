@@ -124,14 +124,22 @@ public class Match extends Observable implements Serializable {
      * A method that add a player into the Loser List and remove it from the Active Player List
      * @param p select a player
      */
-    public void setLosers(Player p) {
-        if(p.isCurrent())
-            players.get((players.indexOf(getCurrentPlayer())+1)%(players.size())).setCurrent(true);
-        getLosers().add(p);
-        getPlayers().remove(p);
+    public void setLosers(ArrayList<Player> p) {
+        if(p.size() == 1){
+            if(p.get(0).isCurrent())
+                players.get((players.indexOf(getCurrentPlayer())+1)%(players.size())).setCurrent(true);
+        }
+        getLosers().addAll(p);
+        getPlayers().removeAll(p);
         if(players.size() > 1)
-            notifyObservers(new SomeoneLoseServer(p.getName()));
+            for (Player player : p)
+                notifyObservers(new SomeoneLoseServer(player.getName()));
         else notifyObservers(new SomeoneWinServer(players.get(0).getName()));
+
+        if(players.size() == 1){
+            setEnded(true);
+            setStatus(Status.END);
+        }
     }
 
     public Board getBoard() {

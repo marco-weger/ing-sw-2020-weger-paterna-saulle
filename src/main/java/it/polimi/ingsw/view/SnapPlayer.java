@@ -8,6 +8,7 @@ public class SnapPlayer {
     public char symbol;
     public String color;
     public CardName card;
+    public boolean loser;
 
     public SnapPlayer(String name, char code, int i){
         this.name=name;
@@ -22,6 +23,7 @@ public class SnapPlayer {
             this.color = (TextFormatting.BACKGROUND_BRIGHT_PURPLE.toString()+TextFormatting.COLOR_BLACK);
 
         card=null;
+        loser=false;
     }
 
     public SnapPlayer(String name, char code){
@@ -29,6 +31,7 @@ public class SnapPlayer {
         this.symbol=code;
         this.color="";
         card=null;
+        loser=false;
     }
 
 }

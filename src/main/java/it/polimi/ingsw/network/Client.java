@@ -39,8 +39,6 @@ public class Client implements Runnable{
 
     private static Logger LOGGER = Logger.getLogger("Client");
 
-
-
     public Client(){
         this.board = new ArrayList<>();
         for(int i=0; i<5; i++){
@@ -82,6 +80,13 @@ public class Client implements Runnable{
     public String getUsername(){ return this.username; }
 
     public void setUsername(String username){ this.username=username; }
+
+    public SnapPlayer getMyPlayer(){
+        for(SnapPlayer sp : getPlayers())
+            if(sp.name.equals(getUsername()))
+                return sp;
+        return null;
+    }
 
     public char getMyCode(){
         char c;

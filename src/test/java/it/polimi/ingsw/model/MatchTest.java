@@ -3,8 +3,10 @@ import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.cards.CardName;
 import org.junit.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.Assert.*;
 
@@ -45,7 +47,7 @@ public class MatchTest {
         m.setSelectedCards(new ArrayList<>(Arrays.asList(CardName.ATHENA,CardName.ATLAS)));
         assertEquals(m.getSelectedCard().get(0), CardName.ATHENA);
         assertEquals(m.getSelectedCard().get(1), CardName.ATLAS);
-        m.setLosers(m.getPlayers().get(1));
+        m.setLosers(new ArrayList<>(Collections.singletonList(m.getPlayers().get(1))));
         assertEquals(m.getPlayers().size(),2);
         assertEquals(m.getLosers().size(),1);
         assertEquals(m.getPlayers().get(1).getCard().getName(), CardName.ATLAS);
@@ -114,8 +116,8 @@ public class MatchTest {
         m.setPlayers(p);
         m.setNextPlayer();
         m.setNextPlayer();
-        m.setLosers(p.get(2));
-        m.setLosers(p.get(0));
+        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(2))));
+        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(0))));
         assertTrue(m.checkCurrentPlayerWin());
 
     }
@@ -126,11 +128,9 @@ public class MatchTest {
         Match m = new Match(0,null);
         m.setPlayers(p);
         m.setNextPlayer();
-        m.setLosers(p.get(1));
-        m.setLosers(p.get(1));
+        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(1))));
+        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(1))));
         assertTrue(m.checkCurrentPlayerWin());
-
-        //
     }
 
     @Test
@@ -142,9 +142,9 @@ public class MatchTest {
         m.setNextPlayer(); //1
         m.setNextPlayer(); //2
 
-        m.setLosers(p.get(2));
+        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(2))));
         assertEquals(m.getCurrentPlayer(),m.getPlayers().get(0));
-        m.setLosers(p.get(1));
+        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(1))));
         assertTrue(m.checkCurrentPlayerWin());
     }
 /*

@@ -10,9 +10,7 @@ import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class Controller implements Observer, ClientMessageHandler {
 
@@ -248,7 +246,7 @@ public class Controller implements Observer, ClientMessageHandler {
     @Override
     public void handleMessage(MoveClient message) {
         if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.QUESTION_M) == 0){
-            Cell from = match.getBoard().getCell(match.getCurrentPlayer().getCurrentWorker().getRow(),match.getCurrentPlayer().getCurrentWorker().getRow());
+            Cell from = match.getBoard().getCell(match.getCurrentPlayer().getCurrentWorker().getRow(),match.getCurrentPlayer().getCurrentWorker().getColumn());
             if(match.getCurrentPlayer().getCard().move(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
                 if(match.getCurrentPlayer().getCard().checkWin(from,match.getBoard().getCell(message.x,message.y))){
                     //caso with currentplayerwin
@@ -317,16 +315,11 @@ public class Controller implements Observer, ClientMessageHandler {
      *@param winner the player who have win the match
      */
     private void endMatch(Player winner){
-        for(int i=0;i<match.getPlayers().size();)
-        {
-            if (match.getPlayers().get(i).getName().compareTo(winner.getName()) != 0)
-                match.setLosers(match.getPlayers().get(i));
-            else i++;
-        }
-        if(match.getPlayers().size() == 1){
-            match.setEnded(true);
-            match.setStatus(Status.END);
-        }
+        ArrayList<Player> losers = new ArrayList<>();
+        for(Player p : match.getPlayers())
+            if (p.getName().compareTo(winner.getName()) != 0)
+                losers.add(p);
+        match.setLosers(losers);
     }
 
     private void startMatch() {
@@ -341,19 +334,21 @@ public class Controller implements Observer, ClientMessageHandler {
      */
     // FIXME this method must be private (to check tests)
     public void startTurn(boolean goOn){
-        if(goOn) match.setNextPlayer();
+        if(!match.isEnded()){
+            if(goOn) match.setNextPlayer();
 
-        match.getCurrentPlayer().getCard().initializeTurn();
-        if(match.checkCurrentPlayerWin()) {
-            endMatch(match.getCurrentPlayer());
-        }
-        else{
-            if(match.getCurrentPlayer().getCard().hasLost(match.getPlayers(),match.getBoard())){
-                match.setLosers(match.getCurrentPlayer());
-                startTurn(false);
+            match.getCurrentPlayer().getCard().initializeTurn();
+            if(match.checkCurrentPlayerWin()) {
+                endMatch(match.getCurrentPlayer());
             }
             else{
-                match.setStatus(Status.START);
+                if(match.getCurrentPlayer().getCard().hasLost(match.getPlayers(),match.getBoard())){
+                    match.setLosers(new ArrayList<>(Collections.singletonList(match.getCurrentPlayer())));
+                    startTurn(false);
+                }
+                else{
+                    match.setStatus(Status.START);
+                }
             }
         }
     }

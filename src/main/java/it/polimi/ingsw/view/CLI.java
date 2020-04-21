@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapWorker;
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
@@ -170,80 +171,81 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(CurrentStatusServer message) {
-        // TODO when WORKER_CHOSE and my turn the client must validate the position!!!
-         if(message.player.equals(client.getUsername())){
-             println(colorCPU+"It's your turn!"+TextFormatting.RESET);
-             SnapCell c;
-             switch(message.status){
-                 case WORKER_CHOICE:
-                     clear();
-                     printTitle();
-                     printTable();
-                     do { // first worker of the match
-                         print(colorCPU + "Type the position of first worker [x-y] " + TextFormatting.input());
-                         c = readCell();
-                         for(SnapWorker sw : client.getWorkers()){
-                             if (sw.row == c.row && sw.column == c.column) {
-                                 c = null;
-                                 break;
-                             }
-                         }
-                     }while(c == null);
-                     client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
-                     break;
-                 case START:
-                     clear();
-                     printTitle();
-                     printTable();
-                     boolean go = true;
-                     do {
-                         print(colorCPU+"Chose the worker to play with [x-y] " + TextFormatting.input());
-                         c = readCell();
-                         if(c != null){
-                             for(SnapWorker sw : client.getWorkers()){
-                                 if (sw.row == c.row && sw.column == c.column && sw.name.equals(client.getUsername())){
-                                     client.sendMessage(new WorkerChoseClient(client.getUsername(),sw.n));
-                                     go = false;
-                                     break;
-                                 }
-                             }
-                         }
-                     } while(go);
-                     break;
-                 /*
-                 case MOVED:
-                     clear();
-                     printTitle();
-                     printTable();
-                     break;
-                  */
-                 case QUESTION_M:
-                     break;
-                 default:
-                     println(TextFormatting.COLOR_RED.toString() + message.status + " - " + message.player + TextFormatting.RESET);
-                     break;
-             }
-         }
-         else {
-             switch(message.status){
-                 case CARD_CHOICE:
-                     println(colorCPU+"Waiting for opponent's choice..."+ TextFormatting.RESET);
-                     break;
-                 default:
-                     println(colorCPU+"Opponent turn, "+message.name+" is playing..."+ TextFormatting.RESET);
-                     break;
-             }
-         }
+        if(!client.getMyPlayer().loser){
+            if(message.player.equals(client.getUsername())){
+                println(colorCPU+"It's your turn!"+TextFormatting.RESET);
+                SnapCell c;
+                switch(message.status){
+                    case WORKER_CHOICE:
+                        clear();
+                        printTitle();
+                        printTable();
+                        do { // first worker of the match
+                            print(colorCPU + "Type the position of first worker [x-y] " + TextFormatting.input());
+                            c = readCell();
+                            for(SnapWorker sw : client.getWorkers()){
+                                if (sw.row == c.row && sw.column == c.column) {
+                                    c = null;
+                                    break;
+                                }
+                            }
+                        }while(c == null);
+                        client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
+                        break;
+                    case START:
+                        clear();
+                        printTitle();
+                        printTable();
+                        boolean go = true;
+                        do {
+                            print(colorCPU+"Chose the worker to play with [x-y] " + TextFormatting.input());
+                            c = readCell();
+                            if(c != null){
+                                for(SnapWorker sw : client.getWorkers()){
+                                    if (sw.row == c.row && sw.column == c.column && sw.name.equals(client.getUsername())){
+                                        client.sendMessage(new WorkerChoseClient(client.getUsername(),sw.n));
+                                        go = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        } while(go);
+                        break;
+                    /*
+                    case MOVED:
+                        clear();
+                        printTitle();
+                        printTable();
+                        break;
+                     */
+                    case QUESTION_M:
+                        break;
+                    default:
+                        println(TextFormatting.COLOR_RED.toString() + message.status + " - " + message.player + TextFormatting.RESET);
+                        break;
+                }
+            }
+            else {
+                if (message.status == Status.CARD_CHOICE) {
+                    println(colorCPU + "Waiting for opponent's choice..." + TextFormatting.RESET);
+                } else {
+                    println(colorCPU + "Opponent turn, " + message.name + " is playing..." + TextFormatting.RESET);
+                }
+            }
+        }
     }
 
     @Override
     public void handleMessage(SomeoneLoseServer message) { // TODO test
-        clear();
+        for(SnapPlayer sp : client.getPlayers())
+            if(sp.name.equals(message.player))
+                sp.loser = true;
         if(this.client.getUsername().equals(message.player)){
+            clear();
             printLose();
         }
         else
-            println(TextFormatting.loser() + message.name + "has lost");
+            println(TextFormatting.loser() + message.player + "has lost!" + TextFormatting.RESET);
 
         endMatch();
 
@@ -343,6 +345,11 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(LobbyServer message) { // tested
+        System.out.println("TRY TO COMMENT HERE BUG TO RESOLVE A BAG!");
+        client.resetPlayers();
+        for(String s : message.players)
+            client.getPlayers().add(new SnapPlayer(s,client.getMyCode(),client.getPlayers().size()));
+        /*
         clear();
         printTitle();
         try{
@@ -351,6 +358,7 @@ public class CLI implements ViewInterface {
                 client.getPlayers().add(new SnapPlayer(s,client.getMyCode(),client.getPlayers().size()));
             printLobby(message.loaded);
         }catch (Exception e){println(e.getMessage());}
+        */
     }
 
     @Override
@@ -384,10 +392,12 @@ public class CLI implements ViewInterface {
         printTable();
     }
 
+    //boolean cycle = true;
     public void endMatch(){
-        String str;
-        str = "";
+        //String str;
+        //str = "";
         print(colorCPU + "Type [CONTINUE] if you want to start a new game, [QUIT] if you want to close the game " + TextFormatting.input());
+        /*
         do{
             try {
                 if(System.in.available() > 0){
@@ -404,7 +414,8 @@ public class CLI implements ViewInterface {
             } catch (IOException e) {
                 str = "";
             }
-        }while (!str.equals("CONTINUE"));
+        }while (!str.equals("CONTINUE") && cycle);
+         */
     }
 
     // ********************************************************************************************************* //
@@ -422,35 +433,31 @@ public class CLI implements ViewInterface {
     }
 
     public void printLose(){
-        println(TextFormatting.loser()
-                +
-                "                                                     888                                              \n" +
-                "                                                     888                                              \n" +
-                "                                                     888                                              \n" +
-                "  d8b d8b d8b       888  888  .d88b.  888  888       888  .d88b.  .d8888b   .d88b.        d8b d8b d8b \n" +
-                "  Y8P Y8P Y8P       888  888 d88\"\"88b 888  888       888 d88\"\"88b 88K      d8P  Y8b       Y8P Y8P Y8P \n" +
-                "                    888  888 888  888 888  888       888 888  888 \"Y8888b. 88888888                   \n" +
-                "  d8b d8b d8b       Y88b 888 Y88..88P Y88b 888       888 Y88..88P      X88 Y8b.           d8b d8b d8b \n" +
-                "  Y8P Y8P Y8P        \"Y88888  \"Y88P\"   \"Y88888       888  \"Y88P\"   88888P'  \"Y8888        Y8P Y8P Y8P \n" +
-                "                         888                                                                          \n" +
-                "                    Y8b d88P                                                                          \n" +
-                "                     \"Y88P\"                                                                           \n"
-        );
+        println(TextFormatting.loser()+ "                                                     888                                              "+ TextFormatting.RESET);
+        println(TextFormatting.loser()+ "                                                     888                                              "+ TextFormatting.RESET);
+        println(TextFormatting.loser()+ "                                                     888                                              "+ TextFormatting.RESET);
+        println(TextFormatting.loser()+ "  d8b d8b d8b       888  888  .d88b.  888  888       888  .d88b.  .d8888b   .d88b.        d8b d8b d8b "+ TextFormatting.RESET);
+        println(TextFormatting.loser()+ "  Y8P Y8P Y8P       888  888 d88\"\"88b 888  888       888 d88\"\"88b 88K      d8P  Y8b       Y8P Y8P Y8P "+ TextFormatting.RESET);
+        println(TextFormatting.loser()+ "                    888  888 888  888 888  888       888 888  888 \"Y8888b. 88888888                   "+ TextFormatting.RESET);
+        println(TextFormatting.loser()+ "  d8b d8b d8b       Y88b 888 Y88..88P Y88b 888       888 Y88..88P      X88 Y8b.           d8b d8b d8b "+ TextFormatting.RESET);
+        println(TextFormatting.loser()+ "  Y8P Y8P Y8P        \"Y88888  \"Y88P\"   \"Y88888       888  \"Y88P\"   88888P'  \"Y8888        Y8P Y8P Y8P "+ TextFormatting.RESET);
+        println(TextFormatting.loser()+ "                         888                                                                          "+ TextFormatting.RESET);
+        println(TextFormatting.loser()+ "                    Y8b d88P                                                                          "+ TextFormatting.RESET);
+        println(TextFormatting.loser()+ "                     \"Y88P\"                                                                           "+ TextFormatting.RESET);
+        //cycle = false;
         endMatch();
     }
 
     public void printWin(){
-        println(TextFormatting.winner()
-                +
-                "                                               Y88b   d88P  .d88888b.  888     888       888       888 8888888 888b    888                                                      \n" +
-                "        o            o            o             Y88b d88P  d88P' 'Y88b 888     888       888   o   888   888   8888b   888             o            o            o              \n" +
-                "       d8b          d8b          d8b             Y88o88P   888     888 888     888       888  d8b  888   888   88888b  888            d8b          d8b          d8b             \n" +
-                "      d888b        d888b        d888b             Y888P    888     888 888     888       888 d888b 888   888   888Y88b 888           d888b        d888b        d888b            \n" +
-                "  'Y888888888P''Y888888888P''Y888888888P'          888     888     888 888     888       888d88888b888   888   888 Y88b888       'Y888888888P''Y888888888P''Y888888888P'        \n" +
-                "    'Y88888P'    'Y88888P''    'Y88888P'           888     888     888 888     888       88888P Y88888   888   888  Y88888         'Y88888P'    'Y88888P'    'Y88888P'          \n" +
-                "    d88P'Y88b    d88P'Y88b    d88P'Y88b            888     Y88b. .d88P Y88b. .d88P       8888P   Y8888   888   888   Y8888         d88P'Y88b    d88P'Y88b    d88P'Y88b          \n" +
-                "   dP'     'Yb  dP'     'Yb  dP'     'Yb           888      'Y88888P'   'Y88888P'        888P     Y888 8888888 888    Y888        dP'     'Yb  dP'     'Yb  dP'     'Yb         \n"
-        );
+        println(TextFormatting.winner()+ "                Y88b   d88P  .d88888b.  888     888       888       888 8888888 888b    888                 " + TextFormatting.RESET);
+        println(TextFormatting.winner()+ "      o          Y88b d88P  d88P' 'Y88b 888     888       888   o   888   888   8888b   888          o      " + TextFormatting.RESET);
+        println(TextFormatting.winner()+ "     d8b          Y88o88P   888     888 888     888       888  d8b  888   888   88888b  888         d8b     " + TextFormatting.RESET);
+        println(TextFormatting.winner()+ "    d888b          Y888P    888     888 888     888       888 d888b 888   888   888Y88b 888        d888b    " + TextFormatting.RESET);
+        println(TextFormatting.winner()+ "'Y888888888P'       888     888     888 888     888       888d88888b888   888   888 Y88b888    'Y888888888P'" + TextFormatting.RESET);
+        println(TextFormatting.winner()+ "   'Y88888P'        888     888     888 888     888       88888P Y88888   888   888  Y88888      'Y88888P'  " + TextFormatting.RESET);
+        println(TextFormatting.winner()+ "  d88P'Y88b         888     Y88b. .d88P Y88b. .d88P       8888P   Y8888   888   888   Y8888      d88P'Y88b  " + TextFormatting.RESET);
+        println(TextFormatting.winner()+ " dP'     'Yb        888      'Y88888P'   'Y88888P'        888P     Y888 8888888 888    Y888     dP'     'Yb " + TextFormatting.RESET);
+        //cycle = false;
         endMatch();
     }
 
@@ -561,6 +568,9 @@ public class CLI implements ViewInterface {
         print = printPlayers(print);
 
         for (String s : print) println(s + TextFormatting.RESET);
+
+        if(client.getMyPlayer().loser)
+            endMatch();
     }
 
     public String[] printPlayers(@NotNull String[] print){
