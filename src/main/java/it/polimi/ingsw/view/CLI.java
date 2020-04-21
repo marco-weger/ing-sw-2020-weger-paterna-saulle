@@ -36,7 +36,7 @@ public class CLI implements ViewInterface {
 
         colorCPU = TextFormatting.COLOR_CYAN.toString();
         symbols = getMyCode(3);
-        println(symbols);
+        //println(symbols);
 
         in = new Scanner(System.in);
     }
@@ -460,7 +460,6 @@ public class CLI implements ViewInterface {
                 } while (go);
                 ret.append(tmp);
             }
-            System.out.println("GETMYCODE");
             return ret.toString();
         } catch (Exception ex){
             return "@";
