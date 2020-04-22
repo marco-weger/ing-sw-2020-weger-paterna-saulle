@@ -78,6 +78,8 @@ public class Minotaur extends Card {
                                     int y = player.getWorker1().getColumn()+(player.getWorker1().getColumn()-current.getCurrentWorker().getColumn());
                                     if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
                                         player.getWorker1().move(x, y);
+                                        notifyObservers(new MovedServer(new SnapWorker(x,y,player.getName(),1)));
+
                                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
                                         notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
                                         return true;
@@ -88,6 +90,8 @@ public class Minotaur extends Card {
                                     int y = player.getWorker2().getColumn()+(player.getWorker2().getColumn()-current.getCurrentWorker().getColumn());
                                     if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
                                         player.getWorker2().move(x, y);
+                                        notifyObservers(new MovedServer(new SnapWorker(x,y,player.getName(),2)));
+
                                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
                                         notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
                                         return true;
