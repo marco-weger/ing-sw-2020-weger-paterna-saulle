@@ -70,7 +70,7 @@ public class Apollo extends Card {
                             if (player.getCard().getName().compareTo(this.getName()) != 0){
                                 if(player.getWorker1().getRow() == to.getRow() && player.getWorker1().getRow() == to.getRow()){
                                     player.getWorker1().move(current.getCurrentWorker().getRow(), current.getCurrentWorker().getColumn());
-                                    notifyObservers(new MovedServer(new SnapWorker(player.getCurrentWorker().getRow(),current.getCurrentWorker().getColumn(),player.getName(),player.getWorker1().isActive() ? 1 : 2)));
+                                    notifyObservers(new MovedServer(new SnapWorker(current.getCurrentWorker().getRow(),current.getCurrentWorker().getColumn(),player.getName(),player.getWorker1().isActive() ? 1 : 2)));
 
                                     current.getCurrentWorker().move(to.getRow(), to.getColumn());
                                     notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
@@ -78,7 +78,7 @@ public class Apollo extends Card {
                                 }
                                 else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getRow() == to.getRow()){
                                     player.getWorker2().move(current.getCurrentWorker().getRow(), current.getCurrentWorker().getColumn());
-                                    notifyObservers(new MovedServer(new SnapWorker(player.getCurrentWorker().getRow(),current.getCurrentWorker().getColumn(),player.getName(),player.getWorker1().isActive() ? 1 : 2)));
+                                    notifyObservers(new MovedServer(new SnapWorker(current.getCurrentWorker().getRow(),current.getCurrentWorker().getColumn(),player.getName(),player.getWorker1().isActive() ? 1 : 2)));
 
                                     current.getCurrentWorker().move(to.getRow(), to.getColumn());
                                     notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
