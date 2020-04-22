@@ -104,6 +104,7 @@ public class Card extends Observable implements Serializable {
      */
     public ArrayList<Cell> checkMove(ArrayList<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
+        Player current = null;
         Worker actived = null;
         for(Player player:p)
             if(player.getCard().name.compareTo(this.name) == 0)
@@ -114,9 +115,9 @@ public class Card extends Observable implements Serializable {
             if(Math.abs(c.getRow()-actived.getRow()) <= 1 && Math.abs(c.getColumn()-actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() <= actived.getLevel(b)+1 && !c.isOccupied(p))
                 available.add(c);
 
-        // here i check for ATHENA ability
+        // here i check for opponent's turn ability
         for (Player player : p)
-            if (player.getCard().getName().compareTo(this.getName()) != 0)
+            if (player.getCard().isOpponent() && player.getCard().isActive())
                 available.removeAll(player.getCard().activeBlock(p, b, actived,Status.QUESTION_M));
         return available;
     }
@@ -146,8 +147,8 @@ public class Card extends Observable implements Serializable {
                 if (current.getCurrentWorker() != null) {
                     ArrayList<Cell> available = checkMove(p, b);
                     for (Player player : p)
-                        if (player.getCard().getName().compareTo(this.getName()) != 0)
-                            available.removeAll(player.getCard().activeBlock(p, b,  current.getCurrentWorker(),Status.QUESTION_M));
+                        if (player.getCard().isOpponent() && player.getCard().isActive())
+                            available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_M));
                     if (available.contains(to)) {
                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
                         notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
