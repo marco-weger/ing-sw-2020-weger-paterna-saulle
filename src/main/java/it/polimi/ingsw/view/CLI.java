@@ -22,10 +22,9 @@ public class CLI implements ViewInterface {
 
     ArrayList<String> color;
     String colorCPU;
-
-    BufferedReader in;
-
     String symbols;
+
+    private static final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
     public CLI(Client client){
         this.client = client;
@@ -39,9 +38,6 @@ public class CLI implements ViewInterface {
 
         colorCPU = TextFormatting.COLOR_CYAN.toString();
         symbols = getMyCode(3);
-        //println(symbols);
-
-        in = new BufferedReader(new InputStreamReader(System.in));
     }
 
     public void displayFirstWindow() { // tested
@@ -400,7 +396,7 @@ public class CLI implements ViewInterface {
                 username = in.readLine();
             } catch (IOException e) {
                 username = "";
-                System.out.println("ERRORE " + e.getMessage());
+                println("ERRORE " + e.getMessage());
             }
             print(colorCPU + "Validating username... " + TextFormatting.RESET);
             this.client.setUsername(username);
@@ -476,10 +472,10 @@ public class CLI implements ViewInterface {
                     str = read();
                     if(str.equalsIgnoreCase("CONTINUE")){
                         // TODO new lobby
-                        System.out.println(colorCPU + "MUST IMPLEMENT NEW LOBBY!" + TextFormatting.RESET);
+                        println(colorCPU + "MUST IMPLEMENT NEW LOBBY!" + TextFormatting.RESET);
                         break;
                     } else if(str.equalsIgnoreCase("QUIT")){
-                        System.out.println(colorCPU + "Thank you for playing Santorini!" + TextFormatting.RESET);
+                        println(colorCPU + "Thank you for playing Santorini!" + TextFormatting.RESET);
                         System.exit(1);
                     }
                 }

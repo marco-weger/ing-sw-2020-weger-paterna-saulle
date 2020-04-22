@@ -15,10 +15,8 @@ import org.json.simple.parser.JSONParser;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 
 public class Client implements Runnable{
 
@@ -31,10 +29,10 @@ public class Client implements Runnable{
     protected ArrayList<SnapWorker> workers;
     protected ArrayList<SnapPlayer> players;
 
+    private static final BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+
     String ip;
     int port;
-
-    private static Logger LOGGER = Logger.getLogger("Client");
 
     public Client(){
         this.board = new ArrayList<>();
@@ -89,33 +87,31 @@ public class Client implements Runnable{
     }
 
     public void setPlayers(ArrayList<String> names){
-        //System.out.println("START SETT");
         try{
             this.players = new ArrayList<>();
             for (String name : names) {
                 this.players.add(new SnapPlayer(name));
-                //System.out.println("\t"+this.players.get(i).symbol + " - " + this.players.get(i).name);
             }
-
         }catch (Exception e){
             System.exit(-1);
         }
-        //System.out.println("END SETT...");
     }
 
     public static void main(String[] args){
         Client client = new Client();
-
         readParams(client);
-
         String version;
+        boolean go;
         do{
-            System.out.print(TextFormatting.RESET + "Choose the version [CLI/GUI] " + TextFormatting.input() );
+            System.out.print(TextFormatting.RESET + "Choose the version [CLI/GUI] " + TextFormatting.input());
+            System.out.flush();
             try {
-                version = new BufferedReader(new InputStreamReader(System.in)).readLine();
+                version = read.readLine();
             } catch (IOException e) {
                 version = "";
             }
+
+            go = false;
 
             if(version.equalsIgnoreCase("CLI")){
                 CLI view = new CLI(client);
@@ -125,8 +121,10 @@ public class Client implements Runnable{
             else if(version.equalsIgnoreCase("GUI")){
                 // TODO run gui
                 System.out.println("RUN GUI...");
+                System.out.flush();
             }
-        }while(!version.equalsIgnoreCase("CLI") && !version.equalsIgnoreCase("GUI"));
+            else go = true;
+        }while(go);
     }
 
     public static void readParams(Client client){
@@ -173,8 +171,8 @@ public class Client implements Runnable{
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) in.readObject();
                 System.out.println(msg.toString());
+                System.out.flush();
                 if(msg instanceof MovedServer){
-                    //System.out.println(TextFormatting.COLOR_RED.toString() + ((MovedServer) msg).sw.row + " - " + ((MovedServer) msg).sw.column + TextFormatting.RESET);
                     for(SnapWorker worker : getWorkers()){
                         if(worker.name.equals(((MovedServer) msg).sw.name) && worker.n == ((MovedServer) msg).sw.n){
                             worker.row = ((MovedServer) msg).sw.row;
@@ -190,11 +188,8 @@ public class Client implements Runnable{
                 }
                 msg.accept(view);
             }
-            System.out.println("ERROR! END CYCLE...");
         }
         catch (IOException | ClassNotFoundException e){
-            System.out.println("R ERROR! SERVER UNAVAILABLE...");
-            System.out.println(e.getMessage());
             System.exit(0);
         }
     }
@@ -205,8 +200,8 @@ public class Client implements Runnable{
             out.writeObject(msg);
             out.flush();
         } catch (IOException e) {
-            System.out.println("W ERROR! SERVER UNAVAILABLE...");
-            System.out.println(e.getMessage());
+            System.out.println("SERVER UNAVAILABLE...");
+            System.out.flush();
             System.exit(0);
         }
     }
