@@ -112,17 +112,17 @@ public class Client implements Runnable{
         do{
             System.out.print(TextFormatting.RESET + "Choose the version [CLI/GUI] " + TextFormatting.input() );
             try {
-                version = new BufferedReader(new InputStreamReader(System.in)).readLine().toUpperCase();
+                version = new BufferedReader(new InputStreamReader(System.in)).readLine();
             } catch (IOException e) {
                 version = "";
             }
 
-            if(version.equals("CLI")){
+            if(version.equalsIgnoreCase("CLI")){
                 CLI view = new CLI(client);
                 client.setView(view);
                 view.displayFirstWindow();
             }
-            else if(version.equals("GUI")){
+            else if(version.equalsIgnoreCase("GUI")){
                 // TODO run gui
                 System.out.println("RUN GUI...");
             }
