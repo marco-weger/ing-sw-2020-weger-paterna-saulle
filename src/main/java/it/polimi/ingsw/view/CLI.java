@@ -18,26 +18,40 @@ import java.util.Scanner;
 
 public class CLI implements ViewInterface {
 
+    /**
+     * Client with socket connection
+     */
     Client client;
 
-    ArrayList<String> color;
-    String colorCPU;
-    String symbols;
+    /**
+     * Color used to print the board
+     */
+    public static final String[] color = new String[]{
+        TextFormatting.BACKGROUND_CYAN.toString() + TextFormatting.COLOR_BLACK, // lv 0
+        TextFormatting.BACKGROUND_BRIGHT_WHITE.toString() + TextFormatting.COLOR_BLACK, // lv 1
+        TextFormatting.BACKGROUND_WHITE.toString() + TextFormatting.COLOR_BLACK, // lv 2
+        TextFormatting.BACKGROUND_BRIGHT_BLUE.toString() + TextFormatting.COLOR_BLACK, // lv 3
+        TextFormatting.BACKGROUND_BLUE.toString() + TextFormatting.COLOR_BLACK // lv 4
+    };
 
+    /**
+     * Color of cpu message
+     */
+    private static final String colorCPU = TextFormatting.COLOR_CYAN.toString();
+
+    /**
+     * Random symbols for every match
+     */
+    private final String symbols;
+
+    /**
+     * Buffer used to get message from user
+     */
     private static final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
     public CLI(Client client){
         this.client = client;
-
-        color = new ArrayList<>();
-        color.add(TextFormatting.BACKGROUND_CYAN.toString() + TextFormatting.COLOR_BLACK); // lv 0
-        color.add(TextFormatting.BACKGROUND_BRIGHT_WHITE.toString() + TextFormatting.COLOR_BLACK); // lv 1
-        color.add(TextFormatting.BACKGROUND_WHITE.toString() + TextFormatting.COLOR_BLACK); // lv 2
-        color.add(TextFormatting.BACKGROUND_BRIGHT_BLUE.toString() + TextFormatting.COLOR_BLACK); // lv 3
-        color.add(TextFormatting.BACKGROUND_BLUE.toString() + TextFormatting.COLOR_BLACK); // lv 4
-
-        colorCPU = TextFormatting.COLOR_CYAN.toString();
-        symbols = getMyCode(3);
+        symbols = getNewSymbols(3);
     }
 
     public void displayFirstWindow() { // tested
@@ -107,7 +121,7 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(CardChosenServer message) { // tested
-        getPlayerbyName(message.player).card = message.cardName;
+        getPlayerByName(message.player).card = message.cardName;
         clear();
         printTitle();
         printLobby(false);
@@ -275,7 +289,6 @@ public class CLI implements ViewInterface {
         if(this.client.getUsername().equals(message.player)){
             clear();
             printLose();
-            endMatch();
         }
         else{
             clear();
@@ -380,8 +393,6 @@ public class CLI implements ViewInterface {
         else printLose();
     }
 
-
-
     @Override
     public void handleMessage(NameRequestServer message) { // tested
         clear();
@@ -401,7 +412,7 @@ public class CLI implements ViewInterface {
             print(colorCPU + "Validating username... " + TextFormatting.RESET);
             this.client.setUsername(username);
             message.isFirstTime = false;
-        }while (this.client.getUsername().isEmpty() || this.client.getUsername().length() > 12);
+        }while (this.client.getUsername().isEmpty() || this.client.getUsername().length() > 12 || this.client.getUsername().matches("^\\s*$"));
         client.sendMessage(new ConnectionClient(this.client.getUsername()));
     }
 
@@ -460,10 +471,7 @@ public class CLI implements ViewInterface {
         printTable();
     }
 
-    //boolean cycle = true;
     public void endMatch(){
-        //String str;
-        //str = "";
         print(colorCPU + "Type [CONTINUE] if you want to start a new game, [QUIT] if you want to close the game " + TextFormatting.input());
         /*
         do{
@@ -488,8 +496,8 @@ public class CLI implements ViewInterface {
 
     // ********************************************************************************************************* //
 
-    private static String GREEK = "ΓΔΘΛΠΣΦΨΩ";
-    public String getMyCode(int k){
+    public String getNewSymbols(int k){
+        String GREEK = "ΓΔΘΛΠΣΦΨΩ";
         try {
             StringBuilder ret = new StringBuilder();
             String tmp;
@@ -531,7 +539,6 @@ public class CLI implements ViewInterface {
         println(TextFormatting.loser()+ "                         888                                                                          "+ TextFormatting.RESET);
         println(TextFormatting.loser()+ "                    Y8b d88P                                                                          "+ TextFormatting.RESET);
         println(TextFormatting.loser()+ "                     \"Y88P\"                                                                           "+ TextFormatting.RESET);
-        //cycle = false;
         endMatch();
     }
 
@@ -544,31 +551,16 @@ public class CLI implements ViewInterface {
         println(TextFormatting.winner()+ "   'Y88888P'        888     888     888 888     888       88888P Y88888   888   888  Y88888      'Y88888P'  " + TextFormatting.RESET);
         println(TextFormatting.winner()+ "  d88P'Y88b         888     Y88b. .d88P Y88b. .d88P       8888P   Y8888   888   888   Y8888      d88P'Y88b  " + TextFormatting.RESET);
         println(TextFormatting.winner()+ " dP'     'Yb        888      'Y88888P'   'Y88888P'        888P     Y888 8888888 888    Y888     dP'     'Yb " + TextFormatting.RESET);
-        //cycle = false;
         endMatch();
     }
 
     public void printTitle(){
-        println(color.get(0)+"                             ____    _    _   _ _____ ___  ____  ___ _   _ ___                             " + TextFormatting.RESET);
-        println(color.get(0)+"                            / ___|  / \\  | \\ | |_   _/ _ \\|  _ \\|_ _| \\ | |_ _|                            " + TextFormatting.RESET);
-        println(color.get(0)+"                            \\___ \\ / _ \\ |  \\| | | || | | | |_) || ||  \\| || |                             " + TextFormatting.RESET);
-        println(color.get(0)+"                             ___) / ___ \\| |\\  | | || |_| |  _ < | || |\\  || |                             " + TextFormatting.RESET);
-        println(color.get(0)+"                            |____/_/   \\_\\_| \\_| |_| \\___/|_| \\_\\___|_| \\_|___|                            " + TextFormatting.RESET);
-
-        // TODO decide if use the separator
-        //println(color.get(0)+"·················•·················•·················•·················•·················•·················"+TextFormatting.RESET);
-        println(color.get(0)+"                                                                                                           "+TextFormatting.RESET);
-
-        //println(color.get(0)+new String(charArray)+TextFormatting.RESET);
-
-
-        /*
-        try {
-            TimeUnit.MILLISECONDS.sleep(1200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-         */
+        println(color[0]+"                             ____    _    _   _ _____ ___  ____  ___ _   _ ___                             " + TextFormatting.RESET);
+        println(color[0]+"                            / ___|  / \\  | \\ | |_   _/ _ \\|  _ \\|_ _| \\ | |_ _|                            " + TextFormatting.RESET);
+        println(color[0]+"                            \\___ \\ / _ \\ |  \\| | | || | | | |_) || ||  \\| || |                             " + TextFormatting.RESET);
+        println(color[0]+"                             ___) / ___ \\| |\\  | | || |_| |  _ < | || |\\  || |                             " + TextFormatting.RESET);
+        println(color[0]+"                            |____/_/   \\_\\_| \\_| |_| \\___/|_| \\_\\___|_| \\_|___|                            " + TextFormatting.RESET);
+        println(color[0]+"                                                                                                           "+TextFormatting.RESET);
     }
 
     public static void println(String string){
@@ -579,9 +571,7 @@ public class CLI implements ViewInterface {
         System.out.print(string);
         System.out.flush();
     }
-    //public String read(){
-    //    return ; //new BufferedReader(new InputStreamReader(System.in)).readLine().toUpperCase();
-    //}
+
     public SnapCell readCell(){
         boolean go;
         int x, y;
@@ -603,7 +593,7 @@ public class CLI implements ViewInterface {
         String[] print = new String[26];
 
         for(int i=0;i<print.length;i++)
-            print[i] = color.get(0) + ((i-3)%5 == 0 ? (i-3)/5+1 : " ")+" ";
+            print[i] = color[0] + ((i-3)%5 == 0 ? (i-3)/5+1 : " ")+" ";
 
         for(SnapCell cell : client.getBoard())
         {
@@ -618,16 +608,16 @@ public class CLI implements ViewInterface {
             print[shift]+= printSymbol("───────────");
 
             if(cell.level == 4){
-                print[shift + 1] += printSymbol("│") + color.get(cell.level-1) + "          4" + TextFormatting.RESET;
-                print[shift + 2] += printSymbol("│") + color.get(cell.level-1) + "   " +color.get(cell.level)+ "     "+color.get(cell.level-1)+"   " + TextFormatting.RESET;
-                print[shift + 3] += printSymbol("│") + color.get(cell.level-1) + "   " +color.get(cell.level)+ "     "+color.get(cell.level-1)+"   " + TextFormatting.RESET;
-                print[shift + 4] += printSymbol("│") + color.get(cell.level-1) + "           " + TextFormatting.RESET;
+                print[shift + 1] += printSymbol("│") + color[cell.level-1] + "          4" + TextFormatting.RESET;
+                print[shift + 2] += printSymbol("│") + color[cell.level-1] + "   " +color[cell.level]+ "     "+color[cell.level-1]+"   " + TextFormatting.RESET;
+                print[shift + 3] += printSymbol("│") + color[cell.level-1] + "   " +color[cell.level]+ "     "+color[cell.level-1]+"   " + TextFormatting.RESET;
+                print[shift + 4] += printSymbol("│") + color[cell.level-1] + "           " + TextFormatting.RESET;
             }
             else {
-                print[shift + 1] += printSymbol("│") + color.get(cell.level) + "          " + (cell.level == 0 ? " " : cell.level) + TextFormatting.RESET;
-                print[shift + 2] += printSymbol("│") + color.get(cell.level) + "   " + printUserSymbol(cell)+ color.get(cell.level) + "   " + TextFormatting.RESET;
-                print[shift + 3] += printSymbol("│") + color.get(cell.level) + "   " + printUserSymbol(cell)+ color.get(cell.level) + "   " + TextFormatting.RESET;
-                print[shift + 4] += printSymbol("│") + color.get(cell.level) + "           " + TextFormatting.RESET;
+                print[shift + 1] += printSymbol("│") + color[cell.level] + "          " + (cell.level == 0 ? " " : cell.level) + TextFormatting.RESET;
+                print[shift + 2] += printSymbol("│") + color[cell.level] + "   " + printUserSymbol(cell)+ color[cell.level] + "   " + TextFormatting.RESET;
+                print[shift + 3] += printSymbol("│") + color[cell.level] + "   " + printUserSymbol(cell)+ color[cell.level] + "   " + TextFormatting.RESET;
+                print[shift + 4] += printSymbol("│") + color[cell.level] + "           " + TextFormatting.RESET;
             }
             if(cell.column == 4){
                 if(cell.row == 0)
@@ -644,7 +634,7 @@ public class CLI implements ViewInterface {
         String[] tmp = new String[27];
 
         // add header
-        tmp[0]=(color.get(0)+"        A           B           C           D           E      "+TextFormatting.RESET);
+        tmp[0]=(color[0]+"        A           B           C           D           E      "+TextFormatting.RESET);
         System.arraycopy(print, 0, tmp, 1, print.length);
         print = tmp;
 
@@ -658,7 +648,7 @@ public class CLI implements ViewInterface {
 
     public String[] printPlayers(String[] print){
         for(int i=0;i<print.length;i++)
-            print[i] += color.get(0) + "      ";
+            print[i] += color[0] + "      ";
 
         int factor = 9;
         for(int i=0;i<client.getPlayers().size();i++){
@@ -745,7 +735,7 @@ public class CLI implements ViewInterface {
 
         for(int i=0;i<3-client.getPlayers().size();i++)
             for(int j=0;j<9;j++)
-                print[(2-i)*factor+j] += color.get(0)+"                                      "+TextFormatting.RESET;
+                print[(2-i)*factor+j] += color[0]+"                                      "+TextFormatting.RESET;
 
         return print;
     }
@@ -753,16 +743,16 @@ public class CLI implements ViewInterface {
     public String printUserSymbol(SnapCell cell){
         for(SnapWorker sw : client.getWorkers()){
             if(sw.row == cell.row && sw.column == cell.column){
-                return getPlayerbyName(sw.name).color + " "
-                        + getPlayerbyName(sw.name).symbol + getPlayerbyName(sw.name).symbol + getPlayerbyName(sw.name).symbol + " " + TextFormatting.RESET;
+                return getPlayerByName(sw.name).color + " "
+                        + getPlayerByName(sw.name).symbol + getPlayerByName(sw.name).symbol + getPlayerByName(sw.name).symbol + " " + TextFormatting.RESET;
             }
         }
         return "     ";
     }
     public String printSymbol(String symbol){
-        return color.get(0) + symbol + TextFormatting.RESET;
+        return color[0] + symbol + TextFormatting.RESET;
     }
-    public SnapPlayer getPlayerbyName(String name){
+    public SnapPlayer getPlayerByName(String name){
         for(SnapPlayer p : client.getPlayers())
             if(p.name.equals(name))
                 return p;
@@ -774,12 +764,12 @@ public class CLI implements ViewInterface {
             String[] toPrint = new String[7];
             Arrays.fill(toPrint, "");
 
-            toPrint[0] = color.get(0) + "╭────────────────────────────────────╮";
-            toPrint[1] = color.get(0) + "│               LOBBY                │";
+            toPrint[0] = color[0] + "╭────────────────────────────────────╮";
+            toPrint[1] = color[0] + "│               LOBBY                │";
             if (loaded)
                 toPrint[1] += "      Match resumed... Keep waiting for other reconnection!";
 
-            toPrint[2] = color.get(0) + "├────────────────────────────────────┤";
+            toPrint[2] = color[0] + "├────────────────────────────────────┤";
 
             StringBuilder tmp;
 
@@ -802,10 +792,10 @@ public class CLI implements ViewInterface {
                 if (toPrint[3 + i].length() % 2 != 0) toPrint[3 + i] += " ";
             }
 
-            toPrint[3] = color.get(0) + "│" + toPrint[3] + "│" + "      While waiting I advise you to read the rules:";
-            toPrint[4] = color.get(0) + "│" + toPrint[4] + "│" + "      www.ultraboardgames.com/santorini/game-rules.php";
-            toPrint[5] = color.get(0) + "│" + toPrint[5] + "│";
-            toPrint[6] = color.get(0) + "╰────────────────────────────────────╯";
+            toPrint[3] = color[0] + "│" + toPrint[3] + "│" + "      While waiting I advise you to read the rules:";
+            toPrint[4] = color[0] + "│" + toPrint[4] + "│" + "      www.ultraboardgames.com/santorini/game-rules.php";
+            toPrint[5] = color[0] + "│" + toPrint[5] + "│";
+            toPrint[6] = color[0] + "╰────────────────────────────────────╯";
 
             for (String s : toPrint) {
                 tmp = new StringBuilder(s);
@@ -814,7 +804,6 @@ public class CLI implements ViewInterface {
                 println(tmp.toString() + TextFormatting.RESET);
             }
         } catch (Exception ex){ println(ex.getMessage());}
-        //println(color.get(0)+"·················•·················•·················•·················•·················•·················"+TextFormatting.RESET);
     }
 
     public static void printCard(ArrayList<CardName> toPrint){
