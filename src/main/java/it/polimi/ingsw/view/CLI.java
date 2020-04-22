@@ -400,6 +400,7 @@ public class CLI implements ViewInterface {
                 username = in.readLine();
             } catch (IOException e) {
                 username = "";
+                System.out.println("ERRORE " + e.getMessage());
             }
             print(colorCPU + "Validating username... " + TextFormatting.RESET);
             this.client.setUsername(username);
@@ -590,6 +591,7 @@ public class CLI implements ViewInterface {
         int x, y;
         try{
             String tmp = in.readLine();
+            tmp = tmp.toUpperCase();
             String[] tmps = tmp.split("-");
             x = Integer.parseInt(tmps[0]) -1;
             y = "ABCDE".contains(tmps[1]) && tmps[1].length() == 1 ? "ABCDE".indexOf(tmps[1]) : -1;

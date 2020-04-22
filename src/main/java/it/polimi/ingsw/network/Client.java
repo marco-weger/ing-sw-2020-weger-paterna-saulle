@@ -126,7 +126,7 @@ public class Client implements Runnable{
                 // TODO run gui
                 System.out.println("RUN GUI...");
             }
-        }while(!version.equals("CLI") && !version.equals("GUI"));
+        }while(!version.equalsIgnoreCase("CLI") && !version.equalsIgnoreCase("GUI"));
     }
 
     public static void readParams(Client client){
