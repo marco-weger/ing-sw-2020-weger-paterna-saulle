@@ -68,12 +68,15 @@ public class CLI implements ViewInterface {
             do{
                 print(colorCPU+"Type cell where you want to move [x-y] " + TextFormatting.input());
                 SnapCell movingCell = readCell();
-                for(SnapCell cell : message.sc){
-                   if(cell.toString().equals(movingCell.toString())){
-                       client.sendMessage(new MoveClient(client.getUsername(), movingCell.row, movingCell.column));
-                       go = false;
-                   }
+                if(movingCell!=null){
+                    for(SnapCell cell : message.sc){
+                       if(cell.toString().equals(movingCell.toString())){
+                           client.sendMessage(new MoveClient(client.getUsername(), movingCell.row, movingCell.column));
+                           go = false;
+                       }
+                    }
                 }
+                else go = true;
                 if(go)
                     print(colorCPU+"Please insert a valid cell! ");
             }while(go);
@@ -91,12 +94,15 @@ public class CLI implements ViewInterface {
             do{
                 print(colorCPU+"Type cell where you want to build [x-y] " + TextFormatting.input());
                 SnapCell movingCell = readCell();
-                for(SnapCell cell : message.sc){
-                    if(cell.toString().equals(movingCell.toString())){
-                        client.sendMessage(new BuildClient(client.getUsername(), movingCell.row, movingCell.column));
-                        go = false;
+                if (movingCell != null) {
+                    for(SnapCell cell : message.sc){
+                        if(cell.toString().equals(movingCell.toString())){
+                            client.sendMessage(new BuildClient(client.getUsername(), movingCell.row, movingCell.column));
+                            go = false;
+                        }
                     }
                 }
+                else go = true;
                 if(go)
                     print(colorCPU+"Please insert a valid cell! ");
             }while(go);
@@ -125,10 +131,12 @@ public class CLI implements ViewInterface {
                 do {
                     print(colorCPU+"Type the position of second worker [x-y] " + TextFormatting.input());
                     c = readCell();
-                    for(SnapWorker sw : client.getWorkers()){
-                        if (sw.row == c.row && sw.column == c.column) {
-                            c = null;
-                            break;
+                    if(c!=null){
+                        for(SnapWorker sw : client.getWorkers()){
+                            if (sw.row == c.row && sw.column == c.column) {
+                                c = null;
+                                break;
+                            }
                         }
                     }
                 }while(c == null);
@@ -146,10 +154,12 @@ public class CLI implements ViewInterface {
                     do {
                         print(colorCPU+"Type the position of first worker [x-y] " + TextFormatting.input());
                         c = readCell();
-                        for(SnapWorker sw : client.getWorkers()){
-                            if (sw.row == c.row && sw.column == c.column) {
-                                c = null;
-                                break;
+                        if(c!=null){
+                            for(SnapWorker sw : client.getWorkers()){
+                                if (sw.row == c.row && sw.column == c.column) {
+                                    c = null;
+                                    break;
+                                }
                             }
                         }
                     }while(c == null);
@@ -196,11 +206,13 @@ public class CLI implements ViewInterface {
                         do { // first worker of the match
                             print(colorCPU + "Type the position of first worker [x-y] " + TextFormatting.input());
                             c = readCell();
-                            println(c.row + "+" + c.column);
-                            for(SnapWorker sw : client.getWorkers()){
-                                if (sw.row == c.row && sw.column == c.column) {
-                                    c = null;
-                                    break;
+                            if(c!=null)
+                            {
+                                for(SnapWorker sw : client.getWorkers()){
+                                    if (sw.row == c.row && sw.column == c.column) {
+                                        c = null;
+                                        break;
+                                    }
                                 }
                             }
                         }while(c == null);
@@ -245,7 +257,7 @@ public class CLI implements ViewInterface {
                 if (message.status == Status.CARD_CHOICE) {
                     println(colorCPU + "Waiting for opponent's choice..." + TextFormatting.RESET);
                 } else {
-                    println(colorCPU + "Opponent turn, " + message.name + " is playing..." + TextFormatting.RESET);
+                    println(colorCPU + "Opponent turn, " + message.player + " is playing..." + TextFormatting.RESET);
                 }
             }
         }
@@ -577,7 +589,7 @@ public class CLI implements ViewInterface {
         boolean go;
         int x, y;
         try{
-            String tmp = in.readLine().toUpperCase();
+            String tmp = in.readLine();
             String[] tmps = tmp.split("-");
             x = Integer.parseInt(tmps[0]) -1;
             y = "ABCDE".contains(tmps[1]) && tmps[1].length() == 1 ? "ABCDE".indexOf(tmps[1]) : -1;
