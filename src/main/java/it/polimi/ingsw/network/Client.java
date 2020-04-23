@@ -17,6 +17,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Client implements Runnable{
 
@@ -97,19 +98,21 @@ public class Client implements Runnable{
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException, InterruptedException {
         Client client = new Client();
         readParams(client);
         String version;
         boolean go;
         do{
+            printTitle();
+
             System.out.print(TextFormatting.RESET + "Choose the version [CLI/GUI] " + TextFormatting.input());
             System.out.flush();
-            try {
-                version = read.readLine();
-            } catch (IOException e) {
-                version = "";
-            }
+
+            //read.reset();
+            //read.readLine(); //to solve a bug where message after popped too soon
+
+            version = read.readLine();
 
             go = false;
 
@@ -204,5 +207,28 @@ public class Client implements Runnable{
             System.out.flush();
             System.exit(0);
         }
+    }
+
+    public static void printTitle() throws InterruptedException {
+        String str =
+                " __          ________ _      _____ ____  __  __ ______   _______ ____  \n" +
+                        " \\ \\        / /  ____| |    / ____/ __ \\|  \\/  |  ____| |__   __/ __ \\ \n" +
+                        "  \\ \\  /\\  / /| |__  | |   | |   | |  | | \\  / | |__       | | | |  | |\n" +
+                        "   \\ \\/  \\/ / |  __| | |   | |   | |  | | |\\/| |  __|      | | | |  | |\n" +
+                        "    \\  /\\  /  | |____| |___| |___| |__| | |  | | |____     | | | |__| |\n" +
+                        "     \\/  \\/   |______|______\\_____\\____/|_|  |_|______|    |_|  \\____/\n\n";
+        System.out.println(str);
+        System.out.flush();
+        TimeUnit.MILLISECONDS.sleep(1200);
+        str =
+                "   _____         _   _ _______ ____  _____  _____ _   _ _____ \n" +
+                        "  / ____|  /\\   | \\ | |__   __/ __ \\|  __ \\|_   _| \\ | |_   _|\n" +
+                        " | (___   /  \\  |  \\| |  | | | |  | | |__) | | | |  \\| | | |  \n" +
+                        "  \\___ \\ / /\\ \\ | . ` |  | | | |  | |  _  /  | | | . ` | | |  \n" +
+                        "  ____) / ____ \\| |\\  |  | | | |__| | | \\ \\ _| |_| |\\  |_| |_ \n" +
+                        " |_____/_/    \\_\\_| \\_|  |_|  \\____/|_|  \\_\\_____|_| \\_|_____|\n\n";
+        System.out.println(str);
+        System.out.flush();
+        TimeUnit.MILLISECONDS.sleep(1200);
     }
 }

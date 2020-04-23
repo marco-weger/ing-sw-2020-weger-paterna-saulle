@@ -14,11 +14,8 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Server {
-
-    private static Logger LOGGER = Logger.getLogger("Server");
 
     /**
      * The socket port
@@ -134,7 +131,7 @@ public class Server {
 
                 //saveVirtualView(virtualViews2,virtualViews3);
             }catch(IOException e){
-                LOGGER.log(Level.WARNING, e.getMessage());
+                System.err.println(e.getMessage());
                 break;
             }
         }
@@ -142,7 +139,7 @@ public class Server {
         try {
             serverSocket.close();
         } catch (IOException e) {
-            LOGGER.log(Level.WARNING, e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -163,13 +160,11 @@ public class Server {
      * @param vv the virtual view
      */
     public void send(ServerMessage sm, VirtualView vv){
-        if(sm!=null && vv != null){
-            for(ServerClientHandler sch : vv.getConnectedPlayers().values()){
-                if(sch.getName().equals(sm.name)){
+        if(sm!=null && vv != null)
+            for(ServerClientHandler sch : vv.getConnectedPlayers().values())
+                if(sch.getName().equals(sm.name))
                     sch.notify(sm);
-                }
-            }
-        }
+        System.out.println("[SENT] - " + Objects.requireNonNull(sm).toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + " - " + sm.name);
     }
 
     /**
