@@ -47,19 +47,32 @@ public class Server {
      */
     private ArrayList<String> pendingPlayers;
 
+    /**
+     * Socket timeout for reading call
+     */
+    private int timeOutTimer;
+
     public Server(){
-        this.port = 1234;
         this.currentVirtualView2 = new VirtualView(this);
         this.currentVirtualView3 = new VirtualView(this);
         this.virtualViews2 = new ArrayList<>();
         this.virtualViews3 = new ArrayList<>();
         this.pendingPlayers = new ArrayList<>();
+
+        // DEFAULT VALUE
+        this.port = 1234;
+        this.timeOutTimer = 60;
     }
 
     public ArrayList<VirtualView> getVirtualViews2() { return virtualViews2; }
+
     public ArrayList<VirtualView> getVirtualViews3() { return virtualViews3; }
 
     public ArrayList<String> getPendingPlayers() { return pendingPlayers; }
+
+    public VirtualView getCurrentVirtualView2(){ return currentVirtualView2; }
+
+    public VirtualView getCurrentVirtualView3(){ return currentVirtualView3; }
 
     /**
      * It iterates on all VirtualViews and all ServerClientHandlers
@@ -75,9 +88,6 @@ public class Server {
         }
         return players;
     }
-
-    public VirtualView getCurrentVirtualView2(){ return currentVirtualView2; }
-    public VirtualView getCurrentVirtualView3(){ return currentVirtualView3; }
 
     public void newCurrentVirtualView2(){
         this.currentVirtualView2=new VirtualView(this);
@@ -119,11 +129,13 @@ public class Server {
         this.virtualViews2.add(currentVirtualView2); // add the first VirtualView
         this.virtualViews3.add(currentVirtualView3); // add the first VirtualView
 
-        System.out.println("[READY ON PORT "+port+"]");
+        System.out.println("[SOCKET TIMEOUT] - "+timeOutTimer);
+        System.out.println("[PORT] - "+port);
 
         while (true){
             try{
                 Socket socket = serverSocket.accept();
+                //socket.setSoTimeout(timeOutTimer*1000);
                 System.out.println("[NEW USER] - " + socket.getRemoteSocketAddress().toString());
 
                 //executor.submit(new ServerClientHandler(socket,this,currentVirtualView));
@@ -187,6 +199,9 @@ public class Server {
             if(config != null) {
                 if (config.containsKey("port"))
                     server.port = Integer.parseInt(config.get("port").toString());
+
+                if(config.containsKey("timeOutTimer"))
+                    server.timeOutTimer = Integer.parseInt(config.get("timeOutTimer").toString());
             }
         } catch (Exception e) {
             //System.out.println(e.getMessage());

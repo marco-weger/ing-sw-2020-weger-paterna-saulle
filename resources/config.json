@@ -1,7 +1,8 @@
 {
   "ip": "127.0.0.1",
   "port": "4321",
-  "disconnectTimer": "120",
+  "timeOutTimer": "60",
+  "disconnectTimer": "60",
   "startTurnTimer": "50",
   "turnTimer": "30"
 }
