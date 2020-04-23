@@ -22,7 +22,7 @@ java --module-path PATHTOJAVAFX --add-modules=javafx.controls,javafx.fxml,javafx
 ```bash
 java -jar CLIENT.jar
 ```
-OR
+or
 ```bash
 java -jar CLIENT.jar [CLI/GUI]
 ```
