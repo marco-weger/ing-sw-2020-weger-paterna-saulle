@@ -4,28 +4,27 @@
 
 This final project was made between March and July 2020 as our final thesis project at Politecnico di Milano. <br>
 <!-- TODO: add final score -->
-<!--
 ## How to start JARs
 
-You can find them under "Deliverables/JARs"
+You can find them under "deliverables/jars"
 
+<!--
 ### GUI.jar
 Just download it and use
 
 java --module-path PATHTOJAVAFX --add-modules=javafx.controls,javafx.fxml,javafx.graphics -jar GUI.jar YOURIP
+-->
 
-### CLI.jar
+### CLIENT.jar
 Download it and use
 
 java -jar CLI.jar YOURIP
 ### SERVER.jar
 Download it and use
 
-java -jar SERVER.jar YOURIP
+java -jar SERVER.jar
 
-Where YOURIP is the IP of the computer which is running the Jar.
-If you lunch the jars on different PCs, all IPs will be different.
-You will be asked the Server IP once the jar has been launched correctly.
+<!--
 
 PATHTOJAVAFX is the path to JavaFX 12 (the lib folder!!) and changes depending on where you saved your JavaFX on your PC.
 
