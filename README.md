@@ -18,18 +18,18 @@ java --module-path PATHTOJAVAFX --add-modules=javafx.controls,javafx.fxml,javafx
 ### Configuration
 <!-- Talk about JSON and saved-match -->
 
-### CLIENT.jar
+### Client.jar
 ```bash
-java -jar CLIENT.jar
+java -jar Client.jar
 ```
 or
 ```bash
-java -jar CLIENT.jar [CLI/GUI]
+java -jar Client.jar [CLI/GUI]
 ```
 If you decide to run it withouth the arg, you will be asked by the console.
-### SERVER.jar
+### Server.jar
 ```bash
-java -jar SERVER.jar
+java -jar Server.jar
 ```
 
 <!--
