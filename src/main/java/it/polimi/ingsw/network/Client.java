@@ -15,6 +15,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -98,27 +99,62 @@ public class Client implements Runnable{
         }
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static String getRandomSymbol(){
+        final String GREEK = "ΓΔΘΛΠΣΦΨΩ";
+        try {
+            StringBuilder ret = new StringBuilder();
+            String tmp;
+            while(ret.length()<3){
+                tmp = ""+GREEK.charAt(Math.abs(new Random().nextInt(GREEK.length())));
+                if (!ret.toString().contains(tmp))
+                    ret.append(tmp);
+            }
+            return ret.toString();
+        } catch (Exception ex){
+            System.out.println(ex.toString());
+            return "*@%";
+        }
+    }
+
+    public static void main(String[] args) {
         Client client = new Client();
         readParams(client);
         String version;
         boolean go;
+        printTitle();
+
+        /*
+        for(int i=0;i<3500;i++){
+            System.out.println(getRandomSymbol());
+        }
+         */
+
         do{
-            printTitle();
+            if(args.length == 1){
+                version = args[0];
+                args = new String[0];
+            } else {
+                System.out.print(TextFormatting.RESET + "Choose the version [CLI/GUI] " + TextFormatting.input());
+                System.out.flush();
 
-            System.out.print(TextFormatting.RESET + "Choose the version [CLI/GUI] " + TextFormatting.input());
-            System.out.flush();
-
-            //read.reset();
-            //read.readLine(); //to solve a bug where message after popped too soon
-
-            version = read.readLine();
-
+                try {
+                    //while(System.in.available() <= 0);
+                    version = read.readLine();
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                    System.out.flush();
+                    version = "err";
+                }
+            }
             go = false;
 
             if(version.equalsIgnoreCase("CLI")){
-                CLI view = new CLI(client);
+                System.out.print("Connection to the server...");
+                System.out.print("3...");
+                CLI view = new CLI(client,getRandomSymbol());
+                System.out.print("2...");
                 client.setView(view);
+                System.out.print("1...");
                 view.displayFirstWindow();
             }
             else if(version.equalsIgnoreCase("GUI")){
@@ -209,7 +245,7 @@ public class Client implements Runnable{
         }
     }
 
-    public static void printTitle() throws InterruptedException {
+    public static void printTitle(){
         String str =
                 " __          ________ _      _____ ____  __  __ ______   _______ ____  \n" +
                         " \\ \\        / /  ____| |    / ____/ __ \\|  \\/  |  ____| |__   __/ __ \\ \n" +
@@ -218,8 +254,12 @@ public class Client implements Runnable{
                         "    \\  /\\  /  | |____| |___| |___| |__| | |  | | |____     | | | |__| |\n" +
                         "     \\/  \\/   |______|______\\_____\\____/|_|  |_|______|    |_|  \\____/\n\n";
         System.out.println(str);
-        System.out.flush();
-        TimeUnit.MILLISECONDS.sleep(1200);
+        //System.out.flush();
+        /*
+        try {
+            TimeUnit.MILLISECONDS.sleep(1200);
+        } catch (InterruptedException ignored) {}
+         */
         str =
                 "   _____         _   _ _______ ____  _____  _____ _   _ _____ \n" +
                         "  / ____|  /\\   | \\ | |__   __/ __ \\|  __ \\|_   _| \\ | |_   _|\n" +
@@ -229,6 +269,11 @@ public class Client implements Runnable{
                         " |_____/_/    \\_\\_| \\_|  |_|  \\____/|_|  \\_\\_____|_| \\_|_____|\n\n";
         System.out.println(str);
         System.out.flush();
-        TimeUnit.MILLISECONDS.sleep(1200);
+        /*
+        try {
+            TimeUnit.MILLISECONDS.sleep(1200);
+        } catch (InterruptedException ignored) {
+        }
+         */
     }
 }

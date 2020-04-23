@@ -49,9 +49,9 @@ public class CLI implements ViewInterface {
      */
     private static final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-    public CLI(Client client){
+    public CLI(Client client, String symbols){
         this.client = client;
-        symbols = getNewSymbols(3);
+        this.symbols = symbols;
     }
 
     public void displayFirstWindow() { // tested
@@ -86,7 +86,6 @@ public class CLI implements ViewInterface {
                        }
                     }
                 }
-                else go = true;
                 if(go)
                     print(colorCPU+"Please insert a valid cell! ");
             }while(go);
@@ -112,7 +111,6 @@ public class CLI implements ViewInterface {
                         }
                     }
                 }
-                else go = true;
                 if(go)
                     print(colorCPU+"Please insert a valid cell! ");
             }while(go);
@@ -495,26 +493,6 @@ public class CLI implements ViewInterface {
     }
 
     // ********************************************************************************************************* //
-
-    public String getNewSymbols(int k){
-        String GREEK = "ΓΔΘΛΠΣΦΨΩ";
-        try {
-            StringBuilder ret = new StringBuilder();
-            String tmp;
-            for(int j=0; j<k; j++){
-                boolean go = false;
-                do {
-                    tmp = GREEK.charAt(Math.abs(new Random().nextInt(GREEK.length()))) + "";
-                    if (ret.toString().contains(tmp))
-                        go = true;
-                } while (go);
-                ret.append(tmp);
-            }
-            return ret.toString();
-        } catch (Exception ex){
-            return "@";
-        }
-    }
 
     public void clear(){
         for(int i=0;i<60;i++)

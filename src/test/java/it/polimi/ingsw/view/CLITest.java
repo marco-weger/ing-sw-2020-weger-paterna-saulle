@@ -21,7 +21,7 @@ public class CLITest {
         c.getWorkers().add(new SnapWorker(3,4,"GIULIO",2));
         //c.getWorkers().add(new SnapWorker(2,0,"FRA",1));
         //c.getWorkers().add(new SnapWorker(0,1,"FRA",2));
-        CLI view = new CLI(c);
+        CLI view = new CLI(c,"@%&");
         c.getPlayers().add(new SnapPlayer("MARCO"));
         c.getPlayers().add(new SnapPlayer("GIULIO"));
         c.getPlayers().get(0).symbol= "@";
