@@ -15,14 +15,22 @@ Just download it and use
 java --module-path PATHTOJAVAFX --add-modules=javafx.controls,javafx.fxml,javafx.graphics -jar GUI.jar YOURIP
 -->
 
+### Configuration
+<!-- Talk about JSON and saved-match -->
+
 ### CLIENT.jar
-Download it and use
-
-java -jar CLI.jar YOURIP
+```bash
+java -jar CLIENT.jar
+```
+OR
+```bash
+java -jar CLIENT.jar [CLI/GUI]
+```
+If you decide to run it withouth the arg, you will be asked by the console.
 ### SERVER.jar
-Download it and use
-
+```bash
 java -jar SERVER.jar
+```
 
 <!--
 
