@@ -3,6 +3,7 @@ import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
+import it.polimi.ingsw.commons.clientMessages.PingClient;
 import it.polimi.ingsw.commons.clientMessages.ReConnectionClient;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.commons.Status;
@@ -11,8 +12,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ServerClientHandler implements Runnable {
 
@@ -46,11 +50,19 @@ public class ServerClientHandler implements Runnable {
      */
     private String name;
 
-    public ServerClientHandler (Socket socket, Server server){
+    /**
+     * Socket ping period
+     */
+    private int pingPeriod;
+
+    private Timer ping;
+
+    public ServerClientHandler (Socket socket, Server server, int pingPeriod){
         this.socket = socket;
         this.server = server;
         this.virtualView = null;
         this.name = socket.getRemoteSocketAddress().toString();
+        this.pingPeriod = pingPeriod;
     }
 
     public String getName() {return name;}
@@ -74,6 +86,7 @@ public class ServerClientHandler implements Runnable {
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
+            startPing();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -92,7 +105,7 @@ public class ServerClientHandler implements Runnable {
                     Object object;
                     // standard loop to read
                     while(socket.isConnected()){
-                        object = in.readObject();
+                        object = readFromClient();
                         if(object instanceof ClientMessage)
                             System.out.println("[RECEIVED] - " + object.toString().substring(object.toString().lastIndexOf('.')+1,
                                     object.toString().lastIndexOf('@')) + " - " + (((ClientMessage) object).name.equals("") ? "ALL" : ((ClientMessage) object).name));
@@ -124,7 +137,7 @@ public class ServerClientHandler implements Runnable {
             // send to client request for name an wait for answer
             this.notify(new NameRequestServer(ret == 0));
             try {
-                object = in.readObject();
+                object = readFromClient();
                 ret = 0;
             } catch (Exception e) {
                 printDisconnection();
@@ -197,7 +210,7 @@ public class ServerClientHandler implements Runnable {
             //mode request
             this.notify(new ModeRequestServer());
             try {
-                object = in.readObject();
+                object = readFromClient();
             } catch (Exception e) {
                 printDisconnection();
                 server.getPendingPlayers().remove(this.name);
@@ -246,6 +259,7 @@ public class ServerClientHandler implements Runnable {
     }
 
     private void printDisconnection(){
+        ping.cancel();
         System.out.println("[DISCONNECTED USER] - " + socket.getRemoteSocketAddress().toString());
     }
 
@@ -270,5 +284,40 @@ public class ServerClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    public void startPing(){
+        ping = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                server.send(new PingServer(name),virtualView);
+            }
+        };
+        ping.scheduleAtFixedRate(task, 0, pingPeriod*1000);
+    }
+
+    public boolean turnTimesUp = false;
+
+    protected Object readFromClient() throws IOException, ClassNotFoundException {
+        Object obj = null;
+        do{
+            if(in.available() == 0){
+                try{
+                    obj = in.readObject();
+                } catch (SocketTimeoutException ex){
+                    System.out.println("......"+ex.getMessage());
+                }
+            }
+        }while ((obj instanceof PingClient || obj == null) && !turnTimesUp);
+
+        if(turnTimesUp){
+            System.out.println(this.name+"'S TURN TIME'S UP!");
+            return null;
+        } else return obj;
+    }
+
+    public void countdown(int count){
+        server.send(new CountdownServer(this.name,count),virtualView);
     }
 }

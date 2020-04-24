@@ -17,7 +17,7 @@ public class WorkerChoseClient extends ClientMessage {
      */
     public WorkerChoseClient(String name, int worker)
     {
-        this.name=name;
+        super(name);
         this.worker=worker;
     }
 

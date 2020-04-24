@@ -14,7 +14,7 @@ public class ReConnectionClient extends ClientMessage {
     public ServerClientHandler sch;
 
     public ReConnectionClient(String name, ServerClientHandler sch){
-        this.name=name;
+        super(name);
         this.sch=sch;
     }
 }

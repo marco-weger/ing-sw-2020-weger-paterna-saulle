@@ -19,7 +19,7 @@ public class ChallengerChoseClient extends ClientMessage {
      * this method send to the server the three or two cards picked from the deck by the challenger
      */
     public ChallengerChoseClient(String name, ArrayList<CardName> c) {
-        this.name = name;
+        super(name);
         this.c = c;
     }
 

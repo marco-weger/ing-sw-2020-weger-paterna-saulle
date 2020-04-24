@@ -17,7 +17,7 @@ public class ModeChoseClient extends ClientMessage {
     public ServerClientHandler sch;
 
     public ModeChoseClient(String name, int mode){
-        this.name=name;
+        super(name);
         this.mode=mode;
         this.sch=null;
     }

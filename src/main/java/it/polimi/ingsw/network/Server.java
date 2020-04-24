@@ -2,6 +2,8 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.commons.serverMessages.CountdownServer;
+import it.polimi.ingsw.commons.serverMessages.PingServer;
 import it.polimi.ingsw.model.Match;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -49,18 +51,27 @@ public class Server {
     /**
      * Socket timeout for reading call
      */
-    private int timeOutTimer;
+    private int timeoutSocket;
+
+    /**
+     * Socket ping period
+     */
+    private int pingPeriod;
+
+    /**
+     * Complete turn timer
+     */
+    private int turnTimer;
 
     public Server(){
-        this.currentVirtualView2 = new VirtualView(this);
-        this.currentVirtualView3 = new VirtualView(this);
         this.virtualViews2 = new ArrayList<>();
         this.virtualViews3 = new ArrayList<>();
         this.pendingPlayers = new ArrayList<>();
 
         // DEFAULT VALUE
         this.port = 1234;
-        this.timeOutTimer = 60;
+        this.pingPeriod = 5;
+        this.turnTimer = 10;
     }
 
     public ArrayList<VirtualView> getVirtualViews2() { return virtualViews2; }
@@ -92,7 +103,7 @@ public class Server {
      * It creates a new lobby for 2 players match
      */
     public void newCurrentVirtualView2(){
-        this.currentVirtualView2=new VirtualView(this);
+        this.currentVirtualView2=new VirtualView(this,turnTimer);
         virtualViews2.add(this.currentVirtualView2);
     }
 
@@ -100,7 +111,7 @@ public class Server {
      * It creates a new lobby for 3 players match
      */
     public void newCurrentVirtualView3(){
-        this.currentVirtualView3=new VirtualView(this);
+        this.currentVirtualView3=new VirtualView(this,turnTimer);
         virtualViews3.add(this.currentVirtualView3);
     }
 
@@ -134,17 +145,18 @@ public class Server {
         this.virtualViews2.add(currentVirtualView2); // add the first VirtualView
         this.virtualViews3.add(currentVirtualView3); // add the first VirtualView
 
-        System.out.println("[SOCKET TIMEOUT] - "+timeOutTimer);
+        System.out.println("[SOCKET TIMEOUT] - "+timeoutSocket + "s");
+        System.out.println("[PING PERIOD] - "+pingPeriod + "s");
         System.out.println("[PORT] - "+port);
 
         while (true){
             try{
                 Socket socket = serverSocket.accept();
-                //socket.setSoTimeout(timeOutTimer*1000);
+                socket.setSoTimeout(timeoutSocket*1000);
                 System.out.println("[NEW USER] - " + socket.getRemoteSocketAddress().toString());
 
                 //executor.submit(new ServerClientHandler(socket,this,currentVirtualView));
-                executor.submit(new ServerClientHandler(socket,this));
+                executor.submit(new ServerClientHandler(socket,this, pingPeriod));
 
                 //saveVirtualView(virtualViews2,virtualViews3);
             }catch(IOException e){
@@ -181,7 +193,8 @@ public class Server {
             for(ServerClientHandler sch : vv.getConnectedPlayers().values())
                 if(sch.getName().equals(sm.name))
                     sch.notify(sm);
-        System.out.println("[SENT] - " + Objects.requireNonNull(sm).toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + " - " + sm.name);
+        if(!(sm instanceof PingServer) && !(sm instanceof CountdownServer))
+            System.out.println("[SENT] - " + Objects.requireNonNull(sm).toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + " - " + sm.name);
     }
 
     /**
@@ -204,9 +217,12 @@ public class Server {
             if(config != null) {
                 if (config.containsKey("port"))
                     server.port = Integer.parseInt(config.get("port").toString());
-
-                if(config.containsKey("timeOutTimer"))
-                    server.timeOutTimer = Integer.parseInt(config.get("timeOutTimer").toString());
+                if(config.containsKey("pingPeriod"))
+                    server.pingPeriod = Integer.parseInt(config.get("pingPeriod").toString());
+                if(config.containsKey("timeoutSocket"))
+                    server.timeoutSocket = Integer.parseInt(config.get("timeoutSocket").toString());
+                if(config.containsKey("turnTimer"))
+                    server.turnTimer = Integer.parseInt(config.get("turnTimer").toString());
             }
         } catch (Exception e) {
             //System.out.println(e.getMessage());
@@ -215,13 +231,14 @@ public class Server {
         }
 
         //run server
+        server.newCurrentVirtualView2();
+        server.newCurrentVirtualView3();
         server.startServer();
     }
 
     /**
      * Loads the match from a file
      */
-
     public void loadMatch(){
         ObjectInputStream objIn;
         //ArrayList<String> toDelete = new ArrayList<>();
@@ -237,11 +254,11 @@ public class Server {
                                 if (((Match) obj).getPlayers().size() + ((Match) obj).getLosers().size() == 2) {
                                     Object sm = objIn.readObject();
                                     if(sm instanceof ServerMessage)
-                                        virtualViews2.add(new VirtualView(this, (Match) obj, (ServerMessage) sm));
+                                        virtualViews2.add(new VirtualView(this, (Match) obj, (ServerMessage) sm,turnTimer));
                                 } else if (((Match) obj).getPlayers().size() + ((Match) obj).getLosers().size() == 3) {
                                     Object sm = objIn.readObject();
                                     if(sm instanceof ServerMessage)
-                                        virtualViews3.add(new VirtualView(this, (Match) obj, (ServerMessage) sm));
+                                        virtualViews3.add(new VirtualView(this, (Match) obj, (ServerMessage) sm,turnTimer));
                                 }
                             } //else if(((Match) obj).getStatus().equals(Status.NAME_CHOICE)) {
                                 //toDelete.add(fileEntry.getAbsolutePath());

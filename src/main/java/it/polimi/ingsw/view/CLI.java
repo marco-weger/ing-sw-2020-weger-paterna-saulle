@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.Scanner;
 
 public class CLI implements ViewInterface {
@@ -468,6 +467,16 @@ public class CLI implements ViewInterface {
         clear();
         printTitle();
         printTable();
+    }
+
+    @Override
+    public void handleMessage(PingServer pingServer) {
+
+    }
+
+    @Override
+    public void handleMessage(CountdownServer countdownServer) {
+        System.out.println(countdownServer.count);
     }
 
     public void endMatch(){

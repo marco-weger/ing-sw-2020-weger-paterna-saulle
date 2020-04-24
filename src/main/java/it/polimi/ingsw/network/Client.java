@@ -4,8 +4,10 @@ import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapWorker;
+import it.polimi.ingsw.commons.clientMessages.PingClient;
 import it.polimi.ingsw.commons.serverMessages.BuiltServer;
 import it.polimi.ingsw.commons.serverMessages.MovedServer;
+import it.polimi.ingsw.commons.serverMessages.PingServer;
 import it.polimi.ingsw.view.CLI;
 import it.polimi.ingsw.view.SnapPlayer;
 import it.polimi.ingsw.view.TextFormatting;
@@ -14,8 +16,11 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -30,6 +35,10 @@ public class Client implements Runnable{
     protected ArrayList<SnapWorker> workers;
     protected ArrayList<SnapPlayer> players;
 
+    private int pingPeriod;
+    private int timeoutSocket;
+    private Timer ping;
+
     private static final BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 
     String ip;
@@ -43,6 +52,9 @@ public class Client implements Runnable{
         }
         this.workers=new ArrayList<>();
         this.players = new ArrayList<>();
+
+        // DEFAULT
+        this.pingPeriod = 5;
     }
 
     public ArrayList<SnapPlayer> getPlayers(){ return players; }
@@ -165,6 +177,17 @@ public class Client implements Runnable{
         }while(go);
     }
 
+    public void startPing(){
+        ping = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                sendMessage(new PingClient(username));
+            }
+        };
+        ping.scheduleAtFixedRate(task, 0, pingPeriod*1000);
+    }
+
     public static void readParams(Client client){
         try (FileReader reader = new FileReader("resources"+File.separator+"config.json"))
         {
@@ -181,6 +204,10 @@ public class Client implements Runnable{
                     client.setPort(Integer.parseInt(config.get("port").toString()));
                 if (config.containsKey("ip"))
                     client.setIp(config.get("ip").toString());
+                if (config.containsKey("pingPeriod"))
+                    client.pingPeriod = Integer.parseInt(config.get("pingPeriod").toString());
+                if (config.containsKey("timeoutSocket"))
+                    client.timeoutSocket = Integer.parseInt(config.get("timeoutSocket").toString());
             }
         } catch (Exception e) {
             // default params
@@ -192,11 +219,13 @@ public class Client implements Runnable{
     public boolean connect() {
         try {
             socket = new Socket(ip,port);
+            socket.setSoTimeout(timeoutSocket*1000);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
             ExecutorService executor = Executors.newCachedThreadPool();
             executor.submit(this);
+            startPing();
             return true;
         } catch (IOException e) {
             return false;
@@ -207,9 +236,14 @@ public class Client implements Runnable{
     public void run() {
         try {
             while (socket.isConnected() && in != null) {
-                ServerMessage msg = (ServerMessage) in.readObject();
-                System.out.println(msg.toString());
-                System.out.flush();
+                ServerMessage msg = (ServerMessage) readFromServer();
+
+                // FIXME remove
+                if(!(msg instanceof PingServer)){
+                    System.out.println(msg.toString());
+                    System.out.flush();
+                }
+
                 if(msg instanceof MovedServer){
                     for(SnapWorker worker : getWorkers()){
                         if(worker.name.equals(((MovedServer) msg).sw.name) && worker.n == ((MovedServer) msg).sw.n){
@@ -242,6 +276,18 @@ public class Client implements Runnable{
             System.out.flush();
             System.exit(0);
         }
+    }
+
+    protected Object readFromServer() throws IOException, ClassNotFoundException {
+        Object obj = null;
+        do{
+            try{
+                obj = in.readObject();
+            } catch (SocketTimeoutException ex){
+                System.out.println("......"+ex.getMessage());
+            }
+        }while (obj instanceof PingClient || obj == null);
+        return obj;
     }
 
     @Deprecated

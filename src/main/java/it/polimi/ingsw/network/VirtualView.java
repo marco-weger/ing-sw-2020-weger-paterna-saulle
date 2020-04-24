@@ -14,6 +14,8 @@ import it.polimi.ingsw.model.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class VirtualView extends Observable implements Observer {
 
@@ -44,11 +46,15 @@ public class VirtualView extends Observable implements Observer {
 
     private ArrayList<String> losers;
 
+    Timer turn;
+
+    int turnTimer;
+
     /**
      * Constructor used for a new game
      * @param server the SERVER
      */
-    public VirtualView(Server server){
+    public VirtualView(Server server, int turnTimer){
         this.server = server;
 
         this.ended = false;
@@ -62,6 +68,7 @@ public class VirtualView extends Observable implements Observer {
         //addObserver(new Controller(this));
 
         this.losers = new ArrayList<>();
+        this.turnTimer = turnTimer;
     }
 
     /**
@@ -69,7 +76,7 @@ public class VirtualView extends Observable implements Observer {
      * @param server the SERVER
      * @param match the MATCH
      */
-    public VirtualView(Server server, Match match, ServerMessage lastMessage){
+    public VirtualView(Server server, Match match, ServerMessage lastMessage, int turnTimer){
         this.server = server;
         this.ended = match.isEnded();
 
@@ -83,6 +90,7 @@ public class VirtualView extends Observable implements Observer {
         this.lastMessage=lastMessage;
 
         this.losers = new ArrayList<>();
+        this.turnTimer = turnTimer;
     }
 
     // It is used to run some tests about VirtualView and Controller communication
@@ -128,8 +136,22 @@ public class VirtualView extends Observable implements Observer {
             throw new RuntimeException("This must be a ServerMessage object");
 
         ServerMessage sm = (ServerMessage) arg;
-        if(sm instanceof CurrentStatusServer)
+        if(sm instanceof CurrentStatusServer){
             currentStatus = ((CurrentStatusServer) sm).status;
+
+            /////////////////////
+            if(((CurrentStatusServer) sm).status.equals(Status.START)){
+                try{
+                    turn.cancel();
+                } catch (Exception ignored){}
+
+                turn = new Timer();
+                TimerTask task = new TimerTurn(getConnectedPlayers().get(((CurrentStatusServer) sm).player), turnTimer);
+                System.out.println("TIMER STARTED...");
+                turn.scheduleAtFixedRate(task, 0, 1000); // TODO SET CORRECT VALUE
+            }
+            /////////////////////
+        }
 
         if(server != null){
             if(sm.name.equals("")){

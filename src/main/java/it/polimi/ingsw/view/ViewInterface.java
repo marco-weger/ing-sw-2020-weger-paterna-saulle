@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.commons.clientMessages.PingClient;
 import it.polimi.ingsw.commons.serverMessages.*;
 
 public interface ViewInterface {
@@ -18,5 +19,6 @@ public interface ViewInterface {
     void handleMessage(ModeRequestServer message);
     void handleMessage(BuiltServer message);
     void handleMessage(MovedServer message);
-
+    void handleMessage(PingServer pingServer);
+    void handleMessage(CountdownServer countdownServer);
 }

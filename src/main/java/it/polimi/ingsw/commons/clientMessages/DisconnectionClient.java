@@ -10,6 +10,6 @@ public class DisconnectionClient extends ClientMessage {
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
     public DisconnectionClient(String name){
-        this.name=name;
+        super(name);
     }
 }

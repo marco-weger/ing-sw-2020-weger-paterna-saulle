@@ -20,7 +20,7 @@ public class ControllerTest {
 
     public void initialize(){
         //create a list of players with the developers
-        vw = new VirtualView(null);
+        vw = new VirtualView(null,10);
         ArrayList<Player> players = new ArrayList<>(Arrays.asList(
                 new Player("Marco",vw),
                 new Player("Francesco",vw),
@@ -50,7 +50,7 @@ public class ControllerTest {
         m = new Match(22,vw);
         controller.setMatch(m);
         assertEquals(m,controller.getMatch());
-        VirtualView vv = new VirtualView(null);
+        VirtualView vv = new VirtualView(null,10);
         controller.setVirtualView(vv);
         assertEquals(vv,controller.getVirtualView());
     }
@@ -94,7 +94,7 @@ public class ControllerTest {
     @Test
     public void workerInitializeClient() {
         // initialize
-        vw = new VirtualView(null);
+        vw = new VirtualView(null,10);
         controller = new Controller(vw);
         controller.setMatch(new Match(42,vw));
         controller.getMatch().setPlayers(
@@ -138,7 +138,7 @@ public class ControllerTest {
 
     @Test
     public void workerChoseClient() {
-        vw = new VirtualView(null);
+        vw = new VirtualView(null,10);
         workerInitializeClient();
         controller.getMatch().setStatus(Status.START);
         controller.getMatch().getPlayers().get(0).setCurrent(true);
@@ -182,7 +182,7 @@ public class ControllerTest {
         initialize();
         challengerChoseClient();
         // TODO: this message will be implemented
-        controller.handleMessage(new PingClient());
+        //controller.handleMessage(new PingClient());
     }
 
     //Marco=PAN

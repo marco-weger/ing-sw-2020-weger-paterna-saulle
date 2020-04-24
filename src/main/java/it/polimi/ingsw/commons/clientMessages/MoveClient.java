@@ -18,7 +18,7 @@ public class MoveClient extends ClientMessage {
      */
     public MoveClient(String name, int x, int y)
     {
-        this.name=name;
+        super(name);
         this.x=x;
         this.y=y;
     }

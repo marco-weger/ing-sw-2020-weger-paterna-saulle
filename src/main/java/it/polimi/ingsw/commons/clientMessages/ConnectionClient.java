@@ -11,6 +11,6 @@ public class ConnectionClient extends ClientMessage{
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
     public ConnectionClient(String name){
-        this.name=name;
+        super(name);
     }
 }
