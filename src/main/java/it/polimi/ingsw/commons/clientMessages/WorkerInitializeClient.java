@@ -13,10 +13,10 @@ public class WorkerInitializeClient extends ClientMessage {
     public int x, y;
 
     /**
+     * This messagge will be send to the server from the client with the decision of the current player about the initial location of the worker
      * @param name the name of the player
      * @param x the row chosen to build
      * @param y the column chosen to build
-     * this method send to the server the decision of the player about the initial location of the worker
      */
     public WorkerInitializeClient(String name, int x, int y)
     {

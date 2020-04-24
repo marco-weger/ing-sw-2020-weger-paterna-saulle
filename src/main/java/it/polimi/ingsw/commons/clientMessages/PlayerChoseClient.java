@@ -16,9 +16,9 @@ public class PlayerChoseClient extends ClientMessage {
 
 
     /**
+     * This messagge will be send to the server from the client with the decision of the player about the card chosen
      * @param c the card chosen by the player
      * @param name the name of the player
-     * this method send to the server the decision of the player about the card chosen
      */
     public PlayerChoseClient(String name, CardName c){
         this.c=c;

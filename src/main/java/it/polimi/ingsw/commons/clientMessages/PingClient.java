@@ -9,4 +9,5 @@ public class PingClient extends ClientMessage {
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
+
 }

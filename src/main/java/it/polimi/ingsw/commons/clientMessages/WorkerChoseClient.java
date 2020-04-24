@@ -11,9 +11,9 @@ public class WorkerChoseClient extends ClientMessage {
     public int worker;
 
     /**
+     *This messagge will be send to the server from the client with the decision of the current player about the worker to use.
      * @param name the name of the player
      * @param worker the worker chosen
-     * this method send to the server the decision of the player about the worker to use.
      */
     public WorkerChoseClient(String name, int worker)
     {

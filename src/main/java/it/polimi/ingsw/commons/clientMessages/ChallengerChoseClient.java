@@ -14,9 +14,9 @@ public class ChallengerChoseClient extends ClientMessage {
     public ArrayList<CardName> c;
 
     /**
+     * This messagge will be send to the server from the client with the three or two cards picked from the deck by the challenger
      * @param name the name of the challenger
      * @param c ths list of card pick from the deck
-     * this method send to the server the three or two cards picked from the deck by the challenger
      */
     public ChallengerChoseClient(String name, ArrayList<CardName> c) {
         this.name = name;
