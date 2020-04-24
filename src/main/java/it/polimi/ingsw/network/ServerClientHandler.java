@@ -79,32 +79,37 @@ public class ServerClientHandler implements Runnable {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } finally {
+            int go = questionName(); // 1 load - 0 question - -1 error
+
             // the "if" manage name setup, it's a singular part of the game because it's necessary to guarantee unique names
             if(socket.isConnected()){
-                if(questionName()){
-                    loadGame();
-                } else questionMode();
+                if(go == 1)
+                    go = loadGame();
+                else if(go == 0)
+                    go = questionMode();
             }
 
-            try {
-                Object object;
-                // standard loop to read
-                while(socket.isConnected()){
-                    object = in.readObject();
-                    if(object instanceof ClientMessage)
-                        System.out.println("[RECEIVED] - " + object.toString().substring(object.toString().lastIndexOf('.')+1,
-                                object.toString().lastIndexOf('@')) + " - " + (((ClientMessage) object).name.equals("") ? "ALL" : ((ClientMessage) object).name));
+            if(go == 1){
+                try {
+                    Object object;
+                    // standard loop to read
+                    while(socket.isConnected()){
+                        object = in.readObject();
+                        if(object instanceof ClientMessage)
+                            System.out.println("[RECEIVED] - " + object.toString().substring(object.toString().lastIndexOf('.')+1,
+                                    object.toString().lastIndexOf('@')) + " - " + (((ClientMessage) object).name.equals("") ? "ALL" : ((ClientMessage) object).name));
 
-                    if(virtualView != null && object != null)
-                        virtualView.notify((ClientMessage) object);
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.println("[DISCONNECTED USER] - " + socket.getRemoteSocketAddress().toString());
-                if(!virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
-                {
-                    System.out.println("[MANAGE DISCONNECTION......]");
-                    // DEFAULT: start timer and wait for reconnection
-                    // TODO: start the timer and notify all the client with the start... timers will run asynch, the main one is server
+                        if(virtualView != null && object != null)
+                            virtualView.notify((ClientMessage) object);
+                    }
+                } catch (Exception e) {
+                    printDisconnection();
+                    if(!virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
+                    {
+                        System.out.println("[MANAGE DISCONNECTION......]");
+                        // DEFAULT: start timer and wait for reconnection
+                        // TODO: start the timer and notify all the client with the start... timers will run asynch, the main one is server
+                    }
                 }
             }
         }
@@ -112,89 +117,94 @@ public class ServerClientHandler implements Runnable {
 
     /**
      * It asks client the username and then it checks for persistence
-     * @return true if you need to load the lobby
+     * @return 1 if you need to load the lobby, 0 username is ok, -1 if errors
      */
-    public boolean questionName(){
+    public int questionName(){
         Object object = null;
-        String tmpName = "FIRST";
-        boolean load = false;
+        int ret = 0;
         do{
             // send to client request for name an wait for answer
-            this.notify(new NameRequestServer(tmpName.equals("FIRST")));
+            this.notify(new NameRequestServer(ret == 0));
             try {
                 object = in.readObject();
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.println(e.getMessage());
-                return false;
+                ret = 0;
+            } catch (Exception e) {
+                printDisconnection();
+                return -1; // thread terminate
             } finally {
                 if(object instanceof ConnectionClient){
                     if(((ConnectionClient) object).name.length() <= 12) {
                         // complete the message with ip address and ServerClientHandler
                         ConnectionClient cc = (ConnectionClient) object;
-                        tmpName = cc.name;
 
                         // check if a player with same name exists
-                        for (VirtualView vv : server.getVirtualViews2()) {
-                            if (vv.getConnectedPlayers().containsKey(cc.name)) {
-                                if (vv.getConnectedPlayers().get(cc.name) == null) {
-                                    // TODO if you are a loser you go watching
-                                    System.out.println("MUST LOAD THE MATCH...");
-                                    load = true;
-                                    virtualView = vv;
-                                } else { // its a duplicate
-                                    tmpName = "";
-                                    break;
-                                }
+                        if(ret == 0){
+                            for (VirtualView vv : server.getVirtualViews2()){
+                                ret = checkVirtualView(cc, vv);
+                                if (ret != 0) break;
                             }
                         }
-                        for (VirtualView vv : server.getVirtualViews3()) {
-                            if (vv.getConnectedPlayers().containsKey(cc.name)) {
-                                if (vv.getConnectedPlayers().get(cc.name) == null) {
-                                    // TODO if you are a loser you go watching
-                                    System.out.println("MUST LOAD THE MATCH...");
-                                    load = true;
-                                    virtualView = vv;
-                                } else { // its a duplicate
-                                    tmpName = "";
-                                    break;
-                                }
+                        if(ret == 0){
+                            for (VirtualView vv : server.getVirtualViews2()){
+                                ret = checkVirtualView(cc, vv);
+                                if (ret != 0) break;
                             }
                         }
                         // check on current vv (you cant be disconnected in the current lobby)
-                        if (server.getCurrentVirtualView2().getConnectedPlayers().containsKey(cc.name)) {
-                            tmpName = "";
-                        }
-                        if (server.getCurrentVirtualView3().getConnectedPlayers().containsKey(cc.name)) {
-                            tmpName = "";
-                        }
+                        if(ret == 0)
+                            if (server.getCurrentVirtualView2().getConnectedPlayers().containsKey(cc.name))
+                                ret = -1;
+                        if(ret == 0)
+                            if (server.getCurrentVirtualView3().getConnectedPlayers().containsKey(cc.name))
+                                ret = -1;
                         // check on floating players
-                        if (server.getPendingPlayers().contains(cc.name)) {
-                            tmpName = "";
-                        }
-                    } else tmpName = "";
-                } else tmpName = "";
+                        if(ret == 0)
+                            if (server.getPendingPlayers().contains(cc.name))
+                                ret = -1;
+                    } else ret = -1;
+                } else ret = -1;
             }
-        }while(tmpName.isEmpty()); // loop until the name is invalid
+        }while(ret == -1); // loop until the name is invalid
 
-        server.getPendingPlayers().add(tmpName);
-        this.name=tmpName;
-        return load;
+        this.name = ((ConnectionClient) object).name;
+        server.getPendingPlayers().add(this.name);
+        return ret;
+    }
+
+    /**
+     * IT iterates over an the ArrayList to find if tmpName appear in one
+     * @param cc ClientMessage received
+     * @param vv the VirtualView
+     * @return 1 if you need to load the lobby, 0 username is ok, -1 if duplicate
+     */
+    private int checkVirtualView(ConnectionClient cc, VirtualView vv) {
+        if (vv.getConnectedPlayers().containsKey(cc.name)) {
+            if (vv.getConnectedPlayers().get(cc.name) == null) {
+                // TODO if you are a loser you go watching
+                System.out.println("MUST LOAD THE MATCH...");
+                virtualView = vv;
+                return 1;
+            } else { // its a duplicate
+                return -1;
+            }
+        }
+        return 0;
     }
 
     /**
      * It asks to client for 2 or 3 players match
      */
-    public void questionMode(){
+    public int questionMode(){
         Object object = null;
         do{
             //mode request
             this.notify(new ModeRequestServer());
             try {
                 object = in.readObject();
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (Exception e) {
+                printDisconnection();
                 server.getPendingPlayers().remove(this.name);
-                System.out.println(e.getMessage());
-                return;
+                return -1;
             } finally {
                 if(object instanceof ModeChoseClient){
                     ((ModeChoseClient) object).sch = this;
@@ -218,9 +228,14 @@ public class ServerClientHandler implements Runnable {
             }
         }while(!(object instanceof ModeChoseClient));
         virtualView.notify((ClientMessage) object);
+        return 1;
     }
 
-    public void loadGame(){
+    /**
+     * It loads a game if necessary
+     * @return 1 if ok
+     */
+    public int loadGame(){
         ClientMessage object = new ReConnectionClient(this.name,this);
         ArrayList<String> names = new ArrayList<>();
         //for(String name : virtualView.getConnectedPlayers().keySet())
@@ -230,6 +245,11 @@ public class ServerClientHandler implements Runnable {
         ls.loaded = true;
         this.notify(ls);
         virtualView.notify(object);
+        return 1;
+    }
+
+    private void printDisconnection(){
+        System.out.println("[DISCONNECTED USER] - " + socket.getRemoteSocketAddress().toString());
     }
 
     /**

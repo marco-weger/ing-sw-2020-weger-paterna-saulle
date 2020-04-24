@@ -36,8 +36,15 @@ public class VirtualView extends Observable implements Observer {
      */
     private Status currentStatus;
 
+    /**
+     * Last message from server to client
+     */
     private ServerMessage lastMessage;
 
+    /**
+     * Constructor used for a new game
+     * @param server the SERVER
+     */
     public VirtualView(Server server){
         this.server = server;
 

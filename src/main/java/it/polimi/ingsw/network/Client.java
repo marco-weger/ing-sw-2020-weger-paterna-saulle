@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class Client implements Runnable{
 
@@ -121,7 +120,7 @@ public class Client implements Runnable{
         readParams(client);
         String version;
         boolean go;
-        printTitle();
+        //printTitle();
 
         /*
         for(int i=0;i<3500;i++){
@@ -245,6 +244,7 @@ public class Client implements Runnable{
         }
     }
 
+    @Deprecated
     public static void printTitle(){
         String str =
                 " __          ________ _      _____ ____  __  __ ______   _______ ____  \n" +

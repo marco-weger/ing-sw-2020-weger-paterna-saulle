@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
 
 public class Server {
 
@@ -89,11 +88,17 @@ public class Server {
         return players;
     }
 
+    /**
+     * It creates a new lobby for 2 players match
+     */
     public void newCurrentVirtualView2(){
         this.currentVirtualView2=new VirtualView(this);
         virtualViews2.add(this.currentVirtualView2);
     }
 
+    /**
+     * It creates a new lobby for 3 players match
+     */
     public void newCurrentVirtualView3(){
         this.currentVirtualView3=new VirtualView(this);
         virtualViews3.add(this.currentVirtualView3);
@@ -219,7 +224,7 @@ public class Server {
 
     public void loadMatch(){
         ObjectInputStream objIn;
-        ArrayList<String> toDelete = new ArrayList<>();
+        //ArrayList<String> toDelete = new ArrayList<>();
         try {
             if(new File("resources"+File.separator+"saved-match").exists()){
                 for (final File fileEntry : Objects.requireNonNull(new File("resources"+File.separator+"saved-match").listFiles())) {
@@ -237,9 +242,9 @@ public class Server {
                                     if(sm instanceof ServerMessage)
                                         virtualViews3.add(new VirtualView(this, (Match) obj, (ServerMessage) sm));
                                 }
-                            } else if(((Match) obj).getStatus().equals(Status.NAME_CHOICE)) {
-                                toDelete.add(fileEntry.getAbsolutePath());
-                            }
+                            } //else if(((Match) obj).getStatus().equals(Status.NAME_CHOICE)) {
+                                //toDelete.add(fileEntry.getAbsolutePath());
+                            //}
                         }
                         objIn.close();
                     }
@@ -253,7 +258,8 @@ public class Server {
             System.out.println("[2 PLAYERS MATCH] - "+virtualViews2.size()+" match loaded");
             System.out.println("[3 PLAYERS MATCH] - "+virtualViews3.size()+" match loaded");
         }
-        for(String file : toDelete)
-            new File(file).delete();
+        // I think we should omit this part... Method who save the match jumps yet not started
+        //for(String file : toDelete)
+        //    new File(file).delete();
     }
 }
