@@ -227,9 +227,10 @@ public class CLI implements ViewInterface {
                         client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
                         break;
                     case START:
-                        clear();
-                        printTitle();
-                        printTable();
+                        // TODO check (Marco)
+                        //clear();
+                        //printTitle();
+                        //printTable();
                         boolean go = true;
                         println(message.worker1 + "-"+ message.worker2);
                         print(colorCPU+"Chose the worker to play with [x-y] " + TextFormatting.input());

@@ -4,9 +4,7 @@ import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
 import it.polimi.ingsw.commons.clientMessages.ReConnectionClient;
-import it.polimi.ingsw.commons.serverMessages.LobbyServer;
-import it.polimi.ingsw.commons.serverMessages.ModeRequestServer;
-import it.polimi.ingsw.commons.serverMessages.NameRequestServer;
+import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.commons.Status;
 
 import java.io.IOException;
@@ -179,12 +177,11 @@ public class ServerClientHandler implements Runnable {
      */
     private int checkVirtualView(ConnectionClient cc, VirtualView vv) {
         if (vv.getConnectedPlayers().containsKey(cc.name)) {
-            if (vv.getConnectedPlayers().get(cc.name) == null) {
-                // TODO if you are a loser you go watching
+            if (vv.getConnectedPlayers().get(cc.name) == null && !vv.getLosers().contains(cc.name)) {
                 System.out.println("MUST LOAD THE MATCH...");
                 virtualView = vv;
                 return 1;
-            } else { // its a duplicate
+            } else { // its a duplicate or a loser
                 return -1;
             }
         }
@@ -257,6 +254,15 @@ public class ServerClientHandler implements Runnable {
      * @param message it's an instance of a ServerMessage
      */
     protected void notify(ServerMessage message) {
+        // spectator mode
+        if(message instanceof SomeoneLoseServer)
+            if(this.name.equals(((SomeoneLoseServer) message).player))
+                virtualView.getLosers().add(this.name);
+
+        if(message instanceof SomeoneWinServer)
+            if(!this.name.equals(((SomeoneWinServer) message).player))
+                virtualView.getLosers().add(this.name);
+
         try{
             out.reset();
             out.writeObject(message);

@@ -225,6 +225,7 @@ public class Server {
     public void loadMatch(){
         ObjectInputStream objIn;
         //ArrayList<String> toDelete = new ArrayList<>();
+        // TODO check for not load ended match
         try {
             if(new File("resources"+File.separator+"saved-match").exists()){
                 for (final File fileEntry : Objects.requireNonNull(new File("resources"+File.separator+"saved-match").listFiles())) {

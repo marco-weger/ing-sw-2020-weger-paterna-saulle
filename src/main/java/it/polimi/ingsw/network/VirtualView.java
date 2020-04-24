@@ -12,6 +12,7 @@ import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class VirtualView extends Observable implements Observer {
@@ -41,6 +42,8 @@ public class VirtualView extends Observable implements Observer {
      */
     private ServerMessage lastMessage;
 
+    private ArrayList<String> losers;
+
     /**
      * Constructor used for a new game
      * @param server the SERVER
@@ -57,6 +60,8 @@ public class VirtualView extends Observable implements Observer {
         c = new Controller(this);
         addObserver(c);
         //addObserver(new Controller(this));
+
+        this.losers = new ArrayList<>();
     }
 
     /**
@@ -76,6 +81,8 @@ public class VirtualView extends Observable implements Observer {
         addObserver(new Controller(this,match));
 
         this.lastMessage=lastMessage;
+
+        this.losers = new ArrayList<>();
     }
 
     // It is used to run some tests about VirtualView and Controller communication
@@ -88,6 +95,8 @@ public class VirtualView extends Observable implements Observer {
     public Status getCurrentStatus() {
         return currentStatus;
     }
+
+    public ArrayList<String> getLosers() { return losers; }
 
     /**
      * This method sends the message to the controller
