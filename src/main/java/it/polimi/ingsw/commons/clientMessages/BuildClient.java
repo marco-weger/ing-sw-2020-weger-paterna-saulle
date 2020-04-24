@@ -12,9 +12,9 @@ public class BuildClient extends ClientMessage {
     public int x, y;
 
     /**
+     *This messagge will be send to the server from the client with the decision of the player about where Build.
      * @param x the row chosen to build
      * @param y the column chosen to build
-     * this method send to the server the decision of the player about where Build.
      */
     public BuildClient(String name, int x, int y)
     {

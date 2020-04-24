@@ -12,10 +12,10 @@ public class AnswerAbilityClient extends ClientMessage {
     public boolean ability;
 
     /**
+     * This messagge will be send to the server from the client with the decision of the current player about switch on or not his God ability.
      * @param name the sender
      * @param ability The decision about switch on or off the ability
      * @param type The current status of the player
-     * this method send to the server the decision of the player about switch on or not his God ability.
      */
     public AnswerAbilityClient(String name, boolean ability, Status type)
     {
