@@ -251,13 +251,13 @@ public class Match extends Observable implements Serializable {
     /**
      * Saving the match in file for server persistence purpose
      */
-
     public void saveToFile(ServerMessage sm){
         FileOutputStream out;
         ObjectOutputStream objOut;
 
         if(!new File("resources" +File.separatorChar+"saved-match").exists())
-            new File("resources" +File.separatorChar+"saved-match").mkdir();
+            if(!new File("resources" +File.separatorChar+"saved-match").mkdir())
+                return;
 
         try {
 

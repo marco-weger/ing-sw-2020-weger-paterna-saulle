@@ -34,7 +34,7 @@ public class Controller implements Observer, ClientMessageHandler {
                         go = true;
         }while(go);
         this.match = new Match(id,virtualView);
-        this.match.saveToFile(new CurrentStatusServer("",Status.NAME_CHOICE));
+        //this.match.saveToFile(new CurrentStatusServer("",Status.NAME_CHOICE));
     }
 
     /**
