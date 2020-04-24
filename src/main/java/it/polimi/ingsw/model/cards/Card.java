@@ -149,9 +149,9 @@ public class Card extends Observable implements Serializable {
                     for (Player player : p)
                         if (player.getCard().isOpponent() && player.getCard().isActive())
                             available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_M));
-                    if (available.contains(to)) {
-                        current.getCurrentWorker().move(to.getRow(), to.getColumn());
-                        notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
+                        if (available.contains(to)) {
+                            current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                            notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
                         return true;
                     }
                 }
