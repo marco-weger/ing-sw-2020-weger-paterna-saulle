@@ -220,7 +220,6 @@ public class CLI implements ViewInterface {
                         //printTitle();
                         //printTable();
                         boolean go = true;
-                        println(message.worker1 + "-"+ message.worker2);
                         print(colorCPU+"Chose the worker to play with [x-y] " + TextFormatting.input());
                         do {
                             c = readCell();

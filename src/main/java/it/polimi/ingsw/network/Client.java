@@ -240,12 +240,6 @@ public class Client implements Runnable{
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
 
-                // FIXME remove
-                if(!(msg instanceof PingServer)){
-                    System.out.println(msg.toString());
-                    System.out.flush();
-                }
-
                 if(msg instanceof MovedServer){
                     for(SnapWorker worker : getWorkers()){
                         if(worker.name.equals(((MovedServer) msg).sw.name) && worker.n == ((MovedServer) msg).sw.n){
@@ -268,12 +262,24 @@ public class Client implements Runnable{
                     }
                 } catch (Exception ex){
                     System.out.println("[TH] - "+ex.toString());
+                }*/
+
+                // FIXME remove
+                if(!(msg instanceof PingServer)){
+                    System.out.println(msg.toString());
+                    System.out.flush();
+
+                    continueReading = false;
+                    try {
+                        if (handler != null)
+                            handler.join();
+                    } catch (Exception ignored){}
+                    continueReading = true;
+                    handler = new Thread(() -> msg.accept(view));
+                    handler.start();
+                    //continueReading = true;
+                    //msg.accept(view);
                 }
-                handler = new Thread(() -> msg.accept(view));
-                continueReading = true;
-                handler.start();*/
-                continueReading = true;
-                msg.accept(view);
             }
         }
         catch (IOException | ClassNotFoundException e){
