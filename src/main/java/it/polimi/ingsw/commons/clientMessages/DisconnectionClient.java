@@ -14,6 +14,6 @@ public class DisconnectionClient extends ClientMessage {
      * @param name the name of the player
      */
     public DisconnectionClient(String name){
-        this.name=name;
+        super(name);
     }
 }

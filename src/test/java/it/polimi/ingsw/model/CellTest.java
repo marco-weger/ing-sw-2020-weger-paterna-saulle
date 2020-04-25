@@ -28,10 +28,10 @@ public class CellTest {
     @Test
     public void setter()
     {
-        Cell c = new Cell(0,0,0);
+        Cell c = new Cell(1,1,1);
         c.setLevel(1);
-        c.setColumn(1);
-        c.setRow(1);
+        //c.setColumn(1);
+        //c.setRow(1);
         assertEquals(c.getRow(),1);
         assertEquals(c.getColumn(),1);
         assertEquals(c.getLevel(),1);

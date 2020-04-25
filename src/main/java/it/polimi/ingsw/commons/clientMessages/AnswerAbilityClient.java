@@ -19,7 +19,7 @@ public class AnswerAbilityClient extends ClientMessage {
      */
     public AnswerAbilityClient(String name, boolean ability, Status type)
     {
-        this.name=name;
+        super(name);
         this.ability=ability;
         this.type=type;
     }

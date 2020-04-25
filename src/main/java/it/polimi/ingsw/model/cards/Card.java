@@ -20,7 +20,7 @@ public class Card extends Observable implements Serializable {
      * QUESTION: it is true if the ability need a question to be actived.
      * STATUS: the state when the ability could be actived.
      */
-    private CardName name;
+    private final CardName name;
     private boolean active;
     private final boolean opponent;
     private final boolean question;

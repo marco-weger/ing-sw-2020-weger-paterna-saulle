@@ -3,6 +3,7 @@ import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
+import it.polimi.ingsw.commons.clientMessages.PingClient;
 import it.polimi.ingsw.commons.clientMessages.ReConnectionClient;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.commons.Status;
@@ -11,20 +12,23 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ServerClientHandler implements Runnable {
 
     /**
      * The socket
      */
-    private Socket socket;
+    private final Socket socket;
 
     /**
      * The main server
      */
-    private Server server;
+    private final Server server;
 
     /**
      * It is used to read object from client
@@ -46,11 +50,32 @@ public class ServerClientHandler implements Runnable {
      */
     private String name;
 
-    public ServerClientHandler (Socket socket, Server server){
+    /**
+     * Socket ping period
+     */
+    private final int pingPeriod;
+
+    /**
+     * Timer task to send ping to the client
+     */
+    private Timer ping;
+
+    /**
+     * This value is changed by turn timers, it is used to stop socket reading.
+     */
+    public boolean turnTimesUp = false;
+
+    /**
+     * @param socket connection
+     * @param server the SERVER
+     * @param pingPeriod period used to run ping task
+     */
+    public ServerClientHandler (Socket socket, Server server, int pingPeriod){
         this.socket = socket;
         this.server = server;
         this.virtualView = null;
         this.name = socket.getRemoteSocketAddress().toString();
+        this.pingPeriod = pingPeriod;
     }
 
     public String getName() {return name;}
@@ -74,6 +99,7 @@ public class ServerClientHandler implements Runnable {
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
+            startPing();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -92,7 +118,7 @@ public class ServerClientHandler implements Runnable {
                     Object object;
                     // standard loop to read
                     while(socket.isConnected()){
-                        object = in.readObject();
+                        object = readFromClient();
                         if(object instanceof ClientMessage)
                             System.out.println("[RECEIVED] - " + object.toString().substring(object.toString().lastIndexOf('.')+1,
                                     object.toString().lastIndexOf('@')) + " - " + (((ClientMessage) object).name.equals("") ? "ALL" : ((ClientMessage) object).name));
@@ -101,7 +127,7 @@ public class ServerClientHandler implements Runnable {
                             virtualView.notify((ClientMessage) object);
                     }
                 } catch (Exception e) {
-                    printDisconnection();
+                    disconnectionHandler();
                     if(!virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
                     {
                         System.out.println("[MANAGE DISCONNECTION......]");
@@ -124,10 +150,10 @@ public class ServerClientHandler implements Runnable {
             // send to client request for name an wait for answer
             this.notify(new NameRequestServer(ret == 0));
             try {
-                object = in.readObject();
+                object = readFromClient();
                 ret = 0;
             } catch (Exception e) {
-                printDisconnection();
+                disconnectionHandler();
                 return -1; // thread terminate
             } finally {
                 if(object instanceof ConnectionClient){
@@ -170,7 +196,7 @@ public class ServerClientHandler implements Runnable {
     }
 
     /**
-     * IT iterates over an the ArrayList to find if tmpName appear in one
+     * It iterates over an the ArrayList to find if tmpName appear in one
      * @param cc ClientMessage received
      * @param vv the VirtualView
      * @return 1 if you need to load the lobby, 0 username is ok, -1 if duplicate
@@ -197,9 +223,9 @@ public class ServerClientHandler implements Runnable {
             //mode request
             this.notify(new ModeRequestServer());
             try {
-                object = in.readObject();
+                object = readFromClient();
             } catch (Exception e) {
-                printDisconnection();
+                disconnectionHandler();
                 server.getPendingPlayers().remove(this.name);
                 return -1;
             } finally {
@@ -245,7 +271,13 @@ public class ServerClientHandler implements Runnable {
         return 1;
     }
 
-    private void printDisconnection(){
+    /**
+     * It starts when this client disconnect
+     */
+    private void disconnectionHandler(){
+        try{
+            ping.cancel();
+        } catch (Exception ignored) {}
         System.out.println("[DISCONNECTED USER] - " + socket.getRemoteSocketAddress().toString());
     }
 
@@ -270,5 +302,50 @@ public class ServerClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    /**
+     * Ping task
+     */
+    public void startPing(){
+        ping = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                server.send(new PingServer(name),virtualView);
+            }
+        };
+        ping.scheduleAtFixedRate(task, 0, pingPeriod*1000);
+    }
+
+    /**
+     * @return the read object
+     * @throws IOException of socket reading
+     * @throws ClassNotFoundException of socket reading
+     */
+    protected Object readFromClient() throws IOException, ClassNotFoundException {
+        Object obj = null;
+        do{
+            if(in.available() == 0){
+                try{
+                    obj = in.readObject();
+                } catch (SocketTimeoutException ex){
+                    System.out.println("......"+ex.getMessage());
+                }
+            }
+        }while ((obj instanceof PingClient || obj == null) && !turnTimesUp);
+
+        if(turnTimesUp){
+            System.out.println(this.name+"'S TURN TIME'S UP!");
+            return null;
+        } else return obj;
+    }
+
+    /**
+     * It sends the countdown to the client
+     * @param count value of the countdown
+     */
+    public void countdown(int count){
+        server.send(new CountdownServer(this.name,count),virtualView);
     }
 }

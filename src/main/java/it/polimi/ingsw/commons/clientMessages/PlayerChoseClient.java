@@ -21,8 +21,8 @@ public class PlayerChoseClient extends ClientMessage {
      * @param name the name of the player
      */
     public PlayerChoseClient(String name, CardName c){
+        super(name);
         this.c=c;
-        this.name=name;
     }
 
 }

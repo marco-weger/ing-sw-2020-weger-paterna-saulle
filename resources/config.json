@@ -1,8 +1,9 @@
 {
   "ip": "127.0.0.1",
   "port": "4321",
-  "timeOutTimer": "60",
+  "pingPeriod": "2",
+  "timeoutSocket": "5",
   "disconnectTimer": "60",
-  "startTurnTimer": "50",
-  "turnTimer": "30"
+  "turnTimer": "60",
+  "?startTurnTimer": "50"
 }

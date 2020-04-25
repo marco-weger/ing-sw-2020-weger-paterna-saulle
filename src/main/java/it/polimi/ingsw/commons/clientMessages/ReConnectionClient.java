@@ -21,7 +21,7 @@ public class ReConnectionClient extends ClientMessage {
      * @param sch his old ServerClientHandler
      */
     public ReConnectionClient(String name, ServerClientHandler sch){
-        this.name=name;
+        super(name);
         this.sch=sch;
     }
 }

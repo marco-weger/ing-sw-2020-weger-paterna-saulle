@@ -20,7 +20,7 @@ public class WorkerInitializeClient extends ClientMessage {
      */
     public WorkerInitializeClient(String name, int x, int y)
     {
-        this.name=name;
+        super(name);
         this.x=x;
         this.y=y;
     }

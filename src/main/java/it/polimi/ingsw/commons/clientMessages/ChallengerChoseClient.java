@@ -19,7 +19,7 @@ public class ChallengerChoseClient extends ClientMessage {
      * @param c ths list of card pick from the deck
      */
     public ChallengerChoseClient(String name, ArrayList<CardName> c) {
-        this.name = name;
+        super(name);
         this.c = c;
     }
 

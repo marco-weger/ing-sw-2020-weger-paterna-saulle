@@ -15,6 +15,6 @@ public class ConnectionClient extends ClientMessage{
      * @param name the name of the player
      */
     public ConnectionClient(String name){
-        this.name=name;
+        super(name);
     }
 }

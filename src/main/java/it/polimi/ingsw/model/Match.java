@@ -15,7 +15,7 @@ public class Match extends Observable implements Serializable {
     /**
      * Unique id to discriminate the match
      */
-    private int id;
+    private final int id;
 
     /**
      * The board
@@ -30,7 +30,7 @@ public class Match extends Observable implements Serializable {
     /**
      * List of losers
      */
-    private ArrayList<Player> losers;
+    private final ArrayList<Player> losers;
 
     /**
      * Status of the match
@@ -69,24 +69,36 @@ public class Match extends Observable implements Serializable {
             this.addObserver(vv);
     }
 
-    public int getId() {
-        return id;
+    public int getId() { return id; }
+
+    //public void setId(int id) { this.id = id; }
+
+    public boolean isEnded() { return ended; }
+
+    public void setEnded(boolean ended) { this.ended = ended; }
+
+    public Status getStatus() { return status; }
+
+    public Board getBoard() {
+        return board;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
-    public boolean isEnded() {
-        return ended;
+    public ArrayList<CardName> getSelectedCard(){ return selectedCard; }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
-    public void setEnded(boolean ended) {
-        this.ended = ended;
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
     }
 
-    public Status getStatus() {
-        return status;
+    public ArrayList<Player> getLosers() {
+        return losers;
     }
 
     /**
@@ -118,18 +130,6 @@ public class Match extends Observable implements Serializable {
 
     }
 
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
-    }
-
-    public ArrayList<Player> getLosers() {
-        return losers;
-    }
-
     /**
      * A method that add a player into the Loser List and remove it from the Active Player List
      * @param p select a player
@@ -151,16 +151,6 @@ public class Match extends Observable implements Serializable {
             setStatus(Status.END);
         }
     }
-
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
-    public ArrayList<CardName> getSelectedCard(){ return selectedCard; }
 
     /**
      * A method that pick the card from the deck and notify the third player to choose.
@@ -234,7 +224,6 @@ public class Match extends Observable implements Serializable {
      * When a player is removed to the list players
      * on the Initial phase, it notifies the Lobby
      */
-
     public void removePlayer(String name){
         if(getStatus().equals(Status.NAME_CHOICE)){
             for(int i = 0; i<getPlayers().size(); i++)
