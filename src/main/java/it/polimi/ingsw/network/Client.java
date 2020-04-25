@@ -269,6 +269,7 @@ public class Client implements Runnable{
                     System.out.println(msg.toString());
                     System.out.flush();
 
+                    /*
                     continueReading = false;
                     try {
                         if (handler != null)
@@ -277,8 +278,9 @@ public class Client implements Runnable{
                     continueReading = true;
                     handler = new Thread(() -> msg.accept(view));
                     handler.start();
-                    //continueReading = true;
-                    //msg.accept(view);
+                    */
+                    continueReading = true;
+                    msg.accept(view);
                 }
             }
         }
