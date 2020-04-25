@@ -23,12 +23,12 @@ public class ServerClientHandler implements Runnable {
     /**
      * The socket
      */
-    private Socket socket;
+    private final Socket socket;
 
     /**
      * The main server
      */
-    private Server server;
+    private final Server server;
 
     /**
      * It is used to read object from client
@@ -53,10 +53,23 @@ public class ServerClientHandler implements Runnable {
     /**
      * Socket ping period
      */
-    private int pingPeriod;
+    private final int pingPeriod;
 
+    /**
+     * Timer task to send ping to the client
+     */
     private Timer ping;
 
+    /**
+     * This value is changed by turn timers, it is used to stop socket reading.
+     */
+    public boolean turnTimesUp = false;
+
+    /**
+     * @param socket connection
+     * @param server the SERVER
+     * @param pingPeriod period used to run ping task
+     */
     public ServerClientHandler (Socket socket, Server server, int pingPeriod){
         this.socket = socket;
         this.server = server;
@@ -114,7 +127,7 @@ public class ServerClientHandler implements Runnable {
                             virtualView.notify((ClientMessage) object);
                     }
                 } catch (Exception e) {
-                    printDisconnection();
+                    disconnectionHandler();
                     if(!virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
                     {
                         System.out.println("[MANAGE DISCONNECTION......]");
@@ -140,7 +153,7 @@ public class ServerClientHandler implements Runnable {
                 object = readFromClient();
                 ret = 0;
             } catch (Exception e) {
-                printDisconnection();
+                disconnectionHandler();
                 return -1; // thread terminate
             } finally {
                 if(object instanceof ConnectionClient){
@@ -183,7 +196,7 @@ public class ServerClientHandler implements Runnable {
     }
 
     /**
-     * IT iterates over an the ArrayList to find if tmpName appear in one
+     * It iterates over an the ArrayList to find if tmpName appear in one
      * @param cc ClientMessage received
      * @param vv the VirtualView
      * @return 1 if you need to load the lobby, 0 username is ok, -1 if duplicate
@@ -212,7 +225,7 @@ public class ServerClientHandler implements Runnable {
             try {
                 object = readFromClient();
             } catch (Exception e) {
-                printDisconnection();
+                disconnectionHandler();
                 server.getPendingPlayers().remove(this.name);
                 return -1;
             } finally {
@@ -258,8 +271,13 @@ public class ServerClientHandler implements Runnable {
         return 1;
     }
 
-    private void printDisconnection(){
-        ping.cancel();
+    /**
+     * It starts when this client disconnect
+     */
+    private void disconnectionHandler(){
+        try{
+            ping.cancel();
+        } catch (Exception ignored) {}
         System.out.println("[DISCONNECTED USER] - " + socket.getRemoteSocketAddress().toString());
     }
 
@@ -286,6 +304,9 @@ public class ServerClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Ping task
+     */
     public void startPing(){
         ping = new Timer();
         TimerTask task = new TimerTask() {
@@ -297,8 +318,11 @@ public class ServerClientHandler implements Runnable {
         ping.scheduleAtFixedRate(task, 0, pingPeriod*1000);
     }
 
-    public boolean turnTimesUp = false;
-
+    /**
+     * @return the read object
+     * @throws IOException of socket reading
+     * @throws ClassNotFoundException of socket reading
+     */
     protected Object readFromClient() throws IOException, ClassNotFoundException {
         Object obj = null;
         do{
@@ -317,6 +341,10 @@ public class ServerClientHandler implements Runnable {
         } else return obj;
     }
 
+    /**
+     * It sends the countdown to the client
+     * @param count value of the countdown
+     */
     public void countdown(int count){
         server.send(new CountdownServer(this.name,count),virtualView);
     }

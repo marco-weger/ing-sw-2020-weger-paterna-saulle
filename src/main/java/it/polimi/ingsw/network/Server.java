@@ -36,17 +36,17 @@ public class Server {
     /**
      * All VirtualViews of 2 players mode instanced
      */
-    private ArrayList<VirtualView> virtualViews2;
+    private final ArrayList<VirtualView> virtualViews2;
 
     /**
      * All VirtualViews of 3 players mode instanced
      */
-    private ArrayList<VirtualView> virtualViews3;
+    private final ArrayList<VirtualView> virtualViews3;
 
     /**
      * List of players who chose the name but not the mode
      */
-    private ArrayList<String> pendingPlayers;
+    private final ArrayList<String> pendingPlayers;
 
     /**
      * Socket timeout for reading call
@@ -63,6 +63,9 @@ public class Server {
      */
     private int turnTimer;
 
+    /**
+     * It assigns default value at configurable vars
+     */
     public Server(){
         this.virtualViews2 = new ArrayList<>();
         this.virtualViews3 = new ArrayList<>();
@@ -74,14 +77,29 @@ public class Server {
         this.turnTimer = 10;
     }
 
+    /**
+     * @return a list of 2 players virtual view
+     */
     public ArrayList<VirtualView> getVirtualViews2() { return virtualViews2; }
 
+    /**
+     * @return a list of 3 players virtual view
+     */
     public ArrayList<VirtualView> getVirtualViews3() { return virtualViews3; }
 
+    /**
+     * @return a list of player who hasn not choose the mode
+     */
     public ArrayList<String> getPendingPlayers() { return pendingPlayers; }
 
+    /**
+     * @return the current virtual view of 2 players match
+     */
     public VirtualView getCurrentVirtualView2(){ return currentVirtualView2; }
 
+    /**
+     * @return the current virtual view of 3 players match
+     */
     public VirtualView getCurrentVirtualView3(){ return currentVirtualView3; }
 
     /**
@@ -204,7 +222,7 @@ public class Server {
     public static void main(String[] args) {
         Server server = new Server();
 
-        try (FileReader reader = new FileReader("resources"+File.separator+"config.json"))
+        try (FileReader reader = new FileReader("resources"+ File.separator+"config.json"))
         {
             // json read
             JSONParser jsonParser = new JSONParser();

@@ -29,9 +29,9 @@ public class MatchTest {
     }
     @Test
     public void getter_setter(){
-        Match m = new Match(0,null);
+        Match m = new Match(1,null);
 
-        m.setId(1);
+        //m.setId(1);
         assertEquals(m.getId(),1);
         m.setStatus(Status.CHOSEN);
         assertEquals(Status.CHOSEN, m.getStatus());

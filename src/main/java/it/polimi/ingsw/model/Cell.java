@@ -6,9 +6,14 @@ import java.util.ArrayList;
 public class Cell implements Serializable {
 
     /**
+     * The row and the column
+     */
+    private final int row, column;
+
+    /**
      * The level is a value from 0 (no buildings) to 4 (dome)
      */
-    private int row, column, level;
+    private int level;
 
     public Cell(int row, int column, int level) {
         this.row = row;
@@ -18,25 +23,29 @@ public class Cell implements Serializable {
 
     public int getRow() {return row;}
 
-    /**
+    /*
      * It checks for a row from 0 to 4
      * @param row the row
      */
+    /*
     public void setRow(int row) {
         if(row >= 0 && row <= 4)
             this.row = row;
     }
+     */
 
     public int getColumn() {return column;}
 
-    /**
+    /*
      * It checks for a column from 0 to 4
      * @param column the column
      */
+    /*
     public void setColumn(int column) {
         if(column >= 0 && column <= 4)
             this.column = column;
     }
+    */
 
     public int getLevel() {return level;}
 

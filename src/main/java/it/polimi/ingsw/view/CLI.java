@@ -7,6 +7,7 @@ import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -137,15 +138,7 @@ public class CLI implements ViewInterface {
                 SnapCell c;
                 do {
                     print(colorCPU+"Type the position of second worker [x-y] " + TextFormatting.input());
-                    c = readCell();
-                    if(c!=null){
-                        for(SnapWorker sw : client.getWorkers()){
-                            if (sw.row == c.row && sw.column == c.column) {
-                                c = null;
-                                break;
-                            }
-                        }
-                    }
+                    c = getWorkerCell();
                 }while(c == null);
                 client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
             }
@@ -160,20 +153,27 @@ public class CLI implements ViewInterface {
                     SnapCell c;
                     do {
                         print(colorCPU+"Type the position of first worker [x-y] " + TextFormatting.input());
-                        c = readCell();
-                        if(c!=null){
-                            for(SnapWorker sw : client.getWorkers()){
-                                if (sw.row == c.row && sw.column == c.column) {
-                                    c = null;
-                                    break;
-                                }
-                            }
-                        }
+                        c = getWorkerCell();
                     }while(c == null);
                     client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
                 }
             }
         }
+    }
+
+    @Nullable
+    private SnapCell getWorkerCell() {
+        SnapCell c;
+        c = readCell();
+        if(c!=null){
+            for(SnapWorker sw : client.getWorkers()){
+                if (sw.row == c.row && sw.column == c.column) {
+                    c = null;
+                    break;
+                }
+            }
+        }
+        return c;
     }
 
     @Override
@@ -204,24 +204,15 @@ public class CLI implements ViewInterface {
         if(!client.getMyPlayer().loser){
             if(message.player.equals(client.getUsername())){
                 println(colorCPU+"It's your turn!"+TextFormatting.RESET);
-                SnapCell c;
                 switch(message.status){
                     case WORKER_CHOICE:
                         clear();
                         printTitle();
                         printTable();
+                        SnapCell c;
                         do { // first worker of the match
                             print(colorCPU + "Type the position of first worker [x-y] " + TextFormatting.input());
-                            c = readCell();
-                            if(c!=null)
-                            {
-                                for(SnapWorker sw : client.getWorkers()){
-                                    if (sw.row == c.row && sw.column == c.column) {
-                                        c = null;
-                                        break;
-                                    }
-                                }
-                            }
+                            c = getWorkerCell();
                         }while(c == null);
                         client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
                         break;
@@ -310,30 +301,14 @@ public class CLI implements ViewInterface {
             do{
                 print(colorCPU+"Type the first card [name] " + TextFormatting.input());
 
-                String name;
-                try {
-                    name = in.readLine();
-                } catch (IOException e) {
-                    name = "";
-                }
-                startEasterEgg(name);
-                try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
-                catch(Exception ex){read = null;}
+                read = getCardName();
             }while(read == null);
             chosen.add(read);
 
             // second
             do{
                 print(colorCPU+"Type the second card [name] " + TextFormatting.input());
-                String name;
-                try {
-                    name = in.readLine();
-                } catch (IOException e) {
-                    name = "";
-                }
-                startEasterEgg(name);
-                try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
-                catch(Exception ex){read = null;}
+                read = getCardName();
             }while(read == null || chosen.contains(read));
             chosen.add(read);
 
@@ -341,21 +316,12 @@ public class CLI implements ViewInterface {
             if(client.getPlayers().size()==3){
                 do{
                     print(colorCPU+"Type the third card [name] " + TextFormatting.input());
-                    String name;
-                    try {
-                        name = in.readLine();
-                    } catch (IOException e) {
-                        name = "";
-                    }
-                    startEasterEgg(name);
-                    try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
-                    catch(Exception ex){read = null;}
+                    read = getCardName();
                 }while(read == null || chosen.contains(read));
                 chosen.add(read);
             }
 
             client.sendMessage(new ChallengerChoseClient(client.getUsername(), chosen));
-            print(colorCPU+"Waiting for opponent's choice...");
         }
         else {
             println(colorCPU+"The challenger has chosen! Select your card:");
@@ -379,8 +345,23 @@ public class CLI implements ViewInterface {
                 catch(Exception ex){read = null;}
             }while(read == null);
             client.sendMessage(new PlayerChoseClient(client.getUsername(), read));
-            print(colorCPU+"Waiting for opponent's choice...");
         }
+        print(colorCPU+"Waiting for opponent's choice...");
+    }
+
+    @Nullable
+    private CardName getCardName() {
+        CardName read;
+        String name;
+        try {
+            name = in.readLine();
+        } catch (IOException e) {
+            name = "";
+        }
+        startEasterEgg(name);
+        try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
+        catch(Exception ex){read = null;}
+        return read;
     }
 
     @Override
@@ -692,23 +673,11 @@ public class CLI implements ViewInterface {
                         }
                         else
                         {
-                            StringBuilder tmp = new StringBuilder(toPrint[w]);
-                            for(int j=0;j<(36-toPrint[w].length())/2;j++)
-                                tmp.insert(0, " ");
-                            for(int j=0;j<(36-toPrint[w].length())/2;j++)
-                                tmp.append(" ");
-                            toPrint[w] = tmp.toString();
-                            if(toPrint[w].length()%2!=0) toPrint[w] += " ";
+                            printCardDescription(toPrint, w);
                         }
                     }
                     if(toPrint[w].length()<36){
-                        StringBuilder tmp = new StringBuilder(toPrint[w]);
-                        for(int j=0;j<(36-toPrint[w].length())/2;j++)
-                            tmp.insert(0, " ");
-                        for(int j=0;j<(36-toPrint[w].length())/2;j++)
-                            tmp.append(" ");
-                        toPrint[w] = tmp.toString();
-                        if(toPrint[w].length()%2!=0) toPrint[w] += " ";
+                        printCardDescription(toPrint, w);
                     }
                 }
 
@@ -726,6 +695,16 @@ public class CLI implements ViewInterface {
                 print[(2-i)*factor+j] += color[0]+"                                      "+TextFormatting.RESET;
 
         return print;
+    }
+
+    private void printCardDescription(String[] toPrint, int w) {
+        StringBuilder tmp = new StringBuilder(toPrint[w]);
+        for(int j=0;j<(36-toPrint[w].length())/2;j++)
+            tmp.insert(0, " ");
+        for(int j=0;j<(36-toPrint[w].length())/2;j++)
+            tmp.append(" ");
+        toPrint[w] = tmp.toString();
+        if(toPrint[w].length()%2!=0) toPrint[w] += " ";
     }
 
     public String printUserSymbol(SnapCell cell){

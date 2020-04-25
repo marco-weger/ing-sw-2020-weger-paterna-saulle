@@ -20,7 +20,7 @@ public class Card extends Observable implements Serializable {
      * QUESTION: it is true if the ability need a question to be actived.
      * STATUS: the state when the ability could be actived.
      */
-    private CardName name;
+    private final CardName name;
     private boolean active;
     private final boolean opponent;
     private final boolean question;
@@ -104,7 +104,7 @@ public class Card extends Observable implements Serializable {
      */
     public ArrayList<Cell> checkMove(ArrayList<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
-        Player current = null;
+        //Player current = null;
         Worker actived = null;
         for(Player player:p)
             if(player.getCard().name.compareTo(this.name) == 0)

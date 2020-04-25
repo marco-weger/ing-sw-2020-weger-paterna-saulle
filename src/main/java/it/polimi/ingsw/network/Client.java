@@ -290,6 +290,12 @@ public class Client implements Runnable{
         return obj;
     }
 
+    public void disconnectionHandler(){
+        try{
+            ping.cancel();
+        } catch (Exception ignored){}
+    }
+
     @Deprecated
     public static void printTitle(){
         String str =

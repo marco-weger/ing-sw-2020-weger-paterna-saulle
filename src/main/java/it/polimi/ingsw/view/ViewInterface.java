@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.commons.clientMessages.PingClient;
 import it.polimi.ingsw.commons.serverMessages.*;
 
 public interface ViewInterface {
