@@ -109,20 +109,46 @@ public class Prometheus extends Card {
      */
     @Override
     public boolean activable(ArrayList<Player> p, Board b) {
-        Player current = null;
-        for (Player player : p) {
-            if (player.getCard().getName().compareTo(this.getName()) == 0)
-                current = player;
-        }
 
-        if(current == null){
-            System.err.println("Player Not Found --> Prometheus activable");
-            return true;
-        }
+        if (p == null || b == null) return true;
+        Worker actived = null;
+        Player current = null;
+        for (Player player : p)
+            if (player.getCard().getName().compareTo(this.getName()) == 0) {
+                actived = player.getCurrentWorker();
+                current = player;
+            }
+
+        if (actived == null) return true;
+        ArrayList<Cell> available;
+        ArrayList<Cell> availablelow;
+
+        available= new ArrayList<>();
+        availablelow = new ArrayList<>();
 
         current.getCard().setActive(true);
 
-        if(current.getCard().checkMove(p,b).size() < 2) {
+        if(super.isActive()){
+            for (Cell c : b.getField()) {
+                if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() <= actived.getLevel(b) && !c.isOccupied(p)) {
+                    available.add(c);
+                }
+                if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() < actived.getLevel(b) && !c.isOccupied(p)) {
+                    availablelow.add(c);
+                }
+            }
+            // here i check for opponent's turn ability
+            for (Player player : p) {
+                if (player.getCard().isOpponent() && player.getCard().isActive())
+                    available.removeAll(player.getCard().activeBlock(p, b, actived, Status.QUESTION_M));
+                //per evitare crash, escludo gli avialablelow
+            }
+        }
+
+
+
+        //se ho a disposizione un solo movimento, sullo stesso livello, non farmi usare il potere
+        if(available.size() < 2 && availablelow.size() == 0) {
             current.getCard().setActive(false);
             return false;
         }
