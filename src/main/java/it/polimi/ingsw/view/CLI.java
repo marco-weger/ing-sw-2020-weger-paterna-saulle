@@ -196,7 +196,7 @@ public class CLI implements ViewInterface {
                 break;
             }
         }while(true);
-        println(colorCPU+"Request Send!..... loading.... " + TextFormatting.input());
+        println(colorCPU+"Request Send!" + TextFormatting.input());
 
     }
 
