@@ -300,6 +300,10 @@ public class Controller implements Observer, ClientMessageHandler {
                 {
                     match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(), match.getBoard());
                 }
+                else if(match.getStatus().equals(Status.QUESTION_B))
+                {
+                    match.getCurrentPlayer().getCard().getCheckBuild(match.getPlayers(), match.getBoard());
+                }
                 else{
                     System.err.println("Incompatibilità tra CurrentPlayer.State =" + match.getStatus() + "handlemessage Buildclient message");
                 }

@@ -23,7 +23,7 @@ public class FactoryCard {
             case ATLAS:
                 return new Atlas(CardName.ATLAS,false,false,true, Status.MOVED, vv);
             case DEMETER:
-                return new Demeter(CardName.DEMETER,false,false,true, Status.BUILT, vv);
+                return new Demeter(CardName.DEMETER,false,false,true, Status.MOVED, vv);
             case HEPHAESTUS:
                 return new Hephaestus(CardName.HEPHAESTUS,false,false,true, Status.MOVED, vv);
             case MINOTAUR:

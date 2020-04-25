@@ -16,6 +16,26 @@ public class Demeter extends Card {
         lastBuild = null;
     }
 
+
+
+    @Override
+    public Status getNextStatus(Status current) {
+        if (!super.isActive()) {
+            return super.getNextStatus(current);
+        }
+        else {
+            if (current == null) return null;
+            switch (current) {
+                case QUESTION_B:
+                    super.setActive(false);
+                    return Status.QUESTION_B;
+                default:
+                    return super.getNextStatus(current);
+            }
+        }
+    }
+
+
     /**
      * It checks buildable cells by watching active attribute
      * @param p list of player
@@ -32,7 +52,7 @@ public class Demeter extends Card {
                 actived = player.getCurrentWorker();
         if(actived == null) return new ArrayList<>();
         ArrayList<Cell> ret = super.checkBuild(p,b);
-        if(this.isActive() && lastBuild != null)
+        if(!this.isActive() && lastBuild != null)
             ret.remove(lastBuild);
         return ret;
     }
@@ -57,6 +77,7 @@ public class Demeter extends Card {
                     if(available.contains(to)){
                         super.build(p,b,to);
                         lastBuild = to;
+                        notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(to)).getRow(),available.get(available.indexOf(to)).getColumn(),available.get(available.indexOf(to)).getLevel())));
                         return true;
                     }
                 }

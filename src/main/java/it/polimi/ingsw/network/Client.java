@@ -261,7 +261,7 @@ public class Client implements Runnable{
                     }
                 }
                 //Runnable runnable = () -> { System.out.println("Lambda Runnable running"); };
-                try{
+                /*try{
                     if (handler != null && handler.isAlive()) {
                         handler.interrupt();
                         continueReading = false;
@@ -271,7 +271,8 @@ public class Client implements Runnable{
                 }
                 handler = new Thread(() -> msg.accept(view));
                 continueReading = true;
-                handler.start();
+                handler.start();*/
+                msg.accept(view);
             }
         }
         catch (IOException | ClassNotFoundException e){
