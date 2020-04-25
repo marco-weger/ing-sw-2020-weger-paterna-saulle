@@ -141,13 +141,14 @@ public class ServerClientHandler implements Runnable {
                     }
                 }
             }
+            /*
             try {
                 socket.shutdownInput();
                 socket.shutdownOutput();
                 socket.close();
             } catch (IOException e) {
                 System.out.println("[SCH] - " + e.getMessage());
-            }
+            }*/
         }
     }
 
@@ -346,18 +347,23 @@ public class ServerClientHandler implements Runnable {
                     obj = in.readObject();
                 } catch (SocketTimeoutException ex){
                     System.out.println("......"+ex.getMessage());
-                    socket.close();
+                    //socket.close();
 
                     //Thread.currentThread().interrupt();
-                    return null;
+                    obj = null;
+                    //return null;
                 }
             }
-        }while ((obj instanceof PingClient || obj == null) && !turnTimesUp);
+        }while ((obj instanceof PingClient || obj == null));
+        //}while ((obj instanceof PingClient || obj == null) && !turnTimesUp);
 
+        /*
         if(turnTimesUp){
             System.out.println(this.name+"'S TURN TIME'S UP!");
             return null;
         } else return obj;
+         */
+        return obj;
     }
 
     /*

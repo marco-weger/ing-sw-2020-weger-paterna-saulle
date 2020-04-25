@@ -272,6 +272,7 @@ public class Client implements Runnable{
                 handler = new Thread(() -> msg.accept(view));
                 continueReading = true;
                 handler.start();*/
+                continueReading = true;
                 msg.accept(view);
             }
         }

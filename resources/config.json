@@ -4,6 +4,5 @@
   "pingPeriod": "2",
   "timeoutSocket": "5",
   "disconnectTimer": "60",
-  "startTurnTimer": "40",
-  "turnTimer": "40"
+  "turnTimer": "60"
 }
