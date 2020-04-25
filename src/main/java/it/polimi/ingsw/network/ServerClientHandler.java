@@ -336,6 +336,7 @@ public class ServerClientHandler implements Runnable {
         }while ((obj instanceof PingClient || obj == null) && !turnTimesUp);
 
         if(turnTimesUp){
+            // Put player in disconnected list
             System.out.println(this.name+"'S TURN TIME'S UP!");
             return null;
         } else return obj;
