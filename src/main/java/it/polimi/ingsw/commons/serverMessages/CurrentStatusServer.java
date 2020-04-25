@@ -22,6 +22,11 @@ public class CurrentStatusServer extends ServerMessage {
     public boolean worker2;
 
     /**
+     * Timer in second if set
+     */
+    public int timer;
+
+    /**
      * The player receives this message upon a request of the server,
      * informing him of the current status.
      * @param player name of the player
@@ -32,5 +37,6 @@ public class CurrentStatusServer extends ServerMessage {
         super("");
         this.status=status;
         this.player=player;
+        this.timer=0;
     }
 }

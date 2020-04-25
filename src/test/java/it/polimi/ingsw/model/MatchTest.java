@@ -47,7 +47,7 @@ public class MatchTest {
         m.setSelectedCards(new ArrayList<>(Arrays.asList(CardName.ATHENA,CardName.ATLAS)));
         assertEquals(m.getSelectedCard().get(0), CardName.ATHENA);
         assertEquals(m.getSelectedCard().get(1), CardName.ATLAS);
-        m.setLosers(new ArrayList<>(Collections.singletonList(m.getPlayers().get(1))));
+        m.setLosers(new ArrayList<>(Collections.singletonList(m.getPlayers().get(1))),false);
         assertEquals(m.getPlayers().size(),2);
         assertEquals(m.getLosers().size(),1);
         assertEquals(m.getPlayers().get(1).getCard().getName(), CardName.ATLAS);
@@ -116,8 +116,8 @@ public class MatchTest {
         m.setPlayers(p);
         m.setNextPlayer();
         m.setNextPlayer();
-        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(2))));
-        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(0))));
+        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(2))),false);
+        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(0))),false);
         assertTrue(m.checkCurrentPlayerWin());
 
     }
@@ -128,8 +128,8 @@ public class MatchTest {
         Match m = new Match(0,null);
         m.setPlayers(p);
         m.setNextPlayer();
-        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(1))));
-        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(1))));
+        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(1))),false);
+        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(1))),false);
         assertTrue(m.checkCurrentPlayerWin());
     }
 
@@ -142,9 +142,9 @@ public class MatchTest {
         m.setNextPlayer(); //1
         m.setNextPlayer(); //2
 
-        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(2))));
+        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(2))),false);
         assertEquals(m.getCurrentPlayer(),m.getPlayers().get(0));
-        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(1))));
+        m.setLosers(new ArrayList<>(Collections.singletonList(p.get(1))),false);
         assertTrue(m.checkCurrentPlayerWin());
     }
 /*

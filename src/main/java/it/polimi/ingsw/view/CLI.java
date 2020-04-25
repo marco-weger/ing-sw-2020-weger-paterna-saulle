@@ -8,6 +8,7 @@ import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 import org.jetbrains.annotations.Nullable;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -88,7 +89,7 @@ public class CLI implements ViewInterface {
                 }
                 if(go)
                     print(colorCPU+"Please insert a valid cell! ");
-            }while(go);
+            }while(go && client.continueReading);
         }
     }
 
@@ -113,7 +114,7 @@ public class CLI implements ViewInterface {
                 }
                 if(go)
                     print(colorCPU+"Please insert a valid cell! ");
-            }while(go);
+            }while(go && client.continueReading);
         }
     }
 
@@ -181,11 +182,7 @@ public class CLI implements ViewInterface {
         do {
             println(colorCPU+"Do you want to use the Ability of your God? [YES/NO] " + TextFormatting.input());
             String answer;
-            try {
-                answer = in.readLine();
-            } catch (IOException e) {
-                answer = "";
-            }
+            answer = read();//in.readLine();
             if (answer.toUpperCase().equals("YES")) {
                 client.sendMessage(new AnswerAbilityClient(client.getUsername(), true, message.status));
                 break;
@@ -204,6 +201,7 @@ public class CLI implements ViewInterface {
         if(!client.getMyPlayer().loser){
             if(message.player.equals(client.getUsername())){
                 println(colorCPU+"It's your turn!"+TextFormatting.RESET);
+                println(TextFormatting.COLOR_YELLOW + "CURRENT TIMER: " + (message.timer == 0 ? "inf." : message.timer)+TextFormatting.RESET);
                 switch(message.status){
                     case WORKER_CHOICE:
                         clear();
@@ -236,7 +234,7 @@ public class CLI implements ViewInterface {
                                 }
                             }
                             print(colorCPU+"Selected worker isn't valid, chose the worker to play with [x-y] " + TextFormatting.input());
-                        } while(go);
+                        } while(go && client.continueReading);
                         break;
                     /*
                     case MOVED:
@@ -277,6 +275,8 @@ public class CLI implements ViewInterface {
 
         if(this.client.getUsername().equals(message.player)){
             clear();
+            if(message.isTimesUp)
+                println(TextFormatting.loser()+"TIME'S UP...YOU LOSE!"+TextFormatting.RESET);
             printLose();
         }
         else{
@@ -455,11 +455,6 @@ public class CLI implements ViewInterface {
 
     }
 
-    @Override
-    public void handleMessage(CountdownServer countdownServer) {
-        System.out.println(countdownServer.count);
-    }
-
     public void endMatch(){
         print(colorCPU + "Type [CONTINUE] if you want to start a new game, [QUIT] if you want to close the game " + TextFormatting.input());
         /*
@@ -541,11 +536,23 @@ public class CLI implements ViewInterface {
         System.out.flush();
     }
 
+    public String read(){
+        String tmp = "";
+        do{
+            try {
+                tmp = in.readLine();
+            } catch (IOException e) {
+                System.out.println("[READ] - "+e.toString());
+            }
+        } while(tmp.isEmpty() && client.continueReading);
+        return tmp;
+    }
+
     public SnapCell readCell(){
         boolean go;
         int x, y;
         try{
-            String tmp = in.readLine();
+            String tmp = read();//in.readLine();
             tmp = tmp.toUpperCase();
             String[] tmps = tmp.split("-");
             x = Integer.parseInt(tmps[0]) -1;

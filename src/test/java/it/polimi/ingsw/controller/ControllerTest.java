@@ -20,7 +20,7 @@ public class ControllerTest {
 
     public void initialize(){
         //create a list of players with the developers
-        vw = new VirtualView(null,10);
+        vw = new VirtualView(null);
         ArrayList<Player> players = new ArrayList<>(Arrays.asList(
                 new Player("Marco",vw),
                 new Player("Francesco",vw),
@@ -50,7 +50,7 @@ public class ControllerTest {
         m = new Match(22,vw);
         controller.setMatch(m);
         assertEquals(m,controller.getMatch());
-        VirtualView vv = new VirtualView(null,10);
+        VirtualView vv = new VirtualView(null);
         controller.setVirtualView(vv);
         assertEquals(vv,controller.getVirtualView());
     }
@@ -94,7 +94,7 @@ public class ControllerTest {
     @Test
     public void workerInitializeClient() {
         // initialize
-        vw = new VirtualView(null,10);
+        vw = new VirtualView(null);
         controller = new Controller(vw);
         controller.setMatch(new Match(42,vw));
         controller.getMatch().setPlayers(
@@ -138,7 +138,7 @@ public class ControllerTest {
 
     @Test
     public void workerChoseClient() {
-        vw = new VirtualView(null,10);
+        vw = new VirtualView(null);
         workerInitializeClient();
         controller.getMatch().setStatus(Status.START);
         controller.getMatch().getPlayers().get(0).setCurrent(true);
@@ -382,8 +382,8 @@ public class ControllerTest {
         initialize();
         playerChoseClient();
 
-        controller.getMatch().setLosers(new ArrayList<>(Collections.singletonList(controller.getMatch().getPlayers().get(0))));
-        controller.getMatch().setLosers(new ArrayList<>(Collections.singletonList(controller.getMatch().getPlayers().get(0))));
+        controller.getMatch().setLosers(new ArrayList<>(Collections.singletonList(controller.getMatch().getPlayers().get(0))),false);
+        controller.getMatch().setLosers(new ArrayList<>(Collections.singletonList(controller.getMatch().getPlayers().get(0))),false);
         controller.startTurn(true);
         //controller.endGame(controller.getMatch().getPlayers().get(2));
         assertEquals(2, controller.getMatch().getLosers().size());
@@ -409,7 +409,7 @@ public class ControllerTest {
         initialize();
         playerChoseClient();
         controller.getMatch().getPlayers().get(0).setCurrent(true);
-        controller.getMatch().setLosers(new ArrayList<>(Arrays.asList(controller.getMatch().getPlayers().get(1),controller.getMatch().getPlayers().get(2))));
+        controller.getMatch().setLosers(new ArrayList<>(Arrays.asList(controller.getMatch().getPlayers().get(1),controller.getMatch().getPlayers().get(2))),false);
         assertEquals(1,controller.getMatch().getPlayers().size());
         controller.startTurn(false);
         assertTrue(controller.getMatch().isEnded());

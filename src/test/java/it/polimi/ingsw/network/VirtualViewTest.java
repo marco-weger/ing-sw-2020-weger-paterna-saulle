@@ -20,7 +20,7 @@ public class VirtualViewTest {
     @Test
     public void AtlasCompleteTurnTEST()
     {
-        vv = new VirtualView(null,10);
+        vv = new VirtualView(null);
         vv.c.setMatch(new Match(43,vv));
         assertNotNull(vv.c.getMatch());
         assertEquals(vv.c.getMatch().getId(),43);

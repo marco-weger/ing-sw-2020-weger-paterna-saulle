@@ -20,7 +20,6 @@ public class Controller implements Observer, ClientMessageHandler {
     private Match match;
     private VirtualView virtualView;
 
-
     public Controller(VirtualView virtualView) {
         this.virtualView = virtualView;
         boolean go = false;
@@ -88,7 +87,12 @@ public class Controller implements Observer, ClientMessageHandler {
             this.match.removePlayer(message.name);
         }
         else{
-            System.out.println("\tHA PERSO " + message.name);
+            Player loser = null;
+            for(Player p : match.getPlayers())
+                if(p.getName().equals(message.name))
+                    loser = p;
+            match.setLosers(new ArrayList<>(Collections.singletonList(loser)),message.isTimesUp);
+            startTurn(false);
         }
     }
 
@@ -329,7 +333,7 @@ public class Controller implements Observer, ClientMessageHandler {
         for(Player p : match.getPlayers())
             if (p.getName().compareTo(winner.getName()) != 0)
                 losers.add(p);
-        match.setLosers(losers);
+        match.setLosers(losers,false);
     }
 
     private void startMatch() {
@@ -353,7 +357,7 @@ public class Controller implements Observer, ClientMessageHandler {
             }
             else{
                 if(match.getCurrentPlayer().getCard().hasLost(match.getPlayers(),match.getBoard())){
-                    match.setLosers(new ArrayList<>(Collections.singletonList(match.getCurrentPlayer())));
+                    match.setLosers(new ArrayList<>(Collections.singletonList(match.getCurrentPlayer())),false);
                     startTurn(false);
                 }
                 else{

@@ -126,7 +126,7 @@ public class Match extends Observable implements Serializable {
             notifyObservers(new CurrentStatusServer("",status));
 
         if(status.equals(Status.CARD_CHOICE))
-            notifyObservers(new AvailableCardServer(this.players.get(0).getName(),new ArrayList<CardName>()));
+            notifyObservers(new AvailableCardServer(this.players.get(0).getName(),new ArrayList<>()));
 
     }
 
@@ -134,7 +134,7 @@ public class Match extends Observable implements Serializable {
      * A method that add a player into the Loser List and remove it from the Active Player List
      * @param p select a player
      */
-    public void setLosers(ArrayList<Player> p) {
+    public void setLosers(ArrayList<Player> p, boolean isTimesUp) {
         if(p.size() == 1){
             if(p.get(0).isCurrent())
                 players.get((players.indexOf(getCurrentPlayer())+1)%(players.size())).setCurrent(true);
@@ -143,7 +143,7 @@ public class Match extends Observable implements Serializable {
         getPlayers().removeAll(p);
         if(players.size() > 1)
             for (Player player : p)
-                notifyObservers(new SomeoneLoseServer(player.getName()));
+                notifyObservers(new SomeoneLoseServer(player.getName(),isTimesUp));
         else notifyObservers(new SomeoneWinServer(players.get(0).getName()));
 
         if(players.size() == 1){

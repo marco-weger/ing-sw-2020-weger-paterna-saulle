@@ -232,9 +232,11 @@ public class Client implements Runnable{
         }
     }
 
+    public boolean continueReading = true;
     @Override
     public void run() {
         try {
+            Thread handler = null;
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
 
@@ -258,7 +260,18 @@ public class Client implements Runnable{
                         }
                     }
                 }
-                msg.accept(view);
+                //Runnable runnable = () -> { System.out.println("Lambda Runnable running"); };
+                try{
+                    if (handler != null && handler.isAlive()) {
+                        handler.interrupt();
+                        continueReading = false;
+                    }
+                } catch (Exception ex){
+                    System.out.println("[TH] - "+ex.toString());
+                }
+                handler = new Thread(() -> msg.accept(view));
+                continueReading = true;
+                handler.start();
             }
         }
         catch (IOException | ClassNotFoundException e){

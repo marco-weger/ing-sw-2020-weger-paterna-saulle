@@ -2,7 +2,6 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.Status;
-import it.polimi.ingsw.commons.serverMessages.CountdownServer;
 import it.polimi.ingsw.commons.serverMessages.PingServer;
 import it.polimi.ingsw.model.Match;
 import org.json.simple.JSONObject;
@@ -64,6 +63,11 @@ public class Server {
     private int turnTimer;
 
     /**
+     * Complete turn timer
+     */
+    private int startTurnTimer;
+
+    /**
      * It assigns default value at configurable vars
      */
     public Server(){
@@ -103,6 +107,17 @@ public class Server {
     public VirtualView getCurrentVirtualView3(){ return currentVirtualView3; }
 
     /**
+     * @param stauts the current status
+     * @return the timer of current turn phase
+     */
+    public int getTimer(Status stauts){
+        if(stauts.equals(Status.START))
+            return startTurnTimer;
+        else return turnTimer;
+    }
+
+
+    /**
      * It iterates on all VirtualViews and all ServerClientHandlers
      * @return all players in a match
      */
@@ -121,7 +136,7 @@ public class Server {
      * It creates a new lobby for 2 players match
      */
     public void newCurrentVirtualView2(){
-        this.currentVirtualView2=new VirtualView(this,turnTimer);
+        this.currentVirtualView2=new VirtualView(this);
         virtualViews2.add(this.currentVirtualView2);
     }
 
@@ -129,7 +144,7 @@ public class Server {
      * It creates a new lobby for 3 players match
      */
     public void newCurrentVirtualView3(){
-        this.currentVirtualView3=new VirtualView(this,turnTimer);
+        this.currentVirtualView3=new VirtualView(this);
         virtualViews3.add(this.currentVirtualView3);
     }
 
@@ -178,7 +193,7 @@ public class Server {
 
                 //saveVirtualView(virtualViews2,virtualViews3);
             }catch(IOException e){
-                System.err.println(e.getMessage());
+                System.err.println("[START_SERVER] - "+e.getMessage());
                 break;
             }
         }
@@ -186,7 +201,7 @@ public class Server {
         try {
             serverSocket.close();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.err.println("[START_SERVER] - "+e.getMessage());
         }
     }
 
@@ -209,9 +224,9 @@ public class Server {
     public void send(ServerMessage sm, VirtualView vv){
         if(sm!=null && vv != null)
             for(ServerClientHandler sch : vv.getConnectedPlayers().values())
-                if(sch.getName().equals(sm.name))
+                if(sch.getName().equals(sm.name) && sch.isConnected())
                     sch.notify(sm);
-        if(!(sm instanceof PingServer) && !(sm instanceof CountdownServer))
+        if(!(sm instanceof PingServer))
             System.out.println("[SENT] - " + Objects.requireNonNull(sm).toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + " - " + sm.name);
     }
 
@@ -241,6 +256,8 @@ public class Server {
                     server.timeoutSocket = Integer.parseInt(config.get("timeoutSocket").toString());
                 if(config.containsKey("turnTimer"))
                     server.turnTimer = Integer.parseInt(config.get("turnTimer").toString());
+                if(config.containsKey("startTurnTimer"))
+                    server.startTurnTimer = Integer.parseInt(config.get("startTurnTimer").toString());
             }
         } catch (Exception e) {
             //System.out.println(e.getMessage());
@@ -272,11 +289,11 @@ public class Server {
                                 if (((Match) obj).getPlayers().size() + ((Match) obj).getLosers().size() == 2) {
                                     Object sm = objIn.readObject();
                                     if(sm instanceof ServerMessage)
-                                        virtualViews2.add(new VirtualView(this, (Match) obj, (ServerMessage) sm,turnTimer));
+                                        virtualViews2.add(new VirtualView(this, (Match) obj, (ServerMessage) sm));
                                 } else if (((Match) obj).getPlayers().size() + ((Match) obj).getLosers().size() == 3) {
                                     Object sm = objIn.readObject();
                                     if(sm instanceof ServerMessage)
-                                        virtualViews3.add(new VirtualView(this, (Match) obj, (ServerMessage) sm,turnTimer));
+                                        virtualViews3.add(new VirtualView(this, (Match) obj, (ServerMessage) sm));
                                 }
                             } //else if(((Match) obj).getStatus().equals(Status.NAME_CHOICE)) {
                                 //toDelete.add(fileEntry.getAbsolutePath());

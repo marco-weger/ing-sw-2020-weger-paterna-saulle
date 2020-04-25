@@ -1,10 +1,7 @@
 package it.polimi.ingsw.network;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
-import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
-import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
-import it.polimi.ingsw.commons.clientMessages.PingClient;
-import it.polimi.ingsw.commons.clientMessages.ReConnectionClient;
+import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.commons.Status;
 
@@ -78,6 +75,12 @@ public class ServerClientHandler implements Runnable {
         this.pingPeriod = pingPeriod;
     }
 
+    public boolean isConnected(){
+        try{
+            return socket.isConnected();
+        } catch (Exception ignored){ return false; }
+    }
+
     public String getName() {return name;}
 
     /**
@@ -117,7 +120,7 @@ public class ServerClientHandler implements Runnable {
                 try {
                     Object object;
                     // standard loop to read
-                    while(socket.isConnected()){
+                    do{
                         object = readFromClient();
                         if(object instanceof ClientMessage)
                             System.out.println("[RECEIVED] - " + object.toString().substring(object.toString().lastIndexOf('.')+1,
@@ -125,7 +128,9 @@ public class ServerClientHandler implements Runnable {
 
                         if(virtualView != null && object != null)
                             virtualView.notify((ClientMessage) object);
-                    }
+                        else if(object == null && virtualView != null)
+                            virtualView.notify(new DisconnectionClient(this.name,true));
+                    }while(socket.isConnected() && object != null);
                 } catch (Exception e) {
                     disconnectionHandler();
                     if(!virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
@@ -135,6 +140,13 @@ public class ServerClientHandler implements Runnable {
                         // TODO: start the timer and notify all the client with the start... timers will run asynch, the main one is server
                     }
                 }
+            }
+            try {
+                socket.shutdownInput();
+                socket.shutdownOutput();
+                socket.close();
+            } catch (IOException e) {
+                System.out.println("[SCH] - " + e.getMessage());
             }
         }
     }
@@ -148,7 +160,8 @@ public class ServerClientHandler implements Runnable {
         int ret = 0;
         do{
             // send to client request for name an wait for answer
-            this.notify(new NameRequestServer(ret == 0));
+            if(isConnected())
+                this.notify(new NameRequestServer(ret == 0));
             try {
                 object = readFromClient();
                 ret = 0;
@@ -221,7 +234,8 @@ public class ServerClientHandler implements Runnable {
         Object object = null;
         do{
             //mode request
-            this.notify(new ModeRequestServer());
+            if(isConnected())
+                this.notify(new ModeRequestServer());
             try {
                 object = readFromClient();
             } catch (Exception e) {
@@ -266,7 +280,8 @@ public class ServerClientHandler implements Runnable {
         virtualView.getConnectedPlayers().keySet().addAll(Collections.singleton(name));
         LobbyServer ls = new LobbyServer(names);
         ls.loaded = true;
-        this.notify(ls);
+        if(isConnected())
+            this.notify(ls);
         virtualView.notify(object);
         return 1;
     }
@@ -300,7 +315,7 @@ public class ServerClientHandler implements Runnable {
             out.writeObject(message);
             out.flush();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.err.println("[NOT] - " + e.getMessage());
         }
     }
 
@@ -331,22 +346,26 @@ public class ServerClientHandler implements Runnable {
                     obj = in.readObject();
                 } catch (SocketTimeoutException ex){
                     System.out.println("......"+ex.getMessage());
+                    socket.close();
+
+                    //Thread.currentThread().interrupt();
+                    return null;
                 }
             }
         }while ((obj instanceof PingClient || obj == null) && !turnTimesUp);
 
         if(turnTimesUp){
-            // Put player in disconnected list
             System.out.println(this.name+"'S TURN TIME'S UP!");
             return null;
         } else return obj;
     }
 
-    /**
+    /*
      * It sends the countdown to the client
      * @param count value of the countdown
-     */
+     *
     public void countdown(int count){
         server.send(new CountdownServer(this.name,count),virtualView);
     }
+    */
 }

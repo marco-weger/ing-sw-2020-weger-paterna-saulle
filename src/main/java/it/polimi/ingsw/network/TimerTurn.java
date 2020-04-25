@@ -10,23 +10,11 @@ public class TimerTurn extends TimerTask {
     ServerClientHandler sch;
 
     /**
-     * The value of this time in seconds
-     */
-    int maxTimer;
-
-    /**
-     * Counter of the timer
-     */
-    int count;
-
-    /**
      * @param sch the client
-     * @param maxTimer the value of this timer in seconds
      */
-    public TimerTurn(ServerClientHandler sch, int maxTimer){
+    public TimerTurn(ServerClientHandler sch){
+        System.out.println("TIMER END!");
         this.sch = sch;
-        this.maxTimer = maxTimer;
-        this.count = 0;
     }
 
     /**
@@ -34,9 +22,7 @@ public class TimerTurn extends TimerTask {
      */
     @Override
     public void run() {
-        if(++count==maxTimer){
-            sch.turnTimesUp = true;
-            this.cancel();
-        } else sch.countdown(maxTimer-count);
+        sch.turnTimesUp = true;
+        this.cancel();
     }
 }

@@ -11,13 +11,16 @@ public class SomeoneLoseServer extends ServerMessage {
 
     public String player;
 
+    public boolean isTimesUp;
+
     /**
      * The players receive this message when someone lose
      * @param player name of the loser
      */
 
-    public SomeoneLoseServer(String player){
+    public SomeoneLoseServer(String player, boolean isTimesUp){
         super("");
         this.player=player;
+        this.isTimesUp=isTimesUp;
     }
 }
