@@ -265,9 +265,9 @@ public class Client implements Runnable{
                 }*/
 
                 // FIXME remove
-                if(!(msg instanceof PingServer)){
-                    System.out.println(msg.toString());
-                    System.out.flush();
+                //if(!(msg instanceof PingServer)){
+                    //System.out.println(msg.toString());
+                    //System.out.flush();
 
                     /*
                     continueReading = false;
@@ -279,9 +279,9 @@ public class Client implements Runnable{
                     handler = new Thread(() -> msg.accept(view));
                     handler.start();
                     */
-                    continueReading = true;
-                    msg.accept(view);
-                }
+                //}
+                continueReading = true;
+                msg.accept(view);
             }
         }
         catch (IOException | ClassNotFoundException e){
