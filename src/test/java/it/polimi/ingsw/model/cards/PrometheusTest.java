@@ -210,7 +210,7 @@ public class PrometheusTest {
         assertFalse(p.get(0).getCard().activable(p,b));
         for(Cell cell:b.getField()){
             if(cell.getRow() == 0 && cell.getColumn() == 1)
-                cell.setLevel(3);
+                cell.setLevel(1);
             else if(cell.getRow() == 1 && cell.getColumn() == 0)
                 cell.setLevel(3);
         }

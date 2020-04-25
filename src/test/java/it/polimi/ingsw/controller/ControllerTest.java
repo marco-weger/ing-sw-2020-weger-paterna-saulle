@@ -155,6 +155,33 @@ public class ControllerTest {
         assertTrue(controller.getMatch().getPlayers().get(2).getWorker2().isActive());
     }
 
+    @Test
+    public void workerChoseClientPrometheus() {
+        initialize();
+        controller.getMatch().getPlayers().get(0).setCard(CardName.PROMETHEUS,vw);
+        controller.getMatch().getPlayers().get(1).setCard(CardName.ATLAS,vw);
+        controller.getMatch().getPlayers().get(2).setCard(CardName.HEPHAESTUS,vw);
+
+        controller.getMatch().getPlayers().get(0).setWorker1(new Worker(0,0));
+        controller.getMatch().getPlayers().get(0).setWorker2(new Worker(1,0));
+        controller.getMatch().getPlayers().get(1).setWorker1(new Worker(4,0));
+        controller.getMatch().getPlayers().get(1).setWorker2(new Worker(1,1));
+        controller.getMatch().getPlayers().get(2).setWorker1(new Worker(3,3));
+        controller.getMatch().getPlayers().get(2).setWorker2(new Worker(4,4));
+
+        controller.getMatch().getPlayers().get(0).setCurrent(true);
+        controller.getMatch().setStatus(Status.CHOSEN);
+        controller.getMatch().getBoard().getCell(0,0).setLevel(1);
+        controller.getMatch().getBoard().getCell(1,0).setLevel(1);
+        controller.getMatch().getBoard().getCell(1,1).setLevel(1);
+        controller.getMatch().getBoard().getCell(0,1).setLevel(1);
+        controller.getMatch().getPlayers().get(0).setCurrentWorker(1);
+        assertFalse(controller.getMatch().getCurrentPlayer().getCard().activable(controller.getMatch().getPlayers(),controller.getMatch().getBoard()));
+
+    }
+
+
+
     //Marco=PAN
     //Francesco=ATLAS
     //Giulio=HEPHAESTUS

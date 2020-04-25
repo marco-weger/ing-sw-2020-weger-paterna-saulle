@@ -35,6 +35,8 @@ public class CLITest {
         c.setUsername(c.getPlayers().get(0).name);
         view.printTable();
     }
+
+
     /*
     @Test
     public void printTitleBoardTest(){

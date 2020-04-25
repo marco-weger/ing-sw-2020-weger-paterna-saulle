@@ -210,7 +210,9 @@ public class Controller implements Observer, ClientMessageHandler {
                     && match.getCurrentPlayer().getCard().getStatus().compareTo(match.getStatus()) == 0
                     && match.getCurrentPlayer().getCard().activable(match.getPlayers(),match.getBoard())
             )
-            { match.getCurrentPlayer().doQuestion(); }
+            {
+                match.getCurrentPlayer().doQuestion();
+            }
             else{
                 match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
                 match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(),match.getBoard());
@@ -281,15 +283,21 @@ public class Controller implements Observer, ClientMessageHandler {
     @Override
     public void handleMessage(BuildClient message) {
         if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.QUESTION_B) == 0){
+
             if(match.getCurrentPlayer().getCard().build(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
                 match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
                 if(match.getStatus().equals(Status.BUILT))
+
                 {
                     startTurn(true);
                 }
                 else if(match.getStatus().equals(Status.QUESTION_M))
+
                 {
                     match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(), match.getBoard());
+                }
+                else{
+                    System.err.println("Incompatibilità tra CurrentPlayer.State =" + match.getStatus() + "handlemessage Buildclient message");
                 }
             }
         }

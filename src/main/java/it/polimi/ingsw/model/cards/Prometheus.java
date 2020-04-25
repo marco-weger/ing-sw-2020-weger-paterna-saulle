@@ -34,8 +34,10 @@ public class Prometheus extends Card {
                     return Status.QUESTION_B;
                 //case BUILT:
                 case QUESTION_B:
-                    super.setActive(false);
                     return Status.QUESTION_M;
+                case MOVED:
+                    super.setActive(false);
+                    return Status.QUESTION_B;
                 default:
                     return super.getNextStatus(current);
             }
@@ -59,16 +61,25 @@ public class Prometheus extends Card {
             if (player.getCard().getName().compareTo(this.getName()) == 0)
                 actived = player.getCurrentWorker();
         if (actived == null) return new ArrayList<>();
-        ArrayList<Cell> ret = super.checkMove(p, b);
-        ArrayList<Cell> toRemove = new ArrayList<>();
-        if (super.isActive()) {
-            for (Cell c : ret) {
-                if (c.getLevel() > b.getCell(actived.getRow(),actived.getColumn()).getLevel())
-                    toRemove.add(c);
+        ArrayList<Cell> available;
+        available= new ArrayList<>();
+
+        if(super.isActive()){
+            for (Cell c : b.getField()) {
+                if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() <= actived.getLevel(b) && !c.isOccupied(p))
+                    available.add(c);
+            }
+            // here i check for opponent's turn ability
+            for (Player player : p) {
+                if (player.getCard().isOpponent() && player.getCard().isActive())
+                    available.removeAll(player.getCard().activeBlock(p, b, actived, Status.QUESTION_M));
             }
         }
-        ret.removeAll(toRemove);
-        return ret;
+        else {
+            available = super.checkMove(p, b);
+        }
+        return available;
+
     }
 
     /**
@@ -82,7 +93,7 @@ public class Prometheus extends Card {
 
         ArrayList<Cell> available = super.checkBuild(p, b);
 
-        ArrayList<Cell> tmp = this.checkMove(p,b);
+        ArrayList<Cell> tmp = super.checkMove(p,b);
         if(isActive() && tmp.size() == 1){
             available.remove(tmp.get(0));
         }
@@ -91,18 +102,31 @@ public class Prometheus extends Card {
     }
 
     /**
-     * It uses the checkBuild to checks if there is some build possibilities before moving
+     * It uses the checkMove to checks if there is some build possibilities before building
      * @param p list of player
      * @param b board
      * @return true if you could activate ability in this turn
      */
     @Override
     public boolean activable(ArrayList<Player> p, Board b) {
-        boolean activable = super.activable(p,b);
-        this.setActive(true);
-        if(checkBuild(p,b).size() == 0)
-            activable = false;
-        this.setActive(false);
-        return activable;
+        Player current = null;
+        for (Player player : p) {
+            if (player.getCard().getName().compareTo(this.getName()) == 0)
+                current = player;
+        }
+
+        if(current == null){
+            System.err.println("Player Not Found --> Prometheus activable");
+            return true;
+        }
+
+        current.getCard().setActive(true);
+
+        if(current.getCard().checkMove(p,b).size() < 2) {
+            current.getCard().setActive(false);
+            return false;
+        }
+        current.getCard().setActive(false);
+        return true;
     }
 }

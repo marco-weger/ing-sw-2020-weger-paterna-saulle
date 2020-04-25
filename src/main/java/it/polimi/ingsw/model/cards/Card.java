@@ -104,7 +104,6 @@ public class Card extends Observable implements Serializable {
      */
     public ArrayList<Cell> checkMove(ArrayList<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
-        //Player current = null;
         Worker actived = null;
         for(Player player:p)
             if(player.getCard().name.compareTo(this.name) == 0)
