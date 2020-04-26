@@ -62,14 +62,14 @@ public class Hephaestus extends Card {
                     ArrayList<Cell> available = checkBuild(p,b);
                     if(available.contains(in)){
                         if(isActive() && in.getLevel()<2){
-                            notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(in)).getRow(),available.get(available.indexOf(in)).getColumn(),available.get(available.indexOf(in)).getLevel())));
                             available.get(available.indexOf(in)).setLevel(available.get(available.indexOf(in)).getLevel()+2);
+                            notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(in)).getRow(),available.get(available.indexOf(in)).getColumn(),available.get(available.indexOf(in)).getLevel())));
                             return true;
                         }
                         else if(!isActive() && in.getLevel()<4)
                         {
-                            notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(in)).getRow(),available.get(available.indexOf(in)).getColumn(),available.get(available.indexOf(in)).getLevel())));
                             available.get(available.indexOf(in)).setLevel(available.get(available.indexOf(in)).getLevel()+1);
+                            notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(in)).getRow(),available.get(available.indexOf(in)).getColumn(),available.get(available.indexOf(in)).getLevel())));
                             return true;
                         }
                     }
