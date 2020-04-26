@@ -107,13 +107,13 @@ public class DemeterTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        p.get(0).getCard().setActive(false);
+        p.get(0).getCard().setActive(true);
         ArrayList<Cell> ret = p.get(0).getCard().checkBuild(p,b);
         assertEquals(ret.size(),3);
         for(Cell c:ret)
             assertTrue(c.getRow() == 1 && c.getColumn() == 2 || c.getRow() == 1 && c.getColumn() == 3 || c.getRow() == 1 && c.getColumn() == 4);
         p.get(0).getCard().build(p,b,b.getCell(1,2));
-        p.get(0).getCard().setActive(true);
+        p.get(0).getCard().setActive(false);
         ret = p.get(0).getCard().checkBuild(p,b);
         assertEquals(ret.size(),2);
         for(Cell c:ret)
@@ -156,14 +156,17 @@ public class DemeterTest {
         Board b = new Board();
         for(Cell cell:b.getField()){
             if(cell.getRow() == 3 & cell.getColumn() == 4){
+                p.get(0).getCard().setActive(true);
+                p.get(0).getCard().checkBuild(p,b);
                 p.get(0).getCard().build(p,b,cell);
                 assertEquals(cell.getLevel(), 1);
-                p.get(0).getCard().setActive(true);
+                p.get(0).getCard().setActive(false);
+                p.get(0).getCard().checkBuild(p,b);
                 p.get(0).getCard().build(p,b,cell);
                 assertEquals(cell.getLevel(), 1);
                 p.get(0).getCard().setActive(false);
                 p.get(0).getCard().build(p,b,cell);
-                assertEquals(cell.getLevel(), 2);
+                assertEquals(cell.getLevel(), 1);
             }
         }
     }

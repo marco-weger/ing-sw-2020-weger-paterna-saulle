@@ -17,7 +17,16 @@ public class Demeter extends Card {
     }
 
 
-
+    /**
+     * if Demeter is Active, the player follows this line
+     * start-> chosen-> quesion_m-> moved-> question_b-> question_b-> built-> end
+     *
+     * otherwise the player follows the classical line
+     * start-> chosen-> question_m-> moved-> question_b-> built-> end
+     *
+     * @param current current state of current turn
+     * @return next state
+     */
     @Override
     public Status getNextStatus(Status current) {
         if (!super.isActive()) {
@@ -84,5 +93,16 @@ public class Demeter extends Card {
             }
         }
         return false;
+    }
+
+    /**
+     * It uses the checkMove to checks if there is some build possibilities before building
+     * @param p list of player
+     * @param b board
+     * @return true if you could activate ability in this turn
+     */
+    @Override
+    public boolean activable(ArrayList<Player> p, Board b) {
+        return super.checkBuild(p, b).size() >= 2;
     }
 }

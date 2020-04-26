@@ -156,7 +156,6 @@ public class Prometheus extends Card {
      */
     @Override
     public boolean activable(ArrayList<Player> p, Board b) {
-
         if (p == null || b == null) return true;
         Worker actived = null;
         Player current = null;
