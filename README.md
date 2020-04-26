@@ -1,3 +1,4 @@
+![Santorini logo](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/Santorini_logo.png)
 
 # Final project of Software Engineering - 2020
 ## Gruppo CG13
