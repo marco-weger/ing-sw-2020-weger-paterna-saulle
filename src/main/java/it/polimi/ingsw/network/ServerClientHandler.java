@@ -13,7 +13,6 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class ServerClientHandler implements Runnable {
 
@@ -334,14 +333,10 @@ public class ServerClientHandler implements Runnable {
      * Ping task
      */
     public void startPing(){
+        System.out.println("START PING...");
         ping = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                server.send(new PingServer(name),virtualView);
-            }
-        };
-        ping.scheduleAtFixedRate(task, 0, pingPeriod*1000);
+        //TimerPing task = new TimerPing(this);
+        ping.scheduleAtFixedRate(new TimerPing(this), 0, pingPeriod*1000);
     }
 
     /**

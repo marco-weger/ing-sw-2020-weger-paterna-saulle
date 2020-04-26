@@ -13,7 +13,6 @@ import it.polimi.ingsw.view.ViewInterface;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -283,7 +282,7 @@ public class Client implements Runnable{
             try{
                 obj = in.readObject();
             } catch (SocketTimeoutException ex){
-                System.out.println("......"+ex.getMessage());
+                System.out.println(".X.X.X.X.X."+ex.getMessage());
             }
         }while (obj instanceof PingServer || obj == null);
         return obj;
