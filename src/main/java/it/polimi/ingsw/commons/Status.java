@@ -14,6 +14,23 @@ public enum Status {
      * - BUILT this state checks for after build ability
      * - END handling of end phase of the Match
      */
-    NAME_CHOICE,CARD_CHOICE,WORKER_CHOICE,START, CHOSEN, QUESTION_M, MOVED, QUESTION_B,BUILT,END
+    NAME_CHOICE(false),
+    CARD_CHOICE(true),
+    WORKER_CHOICE(true),
+    START(true),
+    CHOSEN(false),
+    QUESTION_M(false),
+    MOVED(false),
+    QUESTION_B(false),
+    BUILT(false),
+    END(false);
+
+    private final boolean notify;
+
+    Status(boolean notify) {
+        this.notify = notify;
+    }
+
+    public boolean getNotify(){return notify;}
 
 }

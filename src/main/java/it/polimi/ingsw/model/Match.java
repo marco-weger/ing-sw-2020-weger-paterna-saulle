@@ -120,7 +120,8 @@ public class Match extends Observable implements Serializable {
                 message.worker2 = getCurrentPlayer().getCard().checkMove(players,board).size() > 0;
                 getCurrentPlayer().setCurrentWorker(0);
             }
-            notifyObservers(message);
+            if(status.getNotify())
+                notifyObservers(message);
         }
         else
             notifyObservers(new CurrentStatusServer("",status));

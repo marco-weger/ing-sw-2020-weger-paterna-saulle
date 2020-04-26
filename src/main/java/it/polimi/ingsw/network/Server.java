@@ -63,11 +63,6 @@ public class Server {
     private int turnTimer;
 
     /**
-     * Complete turn timer
-     */
-    private int startTurnTimer;
-
-    /**
      * It assigns default value at configurable vars
      */
     public Server(){
@@ -107,14 +102,9 @@ public class Server {
     public VirtualView getCurrentVirtualView3(){ return currentVirtualView3; }
 
     /**
-     * @param stauts the current status
-     * @return the timer of current turn phase
+     * @return the timer of current turn
      */
-    public int getTimer(Status stauts){
-        if(stauts.equals(Status.START))
-            return startTurnTimer;
-        else return turnTimer;
-    }
+    public int getTurnTimer(){ return turnTimer; }
 
 
     /**
@@ -256,8 +246,6 @@ public class Server {
                     server.timeoutSocket = Integer.parseInt(config.get("timeoutSocket").toString());
                 if(config.containsKey("turnTimer"))
                     server.turnTimer = Integer.parseInt(config.get("turnTimer").toString());
-                if(config.containsKey("startTurnTimer"))
-                    server.startTurnTimer = Integer.parseInt(config.get("startTurnTimer").toString());
             }
         } catch (Exception e) {
             //System.out.println(e.getMessage());

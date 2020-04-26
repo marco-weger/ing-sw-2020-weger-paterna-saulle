@@ -60,7 +60,7 @@ public class ServerClientHandler implements Runnable {
     /**
      * This value is changed by turn timers, it is used to stop socket reading.
      */
-    public boolean turnTimesUp = false;
+    public boolean turnTimesUp;
 
     /**
      * @param socket connection
@@ -73,6 +73,7 @@ public class ServerClientHandler implements Runnable {
         this.virtualView = null;
         this.name = socket.getRemoteSocketAddress().toString();
         this.pingPeriod = pingPeriod;
+        this.turnTimesUp = false;
     }
 
     public boolean isConnected(){
@@ -114,6 +115,9 @@ public class ServerClientHandler implements Runnable {
                     go = loadGame();
                 else if(go == 0)
                     go = questionMode();
+
+                if(go == -1)
+                    virtualView.notify(new DisconnectionClient(this.name,true));
             }
 
             if(go == 1){
@@ -264,9 +268,11 @@ public class ServerClientHandler implements Runnable {
                     }
                 }
             }
-        }while(!(object instanceof ModeChoseClient));
+        }while(!(object instanceof ModeChoseClient) && !turnTimesUp);
         virtualView.notify((ClientMessage) object);
-        return 1;
+        if(object != null)
+            return 1;
+        else return  -1;
     }
 
     /**
@@ -293,7 +299,9 @@ public class ServerClientHandler implements Runnable {
     private void disconnectionHandler(){
         try{
             ping.cancel();
-        } catch (Exception ignored) {}
+        } catch (Exception ex) {
+            System.err.println("[MUST HAND] - "+ex.getMessage());
+        }
         System.out.println("[DISCONNECTED USER] - " + socket.getRemoteSocketAddress().toString());
     }
 
@@ -312,11 +320,13 @@ public class ServerClientHandler implements Runnable {
                 virtualView.getLosers().add(this.name);
 
         try{
-            out.reset();
-            out.writeObject(message);
-            out.flush();
+            if(socket.isConnected()){
+                out.reset();
+                out.writeObject(message);
+                out.flush();
+            }
         } catch (IOException e) {
-            System.err.println("[NOT] - " + e.getMessage());
+            System.err.println("[NOT] - " + e.getMessage() + " - " + message.toString());
         }
     }
 
@@ -354,16 +364,13 @@ public class ServerClientHandler implements Runnable {
                     //return null;
                 }
             }
-        }while ((obj instanceof PingClient || obj == null));
+        }while ((obj instanceof PingClient || obj == null) && !turnTimesUp);
         //}while ((obj instanceof PingClient || obj == null) && !turnTimesUp);
 
-        /*
         if(turnTimesUp){
             System.out.println(this.name+"'S TURN TIME'S UP!");
             return null;
         } else return obj;
-         */
-        return obj;
     }
 
     /*

@@ -6,6 +6,7 @@ import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
 import it.polimi.ingsw.commons.clientMessages.ReConnectionClient;
+import it.polimi.ingsw.commons.serverMessages.AvailableCardServer;
 import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.commons.Status;
@@ -141,14 +142,13 @@ public class VirtualView extends Observable implements Observer {
         if(sm instanceof CurrentStatusServer){
             currentStatus = ((CurrentStatusServer) sm).status;
 
-            // TIMER - Now the timer starts at the beginning of the turn and it runs for all the turn
-            try{
-                turn.cancel(); // Delete last timer if exists
-            } catch (Exception ignored){}
-            turn = new Timer();
-            TimerTask task = new TimerTurn(getConnectedPlayers().get(((CurrentStatusServer) sm).player));
-            turn.schedule(task, server.getTimer(((CurrentStatusServer) sm).status)*1000); //, turnTimer*1000);
-            ((CurrentStatusServer) sm).timer = server.getTimer(((CurrentStatusServer) sm).status);
+            if(currentStatus.equals(Status.START) || currentStatus.equals(Status.WORKER_CHOICE)){
+                ((CurrentStatusServer) sm).timer = server.getTurnTimer();
+                timerHandler(((CurrentStatusServer) sm).player);
+            }
+        }
+        else if(sm instanceof AvailableCardServer){
+            timerHandler(((AvailableCardServer) sm).name);
         }
 
         if(server != null){
@@ -159,6 +159,17 @@ public class VirtualView extends Observable implements Observer {
                 server.send(sm,this);
             }
         }
+    }
+
+    public void timerHandler(String player){
+        // TIMER - Now the timer starts at the beginning of the turn and it runs for all the turn
+        try{
+            turn.cancel(); // Delete last timer if exists
+        } catch (Exception ignored){}
+        turn = new Timer();
+        for(ServerClientHandler sch : getConnectedPlayers().values())
+            if(sch.getName().equals(player) && sch.isConnected())
+                turn.schedule(new TimerTurn(sch), server.getTurnTimer()*1000);
     }
 
 }

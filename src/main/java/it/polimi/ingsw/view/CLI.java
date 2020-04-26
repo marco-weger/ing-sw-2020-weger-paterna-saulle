@@ -7,8 +7,6 @@ import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
-import org.jetbrains.annotations.Nullable;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -55,6 +53,7 @@ public class CLI implements ViewInterface {
         this.symbols = symbols;
     }
 
+    @Override
     public void displayFirstWindow() { // tested
         while(!client.connect())
         {
@@ -89,7 +88,7 @@ public class CLI implements ViewInterface {
                 }
                 if(go)
                     print(colorCPU+"Please insert a valid cell! ");
-            }while(go && client.continueReading);
+            }while(go && client.getContinueReading());
         }
     }
 
@@ -114,7 +113,7 @@ public class CLI implements ViewInterface {
                 }
                 if(go)
                     print(colorCPU+"Please insert a valid cell! ");
-            }while(go && client.continueReading);
+            }while(go && client.getContinueReading());
         }
     }
 
@@ -140,8 +139,9 @@ public class CLI implements ViewInterface {
                 do {
                     print(colorCPU+"Type the position of second worker [x-y] " + TextFormatting.input());
                     c = getWorkerCell();
-                }while(c == null);
-                client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
+                }while(c == null && client.getContinueReading());
+                if (c != null)
+                    client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
             }
         }
         else{
@@ -155,14 +155,14 @@ public class CLI implements ViewInterface {
                     do {
                         print(colorCPU+"Type the position of first worker [x-y] " + TextFormatting.input());
                         c = getWorkerCell();
-                    }while(c == null);
-                    client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
+                    }while(c == null && client.getContinueReading());
+                    if (c != null)
+                        client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
                 }
             }
         }
     }
 
-    @Nullable
     private SnapCell getWorkerCell() {
         SnapCell c;
         c = readCell();
@@ -180,81 +180,57 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(QuestionAbilityServer message) { // TODO test
         do {
-            println(colorCPU+"Do you want to use the Ability of your God? [YES/NO] " + TextFormatting.input());
+            println(colorCPU+"Type if you want to use the Ability of your God [YES/Y] or not [NO/N] " + TextFormatting.input());
             String answer;
-            answer = read();//in.readLine();
-            if (answer.toUpperCase().equals("YES")) {
+            answer = read();
+            if (answer.toUpperCase().equals("YES") || answer.toUpperCase().equals("Y")) {
                 client.sendMessage(new AnswerAbilityClient(client.getUsername(), true, message.status));
                 break;
             }
-            if (answer.toUpperCase().equals("NO")) {
+            if (answer.toUpperCase().equals("NO") || answer.toUpperCase().equals("N")) {
                 client.sendMessage(new AnswerAbilityClient(client.getUsername(), false, message.status));
                 break;
             }
-        }while(true);
+        }while(client.getContinueReading());
         println(colorCPU+"Request Send!" + TextFormatting.input());
 
     }
 
     @Override
     public void handleMessage(CurrentStatusServer message) {
-        if(!client.getMyPlayer().loser){
-            if(message.player.equals(client.getUsername())){
-                println(colorCPU+"It's your turn!"+TextFormatting.RESET);
-                println(TextFormatting.COLOR_YELLOW + "CURRENT TIMER: " + (message.timer == 0 ? "inf." : message.timer)+TextFormatting.RESET);
-                switch(message.status){
-                    case WORKER_CHOICE:
-                        clear();
-                        printTitle();
-                        printTable();
-                        SnapCell c;
-                        do { // first worker of the match
-                            print(colorCPU + "Type the position of first worker [x-y] " + TextFormatting.input());
-                            c = getWorkerCell();
-                        }while(c == null);
+        if(!client.getMyPlayer().loser && message.player.equals(client.getUsername())){
+            switch(message.status){
+                case WORKER_CHOICE:
+                    clear();
+                    printTitle();
+                    printTable();
+                    SnapCell c;
+                    do { // first worker of the match
+                        print(colorCPU + "Type the position of first worker [x-y] " + TextFormatting.input());
+                        c = getWorkerCell();
+                    }while(c == null && client.getContinueReading());
+                    if (c != null)
                         client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
-                        break;
-                    case START:
-                        // TODO check (Marco)
-                        //clear();
-                        //printTitle();
-                        //printTable();
-                        boolean go = true;
-                        print(colorCPU+"Chose the worker to play with [x-y] " + TextFormatting.input());
-                        do {
-                            c = readCell();
-                            if(c != null){
-                                for(SnapWorker sw : client.getWorkers()){
-                                    if (sw.row == c.row && sw.column == c.column && sw.name.equals(client.getUsername()) && (message.worker1 && sw.n == 1 || message.worker2 && sw.n == 2)){
-                                        client.sendMessage(new WorkerChoseClient(client.getUsername(),sw.n));
-                                        go = false;
-                                        break;
-                                    }
+                    break;
+                case START:
+                    println(colorCPU+"It's your turn!"+TextFormatting.RESET);
+                    println(TextFormatting.COLOR_YELLOW + "TIMER: " + (message.timer == 0 ? "inf." : message.timer)+TextFormatting.RESET);
+                    boolean go = true;
+                    print(colorCPU+"Chose the worker to play with [x-y] " + TextFormatting.input());
+                    do {
+                        c = readCell();
+                        if(c != null){
+                            for(SnapWorker sw : client.getWorkers()){
+                                if (sw.row == c.row && sw.column == c.column && sw.name.equals(client.getUsername()) && (message.worker1 && sw.n == 1 || message.worker2 && sw.n == 2)){
+                                    client.sendMessage(new WorkerChoseClient(client.getUsername(),sw.n));
+                                    go = false;
+                                    break;
                                 }
                             }
-                            print(colorCPU+"Selected worker isn't valid, chose the worker to play with [x-y] " + TextFormatting.input());
-                        } while(go && client.continueReading);
-                        break;
-                    /*
-                    case MOVED:
-                        clear();
-                        printTitle();
-                        printTable();
-                        break;
-                     */
-                    case QUESTION_M:
-                        break;
-                    default:
-                        println(TextFormatting.COLOR_RED.toString() + message.status + " - " + message.player + TextFormatting.RESET);
-                        break;
-                }
-            }
-            else {
-                if (message.status == Status.CARD_CHOICE) {
-                    println(colorCPU + "Waiting for opponent's choice..." + TextFormatting.RESET);
-                } else {
-                    println(colorCPU + "Opponent turn, " + message.player + " is playing..." + TextFormatting.RESET);
-                }
+                        }
+                        print(colorCPU+"Selected worker isn't valid, chose the worker to play with [x-y] " + TextFormatting.input());
+                    } while(go && client.getContinueReading());
+                    break;
             }
         }
     }
@@ -297,30 +273,35 @@ public class CLI implements ViewInterface {
 
             // first
             CardName read;
-            do{
+
+            read = null;
+            while(read == null && client.getContinueReading()){
                 print(colorCPU+"Type the first card [name] " + TextFormatting.input());
 
                 read = getCardName();
-            }while(read == null);
+            }
             chosen.add(read);
 
             // second
-            do{
+            read = null;
+            while((read == null || chosen.contains(read)) && client.getContinueReading()){
                 print(colorCPU+"Type the second card [name] " + TextFormatting.input());
                 read = getCardName();
-            }while(read == null || chosen.contains(read));
+            }
             chosen.add(read);
 
             // third
             if(client.getPlayers().size()==3){
-                do{
+                read = null;
+                while((read == null || chosen.contains(read)) && client.getContinueReading()){
                     print(colorCPU+"Type the third card [name] " + TextFormatting.input());
                     read = getCardName();
-                }while(read == null || chosen.contains(read));
+                }
                 chosen.add(read);
             }
 
-            client.sendMessage(new ChallengerChoseClient(client.getUsername(), chosen));
+            if(client.getContinueReading())
+                client.sendMessage(new ChallengerChoseClient(client.getUsername(), chosen));
         }
         else {
             println(colorCPU+"The challenger has chosen! Select your card:");
@@ -330,11 +311,7 @@ public class CLI implements ViewInterface {
             do{
                 print(colorCPU+"Type the chosen one [name] " + TextFormatting.input());
                 String name;
-                try {
-                    name = in.readLine();
-                } catch (IOException e) {
-                    name = "";
-                }
+                name = read();
                 startEasterEgg(name);
                 try{
                     read=Enum.valueOf(CardName.class,name.toUpperCase());
@@ -342,21 +319,17 @@ public class CLI implements ViewInterface {
                         read = null;
                 }
                 catch(Exception ex){read = null;}
-            }while(read == null);
-            client.sendMessage(new PlayerChoseClient(client.getUsername(), read));
+            }while(read == null && client.getContinueReading());
+            if(client.getContinueReading())
+                client.sendMessage(new PlayerChoseClient(client.getUsername(), read));
         }
         print(colorCPU+"Waiting for opponent's choice...");
     }
 
-    @Nullable
     private CardName getCardName() {
         CardName read;
         String name;
-        try {
-            name = in.readLine();
-        } catch (IOException e) {
-            name = "";
-        }
+        name = read();
         startEasterEgg(name);
         try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
         catch(Exception ex){read = null;}
@@ -380,17 +353,11 @@ public class CLI implements ViewInterface {
                 print(colorCPU + "Type your username (max 12 characters) " + TextFormatting.input());
             else
                 print(colorCPU + "The chosen one is not allowed, type new username (max 12 characters) " + TextFormatting.input());
-            String username;
-            try {
-                username = in.readLine();
-            } catch (IOException e) {
-                username = "";
-                println("ERRORE " + e.getMessage());
-            }
+            String username = read();
             print(colorCPU + "Validating username... " + TextFormatting.RESET);
             this.client.setUsername(username);
             message.isFirstTime = false;
-        }while (this.client.getUsername().isEmpty() || this.client.getUsername().length() > 12 || this.client.getUsername().matches("^\\s*$"));
+        }while (this.client.getUsername().isEmpty() || this.client.getUsername().length() > 12 || this.client.getUsername().matches("^\\s*$") && client.getContinueReading());
         client.sendMessage(new ConnectionClient(this.client.getUsername()));
     }
 
@@ -425,13 +392,13 @@ public class CLI implements ViewInterface {
             print(colorCPU + "Chose game mode (2 or 3 players) [2/3] " + TextFormatting.input());
             try
             {
-                String stringMode = in.readLine();
+                String stringMode = read();
                 mode = Integer.parseInt(stringMode);
             }catch(Exception e)
             {
                 mode = 0;
             }
-        }while (mode != 2 && mode != 3);
+        }while (mode != 2 && mode != 3 && client.getContinueReading());
         client.sendMessage(new ModeChoseClient(this.client.getUsername(),mode));
     }
 
@@ -535,15 +502,29 @@ public class CLI implements ViewInterface {
         System.out.flush();
     }
 
+    private String currentPlayer = "";
+    @Override
+    public void statusHandler(CurrentStatusServer message){
+        if(!client.getMyPlayer().loser){
+            if(!message.player.equals(client.getUsername())){
+                if (message.status == Status.CARD_CHOICE) {
+                    println(colorCPU+"Waiting for opponent's choice..." + TextFormatting.RESET);
+                } else this.currentPlayer=message.player;
+            }
+        }
+    }
+
     public String read(){
         String tmp = "";
         do{
             try {
-                tmp = in.readLine();
+                if(System.in.available() > 0)
+                   tmp = in.readLine();
             } catch (IOException e) {
                 System.out.println("[READ] - "+e.toString());
+                tmp = "";
             }
-        } while(tmp.isEmpty() && client.continueReading);
+        } while(tmp.isEmpty() && client.getContinueReading());
         return tmp;
     }
 
@@ -551,7 +532,7 @@ public class CLI implements ViewInterface {
         boolean go;
         int x, y;
         try{
-            String tmp = read();//in.readLine();
+            String tmp = read();
             tmp = tmp.toUpperCase();
             String[] tmps = tmp.split("-");
             x = Integer.parseInt(tmps[0]) -1;
@@ -616,6 +597,13 @@ public class CLI implements ViewInterface {
         print = printPlayers(print);
 
         for (String s : print) println(s + TextFormatting.RESET);
+
+
+        if(!client.getMyPlayer().loser){
+            if(!currentPlayer.equals(client.getUsername())){
+                println(colorCPU+"Opponent turn, " + currentPlayer + " is playing..." + TextFormatting.RESET);
+            }
+        }
 
         if(client.getMyPlayer().loser)
             endMatch();

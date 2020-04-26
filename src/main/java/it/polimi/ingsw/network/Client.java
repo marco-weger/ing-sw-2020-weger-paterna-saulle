@@ -1,18 +1,18 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.commons.ClientMessage;
-import it.polimi.ingsw.commons.ServerMessage;
-import it.polimi.ingsw.commons.SnapCell;
-import it.polimi.ingsw.commons.SnapWorker;
+import it.polimi.ingsw.commons.*;
 import it.polimi.ingsw.commons.clientMessages.PingClient;
 import it.polimi.ingsw.commons.serverMessages.BuiltServer;
+import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
 import it.polimi.ingsw.commons.serverMessages.MovedServer;
 import it.polimi.ingsw.commons.serverMessages.PingServer;
 import it.polimi.ingsw.view.CLI;
 import it.polimi.ingsw.view.SnapPlayer;
 import it.polimi.ingsw.view.TextFormatting;
+import it.polimi.ingsw.view.ViewInterface;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
 
 import java.io.*;
 import java.net.Socket;
@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
 
 public class Client implements Runnable{
 
-    private CLI view;
+    private ViewInterface view;
     private Socket socket;
     ObjectInputStream in;
     ObjectOutputStream out;
@@ -38,6 +38,7 @@ public class Client implements Runnable{
     private int pingPeriod;
     private int timeoutSocket;
     private Timer ping;
+    private boolean continueReading = true;
 
     private static final BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 
@@ -59,11 +60,11 @@ public class Client implements Runnable{
 
     public ArrayList<SnapPlayer> getPlayers(){ return players; }
 
-    public CLI getView() {
+    public ViewInterface getView() {
         return view;
     }
 
-    public void setView(CLI view) {
+    public void setView(ViewInterface view) {
         this.view = view;
     }
 
@@ -86,6 +87,8 @@ public class Client implements Runnable{
     public String getUsername(){ return this.username; }
 
     public void setUsername(String username){ this.username=username; }
+
+    public boolean getContinueReading(){ return continueReading; }
 
     public SnapPlayer getMyPlayer(){
         for(SnapPlayer sp : getPlayers())
@@ -132,13 +135,6 @@ public class Client implements Runnable{
         readParams(client);
         String version;
         boolean go;
-        //printTitle();
-
-        /*
-        for(int i=0;i<3500;i++){
-            System.out.println(getRandomSymbol());
-        }
-         */
 
         do{
             if(args.length == 1){
@@ -161,12 +157,8 @@ public class Client implements Runnable{
 
             if(version.equalsIgnoreCase("CLI")){
                 System.out.print("Connection to the server...");
-                System.out.print("3...");
-                CLI view = new CLI(client,getRandomSymbol());
-                System.out.print("2...");
-                client.setView(view);
-                System.out.print("1...");
-                view.displayFirstWindow();
+                client.setView(new CLI(client,getRandomSymbol()));
+                client.getView().displayFirstWindow();
             }
             else if(version.equalsIgnoreCase("GUI")){
                 // TODO run gui
@@ -232,13 +224,13 @@ public class Client implements Runnable{
         }
     }
 
-    public boolean continueReading = true;
     @Override
     public void run() {
         try {
             Thread handler = null;
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
+                //System.out.println(TextFormatting.COLOR_PURPLE+msg.toString()+ TextFormatting.RESET);
 
                 if(msg instanceof MovedServer){
                     for(SnapWorker worker : getWorkers()){
@@ -253,35 +245,19 @@ public class Client implements Runnable{
                             cell.level = ((BuiltServer) msg).sc.level;
                         }
                     }
+                }else if(msg instanceof CurrentStatusServer){
+                    view.statusHandler((CurrentStatusServer) msg);
                 }
-                //Runnable runnable = () -> { System.out.println("Lambda Runnable running"); };
-                /*try{
-                    if (handler != null && handler.isAlive()) {
-                        handler.interrupt();
-                        continueReading = false;
-                    }
-                } catch (Exception ex){
-                    System.out.println("[TH] - "+ex.toString());
-                }*/
 
-                // FIXME remove
-                //if(!(msg instanceof PingServer)){
-                    //System.out.println(msg.toString());
-                    //System.out.flush();
-
-                    /*
-                    continueReading = false;
-                    try {
-                        if (handler != null)
-                            handler.join();
-                    } catch (Exception ignored){}
-                    continueReading = true;
-                    handler = new Thread(() -> msg.accept(view));
-                    handler.start();
-                    */
-                //}
+                continueReading = false;
+                try {
+                    if (handler != null)
+                        handler.join();
+                } catch (Exception ignored){}
+                //System.out.println("THREAD STOPPATO... ESEGUO ");
                 continueReading = true;
-                msg.accept(view);
+                handler = new Thread(() -> msg.accept(view));
+                handler.start();
             }
         }
         catch (IOException | ClassNotFoundException e){
@@ -309,7 +285,7 @@ public class Client implements Runnable{
             } catch (SocketTimeoutException ex){
                 System.out.println("......"+ex.getMessage());
             }
-        }while (obj instanceof PingClient || obj == null);
+        }while (obj instanceof PingServer || obj == null);
         return obj;
     }
 
@@ -317,38 +293,5 @@ public class Client implements Runnable{
         try{
             ping.cancel();
         } catch (Exception ignored){}
-    }
-
-    @Deprecated
-    public static void printTitle(){
-        String str =
-                " __          ________ _      _____ ____  __  __ ______   _______ ____  \n" +
-                        " \\ \\        / /  ____| |    / ____/ __ \\|  \\/  |  ____| |__   __/ __ \\ \n" +
-                        "  \\ \\  /\\  / /| |__  | |   | |   | |  | | \\  / | |__       | | | |  | |\n" +
-                        "   \\ \\/  \\/ / |  __| | |   | |   | |  | | |\\/| |  __|      | | | |  | |\n" +
-                        "    \\  /\\  /  | |____| |___| |___| |__| | |  | | |____     | | | |__| |\n" +
-                        "     \\/  \\/   |______|______\\_____\\____/|_|  |_|______|    |_|  \\____/\n\n";
-        System.out.println(str);
-        //System.out.flush();
-        /*
-        try {
-            TimeUnit.MILLISECONDS.sleep(1200);
-        } catch (InterruptedException ignored) {}
-         */
-        str =
-                "   _____         _   _ _______ ____  _____  _____ _   _ _____ \n" +
-                        "  / ____|  /\\   | \\ | |__   __/ __ \\|  __ \\|_   _| \\ | |_   _|\n" +
-                        " | (___   /  \\  |  \\| |  | | | |  | | |__) | | | |  \\| | | |  \n" +
-                        "  \\___ \\ / /\\ \\ | . ` |  | | | |  | |  _  /  | | | . ` | | |  \n" +
-                        "  ____) / ____ \\| |\\  |  | | | |__| | | \\ \\ _| |_| |\\  |_| |_ \n" +
-                        " |_____/_/    \\_\\_| \\_|  |_|  \\____/|_|  \\_\\_____|_| \\_|_____|\n\n";
-        System.out.println(str);
-        System.out.flush();
-        /*
-        try {
-            TimeUnit.MILLISECONDS.sleep(1200);
-        } catch (InterruptedException ignored) {
-        }
-         */
     }
 }

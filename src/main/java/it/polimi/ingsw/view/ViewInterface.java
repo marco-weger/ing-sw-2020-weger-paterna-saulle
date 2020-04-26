@@ -19,4 +19,7 @@ public interface ViewInterface {
     void handleMessage(BuiltServer message);
     void handleMessage(MovedServer message);
     void handleMessage(PingServer pingServer);
+
+    void displayFirstWindow();
+    void statusHandler(CurrentStatusServer message);
 }
