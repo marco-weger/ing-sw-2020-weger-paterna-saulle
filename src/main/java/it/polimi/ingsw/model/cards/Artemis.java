@@ -36,8 +36,11 @@ public class Artemis extends Card {
             if (current == null) return null;
             switch (current) {
                 case MOVED:
-                    super.setActive(false);
+                    //super.setActive(false);
                     return Status.QUESTION_M;
+                case QUESTION_M:
+                    super.setActive(false);
+                    return Status.QUESTION_B;
                 default:
                     return super.getNextStatus(current);
             }
