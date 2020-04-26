@@ -84,12 +84,59 @@ public class Prometheus extends Card {
 
     /**
      * If you want to build before moving it checks if the new build could block your next move (you could lose the match) and then remove that possibility
+     * PASS (Prometheus Anti Suicide Protocol): Available
      * @param p list of player
      * @param b board
      * @return list of available cells
      */
     @Override
     public ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b) {
+
+        if (p == null || b == null) return new ArrayList<>();
+        Worker actived = null;
+        for (Player player : p)
+            if (player.getCard().getName().compareTo(this.getName()) == 0) {
+                actived = player.getCurrentWorker();
+            }
+
+        if (actived == null) return new ArrayList<>();
+        ArrayList<Cell> available;
+        ArrayList<Cell> availablecm;
+        ArrayList<Cell> availablelow;
+        ArrayList<Cell> availableeq;
+        available = super.checkBuild(p, b);
+        availablecm= new ArrayList<>();   //checkmove available
+        availablelow = new ArrayList<>();  //checkmove available on a lower level
+        availableeq = new ArrayList<>();  //checkmove available on the same level
+
+        if(super.isActive()){
+            for (Cell c : b.getField()) {
+                if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() <= actived.getLevel(b) && !c.isOccupied(p)) {
+                    availablecm.add(c);
+                }
+                if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() < actived.getLevel(b) && !c.isOccupied(p)) {
+                    availablelow.add(c);
+                }
+                if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() == actived.getLevel(b) && !c.isOccupied(p)) {
+                    availableeq.add(c);
+                }
+            }
+
+            //PASP Prometheus Anti Suicide Protocol
+            //If you have only one move, on the same level, but you have at least 2 checkbuild allowed, YOU CAN'T BUILD ON THE checkmove marked cell.
+            if(availablecm.size() < 2 && availablelow.size() == 0 && available.size() > 1 &&isActive()) {
+                //if(available.size()>1 && availableeq.size()>0 && available.size() > availableeq.size())
+                available.remove(availableeq.get(0));
+            }
+
+        }
+
+        return available;
+    }
+
+   /*
+   OLD CHECK BUILD
+   public ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b) {
 
         ArrayList<Cell> available = super.checkBuild(p, b);
 
@@ -99,7 +146,7 @@ public class Prometheus extends Card {
         }
 
         return available;
-    }
+    }*/
 
     /**
      * It uses the checkMove to checks if there is some build possibilities before building
@@ -137,18 +184,13 @@ public class Prometheus extends Card {
                     availablelow.add(c);
                 }
             }
-            // here i check for opponent's turn ability
-            for (Player player : p) {
-                if (player.getCard().isOpponent() && player.getCard().isActive())
-                    available.removeAll(player.getCard().activeBlock(p, b, actived, Status.QUESTION_M));
-                //per evitare crash, escludo gli avialablelow
-            }
+            // here i check for opponent's turn ability (DELETED FOR NOW)
         }
 
 
 
         //se ho a disposizione un solo movimento, sullo stesso livello, non farmi usare il potere
-        if(available.size() < 2 && availablelow.size() == 0) {
+        if(available.size() < 2 && availablelow.size() == 0 && checkBuild(p,b).size() < 2) {
             current.getCard().setActive(false);
             return false;
         }
