@@ -17,7 +17,7 @@ public class FactoryCard {
             case APOLLO:
                 return new Apollo(CardName.APOLLO,false,false,false,Status.CHOSEN, vv);
             case ARTEMIS:
-                return new Artemis(CardName.ARTEMIS, false, false, false, Status.CHOSEN, vv);
+                return new Artemis(CardName.ARTEMIS, false, false, true, Status.MOVED, vv);
             case ATHENA:
                 return new Athena(CardName.ATHENA,false,true,false,Status.CHOSEN, vv);
             case ATLAS:

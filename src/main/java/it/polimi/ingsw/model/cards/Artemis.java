@@ -9,9 +9,39 @@ import it.polimi.ingsw.network.VirtualView;
 import java.util.ArrayList;
 
 public class Artemis extends Card {
+    Cell lastMoved;
 
     public Artemis(CardName name, boolean active, boolean opponent, boolean question, Status status, VirtualView vw) {
         super(name, active, opponent, question, status ,vw);
+        lastMoved = null;
+    }
+
+
+    /**
+     * if Artemis is Active, the player follows this line
+     * start-> chosen-> question_m-> question_m-> moved-> question_b-> built-> end
+     *
+     * otherwise the player follows the classical line
+     * start-> chosen-> question_m-> moved-> question_b-> built-> end
+     *
+     * @param current current state of current turn
+     * @return next state
+     */
+    @Override
+    public Status getNextStatus(Status current) {
+        if (!super.isActive()) {
+            return super.getNextStatus(current);
+        }
+        else {
+            if (current == null) return null;
+            switch (current) {
+                case MOVED:
+                    super.setActive(false);
+                    return Status.QUESTION_M;
+                default:
+                    return super.getNextStatus(current);
+            }
+        }
     }
 
     /**
@@ -33,14 +63,8 @@ public class Artemis extends Card {
         }
         if (actived == null) return new ArrayList<>();
         ArrayList<Cell> available = super.checkMove(p,b);
-        if(current.getCard().isActive()) {
-            //this list is for counting purpose, otherwise it would loop because of the ".add()" function
-            ArrayList<Cell> copy = new ArrayList<>(available);
-            for (Cell c : copy)
-               for (Cell j : b.getField())
-                      if (Math.abs(j.getRow() - c.getRow()) <= 1 && Math.abs(j.getColumn() - c.getColumn()) <= 1 && j.getLevel() < 4 && j.getLevel() <= c.getLevel() + 1 && !j.isOccupied(p) && !(available.contains(j)) && !(j.getRow()==actived.getRow() && j.getColumn()==actived.getColumn()))
-                         available.add(j);
-        }
+        if(!current.getCard().isActive() && lastMoved != null)
+            available.remove(lastMoved);
         return available;
     }
 
@@ -65,6 +89,7 @@ public class Artemis extends Card {
                     //thus, the control if "to" equals the current worker starting point.
                     if (available.contains(to) && !((current.getCurrentWorker().getRow()==to.getRow()) && current.getCurrentWorker().getColumn()==to.getColumn())) {
                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                        lastMoved=to;
                         notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
                         return true;
                     }
