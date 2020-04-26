@@ -66,7 +66,7 @@ public class Artemis extends Card {
         }
         if (actived == null) return new ArrayList<>();
         ArrayList<Cell> available = super.checkMove(p,b);
-        if(!current.getCard().isActive() && lastMoved != null)
+        if(current.getCard().isActive() && lastMoved != null)
             available.remove(lastMoved);
         return available;
     }
@@ -92,7 +92,7 @@ public class Artemis extends Card {
                     //thus, the control if "to" equals the current worker starting point.
                     if (available.contains(to) && !((current.getCurrentWorker().getRow()==to.getRow()) && current.getCurrentWorker().getColumn()==to.getColumn())) {
                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
-                        lastMoved=to;
+                        lastMoved = to;
                         notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
                         return true;
                     }
@@ -101,4 +101,21 @@ public class Artemis extends Card {
         }
         return false;
     }
+
+
+    @Override
+    public boolean activable(ArrayList<Player> p, Board b)
+    {
+        ArrayList<Cell> available = new ArrayList<>();
+        available = super.checkMove(p,b);
+
+        if(lastMoved != null){
+            available.remove(lastMoved);
+        }
+        if(available.size()>0)
+            return true;
+
+        return false;
+}
+
 }

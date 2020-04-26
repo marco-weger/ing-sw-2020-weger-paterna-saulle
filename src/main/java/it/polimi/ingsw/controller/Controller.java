@@ -306,9 +306,16 @@ public class Controller implements Observer, ClientMessageHandler {
                 }
                 else{
                     System.err.println("Incompatibilità tra CurrentPlayer.State =" + match.getStatus() + "handlemessage Buildclient message");
+
                 }
             }
         }
+        if(match.getCurrentPlayer().getCard().build(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
+
+            System.err.println("CASO ATHENA POTERE ATTIVO CurrentPlayer.State =" + match.getStatus() + "handlemessage Buildclient message");
+       // match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
+        startTurn(true);}
+
     }
 
     /**

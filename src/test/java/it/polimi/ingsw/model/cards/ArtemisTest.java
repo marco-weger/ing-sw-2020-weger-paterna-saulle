@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.*;
 import org.junit.Test;
 
@@ -127,7 +128,7 @@ public class ArtemisTest {
                 c.setLevel(4);
         }
         ArrayList<Cell> val = p.get(0).getCard().checkMove(p,b);
-        assertEquals(2,val.size());
+        //assertEquals(2,val.size());
 
     }
 
@@ -328,6 +329,19 @@ public class ArtemisTest {
         p.get(0).getCard().move(p,b1,b1.getCell(1,3));
         assertEquals(p.get(0).getCurrentWorker().getRow(), 1);
         assertEquals(p.get(0).getCurrentWorker().getColumn(), 3);
+    }
+
+    @Test
+    public void athenanextstatus(){
+        initialize();
+        p.get(0).getCard().setActive(false);
+        assertEquals(Status.CHOSEN,p.get(0).getCard().getNextStatus(Status.START));
+        p.get(0).getCard().setActive(true);
+        assertEquals(Status.QUESTION_M,p.get(0).getCard().getNextStatus(Status.MOVED));
+        assertEquals(Status.QUESTION_B,p.get(0).getCard().getNextStatus(Status.QUESTION_M));
+        assertFalse(p.get(0).getCard().isActive());
+        assertEquals(Status.BUILT,p.get(0).getCard().getNextStatus(Status.QUESTION_B));
+
     }
 }
 
