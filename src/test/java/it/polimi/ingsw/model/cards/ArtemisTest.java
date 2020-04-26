@@ -300,7 +300,7 @@ public class ArtemisTest {
         p.get(2).setWorker1(new Worker(1,2));
         p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
-        p.get(0).getCard().setActive(true);
+        p.get(0).getCard().setActive(false);
         Board b = new Board();
         for(Cell c:b.getField()){
             if(c.getRow() == 1 && c.getColumn() == 0)
@@ -324,11 +324,14 @@ public class ArtemisTest {
             else if(c.getRow() == 0 && c.getColumn() == 3)
                 c.setLevel(4);
         }
-        Board b1 = new Board();
-        b1.setField(p.get(0).getCard().checkMove(p,b));
-        p.get(0).getCard().move(p,b1,b1.getCell(1,3));
-        assertEquals(p.get(0).getCurrentWorker().getRow(), 1);
-        assertEquals(p.get(0).getCurrentWorker().getColumn(), 3);
+        assertEquals(1,p.get(0).getCard().checkMove(p,b).size());
+        p.get(0).getCard().move(p,b, b.getCell(2,2));
+        p.get(0).getCard().setActive(true);
+        assertEquals(1,p.get(0).getCard().checkMove(p,b).size());
+
+        //p.get(0).getCard().move(p,b1,b1.getCell(1,3));
+        //assertEquals(p.get(0).getCurrentWorker().getRow(), 1);
+        //ssertEquals(p.get(0).getCurrentWorker().getColumn(), 3);
     }
 
     @Test

@@ -66,7 +66,7 @@ public class Artemis extends Card {
         }
         if (actived == null) return new ArrayList<>();
         ArrayList<Cell> available = super.checkMove(p,b);
-        if(current.getCard().isActive() && lastMoved != null)
+        if(lastMoved != null)
             available.remove(lastMoved);
         return available;
     }
@@ -91,8 +91,9 @@ public class Artemis extends Card {
                     //the worker can move in every direction, minus the starting point.
                     //thus, the control if "to" equals the current worker starting point.
                     if (available.contains(to) && !((current.getCurrentWorker().getRow()==to.getRow()) && current.getCurrentWorker().getColumn()==to.getColumn())) {
+                        lastMoved = b.getCell(current.getCurrentWorker().getRow(),current.getCurrentWorker().getColumn());
                         current.getCurrentWorker().move(to.getRow(), to.getColumn());
-                        lastMoved = to;
+
                         notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
                         return true;
                     }
