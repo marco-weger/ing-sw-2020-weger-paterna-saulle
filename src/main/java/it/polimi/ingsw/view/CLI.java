@@ -228,6 +228,7 @@ public class CLI implements ViewInterface {
                                 }
                             }
                         }
+                        if(c != null && go == true)
                         print(colorCPU+"Selected worker isn't valid, chose the worker to play with [x-y] " + TextFormatting.input());
                     } while(go && client.getContinueReading());
                     break;
