@@ -78,4 +78,28 @@ public class Hephaestus extends Card {
         }
         return false;
     }
+
+
+    @Override
+    public boolean activable(ArrayList<Player> p, Board b) {
+        if (p == null || b == null) return true;
+        Player current = null;
+        for (Player player : p) {
+            if (player.getCard().getName().compareTo(this.getName()) == 0) {
+                current = player;
+            }
+        }
+        if(current == null){
+            return true;
+        }
+        current.getCard().setActive(true);
+        if(current.getCard().checkMove(p,b).size() == 0){
+            current.getCard().setActive(false);
+            return false;
+        }
+
+        current.getCard().setActive(false);
+        return true;
+    }
+
 }
