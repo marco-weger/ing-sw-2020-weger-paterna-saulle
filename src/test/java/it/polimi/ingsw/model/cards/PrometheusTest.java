@@ -215,4 +215,35 @@ public class PrometheusTest {
         }
         assertTrue(p.get(0).getCard().activable(p,b));
     }
+
+
+    @Test
+    public void activable2(){
+        initialize();
+        p.get(0).setWorker1(new Worker(0,0));
+        p.get(0).setWorker2(new Worker(4,1));
+        p.get(1).setWorker1(new Worker(0,2));
+        p.get(1).setWorker2(new Worker(1,1));
+        p.get(0).setCurrentWorker(1);
+        p.get(0).getCard().setActive(true);
+        Board b = new Board();
+        for(Cell cell:b.getField()){
+            if(cell.getRow() == 0 && cell.getColumn() == 0)
+                cell.setLevel(0);
+            else if(cell.getRow() == 0 && cell.getColumn() == 1)
+                cell.setLevel(2);
+            else if(cell.getRow() == 1 && cell.getColumn() == 1)
+                cell.setLevel(0);
+            else if(cell.getRow() == 1 && cell.getColumn() == 0)
+                cell.setLevel(0);
+        }
+        assertNotNull(p);
+        assertNotNull(b);
+        assertTrue(p.get(0).getCard().activable(p,b));
+        for(Cell cell:b.getField()){
+            if(cell.getRow() == 0 && cell.getColumn() == 1)
+                cell.setLevel(4);
+        }
+        assertFalse(p.get(0).getCard().activable(p,b));
+    }
 }

@@ -169,7 +169,9 @@ public class Prometheus extends Card {
         if (actived == null) return true;
         ArrayList<Cell> available;
         ArrayList<Cell> availablelow;
+        ArrayList<Cell> ckbd;
 
+        ckbd = new ArrayList<>();
         available= new ArrayList<>();
         availablelow = new ArrayList<>();
 
@@ -188,9 +190,9 @@ public class Prometheus extends Card {
         }
 
 
-
+        ckbd = super.checkBuild(p,b);
         //se ho a disposizione un solo movimento, sullo stesso livello, non farmi usare il potere
-        if(available.size() < 2 && availablelow.size() == 0 && checkBuild(p,b).size() < 2) {
+        if(available.size() < 2 && availablelow.size() == 0 && ckbd.size() < 2) {
             current.getCard().setActive(false);
             return false;
         }
