@@ -1,5 +1,5 @@
 
-# Final project of Software Engegniring - 2020
+# Final project of Software Engineering - 2020
 ## Gruppo CG13
 
 This final project was made between March and July 2020 as our final thesis project at Politecnico di Milano. <br>
@@ -52,8 +52,6 @@ When reconnecting, remember to vote for the same map the game was being played o
 | CLI | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#)|
 | Multiple games | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
 | Persistence | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
-| Advanced Gods | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
-| Undo | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 
 <!--
 [![RED](https://placehold.it/15/f03c15/f03c15)](#)
