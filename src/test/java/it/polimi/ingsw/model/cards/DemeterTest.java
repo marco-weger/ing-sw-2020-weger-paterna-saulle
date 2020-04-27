@@ -71,7 +71,6 @@ public class DemeterTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        p.get(0).getCard().setActive(false);
         ArrayList<Cell> ret = p.get(0).getCard().checkBuild(p,b);
         assertEquals(ret.size(),3);
         for(Cell c:ret)
@@ -115,11 +114,11 @@ public class DemeterTest {
         for(Cell c:ret)
             assertTrue(c.getRow() == 1 && c.getColumn() == 2 || c.getRow() == 1 && c.getColumn() == 3 || c.getRow() == 1 && c.getColumn() == 4);
         p.get(0).getCard().build(p,b,b.getCell(1,2));
+        p.get(0).getCard().setActive(false);
         ret = p.get(0).getCard().checkBuild(p,b);
         assertEquals(ret.size(),2);
         for(Cell c:ret)
-            System.out.println(c.getRow()+" - "+c.getColumn());
-            //assertTrue(c.getRow() == 1 && c.getColumn() == 3 || c.getRow() == 1 && c.getColumn() == 4);
+            assertTrue(c.getRow() == 1 && c.getColumn() == 3 || c.getRow() == 1 && c.getColumn() == 4);
     }
     // build
     @Test
@@ -145,7 +144,7 @@ public class DemeterTest {
         assertEquals(p.get(0).getCurrentWorker().getColumn(), 3);
     }
     @Test
-    public void build()
+    public void build_with_ability()
     {
         initialize();
         p.get(0).setWorker1(new Worker(2,3));
@@ -158,14 +157,13 @@ public class DemeterTest {
         Board b = new Board();
         for(Cell cell:b.getField()){
             if(cell.getRow() == 3 & cell.getColumn() == 4){
-                p.get(0).getCard().build(p,b,cell);
-                assertEquals(cell.getLevel(), 1);
                 p.get(0).getCard().setActive(true);
+                assertEquals(cell.getLevel(), 0);
                 p.get(0).getCard().build(p,b,cell);
                 assertEquals(cell.getLevel(), 1);
                 p.get(0).getCard().setActive(false);
                 p.get(0).getCard().build(p,b,cell);
-                assertEquals(cell.getLevel(), 2);
+                assertEquals(cell.getLevel(), 1);
             }
         }
     }

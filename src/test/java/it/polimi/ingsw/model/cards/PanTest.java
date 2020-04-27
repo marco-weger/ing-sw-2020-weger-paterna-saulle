@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
-import org.junit.Assert;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
