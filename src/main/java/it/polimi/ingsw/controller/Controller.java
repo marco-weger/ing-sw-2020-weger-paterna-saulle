@@ -294,15 +294,18 @@ public class Controller implements Observer, ClientMessageHandler {
 
                 {
                     startTurn(true);
+                    return;
                 }
                 else if(match.getStatus().equals(Status.QUESTION_M))
 
                 {
                     match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(), match.getBoard());
+                    return;
                 }
                 else if(match.getStatus().equals(Status.QUESTION_B))
                 {
                     match.getCurrentPlayer().getCard().getCheckBuild(match.getPlayers(), match.getBoard());
+                    return;
                 }
                 else{
                     System.err.println("Incompatibilità tra CurrentPlayer.State =" + match.getStatus() + "handlemessage Buildclient message");
@@ -314,8 +317,10 @@ public class Controller implements Observer, ClientMessageHandler {
 
             System.err.println("CASO ATHENA POTERE ATTIVO CurrentPlayer.State =" + match.getStatus() + "handlemessage Buildclient message");
        // match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
-        startTurn(true);}
+        startTurn(true);
+        return;}
 
+        return;
     }
 
     /**
