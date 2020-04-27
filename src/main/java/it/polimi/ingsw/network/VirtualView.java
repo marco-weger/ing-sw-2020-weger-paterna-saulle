@@ -142,7 +142,7 @@ public class VirtualView extends Observable implements Observer {
         if(sm instanceof CurrentStatusServer){
             currentStatus = ((CurrentStatusServer) sm).status;
 
-            if(currentStatus.equals(Status.START) || currentStatus.equals(Status.WORKER_CHOICE)){
+            if((currentStatus.equals(Status.START) || currentStatus.equals(Status.WORKER_CHOICE)) && server != null){
                 ((CurrentStatusServer) sm).timer = server.getTurnTimer();
                 timerHandler(((CurrentStatusServer) sm).player);
             }
@@ -168,8 +168,9 @@ public class VirtualView extends Observable implements Observer {
         } catch (Exception ignored){}
         turn = new Timer();
         for(ServerClientHandler sch : getConnectedPlayers().values())
-            if(sch.getName().equals(player) && sch.isConnected())
-                turn.schedule(new TimerTurn(sch), server.getTurnTimer()*1000);
+            if(sch != null)
+                if(sch.getName().equals(player) && sch.isConnected())
+                    turn.schedule(new TimerTurn(sch), server.getTurnTimer()*1000);
     }
 
 }
