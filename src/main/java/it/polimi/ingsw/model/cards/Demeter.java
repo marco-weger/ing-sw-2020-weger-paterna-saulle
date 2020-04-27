@@ -36,6 +36,9 @@ public class Demeter extends Card {
                 return Status.QUESTION_B;
             }
         }
+        if(current == Status.BUILT){
+            lastBuild = null;
+        }
         return super.getNextStatus(current);
     }
 
