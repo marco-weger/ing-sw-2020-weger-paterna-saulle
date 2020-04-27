@@ -28,13 +28,12 @@ public class Athena extends Card {
     protected ArrayList<Cell> activeBlock(ArrayList<Player> p, Board b, Worker w,  Status current) {
         if(p == null || b == null ) return new ArrayList<>(0);
         ArrayList<Cell> ret = new ArrayList<>();
-        if(current != Status.QUESTION_M)  return ret;
-        else{
+        if(current == Status.QUESTION_M){
             for (Cell c : b.getField())
                 if (Math.abs(c.getRow() - w.getRow()) <= 1 && Math.abs(c.getColumn() - w.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() == w.getLevel(b) + 1 && !c.isOccupied(p))
                     ret.add(c);
-            return ret;
         }
+        return ret;
     }
 
 

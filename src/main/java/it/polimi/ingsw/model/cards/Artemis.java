@@ -57,10 +57,8 @@ public class Artemis extends Card {
     public ArrayList<Cell> checkMove(ArrayList<Player> p, Board b) {
         if (p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
-        Player current = null;
         for (Player player : p){
             if (player.getCard().getName().compareTo(this.getName()) == 0) { //get current player (matching card name)
-                current=player; //references the player whit this card
                 actived = player.getCurrentWorker();
             }
         }
@@ -107,16 +105,13 @@ public class Artemis extends Card {
     @Override
     public boolean activable(ArrayList<Player> p, Board b)
     {
-        ArrayList<Cell> available = new ArrayList<>();
+        ArrayList<Cell> available;
         available = super.checkMove(p,b);
 
         if(lastMoved != null){
             available.remove(lastMoved);
         }
-        if(available.size()>0)
-            return true;
-
-        return false;
-}
+        return available.size() > 0;
+    }
 
 }

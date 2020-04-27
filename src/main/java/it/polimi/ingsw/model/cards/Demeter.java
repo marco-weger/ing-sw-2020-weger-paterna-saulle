@@ -29,19 +29,14 @@ public class Demeter extends Card {
      */
     @Override
     public Status getNextStatus(Status current) {
-        if (!super.isActive()) {
-            return super.getNextStatus(current);
-        }
-        else {
+        if (super.isActive()) {
             if (current == null) return null;
-            switch (current) {
-                case QUESTION_B:
-                    super.setActive(false);
-                    return Status.QUESTION_B;
-                default:
-                    return super.getNextStatus(current);
+            if (current == Status.QUESTION_B) {
+                super.setActive(false);
+                return Status.QUESTION_B;
             }
         }
+        return super.getNextStatus(current);
     }
 
 

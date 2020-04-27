@@ -170,7 +170,7 @@ public class Prometheus extends Card {
         ArrayList<Cell> availablelow;
         ArrayList<Cell> ckbd;
 
-        ckbd = new ArrayList<>();
+        //ckbd = new ArrayList<>();
         available= new ArrayList<>();
         availablelow = new ArrayList<>();
 
