@@ -71,9 +71,24 @@ public class CLI implements ViewInterface {
     public void handleMessage(CheckMoveServer message) { // tested
         if(message.name.equals(client.getUsername())){
             print(TextFormatting.RESET+"Cell Available: ");
-            for(SnapCell cell : message.sc)
-                print(TextFormatting.COLOR_RED+
-                        "("+cell.row + "-" + cell.column+")");
+            for(SnapCell cell : message.sc) {
+                print(TextFormatting.COLOR_RED +
+                        "(" + (cell.row + 1) + "-");
+                if (cell.column == 0) {
+                    print(TextFormatting.COLOR_RED + "A");
+                } else if (cell.column == 1) {
+                    print(TextFormatting.COLOR_RED + "B");
+                } else if (cell.column == 2) {
+                    print(TextFormatting.COLOR_RED + "C");
+
+                } else if (cell.column == 3) {
+                    print(TextFormatting.COLOR_RED + "D");
+
+                } else if (cell.column == 4) {
+                    print(TextFormatting.COLOR_RED + "E");
+                }
+                print(TextFormatting.COLOR_RED + ") ");
+            }
             println("");
             boolean go = true;
             do{
@@ -97,9 +112,24 @@ public class CLI implements ViewInterface {
     public void handleMessage(CheckBuildServer message) { // tested
         if(message.name.equals(client.getUsername())){
             print(TextFormatting.RESET+"Cell Available: ");
-            for(SnapCell cell : message.sc)
-                print(TextFormatting.COLOR_RED+
-                        "("+cell.row + "-" + cell.column+")");
+            for(SnapCell cell : message.sc) {
+                print(TextFormatting.COLOR_RED +
+                        "(" + (cell.row + 1) + "-");
+                if (cell.column == 0) {
+                    print(TextFormatting.COLOR_RED + "A");
+                } else if (cell.column == 1) {
+                    print(TextFormatting.COLOR_RED + "B");
+                } else if (cell.column == 2) {
+                    print(TextFormatting.COLOR_RED + "C");
+
+                } else if (cell.column == 3) {
+                    print(TextFormatting.COLOR_RED + "D");
+
+                } else if (cell.column == 4) {
+                    print(TextFormatting.COLOR_RED + "E");
+                }
+                print(TextFormatting.COLOR_RED + ") ");
+            }
             println("");
             boolean go = true;
             do{
