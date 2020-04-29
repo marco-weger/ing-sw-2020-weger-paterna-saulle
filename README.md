@@ -60,8 +60,9 @@ When reconnecting, remember to vote for the same map the game was being played o
 [![GREEN](https://placehold.it/15/44bb44/44bb44)](#)
 -->
 
-## Santorini Official Server 
-#Powered By Microsoft Azure
+
+### Santorini Official Server 
+Powered By Microsoft Azure
 | Server | State |
 |:-----------------------|:------------------------------------:|
 | 40.84.XXX.XXX | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) Ready To Game|
