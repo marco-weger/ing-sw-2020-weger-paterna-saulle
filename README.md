@@ -62,8 +62,7 @@ When reconnecting, remember to vote for the same map the game was being played o
 
 <br />
 
-### Santorini Official Server 
-
+## Santorini Official Server 
 Powered by Microsoft Azure
 | Server | State |
 |:-----------------------|:------------------------------------:|
@@ -71,7 +70,7 @@ Powered by Microsoft Azure
 
 <br />
 
-### The CG13 Team
+## The CG13 Team
 - ####       Marco Weger ([@marco-weger](https://github.com/marco-weger))
 - ####       Francesco Paterna ([@FrancescoPaterna](https://github.com/FrancescoPaterna))
 - ####       Giulio Saulle ([@aGiulioSaulle](https://github.com/GiulioSaulle))
