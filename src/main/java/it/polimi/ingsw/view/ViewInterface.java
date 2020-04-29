@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.commons.clientMessages.ReConnectionClient;
 import it.polimi.ingsw.commons.serverMessages.*;
 
 public interface ViewInterface {
-
     void handleMessage(CheckMoveServer message);
     void handleMessage(CheckBuildServer message);
     void handleMessage(CardChosenServer message);
@@ -18,7 +18,9 @@ public interface ViewInterface {
     void handleMessage(ModeRequestServer message);
     void handleMessage(BuiltServer message);
     void handleMessage(MovedServer message);
-    void handleMessage(PingServer pingServer);
+    void handleMessage(PingServer message);
+    void handleMessage(TimeOutServer message);
+    void handleMessage(ReConnectionServer message);
 
     void displayFirstWindow();
     void statusHandler(CurrentStatusServer message);

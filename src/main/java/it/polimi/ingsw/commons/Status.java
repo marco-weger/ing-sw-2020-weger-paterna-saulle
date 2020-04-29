@@ -4,6 +4,7 @@ public enum Status {
 
     /**
      * This enumeration is used to managed the turn:
+     * - NAME_CHOICE lobby
      * - CARD_CHOICE first pahse of the match, the challenger chose 2 or 3 cards and the others select from these
      * - WORKER_CHOICE players select initial position of workers
      * - START initial phase of the turn, check for win/lose condition and ask for worker choice

@@ -16,7 +16,6 @@ import it.polimi.ingsw.model.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class VirtualView extends Observable implements Observer {
 
@@ -40,10 +39,10 @@ public class VirtualView extends Observable implements Observer {
      */
     private Status currentStatus;
 
-    /**
+    /*
      * Last message from server to client
      */
-    private final ServerMessage lastMessage;
+    //private final ServerMessage lastMessage;
 
     /**
      * List of losers
@@ -53,7 +52,7 @@ public class VirtualView extends Observable implements Observer {
     /**
      * Timer used to manage single turn
      */
-    Timer turn;
+    private Timer turn;
 
     // It is used to run some tests about VirtualView and Controller communication
     // FIXME remove
@@ -69,7 +68,7 @@ public class VirtualView extends Observable implements Observer {
         this.ended = false;
         this.connectedPlayers = new HashMap<>();
         this.currentStatus = Status.NAME_CHOICE;
-        this.lastMessage = null;
+        //this.lastMessage = null;
         // FIXME remove Controller attribute
         c = new Controller(this);
         addObserver(c);
@@ -90,8 +89,10 @@ public class VirtualView extends Observable implements Observer {
             connectedPlayers.put(p.getName(),null);
         this.currentStatus = match.getStatus();
         addObserver(new Controller(this,match));
-        this.lastMessage=lastMessage;
+        //this.lastMessage=lastMessage;
         this.losers = new ArrayList<>();
+        for(Player p : match.getLosers())
+            this.losers.add(p.getName());
     }
 
     /**
@@ -110,19 +111,26 @@ public class VirtualView extends Observable implements Observer {
     public ArrayList<String> getLosers() { return losers; }
 
     /**
+     * @return true if the match is ended
+     */
+    public boolean isEnded() { return ended; }
+
+    public Timer getTurn(){ return turn;}
+
+    /**
      * This method sends the message to the controller
      * @param message the message to send
      */
     protected void notify(ClientMessage message) {
         if(message instanceof ModeChoseClient){ // if it is a new player i add to list
             connectedPlayers.put(message.name,((ModeChoseClient) message).sch);
-        } else if(message instanceof ReConnectionClient){ // if it is a new player i add to list
-            connectedPlayers.remove(message.name);
-            connectedPlayers.put(message.name,((ReConnectionClient) message).sch);
-            if(!this.getConnectedPlayers().containsValue(null)){
-                this.update(lastMessage);
-            }
-        }
+        } //else if(message instanceof ReConnectionClient){ // if it is a new player i add to list
+            //connectedPlayers.remove(message.name);
+            //connectedPlayers.put(message.name,((ReConnectionClient) message).sch);
+            //if(!this.getConnectedPlayers().containsValue(null)){
+            //    this.update(lastMessage);
+            //}
+        //}
 
         if (!ended) {
             notifyObservers(message);
@@ -169,7 +177,7 @@ public class VirtualView extends Observable implements Observer {
         turn = new Timer();
         for(ServerClientHandler sch : getConnectedPlayers().values())
             if(sch != null)
-                if(sch.getName().equals(player) && sch.isConnected())
+                if(sch.getName().equals(player) && sch.isStillConnected())
                     turn.schedule(new TimerTurn(sch), server.getTurnTimer()*1000);
     }
 

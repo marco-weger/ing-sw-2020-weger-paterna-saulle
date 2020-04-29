@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.ClientMessageHandler;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.model.cards.CardName;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ChallengerChoseClient extends ClientMessage {

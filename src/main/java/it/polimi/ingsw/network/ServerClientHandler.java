@@ -5,14 +5,14 @@ import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.commons.Status;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ServerClientHandler implements Runnable {
 
@@ -59,7 +59,14 @@ public class ServerClientHandler implements Runnable {
     /**
      * This value is changed by turn timers, it is used to stop socket reading.
      */
-    public boolean turnTimesUp;
+    private final boolean turnTimesUp;
+
+    /**
+     * True if the connection is alive
+     */
+    private boolean stillConnected;
+
+    private Thread timeOut;
 
     /**
      * @param socket connection
@@ -73,15 +80,33 @@ public class ServerClientHandler implements Runnable {
         this.name = socket.getRemoteSocketAddress().toString();
         this.pingPeriod = pingPeriod;
         this.turnTimesUp = false;
+
+        if(isConnected()){
+            stillConnected = true;
+        }
     }
 
-    public boolean isConnected(){
+    private boolean isConnected(){
         try{
             return socket.isConnected();
         } catch (Exception ignored){ return false; }
     }
 
     public String getName() {return name;}
+
+    public boolean isStillConnected() {return stillConnected;}
+
+    public void setTurnTimesUp(boolean stillConnected){ this.stillConnected = stillConnected; }
+
+    public ObjectInputStream getIn(){ return in;}
+
+    public void setStillConnected(boolean stillConnected){ this.stillConnected = stillConnected; }
+
+    public Server getServer(){ return server; }
+
+    public VirtualView getVirtualView(){ return virtualView; }
+
+    public Timer getPing(){ return ping; }
 
     /**
      * When an object implementing interface <code>Runnable</code> is used
@@ -101,10 +126,12 @@ public class ServerClientHandler implements Runnable {
         // get streams for socket output and input
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
+            in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            stillConnected = true;
+            out.writeObject(new PingServer(this.name)); // first ping fixes error of first connection of server
             startPing();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.err.println("XX - "+e.getMessage());
         } finally {
             int go = questionName(); // 1 load - 0 question - -1 error
 
@@ -134,24 +161,23 @@ public class ServerClientHandler implements Runnable {
                         else if(object == null && virtualView != null)
                             virtualView.notify(new DisconnectionClient(this.name,true));
                     }while(socket.isConnected() && object != null);
+
+                    timeOut();
                 } catch (Exception e) {
-                    disconnectionHandler();
                     if(!virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
                     {
-                        System.out.println("[MANAGE DISCONNECTION......]");
+                        timeOut();
+                        //System.out.println("[MANAGE DISCONNECTION......]");
                         // DEFAULT: start timer and wait for reconnection
                         // TODO: start the timer and notify all the client with the start... timers will run asynch, the main one is server
                     }
                 }
             }
-            /*
             try {
-                socket.shutdownInput();
-                socket.shutdownOutput();
-                socket.close();
-            } catch (IOException e) {
-                System.out.println("[SCH] - " + e.getMessage());
-            }*/
+                timeOut.join();
+            } catch (InterruptedException e) {
+                System.out.println("TEST");
+            }
         }
     }
 
@@ -175,22 +201,57 @@ public class ServerClientHandler implements Runnable {
             } finally {
                 if(object instanceof ConnectionClient){
                     if(((ConnectionClient) object).name.length() <= 12) {
-                        // complete the message with ip address and ServerClientHandler
                         ConnectionClient cc = (ConnectionClient) object;
 
-                        // check if a player with same name exists
+                        if(ret == 0){
+                            for (VirtualView vv : server.getVirtualViews2()){
+                                if(vv.getConnectedPlayers().containsKey(cc.name)){
+                                    System.out.println("FIND!");
+                                    ServerClientHandler sch = vv.getConnectedPlayers().get(cc.name);
+                                    if(sch.isStillConnected()){
+                                        ret = -1;
+                                        break;
+                                    } else if(!vv.getLosers().contains(cc.name) && !vv.isEnded()){
+                                        ret = 1;
+                                        /*
+                                        try{
+                                            sch.disconnectionHandler();
+                                        } catch (Exception e){ System.err.println(e.getMessage()); }
+
+                                         */
+                                        System.out.println("[RECONNECTION USER] - " + this.getName());
+
+                                        //vv.getConnectedPlayers().put(cc.name, this);
+
+                                        ArrayList<String> p = new ArrayList<>(vv.getConnectedPlayers().keySet());
+                                        this.notify(new LobbyServer(p));
+                                        vv.notify(new ReConnectionClient(cc.name));
+
+                                        this.name = cc.name;
+                                    }
+                                    /*
+                                    if(!sch.isStillConnected() && ){
+
+                                        server.getCurrentVirtualView2().getConnectedPlayers().put(cc.name, this);
+                                        ArrayList<String> p = new ArrayList<>();
+                                        for(String n : server.getCurrentVirtualView2().getConnectedPlayers().keySet())
+                                            p.add(n);
+                                        this.notify(new LobbyServer(p));
+                                        server.getCurrentVirtualView2().notify(new ReConnectionClient(cc.name));
+
+                                        this.name = cc.name;
+                                    }
+                                    */
+                                }
+                            }
+                        }
+                        /*
                         if(ret == 0){
                             for (VirtualView vv : server.getVirtualViews2()){
                                 ret = checkVirtualView(cc, vv);
                                 if (ret != 0) break;
                             }
-                        }
-                        if(ret == 0){
-                            for (VirtualView vv : server.getVirtualViews2()){
-                                ret = checkVirtualView(cc, vv);
-                                if (ret != 0) break;
-                            }
-                        }
+                        }*/
                         // check on current vv (you cant be disconnected in the current lobby)
                         if(ret == 0)
                             if (server.getCurrentVirtualView2().getConnectedPlayers().containsKey(cc.name))
@@ -208,16 +269,18 @@ public class ServerClientHandler implements Runnable {
         }while(ret == -1); // loop until the name is invalid
 
         this.name = ((ConnectionClient) object).name;
-        server.getPendingPlayers().add(this.name);
+        if(ret==0) server.getPendingPlayers().add(this.name);
+        System.out.println("--->"+ret);
         return ret;
     }
 
-    /**
+    /*
      * It iterates over an the ArrayList to find if tmpName appear in one
      * @param cc ClientMessage received
      * @param vv the VirtualView
      * @return 1 if you need to load the lobby, 0 username is ok, -1 if duplicate
      */
+    /*
     private int checkVirtualView(ConnectionClient cc, VirtualView vv) {
         if (vv.getConnectedPlayers().containsKey(cc.name)) {
             if (vv.getConnectedPlayers().get(cc.name) == null && !vv.getLosers().contains(cc.name)) {
@@ -230,6 +293,7 @@ public class ServerClientHandler implements Runnable {
         }
         return 0;
     }
+    */
 
     /**
      * It asks to client for 2 or 3 players match
@@ -279,29 +343,45 @@ public class ServerClientHandler implements Runnable {
      * @return 1 if ok
      */
     public int loadGame(){
-        ClientMessage object = new ReConnectionClient(this.name,this);
-        ArrayList<String> names = new ArrayList<>();
+        //ClientMessage object = new ReConnectionClient(this.name,this);
+        //ArrayList<String> names = new ArrayList<>();
         //for(String name : virtualView.getConnectedPlayers().keySet())
         //    names.add(name);
-        virtualView.getConnectedPlayers().keySet().addAll(Collections.singleton(name));
-        LobbyServer ls = new LobbyServer(names);
-        ls.loaded = true;
-        if(isConnected())
-            this.notify(ls);
-        virtualView.notify(object);
+        //virtualView.getConnectedPlayers().keySet().addAll(Collections.singleton(name));
+        //LobbyServer ls = new LobbyServer(names);
+        //ls.loaded = true;
+        //System.out.println("DID IT!");
+        //if(isConnected())
+        //    this.notify(ls);
+        //virtualView.notify(object);
+        //this.notify(ls);
         return 1;
     }
 
     /**
      * It starts when this client disconnect
      */
-    private void disconnectionHandler(){
-        try{
+    protected void disconnectionHandler(){
+        stillConnected = false;
+        virtualView.getConnectedPlayers().put(this.name,null);
+        virtualView.notify(new DisconnectionClient(this.name,true));
+        server.getPendingPlayers().remove(this.name);
+        if(ping != null)
             ping.cancel();
+        try{
+            if(socket != null)
+            {
+                if(!socket.isClosed())
+                {
+                    socket.shutdownInput();
+                    socket.shutdownOutput();
+                    socket.close();
+                    System.out.println("[DISCONNECTED USER] - " + this.getName());
+                }
+            }
         } catch (Exception ex) {
             System.err.println("[MUST HAND] - "+ex.getMessage());
         }
-        System.out.println("[DISCONNECTED USER] - " + socket.getRemoteSocketAddress().toString());
     }
 
     /**
@@ -319,13 +399,15 @@ public class ServerClientHandler implements Runnable {
                 virtualView.getLosers().add(this.name);
 
         try{
-            if(socket.isConnected()){
-                out.reset();
+            if(stillConnected && isConnected()){
+                //out.reset();
                 out.writeObject(message);
                 out.flush();
             }
-        } catch (IOException e) {
-            System.err.println("[NOT] - " + e.getMessage() + " - " + message.toString());
+            //else System.err.println("ERRORE GRAVE ... "+message.toString());
+        } catch (Exception e) {
+            System.err.println("[WRITE] - " + message.toString() + " - " + e.getMessage());
+            timeOut();
         }
     }
 
@@ -333,10 +415,8 @@ public class ServerClientHandler implements Runnable {
      * Ping task
      */
     public void startPing(){
-        System.out.println("START PING...");
         ping = new Timer();
-        //TimerPing task = new TimerPing(this);
-        ping.scheduleAtFixedRate(new TimerPing(this), 0, pingPeriod*1000);
+        ping.scheduleAtFixedRate(new TimerPing(this), 3000, pingPeriod*1000);
     }
 
     /**
@@ -351,12 +431,15 @@ public class ServerClientHandler implements Runnable {
                 try{
                     obj = in.readObject();
                 } catch (SocketTimeoutException ex){
+                    timeOut();
+                    /*
                     System.out.println("......"+ex.getMessage());
                     //socket.close();
 
                     //Thread.currentThread().interrupt();
                     obj = null;
                     //return null;
+                     */
                 }
             }
         }while ((obj instanceof PingClient || obj == null) && !turnTimesUp);
@@ -366,6 +449,14 @@ public class ServerClientHandler implements Runnable {
             System.out.println(this.name+"'S TURN TIME'S UP!");
             return null;
         } else return obj;
+    }
+
+    public void timeOut(){
+        if(timeOut == null || !timeOut.isAlive()){
+            int reconnectionPeriod = 10;
+            ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+            executor.scheduleAtFixedRate(new TimerDisconnection(this,executor,reconnectionPeriod), 0, reconnectionPeriod*1000, TimeUnit.MILLISECONDS);
+        }
     }
 
     /*

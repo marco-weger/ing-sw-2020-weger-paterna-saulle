@@ -15,11 +15,9 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -170,13 +168,7 @@ public class Client implements Runnable{
 
     public void startPing(){
         ping = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                sendMessage(new PingClient(username));
-            }
-        };
-        ping.scheduleAtFixedRate(task, 0, pingPeriod*1000);
+        ping.scheduleAtFixedRate(new TimerPing(this), 0, pingPeriod*1000);
     }
 
     public static void readParams(Client client){
@@ -212,13 +204,13 @@ public class Client implements Runnable{
             socket = new Socket(ip,port);
             socket.setSoTimeout(timeoutSocket*1000);
             out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
-
+            in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            startPing();
             ExecutorService executor = Executors.newCachedThreadPool();
             executor.submit(this);
-            startPing();
             return true;
         } catch (IOException e) {
+            System.out.println("eeee_"+e.getMessage());
             return false;
         }
     }
@@ -229,6 +221,8 @@ public class Client implements Runnable{
             Thread handler = null;
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
+                //if(msg == null)
+                    //msg = (ServerMessage) readFromServer();
                 //System.out.println(TextFormatting.COLOR_PURPLE+msg.toString()+ TextFormatting.RESET);
 
                 if(msg instanceof MovedServer){
@@ -259,7 +253,8 @@ public class Client implements Runnable{
                 handler.start();
             }
         }
-        catch (IOException | ClassNotFoundException e){
+        catch (Exception e){
+            System.out.println("RUNNING ERROR... "+e.getMessage());
             System.exit(0);
         }
     }
@@ -276,15 +271,16 @@ public class Client implements Runnable{
         }
     }
 
-    protected Object readFromServer() throws IOException, ClassNotFoundException {
-        Object obj = null;
+    protected Object readFromServer() {
+        Object obj;
         do{
             try{
                 obj = in.readObject();
-            } catch (SocketTimeoutException ex){
+            } catch (Exception ex){
                 System.out.println(".X.X.X.X.X."+ex.getMessage());
+                obj = null;
             }
-        }while (obj instanceof PingServer || obj == null);
+        }while (obj instanceof PingServer || !(obj instanceof ServerMessage));
         return obj;
     }
 

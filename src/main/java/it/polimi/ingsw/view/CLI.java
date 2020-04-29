@@ -182,6 +182,7 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(QuestionAbilityServer message) { // TODO test
         do {
+            clearLine();
             println(colorCPU+"Type if you want to use the Ability of your God [YES/Y] or not [NO/N] " + TextFormatting.input());
             String answer;
             answer = read();
@@ -194,8 +195,6 @@ public class CLI implements ViewInterface {
                 break;
             }
         }while(client.getContinueReading());
-        println(colorCPU+"Request Send!" + TextFormatting.input());
-
     }
 
     @Override
@@ -208,6 +207,7 @@ public class CLI implements ViewInterface {
                     printTable();
                     SnapCell c;
                     do { // first worker of the match
+                        clearLine();
                         print(colorCPU + "Type the position of first worker [x-y] " + TextFormatting.input());
                         c = getWorkerCell();
                     }while(c == null && client.getContinueReading());
@@ -218,6 +218,7 @@ public class CLI implements ViewInterface {
                     println(colorCPU+"It's your turn!"+TextFormatting.RESET);
                     println(TextFormatting.COLOR_YELLOW + "TIMER: " + (message.timer == 0 ? "inf." : message.timer)+TextFormatting.RESET);
                     boolean go = true;
+                    clearLine();
                     print(colorCPU+"Chose the worker to play with [x-y] " + TextFormatting.input());
                     do {
                         c = readCell();
@@ -230,8 +231,10 @@ public class CLI implements ViewInterface {
                                 }
                             }
                         }
-                        if(c != null && go == true)
-                        print(colorCPU+"Selected worker isn't valid, chose the worker to play with [x-y] " + TextFormatting.input());
+                        if(c != null && go){
+                            clearLine();
+                            print(colorCPU+"Selected worker isn't valid, chose the worker to play with [x-y] " + TextFormatting.input());
+                        }
                     } while(go && client.getContinueReading());
                     break;
             }
@@ -279,6 +282,7 @@ public class CLI implements ViewInterface {
 
             read = null;
             while(read == null && client.getContinueReading()){
+                clearLine();
                 print(colorCPU+"Type the first card [name] " + TextFormatting.input());
 
                 read = getCardName();
@@ -288,6 +292,7 @@ public class CLI implements ViewInterface {
             // second
             read = null;
             while((read == null || chosen.contains(read)) && client.getContinueReading()){
+                clearLine();
                 print(colorCPU+"Type the second card [name] " + TextFormatting.input());
                 read = getCardName();
             }
@@ -297,6 +302,7 @@ public class CLI implements ViewInterface {
             if(client.getPlayers().size()==3){
                 read = null;
                 while((read == null || chosen.contains(read)) && client.getContinueReading()){
+                    clearLine();
                     print(colorCPU+"Type the third card [name] " + TextFormatting.input());
                     read = getCardName();
                 }
@@ -312,6 +318,7 @@ public class CLI implements ViewInterface {
             // first
             CardName read;
             do{
+                clearLine();
                 print(colorCPU+"Type the chosen one [name] " + TextFormatting.input());
                 String name;
                 name = read();
@@ -352,10 +359,14 @@ public class CLI implements ViewInterface {
         clear();
         printTitle();
         do{
-            if(message.isFirstTime)
+            if(message.isFirstTime){
+                clearLine();
                 print(colorCPU + "Type your username (max 12 characters) " + TextFormatting.input());
-            else
+            }
+            else{
+                clearLine();
                 print(colorCPU + "The chosen one is not allowed, type new username (max 12 characters) " + TextFormatting.input());
+            }
             String username = read();
             print(colorCPU + "Validating username... " + TextFormatting.RESET);
             this.client.setUsername(username);
@@ -392,6 +403,7 @@ public class CLI implements ViewInterface {
     public void handleMessage(ModeRequestServer message) { // tested
         int mode;
         do{
+            clearLine();
             print(colorCPU + "Chose game mode (2 or 3 players) [2/3] " + TextFormatting.input());
             try
             {
@@ -422,6 +434,16 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(PingServer pingServer) {
 
+    }
+
+    @Override
+    public void handleMessage(TimeOutServer message) {
+        println(TextFormatting.UNDERLINE.toString() + TextFormatting.COLOR_RED + message.player + " " + message.n + "/" + message.of + TextFormatting.RESET);
+    }
+
+    @Override
+    public void handleMessage(ReConnectionServer message) {
+        System.out.println("I'M BACK!");
     }
 
     public void endMatch(){
@@ -515,6 +537,13 @@ public class CLI implements ViewInterface {
                 } else this.currentPlayer=message.player;
             }
         }
+    }
+
+    public void clearLine(){
+        try{
+            while (System.in.available() > 0)
+                in.readLine();
+        }catch (Exception ignored){}
     }
 
     public String read(){

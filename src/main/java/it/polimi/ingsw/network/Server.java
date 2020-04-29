@@ -63,6 +63,11 @@ public class Server {
     private int turnTimer;
 
     /**
+     * Timer before lose after a disconnection
+     */
+    private int disconnectTimer;
+
+    /**
      * It assigns default value at configurable vars
      */
     public Server(){
@@ -106,6 +111,11 @@ public class Server {
      */
     public int getTurnTimer(){ return turnTimer; }
 
+    /**
+     * @return the timer of disconnection during a game
+     */
+    public int getdisconnectTimer(){ return disconnectTimer; }
+
 
     /**
      * It iterates on all VirtualViews and all ServerClientHandlers
@@ -142,17 +152,15 @@ public class Server {
      * Main server: it accepts connection and start the client handler (ServerClientHandler)
      */
     public void startServer(){
-        //It creates threads when necessary, otherwise it re-uses existing one when possible
-        ExecutorService executor = Executors.newCachedThreadPool();
-        ServerSocket serverSocket = null;
-
         boolean go;
 
         // if port is unavailable is start searching a free a port from port+1 and so on
+        ServerSocket serverSocket = null;
         do {
             go=false;
             try{
                 serverSocket = new ServerSocket(port);
+                serverSocket.close();
             }catch (IOException e){
                 if(e.getMessage().contains("Address already in use")){
                     port++;
@@ -172,19 +180,27 @@ public class Server {
         System.out.println("[PING PERIOD] - "+pingPeriod + "s");
         System.out.println("[PORT] - "+port);
 
-        while (true){
-            try{
-                Socket socket = serverSocket.accept();
-                socket.setSoTimeout(timeoutSocket*1000);
-                System.out.println("[NEW USER] - " + socket.getRemoteSocketAddress().toString());
+        ExecutorService executor = Executors.newCachedThreadPool();
 
-                //executor.submit(new ServerClientHandler(socket,this,currentVirtualView));
-                executor.submit(new ServerClientHandler(socket,this, pingPeriod));
+        try {
+            serverSocket = new ServerSocket(port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            Socket socket;
+            while (true){
+                try{
+                    socket = serverSocket.accept();
+                    socket.setSoTimeout(timeoutSocket*1000);
+                    System.out.println("[NEW USER] - " + socket.getRemoteSocketAddress().toString());
 
-                //saveVirtualView(virtualViews2,virtualViews3);
-            }catch(IOException e){
-                System.err.println("[START_SERVER] - "+e.getMessage());
-                break;
+                    executor.submit(new ServerClientHandler(socket,this, pingPeriod));
+
+                    //saveVirtualView(virtualViews2,virtualViews3);
+                }catch(IOException e){
+                    System.err.println("[START_SERVER] - "+e.getMessage());
+                    break;
+                }
             }
         }
         executor.shutdown();
@@ -202,7 +218,9 @@ public class Server {
      */
     public void sendAll(ServerMessage sm, VirtualView vv){
         for(Object sch : vv.getConnectedPlayers().values())
-            ((ServerClientHandler) sch).notify(sm);
+            if(sch != null)
+                if(((ServerClientHandler) sch).isStillConnected())
+                    ((ServerClientHandler) sch).notify(sm);
         System.out.println("[SENT] - " + sm.toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + " - ALL");
     }
 
@@ -214,7 +232,7 @@ public class Server {
     public void send(ServerMessage sm, VirtualView vv){
         if(sm!=null && vv != null)
             for(ServerClientHandler sch : vv.getConnectedPlayers().values())
-                if(sch.getName().equals(sm.name) && sch.isConnected())
+                if(sch.getName().equals(sm.name) && sch.isStillConnected())
                     sch.notify(sm);
         if(!(sm instanceof PingServer))
             System.out.println("[SENT] - " + Objects.requireNonNull(sm).toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + " - " + sm.name);
@@ -246,6 +264,8 @@ public class Server {
                     server.timeoutSocket = Integer.parseInt(config.get("timeoutSocket").toString());
                 if(config.containsKey("turnTimer"))
                     server.turnTimer = Integer.parseInt(config.get("turnTimer").toString());
+                if(config.containsKey("disconnectTimer"))
+                    server.disconnectTimer = Integer.parseInt(config.get("disconnectTimer").toString());
             }
         } catch (Exception e) {
             //System.out.println(e.getMessage());

@@ -265,5 +265,11 @@ public class Match extends Observable implements Serializable {
             e.printStackTrace();
         }
     }
+
+    public void playerReConnection(String name){
+        for(Player p : this.players)
+            if(p.getName().equals(name))
+                this.notifyObservers(new ReConnectionServer(name));
+    }
 }
 

@@ -23,7 +23,7 @@ public class TimerTurn extends TimerTask {
     @Override
     public void run() {
         System.out.println("TIMER ENDS!");
-        sch.turnTimesUp = true;
+        sch.setTurnTimesUp(true);
         this.cancel();
     }
 }

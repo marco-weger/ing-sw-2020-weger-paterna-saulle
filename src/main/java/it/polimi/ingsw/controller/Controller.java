@@ -104,6 +104,7 @@ public class Controller implements Observer, ClientMessageHandler {
     @Override
     public void handleMessage(ReConnectionClient message) {
         System.out.println(message.name + " IZBACK!");
+        match.playerReConnection(message.name);
     }
 
     @Override

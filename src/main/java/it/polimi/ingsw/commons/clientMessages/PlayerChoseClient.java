@@ -5,8 +5,6 @@ import it.polimi.ingsw.commons.ClientMessage;
 
 import it.polimi.ingsw.model.cards.CardName;
 
-import java.io.Serializable;
-
 public class PlayerChoseClient extends ClientMessage {
 
     @Override
