@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CLITest {
+    /*
     @Test
     public void printBoardTest(){
         Client c = new Client();
@@ -35,7 +36,7 @@ public class CLITest {
         c.setUsername(c.getPlayers().get(0).name);
         view.printTable();
     }
-
+    */
 
     /*
     @Test
