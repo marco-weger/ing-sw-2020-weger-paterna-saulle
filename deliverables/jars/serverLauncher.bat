@@ -1,1 +1,0 @@
-start java -jar server.jar
