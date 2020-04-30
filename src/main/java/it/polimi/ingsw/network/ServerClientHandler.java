@@ -452,6 +452,13 @@ public class ServerClientHandler implements Runnable {
     }
 
     public void timeOut(){
+        if(virtualView == null){
+            disconnectionHandler();
+        }
+        if(virtualView.getCurrentStatus().equals(Status.NAME_CHOICE)){
+            virtualView.getConnectedPlayers().remove(this.name);
+            virtualView.notify(new DisconnectionClient(this.name,true));
+        }
         if(timeOut == null || !timeOut.isAlive()){
             int reconnectionPeriod = 10;
             ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
