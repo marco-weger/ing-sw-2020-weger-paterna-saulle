@@ -8,7 +8,6 @@ import it.polimi.ingsw.commons.serverMessages.PingServer;
 import it.polimi.ingsw.view.CLI;
 import it.polimi.ingsw.view.GUI.TEST;
 import it.polimi.ingsw.view.SnapPlayer;
-import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import org.json.simple.JSONObject;
