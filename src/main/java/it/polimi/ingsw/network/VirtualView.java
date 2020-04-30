@@ -8,6 +8,8 @@ import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
 import it.polimi.ingsw.commons.clientMessages.ReConnectionClient;
 import it.polimi.ingsw.commons.serverMessages.AvailableCardServer;
 import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
+import it.polimi.ingsw.commons.serverMessages.SomeoneLoseServer;
+import it.polimi.ingsw.commons.serverMessages.SomeoneWinServer;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.Match;
@@ -27,7 +29,7 @@ public class VirtualView extends Observable implements Observer {
     /**
      * True if the game is ended
      */
-    private final boolean ended;
+    private boolean ended;
 
     /**
      * All players in this game
@@ -153,13 +155,26 @@ public class VirtualView extends Observable implements Observer {
             if((currentStatus.equals(Status.START) || currentStatus.equals(Status.WORKER_CHOICE)) && server != null){
                 ((CurrentStatusServer) sm).timer = server.getTurnTimer();
                 timerHandler(((CurrentStatusServer) sm).player);
+            } else if(currentStatus.equals(Status.END)){
+                ended = true;
+                try{
+                    turn.cancel(); // Delete last timer if exists
+                } catch (Exception ignored){}
             }
         }
         else if(sm instanceof AvailableCardServer){
             timerHandler(((AvailableCardServer) sm).name);
+        }else if(sm instanceof SomeoneWinServer){
+            for(String name : connectedPlayers.keySet())
+                if(!name.equals(((SomeoneWinServer) sm).player))
+                    losers.add(name);
+        }else if(sm instanceof SomeoneLoseServer){
+            for(String name : connectedPlayers.keySet())
+                if(name.equals(((SomeoneLoseServer) sm).player))
+                    losers.add(name);
         }
 
-        if(server != null){
+        if(server != null && currentStatus != Status.END){
             if(sm.name.equals("")){
                 server.sendAll(sm,this);
             }

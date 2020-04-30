@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.commons.clientMessages.ReConnectionClient;
 import it.polimi.ingsw.commons.serverMessages.*;
 
 public interface ViewInterface {
@@ -24,4 +23,5 @@ public interface ViewInterface {
 
     void displayFirstWindow();
     void statusHandler(CurrentStatusServer message);
+    void close();
 }

@@ -7,6 +7,7 @@ import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -477,26 +478,20 @@ public class CLI implements ViewInterface {
     }
 
     public void endMatch(){
-        print(colorCPU + "Type [CONTINUE] if you want to start a new game, [QUIT] if you want to close the game " + TextFormatting.input());
-        /*
-        do{
-            try {
-                if(System.in.available() > 0){
-                    str = read();
-                    if(str.equalsIgnoreCase("CONTINUE")){
-                        // TODO new lobby
-                        println(colorCPU + "MUST IMPLEMENT NEW LOBBY!" + TextFormatting.RESET);
-                        break;
-                    } else if(str.equalsIgnoreCase("QUIT")){
-                        println(colorCPU + "Thank you for playing Santorini!" + TextFormatting.RESET);
-                        System.exit(1);
-                    }
-                }
-            } catch (IOException e) {
-                str = "";
-            }
-        }while (!str.equals("CONTINUE") && cycle);
-         */
+        boolean go = true;
+        while(go && client.getContinueReading()){
+            go = false;
+            print(colorCPU + "Type [2/3] if you want to start a new game, [QUIT] if you want to close the game " + TextFormatting.input());
+            String text = read();
+            if(text.equalsIgnoreCase("2") || text.equalsIgnoreCase("3")){
+                println(colorCPU + "MUST IMPLEMENT NEW LOBBY!" + TextFormatting.RESET);
+                client.sendMessage(new ModeChoseClient(client.getUsername(),Integer.parseInt(text)));
+            } else if(text.equalsIgnoreCase("QUIT")){
+                println(colorCPU + "Thank you for playing Santorini!" + TextFormatting.RESET);
+                client.sendMessage(new DisconnectionClient(client.getUsername(),false));
+                System.exit(1);
+            } else go = true;
+        }
     }
 
     // ********************************************************************************************************* //
@@ -567,6 +562,11 @@ public class CLI implements ViewInterface {
                 } else this.currentPlayer=message.player;
             }
         }
+    }
+
+    @Override
+    public void close() {
+        println(colorCPU + "A network problem was encountered, please try again later!" + TextFormatting.RESET);
     }
 
     public void clearLine(){

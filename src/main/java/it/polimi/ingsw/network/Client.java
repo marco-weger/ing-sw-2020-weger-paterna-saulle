@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.*;
-import it.polimi.ingsw.commons.clientMessages.PingClient;
 import it.polimi.ingsw.commons.serverMessages.BuiltServer;
 import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
 import it.polimi.ingsw.commons.serverMessages.MovedServer;
@@ -13,6 +12,7 @@ import it.polimi.ingsw.view.ViewInterface;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -221,36 +221,36 @@ public class Client implements Runnable{
             Thread handler = null;
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
-                //if(msg == null)
-                    //msg = (ServerMessage) readFromServer();
-                //System.out.println(TextFormatting.COLOR_PURPLE+msg.toString()+ TextFormatting.RESET);
+                //System.out.println(TextFormatting.COLOR_YELLOW+msg.toString()+TextFormatting.RESET);
 
-                if(msg instanceof MovedServer){
-                    for(SnapWorker worker : getWorkers()){
-                        if(worker.name.equals(((MovedServer) msg).sw.name) && worker.n == ((MovedServer) msg).sw.n){
-                            worker.row = ((MovedServer) msg).sw.row;
-                            worker.column = ((MovedServer) msg).sw.column;
+                if(msg != null){
+                    if(msg instanceof MovedServer){
+                        for(SnapWorker worker : getWorkers()){
+                            if(worker.name.equals(((MovedServer) msg).sw.name) && worker.n == ((MovedServer) msg).sw.n){
+                                worker.row = ((MovedServer) msg).sw.row;
+                                worker.column = ((MovedServer) msg).sw.column;
+                            }
                         }
-                    }
-                }else if(msg instanceof BuiltServer){
-                    for(SnapCell cell : getBoard()){
-                        if(cell.toString().equals(((BuiltServer) msg).sc.toString())){
-                            cell.level = ((BuiltServer) msg).sc.level;
+                    }else if(msg instanceof BuiltServer){
+                        for(SnapCell cell : getBoard()){
+                            if(cell.toString().equals(((BuiltServer) msg).sc.toString())){
+                                cell.level = ((BuiltServer) msg).sc.level;
+                            }
                         }
+                    }else if(msg instanceof CurrentStatusServer){
+                        view.statusHandler((CurrentStatusServer) msg);
                     }
-                }else if(msg instanceof CurrentStatusServer){
-                    view.statusHandler((CurrentStatusServer) msg);
+
+
+                    continueReading = false;
+                    try {
+                        if (handler != null)
+                            handler.join();
+                    } catch (Exception ignored){}
+                    continueReading = true;
+                    handler = new Thread(() -> msg.accept(view));
+                    handler.start();
                 }
-
-                continueReading = false;
-                try {
-                    if (handler != null)
-                        handler.join();
-                } catch (Exception ignored){}
-                //System.out.println("THREAD STOPPATO... ESEGUO ");
-                continueReading = true;
-                handler = new Thread(() -> msg.accept(view));
-                handler.start();
             }
         }
         catch (Exception e){
@@ -272,13 +272,14 @@ public class Client implements Runnable{
     }
 
     protected Object readFromServer() {
-        Object obj;
+        Object obj = null;
         do{
             try{
                 obj = in.readObject();
             } catch (Exception ex){
-                System.out.println(".X.X.X.X.X."+ex.getMessage());
-                obj = null;
+                System.out.println("XXX");
+                view.close();
+                System.exit(-1);
             }
         }while (obj instanceof PingServer || !(obj instanceof ServerMessage));
         return obj;

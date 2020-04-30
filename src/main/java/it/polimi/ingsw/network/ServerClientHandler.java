@@ -148,18 +148,41 @@ public class ServerClientHandler implements Runnable {
 
             if(go == 1){
                 try {
-                    Object object;
+                    ClientMessage object;
                     // standard loop to read
                     do{
-                        object = readFromClient();
-                        if(object instanceof ClientMessage)
-                            System.out.println("[RECEIVED] - " + object.toString().substring(object.toString().lastIndexOf('.')+1,
-                                    object.toString().lastIndexOf('@')) + " - " + (((ClientMessage) object).name.equals("") ? "ALL" : ((ClientMessage) object).name));
+                        object = (ClientMessage) readFromClient();
 
-                        if(virtualView != null && object != null)
-                            virtualView.notify((ClientMessage) object);
-                        else if(object == null && virtualView != null)
-                            virtualView.notify(new DisconnectionClient(this.name,true));
+                        if(object != null){
+                            System.out.println("[RECEIVED] - " + object.toString().substring(object.toString().lastIndexOf('.')+1,
+                                    object.toString().lastIndexOf('@')) + " - " + (object.name.equals("") ? "ALL" : object.name));
+
+                            if(object instanceof ModeChoseClient){
+                                System.out.println("XXXX -> "+virtualView.isEnded());
+                                System.out.println("XXXX -> "+virtualView.getLosers().contains(this.getName()));
+                                if(virtualView.isEnded() || virtualView.getLosers().contains(this.getName())){
+                                    ((ModeChoseClient) object).sch = this;
+                                    if(((ModeChoseClient) object).mode == 2){
+                                        // this part set up new match
+                                        if(!server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE)){
+                                            server.newCurrentVirtualView2();
+                                        }
+                                        virtualView = server.getCurrentVirtualView2();
+                                        virtualView.notify(object);
+                                    }
+                                    else if(((ModeChoseClient) object).mode == 3){
+                                        // this part set up new match
+                                        if(!server.getCurrentVirtualView3().getCurrentStatus().equals(Status.NAME_CHOICE)){
+                                            server.newCurrentVirtualView3();
+                                        }
+                                        virtualView = server.getCurrentVirtualView3();
+                                        virtualView.notify(object);
+                                    }
+                                }
+                            }
+                            else if(virtualView != null)
+                                virtualView.notify(object);
+                        } else virtualView.notify(new DisconnectionClient(this.name,true));
                     }while(socket.isConnected() && object != null);
 
                     timeOut();
@@ -212,6 +235,9 @@ public class ServerClientHandler implements Runnable {
                                         ret = -1;
                                         break;
                                     } else if(!vv.getLosers().contains(cc.name) && !vv.isEnded()){
+
+                                        // TODO !!!
+
                                         ret = 1;
                                         /*
                                         try{
@@ -460,7 +486,7 @@ public class ServerClientHandler implements Runnable {
             virtualView.notify(new DisconnectionClient(this.name,true));
         }
         if(timeOut == null || !timeOut.isAlive()){
-            int reconnectionPeriod = 10;
+            int reconnectionPeriod = 5;
             ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
             executor.scheduleAtFixedRate(new TimerDisconnection(this,executor,reconnectionPeriod), 0, reconnectionPeriod*1000, TimeUnit.MILLISECONDS);
         }

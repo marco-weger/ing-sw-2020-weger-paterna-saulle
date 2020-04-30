@@ -24,7 +24,7 @@ public enum Status {
     MOVED(false),
     QUESTION_B(false),
     BUILT(false),
-    END(false);
+    END(true);
 
     private final boolean notify;
 

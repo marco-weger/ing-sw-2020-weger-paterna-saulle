@@ -3,6 +3,6 @@
   "port": "4321",
   "pingPeriod": "2",
   "timeoutSocket": "5",
-  "disconnectTimer": "30",
+  "disconnectTimer": "15",
   "turnTimer": "60"
 }
