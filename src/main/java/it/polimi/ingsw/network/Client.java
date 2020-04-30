@@ -6,13 +6,14 @@ import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
 import it.polimi.ingsw.commons.serverMessages.MovedServer;
 import it.polimi.ingsw.commons.serverMessages.PingServer;
 import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.GUI.TEST;
 import it.polimi.ingsw.view.SnapPlayer;
 import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
+import javafx.application.Application;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -161,6 +162,9 @@ public class Client implements Runnable{
                 // TODO run gui
                 System.out.println("RUN GUI...");
                 System.out.flush();
+                new Thread(() -> Application.launch(TEST.class)).start();
+                TEST startUpTest = TEST.waitForStartUpTest();
+                startUpTest.printSomething();
             }
             else go = true;
         }while(go);
