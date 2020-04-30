@@ -139,7 +139,7 @@ public class Client implements Runnable{
                 version = args[0];
                 args = new String[0];
             } else {
-                System.out.print(TextFormatting.RESET + "Choose the version [CLI/GUI] " + TextFormatting.input());
+                System.out.print("Choose the version [CLI/GUI] > ");
                 System.out.flush();
 
                 try {
