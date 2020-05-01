@@ -1,0 +1,13 @@
+.play {
+-fx-graphic: url("/it.polimi.ingsw/view/gui/Image/Buttons/play-button-150x184.png");
+-fx-background-color: none;
+-fx-opacity: inherit;
+-fx-border: none;
+}
+
+.help {
+-fx-graphic: url("/it.polimi.ingsw/view/gui/Image/Buttons/help-button-150x184.png");
+-fx-background-color: none;
+-fx-opacity: inherit;
+-fx-border: none;
+}

@@ -13,7 +13,7 @@
             <Image url="@/it.polimi.ingsw/view/gui/Image/Scene/WelcomeBoard.png" />
          </image>
       </ImageView>
-      <Button layoutX="984.0" layoutY="828.0" mnemonicParsing="false" text="Help" />
-      <Button layoutX="275.0" layoutY="828.0" mnemonicParsing="false" prefHeight="13.0" prefWidth="62.0" text="Start" textAlignment="CENTER" />
+      <Button stylesheets="@buttons-style.css" styleClass="play" layoutX="250.0" layoutY="700.0" mnemonicParsing="false"/>
+      <Button stylesheets="@buttons-style.css" styleClass="help" layoutX="900.0" layoutY="700.0" mnemonicParsing="false"/>
    </children>
 </AnchorPane>
