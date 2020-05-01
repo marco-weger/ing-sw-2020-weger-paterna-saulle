@@ -6,10 +6,10 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.util.concurrent.CountDownLatch;
-
+/*
 public class TEST extends Application {
 
-    public static final CountDownLatch latch = new CountDownLatch(1);
+   /* public static final CountDownLatch latch = new CountDownLatch(1);
     public static TEST startUpTest = null;
 
     public static TEST waitForStartUpTest() {
@@ -45,3 +45,4 @@ public class TEST extends Application {
     }
 
 }
+*/
