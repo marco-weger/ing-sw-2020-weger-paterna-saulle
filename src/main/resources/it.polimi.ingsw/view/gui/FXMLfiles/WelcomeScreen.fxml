@@ -5,12 +5,12 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.WelcomeScreenController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.WelcomeScreenController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" />
       <ImageView fitHeight="1000.0" fitWidth="1300.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Image/Scene/WelcomeBoard.png" />
+            <Image url="@/it.polimi.ingsw/view/gui/Image/Scene/WelcomeBoard.png" />
          </image>
       </ImageView>
       <Button layoutX="984.0" layoutY="828.0" mnemonicParsing="false" text="Help" />

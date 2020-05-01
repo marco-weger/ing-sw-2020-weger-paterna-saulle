@@ -6,8 +6,7 @@ import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
 import it.polimi.ingsw.commons.serverMessages.MovedServer;
 import it.polimi.ingsw.commons.serverMessages.PingServer;
 import it.polimi.ingsw.view.CLI;
-import it.polimi.ingsw.view.GUI.GUI;
-import it.polimi.ingsw.view.GUI.TEST;
+import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.SnapPlayer;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
@@ -160,13 +159,14 @@ public class Client implements Runnable{
             }
             else if(version.equalsIgnoreCase("GUI")){
                 // TODO run gui
-                client.setView(new GUI(client));
-                client.getView().displayFirstWindow();
                 System.out.println("RUN GUI...");
-                System.out.flush();
-                new Thread(() -> Application.launch(TEST.class)).start();
-                TEST startUpTest = TEST.waitForStartUpTest();
-                startUpTest.printSomething();
+                //client.setView(new GUI(client));
+                //new Thread(() -> Application.launch(GUI.class)).start();
+                //GUI startUpTest = GUI.waitForStartUpTest();
+                //client.getView().displayFirstWindow();
+                new Thread(() -> Application.launch(GUI.class)).start();
+                //GUI startUpTest = GUI.waitForStartUpTest();
+                //startUpTest.printSomething();
             }
             else go = true;
         }while(go);
