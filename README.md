@@ -65,7 +65,7 @@ When reconnecting, remember to vote for the same map the game was being played o
 ## Santorini Official Server 
 Powered by Microsoft Azure
 | Server | State | Turn Timer |
-|:--------------|:-------------------------------------------------------------------------|:-----:|
+|:-------|:------|:-----:|
 | 40.84.XXX.XXX | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) &nbsp; Ready To Game| 03:00 |
 
 <br />
