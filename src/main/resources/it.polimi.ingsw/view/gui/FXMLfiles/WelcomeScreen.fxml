@@ -4,16 +4,14 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.WelcomeScreenController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" />
       <ImageView fitHeight="1000.0" fitWidth="1300.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@/it.polimi.ingsw/view/gui/Image/Scene/WelcomeBoard.png" />
          </image>
       </ImageView>
-      <Button stylesheets="@buttons-style.css" styleClass="play" layoutX="250.0" layoutY="700.0" mnemonicParsing="false"/>
-      <Button stylesheets="@buttons-style.css" styleClass="help" layoutX="900.0" layoutY="700.0" mnemonicParsing="false"/>
+      <Button fx:id="PlayButton" layoutX="250.0" layoutY="700.0" mnemonicParsing="false" styleClass="play" stylesheets="@buttons-style.css" />
+      <Button fx:id="HelpButton" layoutX="900.0" layoutY="700.0" mnemonicParsing="false" styleClass="help" stylesheets="@buttons-style.css" />
    </children>
 </AnchorPane>

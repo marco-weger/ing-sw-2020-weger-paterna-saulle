@@ -11,3 +11,17 @@
 -fx-opacity: inherit;
 -fx-border: none;
 }
+
+.IIPlayersButton {
+-fx-graphic: url("/it.polimi.ingsw/view/gui/Image/Buttons/IIPlayersButton-250*138.png");
+-fx-background-color: none;
+-fx-opacity: inherit;
+-fx-border: none;
+}
+
+.IIIPlayersButton {
+-fx-graphic: url("/it.polimi.ingsw/view/gui/Image/Buttons/IIIPlayersButton-250*138.png");
+-fx-background-color: none;
+-fx-opacity: inherit;
+-fx-border: none;
+}
