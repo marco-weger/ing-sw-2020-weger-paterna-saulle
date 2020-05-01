@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.commons.serverMessages.*;
+import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,11 @@ import java.io.IOException;
 
 public class GUI extends Application implements ViewInterface {
 
+    Client client;
 
+    public GUI(Client client){
+        this.client = client;
+    }
 
     @Override
     public void displayFirstWindow() {

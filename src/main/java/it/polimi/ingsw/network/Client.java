@@ -6,6 +6,7 @@ import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
 import it.polimi.ingsw.commons.serverMessages.MovedServer;
 import it.polimi.ingsw.commons.serverMessages.PingServer;
 import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.GUI.GUI;
 import it.polimi.ingsw.view.GUI.TEST;
 import it.polimi.ingsw.view.SnapPlayer;
 import it.polimi.ingsw.view.ViewInterface;
@@ -159,6 +160,8 @@ public class Client implements Runnable{
             }
             else if(version.equalsIgnoreCase("GUI")){
                 // TODO run gui
+                client.setView(new GUI(client));
+                client.getView().displayFirstWindow();
                 System.out.println("RUN GUI...");
                 System.out.flush();
                 new Thread(() -> Application.launch(TEST.class)).start();
