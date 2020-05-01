@@ -51,7 +51,7 @@ When reconnecting, remember to vote for the same map the game was being played o
 | Socket | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
 | GUI | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
 | CLI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Multiple games | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
+| Multiple games | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
 | Persistence | [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) |
 
 <!--
