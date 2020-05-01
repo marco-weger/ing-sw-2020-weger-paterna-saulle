@@ -12,6 +12,6 @@
          </image>
       </ImageView>
       <Button fx:id="PlayButton" layoutX="250.0" layoutY="700.0" mnemonicParsing="false" styleClass="play" stylesheets="@buttons-style.css" />
-      <Button fx:id="HelpButton" layoutX="900.0" layoutY="700.0" mnemonicParsing="false" styleClass="help" stylesheets="@buttons-style.css" />
+      <Button fx:id="HelpButton" layoutX="900.0" layoutY="700.0" mnemonicParsing="false" styleClass="help" stylesheets="@buttons-style.css" onAction="#HandleHelpButton" />
    </children>
 </AnchorPane>
