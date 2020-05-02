@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane maxHeight="1080.0" maxWidth="1284.0" minHeight="1080.0" minWidth="1284.0" prefHeight="1080.0"
-           prefWidth="1284.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="it.polimi.ingsw.view.gui.Rules">
-   <AnchorPane maxHeight="1080.0" maxWidth="1284.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0"
-               prefWidth="600.0">
-      <ImageView fitHeight="1080.0" fitWidth="1284.0" pickOnBounds="true" preserveRatio="true">
-         <Image url="@/it.polimi.ingsw/view/gui/Image/Scene/rules_i.png"/>
-      </ImageView>
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="1284" prefHeight="800.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.RulesController">
+   <AnchorPane>
+      <children>
+         <ImageView nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../img/scene/rules.png" />
+         </ImageView>
+         <Button fx:id="buttonExit" layoutX="1200.0" layoutY="5.0" mnemonicParsing="false" onAction="#ExitOnAction" prefHeight="79.0" prefWidth="79.0" styleClass="button, quit" stylesheets="@../css/button.css" />
+      </children>
    </AnchorPane>
-</StackPane>
+</ScrollPane>
