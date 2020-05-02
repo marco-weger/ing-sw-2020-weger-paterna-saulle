@@ -53,22 +53,8 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void start(Stage stage) {
-
-        // Responsive Design
-        if (screenWidth <= 800 && screenHeight <= 600) {
-            sceneWidth = 592;
-            sceneHeight = 703;
-        } else if (screenWidth <= 1280 && screenHeight <= 768) {
-            sceneWidth = 800;
-            sceneHeight = 950;
-        } else if (screenWidth <= 1920 && screenHeight <= 1080) {
-            sceneWidth = 950;
-            sceneHeight = 800;
-        } else {
-            sceneWidth = 1104;
-            sceneHeight = 1311;
-        }
-
+        sceneWidth = 950;
+        sceneHeight = 800;
         load(stage,"/it.polimi.ingsw/view/gui/fxml/Home.fxml");
     }
 
