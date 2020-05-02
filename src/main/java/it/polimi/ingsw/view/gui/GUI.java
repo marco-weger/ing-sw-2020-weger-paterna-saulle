@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui;
 
-
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.ViewInterface;
@@ -31,10 +30,10 @@ public class GUI extends Application implements ViewInterface {
     DefaultController controller;
 
     public static final CountDownLatch latch = new CountDownLatch(1);
-    public static GUI gui = null;
-    public final Client client;
+    public static GUI gui;
+    private Client client;
 
-    public static GUI waitForGUI() {
+    public static GUI waitForGUI(Client client) {
         try {
             latch.await();
         } catch (InterruptedException e) {
@@ -48,9 +47,8 @@ public class GUI extends Application implements ViewInterface {
         latch.countDown();
     }
 
-    public GUI(Client client) {
-        this.client = client;
-        setGUI(this);
+    public static void main(String[] args) {
+        Application.launch(args);
     }
 
     @Override
@@ -99,6 +97,8 @@ public class GUI extends Application implements ViewInterface {
         //controller.center.setMaxHeight(sceneHeight-2*limitY);
 
         controller.buttonQuit.setLayoutX(sceneWidth-100);
+
+        controller.setClient(client);
 
         scene = new Scene(Objects.requireNonNull(root), sceneWidth, sceneHeight, Color.TRANSPARENT);
         scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));

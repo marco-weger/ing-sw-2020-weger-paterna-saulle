@@ -8,15 +8,12 @@ import javafx.stage.Stage;
 
 public class RulesController {
 
-
     @FXML
     public Button buttonExit;
-
-
-
 
     public void ExitOnAction(ActionEvent actionEvent) {
         Stage stage = (Stage) buttonExit.getScene().getWindow();
         stage.close();
     }
+
 }

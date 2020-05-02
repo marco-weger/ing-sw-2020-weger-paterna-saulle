@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.network.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -10,6 +11,8 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class DefaultController {
+
+    private Client client;
 
     @FXML
     public AnchorPane top;
@@ -45,6 +48,8 @@ public class DefaultController {
 
         //top.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.FULL)));
     }
+
+    public void setClient(Client client){ this.client=client; }
 
     public void setBackground(Image image){
         center.setBackground(new Background(new BackgroundImage(image,
