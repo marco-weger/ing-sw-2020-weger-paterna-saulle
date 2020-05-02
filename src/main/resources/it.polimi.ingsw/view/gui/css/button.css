@@ -1,0 +1,46 @@
+.button{
+    -fx-background-color: none;
+    -fx-opacity: inherit;
+    -fx-border: none;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.play {
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/play.png");
+    /*-fx-background-size: 184px auto;*/
+    -fx-background-size: 90% auto;
+}
+.play:hover{
+    /*-fx-background-size: 194px auto;*/
+    -fx-background-size: 100% auto;
+}
+.help{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/helper.png");
+    -fx-background-size: 90% auto;
+}
+.help:hover{
+    -fx-background-size: 100% auto;
+}
+.quit{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/quit.png");
+    -fx-background-size: 55px auto;
+}
+.quit:hover{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/quit_hover.png");
+    -fx-background-size: 55px auto;
+}
+
+
+.IIPlayersButton {
+    -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/IIPlayersButton-250x138.png");
+    -fx-background-color: none;
+    -fx-opacity: inherit;
+    -fx-border: none;
+}
+
+.IIIPlayersButton {
+    -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/IIIPlayersButton-250x138.png");
+    -fx-background-color: none;
+    -fx-opacity: inherit;
+    -fx-border: none;
+}
