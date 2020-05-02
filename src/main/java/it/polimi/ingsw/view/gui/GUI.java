@@ -87,6 +87,7 @@ public class GUI extends Application {
         stage.setScene(scene);
         stage.getIcons().add(new Image("/it.polimi.ingsw/view/gui/img/icon.png"));
 
+
         controller.stage = stage;
 
         stage.setScene(scene);
