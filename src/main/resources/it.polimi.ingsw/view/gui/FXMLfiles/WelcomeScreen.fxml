@@ -8,10 +8,10 @@
    <children>
       <ImageView fitHeight="1000.0" fitWidth="1300.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@/it.polimi.ingsw/view/gui/Image/Scene/WelcomeBoard.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="PlayButton" layoutX="250.0" layoutY="700.0" mnemonicParsing="false" styleClass="play" stylesheets="@buttons-style.css" />
-      <Button fx:id="HelpButton" layoutX="900.0" layoutY="700.0" mnemonicParsing="false" styleClass="help" stylesheets="@buttons-style.css" onAction="#HandleHelpButton" />
+            <Image url="@../image/scene/test.png" />
+         </image></ImageView>
+      <Button fx:id="PlayButton" layoutX="198.0" layoutY="586.0" mnemonicParsing="false" prefHeight="222.0" prefWidth="300.0" styleClass="button, play" stylesheets="@buttons-style.css" />
+      <Button fx:id="HelpButton" layoutX="738.0" layoutY="586.0" mnemonicParsing="false" onAction="#HandleHelpButton" prefHeight="222.0" prefWidth="300.0" styleClass="button, help" stylesheets="@buttons-style.css" />
+      <Button fx:id="QuitButton" layoutX="1222.0" layoutY="62.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" styleClass="button, quit" stylesheets="@buttons-style.css" />
    </children>
 </AnchorPane>

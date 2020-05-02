@@ -8,7 +8,7 @@
    <children>
       <ImageView fitHeight="1000.0" fitWidth="1300.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Image/Scene/GameMode.png" />
+            <Image url="@../image/scene/GameMode.png" />
          </image>
       </ImageView>
       <Button fx:id="IIPlayersButton" layoutX="200" layoutY="700.0" mnemonicParsing="false" styleClass="IIPlayersButton" stylesheets="@buttons-style.css" />

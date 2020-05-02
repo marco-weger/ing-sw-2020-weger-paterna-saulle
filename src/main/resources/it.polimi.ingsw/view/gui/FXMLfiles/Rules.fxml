@@ -9,7 +9,7 @@
    <AnchorPane maxHeight="1080.0" maxWidth="1284.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0"
                prefWidth="600.0">
       <ImageView fitHeight="1080.0" fitWidth="1284.0" pickOnBounds="true" preserveRatio="true">
-         <Image url="@/it.polimi.ingsw/view/gui/Image/Scene/rules_i.png"/>
+         <Image url="@/it.polimi.ingsw/view/gui/image/scene/rules_i.png"/>
       </ImageView>
    </AnchorPane>
 </StackPane>

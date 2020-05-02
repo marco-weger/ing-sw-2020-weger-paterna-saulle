@@ -1,34 +1,21 @@
 package it.polimi.ingsw.view.gui;
 
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public class GUI extends Application {
 
-    /*
-    public static final CountDownLatch latch = new CountDownLatch(1);
-    public static TEST startUpTest = null;
-
-    public static TEST waitForStartUpTest() {
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return startUpTest;
-    }
-
-    public static void setStartUpTest(TEST startUpTest0) {
-        startUpTest = startUpTest0;
-        latch.countDown();
-    }
-     */
 
     public GUI() {
         //setStartUpTest(this);
@@ -49,7 +36,12 @@ public class GUI extends Application {
         }
 
         stage = new Stage();
-        stage.setScene(new Scene(Objects.requireNonNull(root)));
+        Scene scene = new Scene(Objects.requireNonNull(root));
+        Image image = new Image("/it.polimi.ingsw/view/gui/image/pointer.png");  //pass in the image path
+        scene.setCursor(new ImageCursor(image));
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.setScene(scene);
+        stage.getIcons().add(new Image("/it.polimi.ingsw/view/gui/image/icon.png"));
         stage.show();
 
     }
