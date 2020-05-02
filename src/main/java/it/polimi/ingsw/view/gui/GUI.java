@@ -21,16 +21,15 @@ public class GUI extends Application {
         //setStartUpTest(this);
     }
 
-    public void printSomething() {
-        System.out.println("You called a method on the application");
-    }
-
     @Override
     public void start(Stage stage) {
 
         Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("/it.polimi.ingsw/view/gui/FXMLfiles/WelcomeScreen.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/FXMLfiles/WelcomeScreen.fxml"));
+            root = loader.load(); //FXMLLoader.load(getClass().getResource("/it.polimi.ingsw/view/gui/FXMLfiles/WelcomeScreen.fxml"));
+            WelcomeScreenController fXMLDocumentController = loader.getController();
+            fXMLDocumentController.setGetHostController(getHostServices());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,7 +42,6 @@ public class GUI extends Application {
         stage.setScene(scene);
         stage.getIcons().add(new Image("/it.polimi.ingsw/view/gui/image/icon.png"));
         stage.show();
-
     }
 
 }
