@@ -11,6 +11,8 @@ import java.util.Objects;
 
 public class GUI extends Application {
 
+    public static Stage stage;
+
     /*
     public static final CountDownLatch latch = new CountDownLatch(1);
     public static TEST startUpTest = null;
@@ -48,10 +50,9 @@ public class GUI extends Application {
             e.printStackTrace();
         }
 
-        stage = new Stage();
-        stage.setScene(new Scene(Objects.requireNonNull(root)));
+        stage.setScene(new Scene(Objects.requireNonNull(root),950,731));
+        stage.setResizable(false);
         stage.show();
-
     }
 
 }

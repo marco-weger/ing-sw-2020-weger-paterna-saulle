@@ -23,6 +23,8 @@ public class WelcomeScreenController {
         Stage stage = new Stage();
         stage.setTitle("Santorini_Rules_eng");
         stage.setScene(new Scene(root, 450, 450));
+        stage.setMaxWidth(1315);
+        stage.setMaxHeight(800);
         stage.show();
     }
     catch (IOException e) {
@@ -30,4 +32,5 @@ public class WelcomeScreenController {
 
     }
     }
+
 }

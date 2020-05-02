@@ -1,26 +1,26 @@
 .play {
--fx-graphic: url("/it.polimi.ingsw/view/gui/Image/Buttons/play-button-150x184.png");
+-fx-graphic: url("/it.polimi.ingsw/view/gui/Image/Buttons/play-button-100x123.png");
 -fx-background-color: none;
 -fx-opacity: inherit;
 -fx-border: none;
 }
 
 .help {
--fx-graphic: url("/it.polimi.ingsw/view/gui/Image/Buttons/help-button-150x184.png");
+-fx-graphic: url("/it.polimi.ingsw/view/gui/Image/Buttons/help-button-100x123.png");
 -fx-background-color: none;
 -fx-opacity: inherit;
 -fx-border: none;
 }
 
 .IIPlayersButton {
--fx-graphic: url("/it.polimi.ingsw/view/gui/Image/Buttons/IIPlayersButton-250x138.png");
+-fx-graphic: url("/it.polimi.ingsw/view/gui/Image/Buttons/IIPlayersButton-150x86.png");
 -fx-background-color: none;
 -fx-opacity: inherit;
 -fx-border: none;
 }
 
 .IIIPlayersButton {
--fx-graphic: url("/it.polimi.ingsw/view/gui/Image/Buttons/IIIPlayersButton-250x138.png");
+-fx-graphic: url("/it.polimi.ingsw/view/gui/Image/Buttons/IIIPlayersButton-150x86.png");
 -fx-background-color: none;
 -fx-opacity: inherit;
 -fx-border: none;
