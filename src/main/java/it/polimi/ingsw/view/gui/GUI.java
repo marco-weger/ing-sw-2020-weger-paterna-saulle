@@ -1,6 +1,9 @@
 package it.polimi.ingsw.view.gui;
 
 
+import it.polimi.ingsw.commons.serverMessages.*;
+import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
@@ -14,14 +17,9 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
 
-public class GUI extends Application {
-
-
-    public GUI() {
-        //setStartUpTest(this);
-    }
-
+public class GUI extends Application implements ViewInterface {
 
     int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
     int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
@@ -31,6 +29,29 @@ public class GUI extends Application {
     Scene scene;
     Parent root;
     DefaultController controller;
+
+    public static final CountDownLatch latch = new CountDownLatch(1);
+    public static GUI gui = null;
+    public final Client client;
+
+    public static GUI waitForGUI() {
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return gui;
+    }
+
+    public static void setGUI(GUI gui) {
+        GUI.gui = gui;
+        latch.countDown();
+    }
+
+    public GUI(Client client) {
+        this.client = client;
+        setGUI(this);
+    }
 
     @Override
     public void start(Stage stage) {
@@ -93,4 +114,103 @@ public class GUI extends Application {
         stage.show();
     }
 
+    @Override
+    public void handleMessage(CheckMoveServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(CheckBuildServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(CardChosenServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(WorkerChosenServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(QuestionAbilityServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(CurrentStatusServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(SomeoneLoseServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(AvailableCardServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(SomeoneWinServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(NameRequestServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(LobbyServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(ModeRequestServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(BuiltServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(MovedServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(PingServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(TimeOutServer message) {
+
+    }
+
+    @Override
+    public void handleMessage(ReConnectionServer message) {
+
+    }
+
+    @Override
+    public void displayFirstWindow() {
+
+    }
+
+    @Override
+    public void statusHandler(CurrentStatusServer message) {
+
+    }
+
+    @Override
+    public void close() {
+
+    }
 }

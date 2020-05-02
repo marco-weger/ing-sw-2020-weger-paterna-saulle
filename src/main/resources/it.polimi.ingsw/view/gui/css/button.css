@@ -32,15 +32,8 @@
 
 
 .IIPlayersButton {
-    -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/IIPlayersButton-250x138.png");
-    -fx-background-color: none;
-    -fx-opacity: inherit;
-    -fx-border: none;
+    -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/2players.png");
 }
-
 .IIIPlayersButton {
-    -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/IIIPlayersButton-250x138.png");
-    -fx-background-color: none;
-    -fx-opacity: inherit;
-    -fx-border: none;
+    -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/3players.png");
 }

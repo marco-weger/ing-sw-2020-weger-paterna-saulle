@@ -158,13 +158,18 @@ public class Client implements Runnable{
                 client.getView().displayFirstWindow();
             }
             else if(version.equalsIgnoreCase("GUI")){
-                // TODO run gui
                 System.out.println("RUN GUI...");
+                new Thread(() -> Application.launch(GUI.class)).start();
+                GUI gui = GUI.waitForGUI();
+                client.setView(gui);
+                //startUpTest.printSomething();
+
                 //client.setView(new GUI(client));
                 //new Thread(() -> Application.launch(GUI.class)).start();
                 //GUI startUpTest = GUI.waitForStartUpTest();
                 //client.getView().displayFirstWindow();
-                new Thread(() -> Application.launch(GUI.class)).start();
+                //GUI gui = new GUI(); // .start()
+                //new Thread(() -> gui.).start();
                 //GUI startUpTest = GUI.waitForStartUpTest();
                 //startUpTest.printSomething();
             }

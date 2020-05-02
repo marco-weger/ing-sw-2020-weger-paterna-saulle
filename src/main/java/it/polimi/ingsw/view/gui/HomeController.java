@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -26,5 +27,9 @@ public class HomeController extends DefaultController{
         buttonHelp.setPrefSize(size,size);
         buttonHelp.setMaxSize(size,size);
         buttonHelp.setMinSize(size,size);
+    }
+
+    public void playOnAction(ActionEvent actionEvent) {
+
     }
 }
