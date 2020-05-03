@@ -1,4 +1,4 @@
-![Santorini logo](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/src/main/resources/it.polimi.ingsw/view/gui/img/scene/top.png)
+![Santorini logo](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/src/main/resources/it.polimi.ingsw/view/gui/img/scene/top.png)
 
 # Final project of Software Engineering - 2020
 ## Team CG13
@@ -76,4 +76,4 @@ Powered by Microsoft Azure
 - ####       Francesco Paterna ([@FrancescoPaterna](https://github.com/FrancescoPaterna))
 - ####       Giulio Saulle ([@aGiulioSaulle](https://github.com/GiulioSaulle))
 
-![Santorini logo](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/src/main/resources/it.polimi.ingsw/view/gui/img/scene/bottom.png)
+![Santorini logo](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/src/main/resources/it.polimi.ingsw/view/gui/img/scene/top.png)
