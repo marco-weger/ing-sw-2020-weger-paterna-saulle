@@ -65,8 +65,6 @@ Powered by Microsoft Azure
 |:-------|:------|:-----:|
 | 40.84.XXX.XXX | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) &nbsp; Ready To Game| 03:00 |
 
-<br />
-
 ## The CG13 Team
 - ####       Marco Weger ([@marco-weger](https://github.com/marco-weger))
 - ####       Francesco Paterna ([@FrancescoPaterna](https://github.com/FrancescoPaterna))
