@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Artemis extends Card {
     Cell lastMoved;
@@ -56,7 +57,7 @@ public class Artemis extends Card {
      * @return list of available cells
      */
     @Override
-    public ArrayList<Cell> checkMove(ArrayList<Player> p, Board b) {
+    public List<Cell> checkMove(List<Player> p, Board b) {
         if (p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
         for (Player player : p){
@@ -65,7 +66,7 @@ public class Artemis extends Card {
             }
         }
         if (actived == null) return new ArrayList<>();
-        ArrayList<Cell> available = super.checkMove(p,b);
+        List<Cell> available = super.checkMove(p,b);
         if(lastMoved != null)
             available.remove(lastMoved);
         return available;
@@ -79,7 +80,7 @@ public class Artemis extends Card {
      * @return true if moved
      */
     @Override
-    public boolean move(ArrayList<Player> p, Board b, Cell to) {
+    public boolean move(List<Player> p, Board b, Cell to) {
         if (!(p == null || b == null || to == null)) {
             Player current = null;
             for (Player player : p)
@@ -87,7 +88,7 @@ public class Artemis extends Card {
                     current = player;
 
             if (current != null && current.getCurrentWorker() != null) {
-                ArrayList<Cell> available = checkMove(p, b);
+                List<Cell> available = checkMove(p, b);
                 //the worker can move in every direction, minus the starting point.
                 //thus, the control if "to" equals the current worker starting point.
                 if (available.contains(to) && !((current.getCurrentWorker().getRow()==to.getRow()) && current.getCurrentWorker().getColumn()==to.getColumn())) {
@@ -104,9 +105,9 @@ public class Artemis extends Card {
 
 
     @Override
-    public boolean activable(ArrayList<Player> p, Board b)
+    public boolean activable(List<Player> p, Board b)
     {
-        ArrayList<Cell> available;
+        List<Cell> available;
         available = super.checkMove(p,b);
 
         if(lastMoved != null){
