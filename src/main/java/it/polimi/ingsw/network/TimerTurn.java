@@ -13,7 +13,7 @@ public class TimerTurn extends TimerTask {
      * @param sch the client
      */
     public TimerTurn(ServerClientHandler sch){
-        System.out.println("TIMER STARTS!");
+        System.out.println("[TIMER] - " + sch.getName());
         this.sch = sch;
     }
 
@@ -22,8 +22,8 @@ public class TimerTurn extends TimerTask {
      */
     @Override
     public void run() {
-        System.out.println("TIMER ENDS!");
-        sch.setTurnTimesUp(true);
+        System.out.println("[TIMER END]" + sch.getName());
+        sch.timesUp();
         this.cancel();
     }
 }

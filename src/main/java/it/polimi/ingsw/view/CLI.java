@@ -555,11 +555,13 @@ public class CLI implements ViewInterface {
     private String currentPlayer = "";
     @Override
     public void statusHandler(CurrentStatusServer message){
-        if(!client.getMyPlayer().loser){
-            if(!message.player.equals(client.getUsername())){
-                if (message.status == Status.CARD_CHOICE) {
-                    println(colorCPU+"Waiting for opponent's choice..." + TextFormatting.RESET);
-                } else this.currentPlayer=message.player;
+        if(client.getMyPlayer() != null){
+            if(!client.getMyPlayer().loser){
+                if(!message.player.equals(client.getUsername())){
+                    if (message.status == Status.CARD_CHOICE) {
+                        println(colorCPU+"Waiting for opponent's choice..." + TextFormatting.RESET);
+                    } else this.currentPlayer=message.player;
+                }
             }
         }
     }

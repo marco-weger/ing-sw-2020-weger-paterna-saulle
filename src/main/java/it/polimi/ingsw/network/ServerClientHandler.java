@@ -59,7 +59,7 @@ public class ServerClientHandler implements Runnable {
     /**
      * This value is changed by turn timers, it is used to stop socket reading.
      */
-    private final boolean turnTimesUp;
+    private boolean turnTimesUp;
 
     /**
      * True if the connection is alive
@@ -166,6 +166,7 @@ public class ServerClientHandler implements Runnable {
                                 if(virtualView.isEnded() || virtualView.getLosers().contains(this.getName())){
                                     ((ModeChoseClient) object).sch = this;
                                     if(((ModeChoseClient) object).mode == 2){
+                                        this.turnTimesUp = false;
                                         // this part set up new match
                                         if(!server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE)){
                                             server.newCurrentVirtualView2();
@@ -174,6 +175,7 @@ public class ServerClientHandler implements Runnable {
                                         virtualView.notify(object);
                                     }
                                     else if(((ModeChoseClient) object).mode == 3){
+                                        this.turnTimesUp = false;
                                         // this part set up new match
                                         if(!server.getCurrentVirtualView3().getCurrentStatus().equals(Status.NAME_CHOICE)){
                                             server.newCurrentVirtualView3();
@@ -186,9 +188,9 @@ public class ServerClientHandler implements Runnable {
                             else if(virtualView != null)
                                 virtualView.notify(object);
                         } else virtualView.notify(new DisconnectionClient(this.name,true));
-                    }while(socket.isConnected() && object != null);
-
-                    timeOut();
+                    }while(socket.isConnected() && object != null && !turnTimesUp);
+                    if(!turnTimesUp)
+                        timeOut();
                 } catch (Exception e) {
                     if(!virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
                     {
@@ -387,12 +389,12 @@ public class ServerClientHandler implements Runnable {
      * It starts when this client disconnect
      */
     protected void disconnectionHandler(){
+        if(ping != null)
+            ping.cancel();
         stillConnected = false;
         virtualView.getConnectedPlayers().put(this.name,null);
         virtualView.notify(new DisconnectionClient(this.name,true));
         server.getPendingPlayers().remove(this.name);
-        if(ping != null)
-            ping.cancel();
         try{
             if(socket != null)
             {
@@ -457,18 +459,9 @@ public class ServerClientHandler implements Runnable {
                     obj = in.readObject();
                 } catch (SocketTimeoutException ex){
                     timeOut();
-                    /*
-                    System.out.println("......"+ex.getMessage());
-                    //socket.close();
-
-                    //Thread.currentThread().interrupt();
-                    obj = null;
-                    //return null;
-                     */
                 }
             }
         }while ((obj instanceof PingClient || obj == null) && !turnTimesUp);
-        //}while ((obj instanceof PingClient || obj == null) && !turnTimesUp);
 
         if(turnTimesUp){
             System.out.println(this.name+"'S TURN TIME'S UP!");
@@ -490,5 +483,10 @@ public class ServerClientHandler implements Runnable {
             timerDisconnection = new TimerDisconnection(this,timeOut,reconnectionPeriod);
             timeOut.scheduleAtFixedRate(timerDisconnection, 0, reconnectionPeriod*1000, TimeUnit.MILLISECONDS);
         }
+    }
+
+    public void timesUp(){
+        virtualView.notify(new DisconnectionClient(this.name,true));
+        //this.turnTimesUp = true;
     }
 }

@@ -365,7 +365,8 @@ public class Controller implements Observer, ClientMessageHandler {
         if(!match.isEnded()){
             if(goOn) match.setNextPlayer();
 
-            match.getCurrentPlayer().getCard().initializeTurn();
+            if(match.getCurrentPlayer().getCard() != null)
+                match.getCurrentPlayer().getCard().initializeTurn();
             if(match.checkCurrentPlayerWin()) {
                 endMatch(match.getCurrentPlayer());
             }

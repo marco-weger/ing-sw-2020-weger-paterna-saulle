@@ -1,10 +1,15 @@
-![Santorini logo](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/logo.png)
+![Santorini logo](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/src/main/resources/it.polimi.ingsw/view/gui/img/scene/top.png)
 
 # Final project of Software Engineering - 2020
-## Team CG13
 
 This project was made between March and July 2020 as our final thesis project at Politecnico di Milano. <br>
 <!-- TODO: add final score -->
+
+## The CG13 Team
+- ####       Marco Weger ([@marco-weger](https://github.com/marco-weger))
+- ####       Francesco Paterna ([@FrancescoPaterna](https://github.com/FrancescoPaterna))
+- ####       Giulio Saulle ([@aGiulioSaulle](https://github.com/GiulioSaulle))
+
 ## How to start JARs
 
 You can find them under "deliverables/jars"
@@ -41,8 +46,6 @@ PATHTOJAVAFX is the path to JavaFX 12 (the lib folder!!) and changes depending o
 When reconnecting, remember to vote for the same map the game was being played on before disconnection!
 -->
 
-<br />
-
 ## Work progress
 | Functionality | State |
 |:-----------------------|:------------------------------------:|
@@ -60,8 +63,6 @@ When reconnecting, remember to vote for the same map the game was being played o
 [![GREEN](https://placehold.it/15/44bb44/44bb44)](#)
 -->
 
-<br />
-
 ## Santorini Official Server 
 Powered by Microsoft Azure
 
@@ -69,9 +70,4 @@ Powered by Microsoft Azure
 |:-------|:------|:-----:|
 | 40.84.XXX.XXX | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) &nbsp; Ready To Game| 03:00 |
 
-<br />
-
-## The CG13 Team
-- ####       Marco Weger ([@marco-weger](https://github.com/marco-weger))
-- ####       Francesco Paterna ([@FrancescoPaterna](https://github.com/FrancescoPaterna))
-- ####       Giulio Saulle ([@aGiulioSaulle](https://github.com/GiulioSaulle))
+![Santorini logo](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/src/main/resources/it.polimi.ingsw/view/gui/img/scene/bottom.png)

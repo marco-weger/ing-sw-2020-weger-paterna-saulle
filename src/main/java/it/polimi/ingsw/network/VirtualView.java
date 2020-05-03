@@ -5,10 +5,7 @@ import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
-import it.polimi.ingsw.commons.serverMessages.AvailableCardServer;
-import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
-import it.polimi.ingsw.commons.serverMessages.SomeoneLoseServer;
-import it.polimi.ingsw.commons.serverMessages.SomeoneWinServer;
+import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.Match;
@@ -164,8 +161,8 @@ public class VirtualView extends Observable implements Observer {
                 } catch (Exception ignored){}
             }
         }
-        else if(sm instanceof AvailableCardServer){
-            timerHandler(((AvailableCardServer) sm).name); // start timer
+        else if(sm instanceof AvailableCardServer || sm instanceof WorkerChosenServer){
+            timerHandler(sm.name); // start timer
         }else if(sm instanceof SomeoneWinServer){
             for(String name : connectedPlayers.keySet())
                 if(!name.equals(((SomeoneWinServer) sm).player))
