@@ -41,8 +41,6 @@ PATHTOJAVAFX is the path to JavaFX 12 (the lib folder!!) and changes depending o
 When reconnecting, remember to vote for the same map the game was being played on before disconnection!
 -->
 
-<br />
-
 ## Work progress
 | Functionality | State |
 |:-----------------------|:------------------------------------:|
@@ -59,8 +57,6 @@ When reconnecting, remember to vote for the same map the game was being played o
 [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#)
 [![GREEN](https://placehold.it/15/44bb44/44bb44)](#)
 -->
-
-<br />
 
 ## Santorini Official Server 
 Powered by Microsoft Azure
