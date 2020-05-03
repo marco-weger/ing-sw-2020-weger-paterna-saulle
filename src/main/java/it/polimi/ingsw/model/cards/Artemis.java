@@ -39,7 +39,6 @@ public class Artemis extends Card {
             if (current == null) return null;
             switch (current) {
                 case MOVED:
-                    //super.setActive(false);
                     return Status.QUESTION_M;
                 case QUESTION_M:
                     super.setActive(false);
@@ -86,18 +85,17 @@ public class Artemis extends Card {
             for (Player player : p)
                 if (player.getCard().getName().compareTo(this.getName()) == 0)
                     current = player;
-            if (current != null) {
-                if (current.getCurrentWorker() != null) {
-                    ArrayList<Cell> available = checkMove(p, b);
-                    //the worker can move in every direction, minus the starting point.
-                    //thus, the control if "to" equals the current worker starting point.
-                    if (available.contains(to) && !((current.getCurrentWorker().getRow()==to.getRow()) && current.getCurrentWorker().getColumn()==to.getColumn())) {
-                        lastMoved = b.getCell(current.getCurrentWorker().getRow(),current.getCurrentWorker().getColumn());
-                        current.getCurrentWorker().move(to.getRow(), to.getColumn());
 
-                        notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
-                        return true;
-                    }
+            if (current != null && current.getCurrentWorker() != null) {
+                ArrayList<Cell> available = checkMove(p, b);
+                //the worker can move in every direction, minus the starting point.
+                //thus, the control if "to" equals the current worker starting point.
+                if (available.contains(to) && !((current.getCurrentWorker().getRow()==to.getRow()) && current.getCurrentWorker().getColumn()==to.getColumn())) {
+                    lastMoved = b.getCell(current.getCurrentWorker().getRow(),current.getCurrentWorker().getColumn());
+                    current.getCurrentWorker().move(to.getRow(), to.getColumn());
+
+                    notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
+                    return true;
                 }
             }
         }
@@ -114,7 +112,7 @@ public class Artemis extends Card {
         if(lastMoved != null){
             available.remove(lastMoved);
         }
-        return available.size() > 0;
+        return !available.isEmpty();
     }
 
 }

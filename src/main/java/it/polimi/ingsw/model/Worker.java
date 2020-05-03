@@ -7,7 +7,12 @@ public class Worker implements Serializable {
     /**
      * Position of worker
      */
-    private int row,column;
+    private int row;
+
+    /**
+     * Position of worker
+     */
+    private int column;
 
     /**
      * It represents if this worker is the active one
@@ -24,8 +29,7 @@ public class Worker implements Serializable {
     }
 
     protected void setRow(int row) {
-        if(0<=row && row<5)
-        this.row = row;
+        if(0<=row && row<5) this.row = row;
     }
 
     public int getColumn() {
@@ -33,8 +37,7 @@ public class Worker implements Serializable {
     }
 
     protected void setColumn(int column) {
-        if(0<=column && column<5)
-        this.column = column;
+        if(0<=column && column<5) this.column = column;
     }
 
     public boolean isActive() {
