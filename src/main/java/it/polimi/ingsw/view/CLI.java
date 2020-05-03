@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class CLI implements ViewInterface {
@@ -25,7 +26,7 @@ public class CLI implements ViewInterface {
     /**
      * Color used to print the board
      */
-    public static final String[] color = new String[]{
+    protected static final String[] color = new String[]{
         TextFormatting.BACKGROUND_CYAN.toString() + TextFormatting.COLOR_BLACK, // lv 0
         TextFormatting.BACKGROUND_BRIGHT_WHITE.toString() + TextFormatting.COLOR_BLACK, // lv 1
         TextFormatting.BACKGROUND_WHITE.toString() + TextFormatting.COLOR_BLACK, // lv 2
@@ -36,7 +37,7 @@ public class CLI implements ViewInterface {
     /**
      * Color of cpu message
      */
-    private static final String colorCPU = TextFormatting.COLOR_CYAN.toString();
+    private static final String COLOR_CPU = TextFormatting.COLOR_CYAN.toString();
 
     /**
      * Random symbols for every match
@@ -92,7 +93,7 @@ public class CLI implements ViewInterface {
             println("");
             boolean go = true;
             do{
-                print(colorCPU+"Type cell where you want to move [x-y] " + TextFormatting.input());
+                print(COLOR_CPU +"Type cell where you want to move [x-y] " + TextFormatting.input());
                 SnapCell movingCell = readCell();
                 if(movingCell!=null){
                     for(SnapCell cell : message.sc){
@@ -103,7 +104,7 @@ public class CLI implements ViewInterface {
                     }
                 }
                 if(go)
-                    print(colorCPU+"Please insert a valid cell! ");
+                    print(COLOR_CPU +"Please insert a valid cell! ");
             }while(go && client.getContinueReading());
         }
     }
@@ -133,7 +134,7 @@ public class CLI implements ViewInterface {
             println("");
             boolean go = true;
             do{
-                print(colorCPU+"Type cell where you want to build [x-y] " + TextFormatting.input());
+                print(COLOR_CPU +"Type cell where you want to build [x-y] " + TextFormatting.input());
                 SnapCell movingCell = readCell();
                 if (movingCell != null) {
                     for(SnapCell cell : message.sc){
@@ -144,7 +145,7 @@ public class CLI implements ViewInterface {
                     }
                 }
                 if(go)
-                    print(colorCPU+"Please insert a valid cell! ");
+                    print(COLOR_CPU +"Please insert a valid cell! ");
             }while(go && client.getContinueReading());
         }
     }
@@ -169,7 +170,7 @@ public class CLI implements ViewInterface {
                 // second worker
                 SnapCell c;
                 do {
-                    print(colorCPU+"Type the position of second worker [x-y] " + TextFormatting.input());
+                    print(COLOR_CPU +"Type the position of second worker [x-y] " + TextFormatting.input());
                     c = getWorkerCell();
                 }while(c == null && client.getContinueReading());
                 if (c != null)
@@ -185,7 +186,7 @@ public class CLI implements ViewInterface {
                     // first worker
                     SnapCell c;
                     do {
-                        print(colorCPU+"Type the position of first worker [x-y] " + TextFormatting.input());
+                        print(COLOR_CPU +"Type the position of first worker [x-y] " + TextFormatting.input());
                         c = getWorkerCell();
                     }while(c == null && client.getContinueReading());
                     if (c != null)
@@ -213,14 +214,14 @@ public class CLI implements ViewInterface {
     public void handleMessage(QuestionAbilityServer message) { // TODO test
         do {
             clearLine();
-            println(colorCPU+"Type if you want to use the Ability of your God [YES/Y] or not [NO/N] " + TextFormatting.input());
+            println(COLOR_CPU +"Type if you want to use the Ability of your God [YES/Y] or not [NO/N] " + TextFormatting.input());
             String answer;
             answer = read();
-            if (answer.toUpperCase().equals("YES") || answer.toUpperCase().equals("Y")) {
+            if (answer.equalsIgnoreCase("YES") || answer.equalsIgnoreCase("Y")) {
                 client.sendMessage(new AnswerAbilityClient(client.getUsername(), true, message.status));
                 break;
             }
-            if (answer.toUpperCase().equals("NO") || answer.toUpperCase().equals("N")) {
+            if (answer.equalsIgnoreCase("NO") || answer.equalsIgnoreCase("N")) {
                 client.sendMessage(new AnswerAbilityClient(client.getUsername(), false, message.status));
                 break;
             }
@@ -238,18 +239,18 @@ public class CLI implements ViewInterface {
                     SnapCell c;
                     do { // first worker of the match
                         clearLine();
-                        print(colorCPU + "Type the position of first worker [x-y] " + TextFormatting.input());
+                        print(COLOR_CPU + "Type the position of first worker [x-y] " + TextFormatting.input());
                         c = getWorkerCell();
                     }while(c == null && client.getContinueReading());
                     if (c != null)
                         client.sendMessage(new WorkerInitializeClient(client.getUsername(),c.row,c.column));
                     break;
                 case START:
-                    println(colorCPU+"It's your turn!"+TextFormatting.RESET);
+                    println(COLOR_CPU +"It's your turn!"+TextFormatting.RESET);
                     println(TextFormatting.COLOR_YELLOW + "TIMER: " + (message.timer == 0 ? "inf." : message.timer)+TextFormatting.RESET);
                     boolean go = true;
                     clearLine();
-                    print(colorCPU+"Chose the worker to play with [x-y] " + TextFormatting.input());
+                    print(COLOR_CPU +"Chose the worker to play with [x-y] " + TextFormatting.input());
                     do {
                         c = readCell();
                         if(c != null){
@@ -263,9 +264,11 @@ public class CLI implements ViewInterface {
                         }
                         if(c != null && go){
                             clearLine();
-                            print(colorCPU+"Selected worker isn't valid, chose the worker to play with [x-y] " + TextFormatting.input());
+                            print(COLOR_CPU +"Selected worker isn't valid, chose the worker to play with [x-y] " + TextFormatting.input());
                         }
                     } while(go && client.getContinueReading());
+                    break;
+                default:
                     break;
             }
         }
@@ -300,11 +303,11 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(AvailableCardServer message) { // tested
-        if(message.cardName.size() == 0){
+        if(message.cardName.isEmpty()){
             // im the challenger
             ArrayList<CardName> chosen = new ArrayList<>();
 
-            println(colorCPU+"You are the challenger! Chose "+client.getPlayers().size()+" card from:");
+            println(COLOR_CPU +"You are the challenger! Chose "+client.getPlayers().size()+" card from:");
             printCard(new ArrayList<>(Arrays.asList(CardName.values())));
 
             // first
@@ -313,7 +316,7 @@ public class CLI implements ViewInterface {
             read = null;
             while(read == null && client.getContinueReading()){
                 clearLine();
-                print(colorCPU+"Type the first card [name] " + TextFormatting.input());
+                print(COLOR_CPU +"Type the first card [name] " + TextFormatting.input());
 
                 read = getCardName();
             }
@@ -323,7 +326,7 @@ public class CLI implements ViewInterface {
             read = null;
             while((read == null || chosen.contains(read)) && client.getContinueReading()){
                 clearLine();
-                print(colorCPU+"Type the second card [name] " + TextFormatting.input());
+                print(COLOR_CPU +"Type the second card [name] " + TextFormatting.input());
                 read = getCardName();
             }
             chosen.add(read);
@@ -333,7 +336,7 @@ public class CLI implements ViewInterface {
                 read = null;
                 while((read == null || chosen.contains(read)) && client.getContinueReading()){
                     clearLine();
-                    print(colorCPU+"Type the third card [name] " + TextFormatting.input());
+                    print(COLOR_CPU +"Type the third card [name] " + TextFormatting.input());
                     read = getCardName();
                 }
                 chosen.add(read);
@@ -343,13 +346,13 @@ public class CLI implements ViewInterface {
                 client.sendMessage(new ChallengerChoseClient(client.getUsername(), chosen));
         }
         else {
-            println(colorCPU+"The challenger has chosen! Select your card:");
+            println(COLOR_CPU +"The challenger has chosen! Select your card:");
             printCard(message.cardName);
             // first
             CardName read;
             do{
                 clearLine();
-                print(colorCPU+"Type the chosen one [name] " + TextFormatting.input());
+                print(COLOR_CPU +"Type the chosen one [name] " + TextFormatting.input());
                 String name;
                 name = read();
                 startEasterEgg(name);
@@ -363,7 +366,7 @@ public class CLI implements ViewInterface {
             if(client.getContinueReading())
                 client.sendMessage(new PlayerChoseClient(client.getUsername(), read));
         }
-        print(colorCPU+"Waiting for opponent's choice...");
+        print(COLOR_CPU +"Waiting for opponent's choice...");
     }
 
     private CardName getCardName() {
@@ -391,14 +394,14 @@ public class CLI implements ViewInterface {
         do{
             if(message.isFirstTime){
                 clearLine();
-                print(colorCPU + "Type your username (max 12 characters) " + TextFormatting.input());
+                print(COLOR_CPU + "Type your username (max 12 characters) " + TextFormatting.input());
             }
             else{
                 clearLine();
-                print(colorCPU + "The chosen one is not allowed, type new username (max 12 characters) " + TextFormatting.input());
+                print(COLOR_CPU + "The chosen one is not allowed, type new username (max 12 characters) " + TextFormatting.input());
             }
             String username = read();
-            print(colorCPU + "Validating username... " + TextFormatting.RESET);
+            print(COLOR_CPU + "Validating username... " + TextFormatting.RESET);
             this.client.setUsername(username);
             message.isFirstTime = false;
         }while (this.client.getUsername().isEmpty() || this.client.getUsername().length() > 12 || this.client.getUsername().matches("^\\s*$") && client.getContinueReading());
@@ -411,8 +414,6 @@ public class CLI implements ViewInterface {
         printTitle();
         try{
             client.setPlayers(message.players);
-            //println("DID IT!");
-            // color
             for(int i=0;i<client.getPlayers().size();i++){
                 client.getPlayers().get(i).symbol = symbols.charAt(i)+"";
                 if(i==0)
@@ -434,7 +435,7 @@ public class CLI implements ViewInterface {
         int mode;
         do{
             clearLine();
-            print(colorCPU + "Chose game mode (2 or 3 players) [2/3] " + TextFormatting.input());
+            print(COLOR_CPU + "Chose game mode (2 or 3 players) [2/3] " + TextFormatting.input());
             try
             {
                 String stringMode = read();
@@ -480,14 +481,14 @@ public class CLI implements ViewInterface {
         boolean go = true;
         while(go && client.getContinueReading()){
             go = false;
-            print(colorCPU + "Type [2/3] if you want to start a new game, [QUIT] if you want to close the game " + TextFormatting.input());
+            print(COLOR_CPU + "Type [2/3] if you want to start a new game, [QUIT] if you want to close the game " + TextFormatting.input());
             String text = read();
             if(text.equalsIgnoreCase("2") || text.equalsIgnoreCase("3")){
-                println(colorCPU + "MUST IMPLEMENT NEW LOBBY!" + TextFormatting.RESET);
+                println(COLOR_CPU + "MUST IMPLEMENT NEW LOBBY!" + TextFormatting.RESET);
                 client.resetMatch();
                 client.sendMessage(new ModeChoseClient(client.getUsername(),Integer.parseInt(text)));
             } else if(text.equalsIgnoreCase("QUIT")){
-                println(colorCPU + "Thank you for playing Santorini!" + TextFormatting.RESET);
+                println(COLOR_CPU + "Thank you for playing Santorini!" + TextFormatting.RESET);
                 client.sendMessage(new DisconnectionClient(client.getUsername(),false));
                 System.exit(1);
             } else go = true;
@@ -502,7 +503,7 @@ public class CLI implements ViewInterface {
     }
 
     public void startEasterEgg(String name){
-        if(name.toUpperCase().equals("NIKE")){
+        if(name.equalsIgnoreCase("NIKE")){
             println("PRINT EASTER EGG!");
         }
     }
@@ -555,20 +556,16 @@ public class CLI implements ViewInterface {
     private String currentPlayer = "";
     @Override
     public void statusHandler(CurrentStatusServer message){
-        if(client.getMyPlayer() != null){
-            if(!client.getMyPlayer().loser){
-                if(!message.player.equals(client.getUsername())){
-                    if (message.status == Status.CARD_CHOICE) {
-                        println(colorCPU+"Waiting for opponent's choice..." + TextFormatting.RESET);
-                    } else this.currentPlayer=message.player;
-                }
-            }
+        if(client.getMyPlayer() != null && !client.getMyPlayer().loser && !message.player.equals(client.getUsername())){
+            if (message.status == Status.CARD_CHOICE) {
+                println(COLOR_CPU +"Waiting for opponent's choice..." + TextFormatting.RESET);
+            } else this.currentPlayer=message.player;
         }
     }
 
     @Override
     public void close() {
-        println(colorCPU + "A network problem was encountered, please try again later!" + TextFormatting.RESET);
+        println(COLOR_CPU + "A network problem was encountered, please try again later!" + TextFormatting.RESET);
     }
 
     public void clearLine(){
@@ -594,7 +591,8 @@ public class CLI implements ViewInterface {
 
     public SnapCell readCell(){
         boolean go;
-        int x, y;
+        int x;
+        int y;
         try{
             String tmp = read();
             tmp = tmp.toUpperCase();
@@ -663,10 +661,8 @@ public class CLI implements ViewInterface {
         for (String s : print) println(s + TextFormatting.RESET);
 
 
-        if(!client.getMyPlayer().loser){
-            if(!currentPlayer.equals(client.getUsername())){
-                println(colorCPU+"Opponent turn, " + currentPlayer + " is playing..." + TextFormatting.RESET);
-            }
+        if(!client.getMyPlayer().loser && !currentPlayer.equals(client.getUsername())){
+            println(COLOR_CPU +"Opponent turn, " + currentPlayer + " is playing..." + TextFormatting.RESET);
         }
 
         if(client.getMyPlayer().loser)
@@ -784,7 +780,7 @@ public class CLI implements ViewInterface {
         return null;
     }
 
-    public void printLobby(Boolean loaded){
+    public void printLobby(boolean loaded){
         try {
             String[] toPrint = new String[7];
             Arrays.fill(toPrint, "");
@@ -831,7 +827,7 @@ public class CLI implements ViewInterface {
         } catch (Exception ex){ println(ex.getMessage());}
     }
 
-    public static void printCard(ArrayList<CardName> toPrint){
+    public static void printCard(List<CardName> toPrint){
         StringBuilder out;
         int max = 0;
         for(CardName cn : CardName.values())

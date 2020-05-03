@@ -2,13 +2,19 @@ package it.polimi.ingsw.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Cell implements Serializable {
 
     /**
-     * The row and the column
+     * The row
      */
-    private final int row, column;
+    private final int row;
+
+    /**
+     * The column
+     */
+    private final int column;
 
     /**
      * The level is a value from 0 (no buildings) to 4 (dome)
@@ -23,29 +29,7 @@ public class Cell implements Serializable {
 
     public int getRow() {return row;}
 
-    /*
-     * It checks for a row from 0 to 4
-     * @param row the row
-     */
-    /*
-    public void setRow(int row) {
-        if(row >= 0 && row <= 4)
-            this.row = row;
-    }
-     */
-
     public int getColumn() {return column;}
-
-    /*
-     * It checks for a column from 0 to 4
-     * @param column the column
-     */
-    /*
-    public void setColumn(int column) {
-        if(column >= 0 && column <= 4)
-            this.column = column;
-    }
-    */
 
     public int getLevel() {return level;}
 
@@ -63,17 +47,15 @@ public class Cell implements Serializable {
      * @param p list of players
      * @return true if occupied
      */
-    public boolean isOccupied(ArrayList<Player> p)
+    public boolean isOccupied(List<Player> p)
     {
         if(p != null){
             for(Player player:p){
-                if(player.getWorker1() != null){
-                    if(player.getWorker1().getRow() == this.row && player.getWorker1().getColumn() == this.column)
-                        return true;
+                if(player.getWorker1() != null && player.getWorker1().getRow() == this.row && player.getWorker1().getColumn() == this.column){
+                    return true;
                 }
-                if(player.getWorker2() != null){
-                    if(player.getWorker2().getRow() == this.row && player.getWorker2().getColumn() == this.column)
-                        return true;
+                if(player.getWorker2() != null && player.getWorker2().getRow() == this.row && player.getWorker2().getColumn() == this.column){
+                    return true;
                 }
             }
         }

@@ -2,13 +2,14 @@ package it.polimi.ingsw.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Board implements Serializable {
 
     /**
      * It is a 25 items list to represent the board
      */
-    private ArrayList<Cell> field;
+    private List<Cell> field;
 
     /**
      * The board is initialized with all cells at 0 level
@@ -20,11 +21,11 @@ public class Board implements Serializable {
                 field.add(new Cell(i,j,0));
     }
 
-    public ArrayList<Cell> getField() {
+    public List<Cell> getField() {
         return field;
     }
 
-    public void setField(ArrayList<Cell> field) {
+    public void setField(List<Cell> field) {
         this.field = field;
     }
 
@@ -37,7 +38,6 @@ public class Board implements Serializable {
             for(Cell cell:this.field)
                 if(cell.getRow() == c.getRow() && cell.getColumn() == c.getColumn())
                     return true;
-        //return (c.getRow() >= 0 && c.getRow() < 5 && c.getColumn() >= 0 && c.getColumn() < 5);
         return false;
     }
 
@@ -47,12 +47,10 @@ public class Board implements Serializable {
      * @param level the level
      */
     protected void build(Cell c, int level){
-        if(c != null){
-            if(isCellInBoard(c) && level >= 0 && level <= 4){
-                for(Cell inBoard : field){
-                    if(c.getRow() == inBoard.getRow() && c.getColumn() == inBoard.getColumn()){
-                        inBoard.setLevel(level);
-                    }
+        if(c != null && isCellInBoard(c) && level >= 0 && level <= 4){
+            for(Cell inBoard : field){
+                if(c.getRow() == inBoard.getRow() && c.getColumn() == inBoard.getColumn()){
+                    inBoard.setLevel(level);
                 }
             }
         }

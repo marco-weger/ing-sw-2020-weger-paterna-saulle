@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Atlas extends Card {
 
@@ -23,25 +24,23 @@ public class Atlas extends Card {
      * @return true if builded
      */
     @Override
-    public boolean build(ArrayList<Player> p, Board b, Cell in) {
+    public boolean build(List<Player> p, Board b, Cell in) {
         if(!(p == null || b == null || in == null)){
             Player current = null;
             for(Player player:p)
                 if(player.getCard().getName().compareTo(this.getName()) == 0)
                     current = player;
-            if(current != null) {
-                if(current.getCurrentWorker() != null){
-                    ArrayList<Cell> available = checkBuild(p,b);
-                    //check if "in" is contained in available.
-                    if(available.contains(in)){
-                        if(current.getCard().isActive()){
-                            available.get(available.indexOf(in)).setLevel(4);}
-                        else {
-                            available.get(available.indexOf(in)).setLevel(available.get(available.indexOf(in)).getLevel()+1);
-                        }
-                        notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(in)).getRow(),available.get(available.indexOf(in)).getColumn(),available.get(available.indexOf(in)).getLevel())));
-                        return true;
+            if(current != null && current.getCurrentWorker() != null) {
+                List<Cell> available = checkBuild(p,b);
+                //check if "in" is contained in available.
+                if(available.contains(in)){
+                    if(current.getCard().isActive()){
+                        available.get(available.indexOf(in)).setLevel(4);}
+                    else {
+                        available.get(available.indexOf(in)).setLevel(available.get(available.indexOf(in)).getLevel()+1);
                     }
+                    notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(in)).getRow(),available.get(available.indexOf(in)).getColumn(),available.get(available.indexOf(in)).getLevel())));
+                    return true;
                 }
             }
         }

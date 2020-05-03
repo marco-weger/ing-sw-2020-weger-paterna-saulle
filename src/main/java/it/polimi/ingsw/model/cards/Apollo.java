@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Apollo extends Card {
 
@@ -21,20 +22,20 @@ public class Apollo extends Card {
      * @return list of available cells
      */
     @Override
-    public ArrayList<Cell> checkMove(ArrayList<Player> p, Board b){
+    public List<Cell> checkMove(List<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
-        boolean OTAbility = false;                                                  /*THIS LINE MAKE "OPPONENT'S TURN ABILITIES" DOMINANT ON APOLLO*/
+        boolean OtAbility = false;                                                  /*THIS LINE MAKE "OPPONENT'S TURN ABILITIES" DOMINANT ON APOLLO*/
         for(Player player:p) {
             if (player.getCard().getName().compareTo(this.getName()) == 0) {
                 actived = player.getCurrentWorker();
             }
             if (player.getCard().isOpponent() && player.getCard().isActive()) {     /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON APOLLO*/
-                OTAbility = true;                                                   /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON APOLLO*/
+                OtAbility = true;                                                   /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON APOLLO*/
             }                                                                       /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON APOLLO*/
         }
         if(actived == null) return new ArrayList<>();
-        ArrayList<Cell> ret = super.checkMove(p, b);
+        List<Cell> ret = super.checkMove(p, b);
 
         for(Player player:p){
             if(player.getCard().getName().compareTo(this.getName()) != 0){
@@ -52,7 +53,7 @@ public class Apollo extends Card {
                 player.setCurrentWorker(0);
             }
         }
-        if(OTAbility){                                                                                                                                                                                                              /*THIS LINE MAKE ATHENA DOMINANT ON APOLLO*/
+        if(OtAbility){                                                                                                                                                                                                              /*THIS LINE MAKE ATHENA DOMINANT ON APOLLO*/
             for (Cell c : b.getField())                                                                                                                                                                                             /*THIS LINE MAKE ATHENA DOMINANT ON APOLLO*/
                 if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() == actived.getLevel(b) + 1 && c.isOccupied(p))                           /*THIS LINE MAKE ATHENA DOMINANT ON APOLLO*/
                     ret.remove(c);
@@ -68,7 +69,7 @@ public class Apollo extends Card {
      * @return true if moved
      */
     @Override
-    public boolean move(ArrayList<Player> p, Board b, Cell to){
+    public boolean move(List<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {
             Player current = null;
 

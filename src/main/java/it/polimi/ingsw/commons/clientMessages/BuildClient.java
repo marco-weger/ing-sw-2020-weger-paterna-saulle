@@ -7,7 +7,8 @@ public class BuildClient extends ClientMessage {
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    public final int x, y;
+    public final int x;
+    public final int y;
 
     /**
      *This messagge will be send to the server from the client with the decision of the player about where Build.

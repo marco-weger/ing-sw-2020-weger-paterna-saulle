@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Athena extends Card {
 
@@ -25,7 +26,7 @@ public class Athena extends Card {
      * @return list of opponent's blocked cell
      */
     @Override
-    protected ArrayList<Cell> activeBlock(ArrayList<Player> p, Board b, Worker w,  Status current) {
+    protected List<Cell> activeBlock(List<Player> p, Board b, Worker w,  Status current) {
         if(p == null || b == null ) return new ArrayList<>(0);
         ArrayList<Cell> ret = new ArrayList<>();
         if(current == Status.QUESTION_M){
@@ -43,25 +44,23 @@ public class Athena extends Card {
      * @param to where to move
      */
     @Override
-    public boolean move(ArrayList<Player> p, Board b, Cell to){
+    public boolean move(List<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {
             Player current = null;
             for (Player player : p)
                 if (player.getCard().getName().compareTo(this.getName()) == 0)
                     current = player;
-            if (current != null) {
-                if (current.getCurrentWorker() != null) {
-                    ArrayList<Cell> available = checkMove(p, b);
-                    for (Player player : p)
-                        if (player.getCard().isOpponent() && player.getCard().isActive() && player != current)
-                            available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_M));
-                    if (available.contains(to)) {
-                       if(to.getLevel() == current.getCurrentWorker().getLevel(b) + 1)
-                            current.getCard().setActive(true);
-                        current.getCurrentWorker().move(to.getRow(), to.getColumn());
-                        notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
-                        return true;
-                    }
+            if (current != null && current.getCurrentWorker() != null) {
+                List<Cell> available = checkMove(p, b);
+                for (Player player : p)
+                    if (player.getCard().isOpponent() && player.getCard().isActive() && player != current)
+                        available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_M));
+                if (available.contains(to)) {
+                   if(to.getLevel() == current.getCurrentWorker().getLevel(b) + 1)
+                        current.getCard().setActive(true);
+                    current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                    notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
+                    return true;
                 }
             }
         }

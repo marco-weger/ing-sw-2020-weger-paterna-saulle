@@ -10,6 +10,7 @@ import it.polimi.ingsw.network.VirtualView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Card extends Observable implements Serializable {
 
@@ -82,7 +83,7 @@ public class Card extends Observable implements Serializable {
      * @param b board
      * @return list of cells where active worker could build
      */
-    public ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b)
+    public List<Cell> checkBuild(List<Player> p, Board b)
     {
         if(p == null || b == null) return new ArrayList<>();
         Worker actived = null;
@@ -102,7 +103,7 @@ public class Card extends Observable implements Serializable {
      * @param b board
      * @return list of cells where active worker could move
      */
-    public ArrayList<Cell> checkMove(ArrayList<Player> p, Board b){
+    public List<Cell> checkMove(List<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
         for(Player player:p)
@@ -127,7 +128,7 @@ public class Card extends Observable implements Serializable {
      * @param b board
      * @param current current state of current turn
      */
-    protected ArrayList<Cell> activeBlock(ArrayList<Player> p, Board b, Worker w,  Status current){
+    protected List<Cell> activeBlock(List<Player> p, Board b, Worker w,  Status current){
         return new ArrayList<>();
     }
 
@@ -136,23 +137,21 @@ public class Card extends Observable implements Serializable {
      * @param b board
      * @param to where to move
      */
-    public boolean move(ArrayList<Player> p, Board b, Cell to){
+    public boolean move(List<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {
             Player current = null;
             for (Player player : p)
                 if (player.getCard().getName().compareTo(this.getName()) == 0)
                     current = player;
-            if (current != null) {
-                if (current.getCurrentWorker() != null) {
-                    ArrayList<Cell> available = checkMove(p, b);
-                    for (Player player : p)
-                        if (player.getCard().isOpponent() && player.getCard().isActive())
-                            available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_M));
-                        if (available.contains(to)) {
-                            current.getCurrentWorker().move(to.getRow(), to.getColumn());
-                            notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
-                        return true;
-                    }
+            if (current != null && current.getCurrentWorker() != null) {
+                List<Cell> available = checkMove(p, b);
+                for (Player player : p)
+                    if (player.getCard().isOpponent() && player.getCard().isActive())
+                        available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_M));
+                    if (available.contains(to)) {
+                        current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                        notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
+                    return true;
                 }
             }
         }
@@ -164,23 +163,21 @@ public class Card extends Observable implements Serializable {
      * @param b board
      * @param to where to build
      */
-    public boolean build(ArrayList<Player> p, Board b, Cell to){
+    public boolean build(List<Player> p, Board b, Cell to){
         if(!(p == null || b == null || to == null)){
             Player current = null;
             for(Player player:p)
                 if(player.getCard().getName().compareTo(this.getName()) == 0)
                     current = player;
-            if(current != null) {
-                if(current.getCurrentWorker() != null){
-                    ArrayList<Cell> available = checkBuild(p,b);
-                    for(Player player:p)
-                        if(player.getCard().getName().compareTo(this.getName()) != 0)
-                            available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_B));
-                    if(available.contains(to)){
-                        available.get(available.indexOf(to)).setLevel(available.get(available.indexOf(to)).getLevel()+1);
-                        notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(to)).getRow(),available.get(available.indexOf(to)).getColumn(),available.get(available.indexOf(to)).getLevel())));
-                        return true;
-                    }
+            if(current != null && current.getCurrentWorker() != null) {
+                List<Cell> available = checkBuild(p,b);
+                for(Player player:p)
+                    if(player.getCard().getName().compareTo(this.getName()) != 0)
+                        available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_B));
+                if(available.contains(to)){
+                    available.get(available.indexOf(to)).setLevel(available.get(available.indexOf(to)).getLevel()+1);
+                    notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(to)).getRow(),available.get(available.indexOf(to)).getColumn(),available.get(available.indexOf(to)).getLevel())));
+                    return true;
                 }
             }
         }
@@ -216,8 +213,8 @@ public class Card extends Observable implements Serializable {
      * @param p players
      * @param b the board
      */
-    public ArrayList<SnapCell> getCheckMove(ArrayList<Player> p, Board b){
-        ArrayList<Cell> available = this.checkMove(p,b);
+    public List<SnapCell> getCheckMove(List<Player> p, Board b){
+        List<Cell> available = this.checkMove(p,b);
         ArrayList<SnapCell> snap = new ArrayList<>();
         for(Cell c:available)
             snap.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));
@@ -234,8 +231,8 @@ public class Card extends Observable implements Serializable {
      * @param p players
      * @param b the board
      */
-    public ArrayList<SnapCell> getCheckBuild(ArrayList<Player> p, Board b){
-        ArrayList<Cell> available = this.checkBuild(p,b);
+    public List<SnapCell> getCheckBuild(List<Player> p, Board b){
+        List<Cell> available = this.checkBuild(p,b);
         ArrayList<SnapCell> snap = new ArrayList<>();
         for(Cell c:available)
             snap.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));
@@ -252,7 +249,7 @@ public class Card extends Observable implements Serializable {
      * @param b board
      * @return true if you could activate ability in this turn
      */
-    public boolean activable(ArrayList<Player> p, Board b){
+    public boolean activable(List<Player> p, Board b){
         return true;
     }
 
@@ -261,7 +258,7 @@ public class Card extends Observable implements Serializable {
      * @param b board
      * @return It checks if current player doesn't have move, and update workers status
      */
-    public boolean hasLost(ArrayList<Player> p, Board b) {
+    public boolean hasLost(List<Player> p, Board b) {
         if(p == null || b == null) return false;
         Player current = null;
         for (Player player : p) {
@@ -274,10 +271,10 @@ public class Card extends Observable implements Serializable {
         }
 
         current.setCurrentWorker(1);
-        if (current.getCard().checkMove(p, b).size() == 0) {
+        if (current.getCard().checkMove(p, b).isEmpty()) {
             current.setCurrentWorker(2);
 
-            if (current.getCard().checkMove(p, b).size() == 0) {
+            if (current.getCard().checkMove(p, b).isEmpty()) {
                 current.getCurrentWorker().move(-1, -1);
                 current.setCurrentWorker(1);
                 current.getCurrentWorker().move(-1, -1);
