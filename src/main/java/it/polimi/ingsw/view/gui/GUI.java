@@ -20,8 +20,8 @@ import java.util.concurrent.CountDownLatch;
 
 public class GUI extends Application implements ViewInterface {
 
-    int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
-    int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
+    //int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
+    //int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
     int sceneWidth = 0;
     int sceneHeight = 0;
 
@@ -93,7 +93,7 @@ public class GUI extends Application implements ViewInterface {
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
         stage.getIcons().add(new Image("/it.polimi.ingsw/view/gui/img/icon.png"));
-
+        stage.setTitle("Santorini");
 
         controller.stage = stage;
 

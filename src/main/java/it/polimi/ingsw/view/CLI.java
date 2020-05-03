@@ -7,7 +7,6 @@ import it.polimi.ingsw.commons.clientMessages.*;
 import it.polimi.ingsw.commons.serverMessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;

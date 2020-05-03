@@ -7,11 +7,9 @@
 }
 .play {
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/play.png");
-    /*-fx-background-size: 184px auto;*/
     -fx-background-size: 90% auto;
 }
 .play:hover{
-    /*-fx-background-size: 194px auto;*/
     -fx-background-size: 100% auto;
 }
 .help{
