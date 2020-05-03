@@ -1,10 +1,15 @@
 ![Santorini logo](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/src/main/resources/it.polimi.ingsw/view/gui/img/scene/top.png)
 
 # Final project of Software Engineering - 2020
-## Team CG13
 
 This project was made between March and July 2020 as our final thesis project at Politecnico di Milano. <br>
 <!-- TODO: add final score -->
+
+## The CG13 Team
+- ####       Marco Weger ([@marco-weger](https://github.com/marco-weger))
+- ####       Francesco Paterna ([@FrancescoPaterna](https://github.com/FrancescoPaterna))
+- ####       Giulio Saulle ([@aGiulioSaulle](https://github.com/GiulioSaulle))
+
 ## How to start JARs
 
 You can find them under "deliverables/jars"
@@ -64,10 +69,5 @@ Powered by Microsoft Azure
 | Server | State | Turn Timer |
 |:-------|:------|:-----:|
 | 40.84.XXX.XXX | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) &nbsp; Ready To Game| 03:00 |
-
-## The CG13 Team
-- ####       Marco Weger ([@marco-weger](https://github.com/marco-weger))
-- ####       Francesco Paterna ([@FrancescoPaterna](https://github.com/FrancescoPaterna))
-- ####       Giulio Saulle ([@aGiulioSaulle](https://github.com/GiulioSaulle))
 
 ![Santorini logo](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/src/main/resources/it.polimi.ingsw/view/gui/img/scene/bottom.png)
