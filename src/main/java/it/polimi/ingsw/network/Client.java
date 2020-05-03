@@ -43,16 +43,22 @@ public class Client implements Runnable{
     int port;
 
     public Client(){
+        // DEFAULT
+        this.pingPeriod = 5;
         this.board = new ArrayList<>();
+        this.workers=new ArrayList<>();
+        this.players = new ArrayList<>();
+        resetMatch();
+    }
+
+    public void resetMatch(){
+        this.board.clear();
         for(int i=0; i<5; i++){
             for(int j=0; j<5; j++)
                 board.add(new SnapCell(i,j,0));
         }
-        this.workers=new ArrayList<>();
-        this.players = new ArrayList<>();
-
-        // DEFAULT
-        this.pingPeriod = 5;
+        this.workers.clear();
+        this.players.clear();
     }
 
     public ArrayList<SnapPlayer> getPlayers(){ return players; }
@@ -266,7 +272,8 @@ public class Client implements Runnable{
             }
         }
         catch (Exception e){
-            System.out.println("RUNNING ERROR... "+e.getMessage());
+            e.printStackTrace();
+            System.out.println("RUNNING ERROR... ");
             System.exit(0);
         }
     }

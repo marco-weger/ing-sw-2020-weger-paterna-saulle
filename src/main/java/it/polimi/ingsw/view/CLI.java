@@ -485,6 +485,7 @@ public class CLI implements ViewInterface {
             String text = read();
             if(text.equalsIgnoreCase("2") || text.equalsIgnoreCase("3")){
                 println(colorCPU + "MUST IMPLEMENT NEW LOBBY!" + TextFormatting.RESET);
+                client.resetMatch();
                 client.sendMessage(new ModeChoseClient(client.getUsername(),Integer.parseInt(text)));
             } else if(text.equalsIgnoreCase("QUIT")){
                 println(colorCPU + "Thank you for playing Santorini!" + TextFormatting.RESET);
