@@ -81,7 +81,7 @@ public class Apollo extends Card {
                     if(to.isOccupied(p)){
                         for (Player player : p){
                             if (player.getCard().getName().compareTo(this.getName()) != 0){
-                                if(player.getWorker1().getRow() == to.getRow() && player.getWorker1().getRow() == to.getRow()){
+                                if(player.getWorker1().getRow() == to.getRow() && player.getWorker1().getColumn() == to.getColumn()){
                                         player.getWorker1().move(current.getCurrentWorker().getRow(), current.getCurrentWorker().getColumn());
                                         notifyObservers(new MovedServer(new SnapWorker(current.getCurrentWorker().getRow(), current.getCurrentWorker().getColumn(), player.getName(), 1)));
 
@@ -89,7 +89,7 @@ public class Apollo extends Card {
                                         notifyObservers(new MovedServer(new SnapWorker(to.getRow(), to.getColumn(), current.getName(), current.getWorker1().isActive() ? 1 : 2)));
                                         return true;
                                 }
-                                else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getRow() == to.getRow()){
+                                else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getColumn() == to.getColumn()){
                                         player.getWorker2().move(current.getCurrentWorker().getRow(), current.getCurrentWorker().getColumn());
                                         notifyObservers(new MovedServer(new SnapWorker(current.getCurrentWorker().getRow(), current.getCurrentWorker().getColumn(), player.getName(), 2)));
 

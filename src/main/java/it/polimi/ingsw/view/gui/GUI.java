@@ -22,8 +22,8 @@ public class GUI extends Application implements ViewInterface {
 
     //int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
     //int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
-    int sceneWidth = 0;
-    int sceneHeight = 0;
+    double sceneWidth = 0;
+    double sceneHeight = 0;
 
     Scene scene;
     Parent root;
@@ -67,7 +67,7 @@ public class GUI extends Application implements ViewInterface {
             e.printStackTrace();
         }
 
-        int limitY = 190* sceneWidth /1300;
+        double limitY = 190* sceneWidth /1300;
 
         controller.top.setMinWidth(sceneWidth);
         controller.top.setMinHeight(limitY);
@@ -90,11 +90,10 @@ public class GUI extends Application implements ViewInterface {
         scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
 
         stage = new Stage();
+        stage.setTitle("Santorini");
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
         stage.getIcons().add(new Image("/it.polimi.ingsw/view/gui/img/icon.png"));
-        stage.setTitle("Santorini");
-
         controller.stage = stage;
 
         stage.setScene(scene);

@@ -42,7 +42,7 @@ public class HomeController extends DefaultController{
     try{
         root = FXMLLoader.load(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Rules.fxml"));
         Stage rules = new Stage();
-        rules.setTitle("Santorini RulesController");
+        rules.setTitle("Santorini Rules");
         rules.setScene(new Scene(root));
 
         int width = 1300;
