@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 public class SnapCell implements Serializable {
 
-    public int row, column, level;
+    final public int row;
+    final public int column;
+    public int level;
 
     /**
      *

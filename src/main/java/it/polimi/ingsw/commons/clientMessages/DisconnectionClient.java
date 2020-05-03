@@ -7,7 +7,7 @@ public class DisconnectionClient extends ClientMessage {
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    public boolean isTimesUp;
+    public final boolean isTimesUp;
 
     /**
      * This message will be sent to the client from server in case of a disconnection request.

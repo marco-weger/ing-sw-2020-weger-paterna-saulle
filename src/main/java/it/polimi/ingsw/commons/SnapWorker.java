@@ -4,8 +4,10 @@ import java.io.Serializable;
 
 public class SnapWorker implements Serializable {
 
-    public String name;
-    public int row, column, n;
+    final public String name;
+    public int row;
+    public int column;
+    final public int n;
 
     /**
      *

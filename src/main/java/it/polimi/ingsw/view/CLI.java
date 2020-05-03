@@ -20,7 +20,7 @@ public class CLI implements ViewInterface {
     /**
      * Client with socket connection
      */
-    Client client;
+    final Client client;
 
     /**
      * Color used to print the board

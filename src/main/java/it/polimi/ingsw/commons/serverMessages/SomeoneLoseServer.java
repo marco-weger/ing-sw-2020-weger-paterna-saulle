@@ -7,9 +7,9 @@ public class SomeoneLoseServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public String player;
+    final public String player;
 
-    public boolean isTimesUp;
+    final public boolean isTimesUp;
 
     /**
      * The players receive this message when someone lose

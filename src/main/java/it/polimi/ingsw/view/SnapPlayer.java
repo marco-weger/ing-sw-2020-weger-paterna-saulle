@@ -7,7 +7,7 @@ public class SnapPlayer {
     /**
      * The name
      */
-    public String name;
+    final public String name;
 
     /**
      * The symbol used in CLI version

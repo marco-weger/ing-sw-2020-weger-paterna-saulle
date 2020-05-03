@@ -8,7 +8,7 @@ public class BuiltServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public SnapCell sc;
+    public final SnapCell sc;
 
     /**
      * The players receive this message with the modified board, after a built

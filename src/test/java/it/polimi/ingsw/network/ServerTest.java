@@ -1,10 +1,6 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.commons.clientMessages.ConnectionClient;
 import org.junit.Test;
-
-
-import static org.junit.Assert.*;
 
 public class ServerTest {
 

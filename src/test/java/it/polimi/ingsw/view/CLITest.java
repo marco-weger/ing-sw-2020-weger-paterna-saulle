@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+/*
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.model.cards.CardName;
@@ -8,6 +9,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+*/
 
 public class CLITest {
     /*

@@ -44,7 +44,7 @@ public enum TextFormatting {
     INVERSE("\u001B[7m"),
     RESET("\u001B[0m");
 
-    private String escape;
+    private final String escape;
 
     TextFormatting(String escape)
     {

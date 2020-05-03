@@ -8,7 +8,7 @@ public class QuestionAbilityServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public Status status;
+    final public Status status;
 
     /**
      * The player receives this message when his card

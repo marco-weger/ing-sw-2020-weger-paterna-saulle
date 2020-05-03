@@ -7,7 +7,7 @@ public class SomeoneWinServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public String player;
+    final public String player;
 
     /**
      * The players receive this message when someone win

@@ -10,7 +10,7 @@ public class CheckMoveServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public ArrayList<SnapCell> sc;
+    public final ArrayList<SnapCell> sc;
 
     /**
      * The player receives a list of movable cells

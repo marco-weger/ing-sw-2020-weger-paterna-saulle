@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.ClientMessageHandler;
 import java.io.Serializable;
 
 public abstract class ClientMessage implements Serializable {
-    public String name;
+    public final String name;
 
     public abstract void accept(ClientMessageHandler cmh);
 

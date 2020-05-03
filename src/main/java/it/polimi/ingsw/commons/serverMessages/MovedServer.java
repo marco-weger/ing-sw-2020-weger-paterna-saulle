@@ -8,7 +8,7 @@ public class MovedServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public SnapWorker sw;
+    public final SnapWorker sw;
 
     /**
      * The players receive this message whit the modified board, after a movement

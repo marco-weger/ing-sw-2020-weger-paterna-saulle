@@ -1,12 +1,9 @@
 package it.polimi.ingsw.model;
+
 import it.polimi.ingsw.model.cards.CardName;
-import it.polimi.ingsw.model.cards.FactoryCard;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 
 public class PlayerTest {

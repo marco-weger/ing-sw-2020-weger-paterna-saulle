@@ -10,7 +10,7 @@ public class AvailableCardServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public ArrayList<CardName> cardName;
+    public final ArrayList<CardName> cardName;
 
     /**
      * The challenger will receive this message with an empty ArrayList

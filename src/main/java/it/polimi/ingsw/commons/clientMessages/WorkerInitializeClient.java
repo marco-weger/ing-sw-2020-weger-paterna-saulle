@@ -8,7 +8,7 @@ public class WorkerInitializeClient extends ClientMessage {
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    public int x, y;
+    final public int x, y;
 
     /**
      * This messagge will be send to the server from the client with the decision of the current player about the initial location of the worker

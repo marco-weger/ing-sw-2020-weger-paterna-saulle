@@ -7,8 +7,8 @@ public class TimeOutServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public int n, of;
-    public String player;
+    final public int n, of;
+    final public String player;
 
     public TimeOutServer(String name, String player, int n, int of){
         super(name);

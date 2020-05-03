@@ -1,14 +1,15 @@
 package it.polimi.ingsw.model;
+
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.cards.CardName;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class MatchTest {

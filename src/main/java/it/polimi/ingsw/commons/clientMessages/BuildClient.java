@@ -1,15 +1,13 @@
 package it.polimi.ingsw.commons.clientMessages;
 
-import it.polimi.ingsw.controller.ClientMessageHandler;
 import it.polimi.ingsw.commons.ClientMessage;
-
-import java.io.Serializable;
+import it.polimi.ingsw.controller.ClientMessageHandler;
 
 public class BuildClient extends ClientMessage {
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    public int x, y;
+    public final int x, y;
 
     /**
      *This messagge will be send to the server from the client with the decision of the player about where Build.

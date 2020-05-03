@@ -7,7 +7,7 @@ public class TimerTurn extends TimerTask {
     /**
      * The client
      */
-    ServerClientHandler sch;
+    final ServerClientHandler sch;
 
     /**
      * @param sch the client

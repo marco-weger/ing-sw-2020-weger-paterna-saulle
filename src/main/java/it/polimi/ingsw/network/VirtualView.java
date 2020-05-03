@@ -68,9 +68,9 @@ public class VirtualView extends Observable implements Observer {
         this.currentStatus = Status.NAME_CHOICE;
         this.lastMessage = null;
         // FIXME remove Controller attribute
-        c = new Controller(this);
-        addObserver(c);
-        //addObserver(new Controller(this));
+        //c = new Controller(this);
+        //addObserver(c);
+        addObserver(new Controller(this));
         this.losers = new ArrayList<>();
     }
 

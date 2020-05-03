@@ -28,8 +28,8 @@ public class Client implements Runnable{
     ObjectInputStream in;
     ObjectOutputStream out;
     String username;
-    protected ArrayList<SnapCell> board;
-    protected ArrayList<SnapWorker> workers;
+    protected final ArrayList<SnapCell> board;
+    protected final ArrayList<SnapWorker> workers;
     protected ArrayList<SnapPlayer> players;
 
     private int pingPeriod;

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Observable {
 
-    ArrayList<Observer> observers = new ArrayList<>();
+    final ArrayList<Observer> observers = new ArrayList<>();
 
     public void addObserver(Observer o){
         if(observers.contains(o))

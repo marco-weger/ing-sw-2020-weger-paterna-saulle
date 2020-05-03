@@ -8,8 +8,8 @@ public class CurrentStatusServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public String player;
-    public Status status;
+    public final String player;
+    public final Status status;
 
     /**
      * True if the player could move the first worker

@@ -15,6 +15,7 @@ import static org.junit.Assert.*;
 
 public class VirtualViewTest {
 
+    /*
     VirtualView vv;
     //It tests match initialization and first turn by ATLAS
     @Test
@@ -71,5 +72,6 @@ public class VirtualViewTest {
         assertEquals(vv.c.getMatch().getStatus(),Status.START);
         assertEquals(vv.c.getMatch().getCurrentPlayer().getName(),"Giulio");
     }
+    */
 
 }

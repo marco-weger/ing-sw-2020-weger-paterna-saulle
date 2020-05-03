@@ -8,8 +8,8 @@ public class CardChosenServer  extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public String player;
-    public CardName cardName;
+    public final String player;
+    public final CardName cardName;
 
     /**
      * The player receives the card chosen

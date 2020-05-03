@@ -14,7 +14,7 @@ public class ModeChoseClient extends ClientMessage {
     @Deprecated
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    public int mode;
+    public final int mode;
     public ServerClientHandler sch;
 
     public ModeChoseClient(String name, int mode){

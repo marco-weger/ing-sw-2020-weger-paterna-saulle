@@ -9,8 +9,8 @@ public class LobbyServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public ArrayList<String> players;
-    public boolean loaded;
+    public final ArrayList<String> players;
+    public final boolean loaded;
 
     /**
      * The players receive this message after choosing which mode

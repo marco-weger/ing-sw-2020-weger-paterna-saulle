@@ -10,12 +10,12 @@ public class TimerDisconnection implements Runnable {
     /**
      * The client
      */
-    ServerClientHandler sch;
+    final ServerClientHandler sch;
 
     /**
      * Thread
      */
-    ScheduledExecutorService ses;
+    final ScheduledExecutorService ses;
 
     /**
      * The counter of execution
@@ -25,7 +25,7 @@ public class TimerDisconnection implements Runnable {
     /**
      * Period for a reconnection check
      */
-    int reconnectionPeriod;
+    final int reconnectionPeriod;
 
     /**
      * True while the timer is running

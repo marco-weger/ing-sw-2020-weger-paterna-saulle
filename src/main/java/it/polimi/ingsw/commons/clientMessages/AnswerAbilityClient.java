@@ -8,8 +8,8 @@ public class AnswerAbilityClient extends ClientMessage {
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    public Status type;
-    public boolean ability;
+    public final Status type;
+    public final boolean ability;
 
     /**
      * This messagge will be send to the server from the client with the decision of the current player about switch on or not his God ability.
