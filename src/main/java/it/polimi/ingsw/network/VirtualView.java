@@ -5,7 +5,6 @@ import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
-import it.polimi.ingsw.commons.clientMessages.ReConnectionClient;
 import it.polimi.ingsw.commons.serverMessages.AvailableCardServer;
 import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
 import it.polimi.ingsw.commons.serverMessages.SomeoneLoseServer;
@@ -41,10 +40,10 @@ public class VirtualView extends Observable implements Observer {
      */
     private Status currentStatus;
 
-    /*
+    /**
      * Last message from server to client
      */
-    //private final ServerMessage lastMessage;
+    private final ServerMessage lastMessage;
 
     /**
      * List of losers
@@ -70,7 +69,7 @@ public class VirtualView extends Observable implements Observer {
         this.ended = false;
         this.connectedPlayers = new HashMap<>();
         this.currentStatus = Status.NAME_CHOICE;
-        //this.lastMessage = null;
+        this.lastMessage = null;
         // FIXME remove Controller attribute
         c = new Controller(this);
         addObserver(c);
@@ -91,7 +90,7 @@ public class VirtualView extends Observable implements Observer {
             connectedPlayers.put(p.getName(),null);
         this.currentStatus = match.getStatus();
         addObserver(new Controller(this,match));
-        //this.lastMessage=lastMessage;
+        this.lastMessage=lastMessage;
         this.losers = new ArrayList<>();
         for(Player p : match.getLosers())
             this.losers.add(p.getName());
@@ -117,6 +116,9 @@ public class VirtualView extends Observable implements Observer {
      */
     public boolean isEnded() { return ended; }
 
+    /**
+     * @return the timer of a single turn
+     */
     public Timer getTurn(){ return turn;}
 
     /**
@@ -126,7 +128,7 @@ public class VirtualView extends Observable implements Observer {
     protected void notify(ClientMessage message) {
         if(message instanceof ModeChoseClient){ // if it is a new player i add to list
             connectedPlayers.put(message.name,((ModeChoseClient) message).sch);
-        } //else if(message instanceof ReConnectionClient){ // if it is a new player i add to list
+        } //else if(message instanceof ReConnectionClient){ //  TODO if it is a new player i add to list
             //connectedPlayers.remove(message.name);
             //connectedPlayers.put(message.name,((ReConnectionClient) message).sch);
             //if(!this.getConnectedPlayers().containsValue(null)){
@@ -154,7 +156,7 @@ public class VirtualView extends Observable implements Observer {
 
             if((currentStatus.equals(Status.START) || currentStatus.equals(Status.WORKER_CHOICE)) && server != null){
                 ((CurrentStatusServer) sm).timer = server.getTurnTimer();
-                timerHandler(((CurrentStatusServer) sm).player);
+                timerHandler(((CurrentStatusServer) sm).player); // start timer
             } else if(currentStatus.equals(Status.END)){
                 ended = true;
                 try{
@@ -163,7 +165,7 @@ public class VirtualView extends Observable implements Observer {
             }
         }
         else if(sm instanceof AvailableCardServer){
-            timerHandler(((AvailableCardServer) sm).name);
+            timerHandler(((AvailableCardServer) sm).name); // start timer
         }else if(sm instanceof SomeoneWinServer){
             for(String name : connectedPlayers.keySet())
                 if(!name.equals(((SomeoneWinServer) sm).player))
@@ -184,6 +186,10 @@ public class VirtualView extends Observable implements Observer {
         }
     }
 
+    /**
+     * It cancels last timer and run a new timer
+     * @param player of the timer to be started
+     */
     public void timerHandler(String player){
         // TIMER - Now the timer starts at the beginning of the turn and it runs for all the turn
         try{

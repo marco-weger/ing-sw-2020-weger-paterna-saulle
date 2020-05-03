@@ -66,7 +66,10 @@ public class ServerClientHandler implements Runnable {
      */
     private boolean stillConnected;
 
-    private Thread timeOut;
+    /**
+     * The timer of disconnection handler
+     */
+    TimerDisconnection timerDisconnection;
 
     /**
      * @param socket connection
@@ -196,11 +199,7 @@ public class ServerClientHandler implements Runnable {
                     }
                 }
             }
-            try {
-                timeOut.join();
-            } catch (InterruptedException e) {
-                System.out.println("TEST");
-            }
+            while(timerDisconnection.alive) timerDisconnection.alive = false;
         }
     }
 
@@ -485,19 +484,11 @@ public class ServerClientHandler implements Runnable {
             virtualView.getConnectedPlayers().remove(this.name);
             virtualView.notify(new DisconnectionClient(this.name,true));
         }
-        if(timeOut == null || !timeOut.isAlive()){
+        if(timerDisconnection == null || !timerDisconnection.alive){
             int reconnectionPeriod = 5;
-            ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-            executor.scheduleAtFixedRate(new TimerDisconnection(this,executor,reconnectionPeriod), 0, reconnectionPeriod*1000, TimeUnit.MILLISECONDS);
+            ScheduledExecutorService timeOut = Executors.newSingleThreadScheduledExecutor();
+            timerDisconnection = new TimerDisconnection(this,timeOut,reconnectionPeriod);
+            timeOut.scheduleAtFixedRate(timerDisconnection, 0, reconnectionPeriod*1000, TimeUnit.MILLISECONDS);
         }
     }
-
-    /*
-     * It sends the countdown to the client
-     * @param count value of the countdown
-     *
-    public void countdown(int count){
-        server.send(new CountdownServer(this.name,count),virtualView);
-    }
-    */
 }

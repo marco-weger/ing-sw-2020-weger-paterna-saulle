@@ -195,8 +195,6 @@ public class Server {
                     System.out.println("[NEW USER] - " + socket.getRemoteSocketAddress().toString());
 
                     executor.submit(new ServerClientHandler(socket,this, pingPeriod));
-
-                    //saveVirtualView(virtualViews2,virtualViews3);
                 }catch(IOException e){
                     System.err.println("[START_SERVER] - "+e.getMessage());
                     break;
@@ -268,8 +266,6 @@ public class Server {
                     server.disconnectTimer = Integer.parseInt(config.get("disconnectTimer").toString());
             }
         } catch (Exception e) {
-            //System.out.println(e.getMessage());
-            // default params
             server.port = 1234;
         }
 
