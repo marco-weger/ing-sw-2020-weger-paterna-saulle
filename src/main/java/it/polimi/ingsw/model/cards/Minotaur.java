@@ -90,7 +90,7 @@ public class Minotaur extends Card {
                     if(to.isOccupied(p)){
                         for (Player player : p){
                             if (player.getCard().getName().compareTo(this.getName()) != 0){
-                                if(player.getWorker1().getRow() == to.getRow() && player.getWorker1().getRow() == to.getRow()){
+                                if(player.getWorker1().getRow() == to.getRow() && player.getWorker1().getColumn() == to.getColumn()){
                                     int x = player.getWorker1().getRow()+(player.getWorker1().getRow()-current.getCurrentWorker().getRow());
                                     int y = player.getWorker1().getColumn()+(player.getWorker1().getColumn()-current.getCurrentWorker().getColumn());
                                     if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
@@ -102,7 +102,7 @@ public class Minotaur extends Card {
                                         return true;
                                     }
                                 }
-                                else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getRow() == to.getRow()){
+                                else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getColumn() == to.getColumn()){
                                     int x = player.getWorker2().getRow()+(player.getWorker2().getRow()-current.getCurrentWorker().getRow());
                                     int y = player.getWorker2().getColumn()+(player.getWorker2().getColumn()-current.getCurrentWorker().getColumn());
                                     if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
