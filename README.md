@@ -77,7 +77,7 @@ Powered by Microsoft Azure
 
 | Server |State| State | Turn Timer |
 |:-------|:-----|:------|:-----:|
-| 52.136.XXX.XXX |🇮🇹|[![GREEN](https://placehold.it/15/44bb44/44bb44)](#) &nbsp; Ready To Game| 00:15 |
+| 52.136.XXX.XXX |🇮🇹|[![GREEN](https://placehold.it/15/44bb44/44bb44)](#) &nbsp; Ready To Game| 03:00 |
 | 40.84.XXX.XXX |🇺🇸|[![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) &nbsp; On Request| 03:00 |
 
 
