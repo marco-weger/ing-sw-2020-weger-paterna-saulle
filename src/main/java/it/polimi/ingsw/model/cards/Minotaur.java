@@ -46,9 +46,8 @@ public class Minotaur extends Card {
                 if(Math.abs(x) <= 1 && Math.abs(y) <= 1){
                     x = actived.getRow() + x*2;
                     y = actived.getColumn() + y*2;
-                    if(x >= 0 && x <= 4 && y >= 0 && y <= 4)
-                        if(!b.getCell(x,y).isOccupied(p))
-                            ret.add(b.getCell(player.getWorker1().getRow(),player.getWorker1().getColumn()));
+                    if(x >= 0 && x <= 4 && y >= 0 && y <= 4 && !b.getCell(x,y).isOccupied(p))
+                        ret.add(b.getCell(player.getWorker1().getRow(),player.getWorker1().getColumn()));
 
                 }
                 x = player.getWorker2().getRow() - actived.getRow();
@@ -56,9 +55,8 @@ public class Minotaur extends Card {
                 if(Math.abs(x) <= 1 && Math.abs(y) <= 1){
                     x = actived.getRow() + x*2;
                     y = actived.getColumn() + y*2;
-                    if(x >= 0 && x <= 4 && y >= 0 && y <= 4)
-                        if(!b.getCell(x,y).isOccupied(p))
-                            ret.add(b.getCell(player.getWorker2().getRow(),player.getWorker2().getColumn()));
+                    if(x >= 0 && x <= 4 && y >= 0 && y <= 4 && !b.getCell(x,y).isOccupied(p))
+                        ret.add(b.getCell(player.getWorker2().getRow(),player.getWorker2().getColumn()));
                 }
             }
         }
@@ -85,42 +83,40 @@ public class Minotaur extends Card {
             for (Player player : p)
                 if (player.getCard().getName().compareTo(this.getName()) == 0)
                     current = player;
-            if (current != null) {
-                if (current.getCurrentWorker() != null) {
-                    if(to.isOccupied(p)){
-                        for (Player player : p){
-                            if (player.getCard().getName().compareTo(this.getName()) != 0){
-                                if(player.getWorker1().getRow() == to.getRow() && player.getWorker1().getColumn() == to.getColumn()){
-                                    int x = player.getWorker1().getRow()+(player.getWorker1().getRow()-current.getCurrentWorker().getRow());
-                                    int y = player.getWorker1().getColumn()+(player.getWorker1().getColumn()-current.getCurrentWorker().getColumn());
-                                    if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
-                                        player.getWorker1().move(x, y);
-                                        notifyObservers(new MovedServer(new SnapWorker(x,y,player.getName(),1)));
+            if (current != null && current.getCurrentWorker() != null) {
+                if(to.isOccupied(p)){
+                    for (Player player : p){
+                        if (player.getCard().getName().compareTo(this.getName()) != 0){
+                            if(player.getWorker1().getRow() == to.getRow() && player.getWorker1().getColumn() == to.getColumn()){
+                                int x = player.getWorker1().getRow()+(player.getWorker1().getRow()-current.getCurrentWorker().getRow());
+                                int y = player.getWorker1().getColumn()+(player.getWorker1().getColumn()-current.getCurrentWorker().getColumn());
+                                if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
+                                    player.getWorker1().move(x, y);
+                                    notifyObservers(new MovedServer(new SnapWorker(x,y,player.getName(),1)));
 
-                                        current.getCurrentWorker().move(to.getRow(), to.getColumn());
-                                        notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
-                                        return true;
-                                    }
+                                    current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                                    notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
+                                    return true;
                                 }
-                                else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getColumn() == to.getColumn()){
-                                    int x = player.getWorker2().getRow()+(player.getWorker2().getRow()-current.getCurrentWorker().getRow());
-                                    int y = player.getWorker2().getColumn()+(player.getWorker2().getColumn()-current.getCurrentWorker().getColumn());
-                                    if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
-                                        player.getWorker2().move(x, y);
-                                        notifyObservers(new MovedServer(new SnapWorker(x,y,player.getName(),2)));
+                            }
+                            else if(player.getWorker2().getRow() == to.getRow() && player.getWorker2().getColumn() == to.getColumn()){
+                                int x = player.getWorker2().getRow()+(player.getWorker2().getRow()-current.getCurrentWorker().getRow());
+                                int y = player.getWorker2().getColumn()+(player.getWorker2().getColumn()-current.getCurrentWorker().getColumn());
+                                if(x >= 0 && x <= 4 && y >= 0 && y <= 4){
+                                    player.getWorker2().move(x, y);
+                                    notifyObservers(new MovedServer(new SnapWorker(x,y,player.getName(),2)));
 
-                                        current.getCurrentWorker().move(to.getRow(), to.getColumn());
-                                        notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
-                                        return true;
-                                    }
+                                    current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                                    notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
+                                    return true;
                                 }
                             }
                         }
                     }
-                    else{
-                        super.move(p,b,to);
-                        return true;
-                    }
+                }
+                else{
+                    super.move(p,b,to);
+                    return true;
                 }
             }
         }

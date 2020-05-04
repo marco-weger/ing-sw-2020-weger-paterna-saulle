@@ -99,8 +99,8 @@ public class CardTest {
         Card c = FactoryCard.getCard(CardName.APOLLO,null);
         initialize();
         assertNotNull(c);
-        assertEquals(c.checkBuild(null,new Board()).size(),0);
-        assertEquals(c.checkBuild(p,null).size(),0);
+        assertEquals(0,c.checkBuild(null,new Board()).size());
+        assertEquals(0,c.checkBuild(p,null).size());
     }
     @Test
     public void checkBuild_noCurrentPlayerWorker()
@@ -108,8 +108,8 @@ public class CardTest {
         Card c = FactoryCard.getCard(CardName.PAN,null);
         initialize();
         assertNotNull(c);
-        assertEquals(c.checkBuild(p,new Board()).size(),0);
-        assertEquals(c.checkBuild(p,new Board()).size(),0);
+        assertEquals(0,c.checkBuild(p,new Board()).size());
+        assertEquals(0,c.checkBuild(p,new Board()).size());
     }
     @Test
     public void checkBuild()
@@ -144,7 +144,7 @@ public class CardTest {
         List<Cell> ret = p.get(0).getCard().checkBuild(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
-        assertEquals(ret.size(),3);
+        assertEquals(3,ret.size());
         for(Cell c:ret)
             assertTrue(c.getRow() == 1 && c.getColumn() == 2 || c.getRow() == 1 && c.getColumn() == 3 || c.getRow() == 1 && c.getColumn() == 4);
     }
@@ -182,7 +182,7 @@ public class CardTest {
         List<SnapCell> ret = p.get(0).getCard().getCheckBuild(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
-        assertEquals(ret.size(),3);
+        assertEquals(3,ret.size());
         for(SnapCell c:ret)
             assertTrue(c.row == 1 && c.column == 2 || c.row == 1 && c.column == 3 || c.row == 1 && c.column == 4);
     }
@@ -194,7 +194,7 @@ public class CardTest {
         initialize();
         assertNotNull(c);
         List<Cell> ret = c.checkMove(p,null);
-        assertEquals(ret.size(),0);
+        assertEquals(0,ret.size());
         ret = c.checkMove(null,new Board());
         assertEquals(0, ret.size());
     }
@@ -204,8 +204,8 @@ public class CardTest {
         Card c = FactoryCard.getCard(CardName.PAN,null);
         initialize();
         assertNotNull(c);
-        assertEquals(c.checkMove(p,new Board()).size(),0);
-        assertEquals(c.checkMove(p,new Board()).size(),0);
+        assertEquals(0,c.checkMove(p,new Board()).size());
+        assertEquals(0,c.checkMove(p,new Board()).size());
     }
     @Test
     public void checkMove_easyMove()
@@ -242,10 +242,10 @@ public class CardTest {
         List<Cell> ret = p.get(0).getCard().checkMove(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
-        assertEquals(ret.size(),1);
+        assertEquals(1,ret.size());
         for(Cell c:ret){
-            assertEquals(c.getRow() , 1);
-            assertEquals(c.getColumn() , 2);
+            assertEquals(1,c.getRow());
+            assertEquals(2,c.getColumn() , 2);
         }
     }
     @Test
@@ -275,9 +275,9 @@ public class CardTest {
         List<Cell> ret = p.get(0).getCard().checkMove(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
-        assertEquals(ret.size(),2);
+        assertEquals(2,ret.size());
         for(Cell c:ret){
-            assertEquals(c.getRow()+c.getColumn() , 1);
+            assertEquals(1,c.getRow()+c.getColumn());
         }
     }
     // getCheckMove
@@ -308,9 +308,9 @@ public class CardTest {
         List<SnapCell> ret = p.get(0).getCard().getCheckMove(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
-        assertEquals(ret.size(),2);
+        assertEquals(2,ret.size());
         for(SnapCell c:ret){
-            assertEquals(c.row+c.column , 1);
+            assertEquals(1,c.row+c.column);
         }
     }
     // activeBlock
@@ -319,7 +319,7 @@ public class CardTest {
     {
         Card c = FactoryCard.getCard(CardName.APOLLO,null);
         assertNotNull(c);
-        assertEquals(c.activeBlock(null,new Board(), new Worker(0,0), Status.CHOSEN).size(),0);
+        assertEquals(0,c.activeBlock(null,new Board(), new Worker(0,0), Status.CHOSEN).size());
     }
     // move
     @Test
@@ -347,8 +347,8 @@ public class CardTest {
         Board b = new Board();
         assertNotNull(c);
         assertFalse(c.move(p,b,b.getCell(3,4)));
-        assertEquals(p.get(0).getCurrentWorker().getRow(), 2);
-        assertEquals(p.get(0).getCurrentWorker().getColumn(), 3);
+        assertEquals(2,p.get(0).getCurrentWorker().getRow());
+        assertEquals(3,p.get(0).getCurrentWorker().getColumn());
     }
     @Test
     public void move()
@@ -367,8 +367,8 @@ public class CardTest {
         for(Cell cell:b.getField())
             if(cell.getRow() == 3 & cell.getColumn() == 4)
                 c.move(p,b,cell);
-        assertEquals(p.get(0).getCurrentWorker().getRow(), 3);
-        assertEquals(p.get(0).getCurrentWorker().getColumn(), 4);
+        assertEquals(3,p.get(0).getCurrentWorker().getRow());
+        assertEquals(4,p.get(0).getCurrentWorker().getColumn());
     }
     // build
     @Test
@@ -390,8 +390,8 @@ public class CardTest {
         p.get(2).setWorker2(new Worker(0,2));
         p.get(0).setCurrentWorker(1);
         p.get(0).getCard().build(p,new Board(),new Cell(3,4,0));
-        assertEquals(p.get(0).getCurrentWorker().getRow(), 2);
-        assertEquals(p.get(0).getCurrentWorker().getColumn(), 3);
+        assertEquals(2,p.get(0).getCurrentWorker().getRow());
+        assertEquals(3,p.get(0).getCurrentWorker().getColumn());
     }
     @Test
     public void build()
@@ -413,7 +413,7 @@ public class CardTest {
         for(Cell cell:b.getField()){
             if(cell.getRow() == 3 & cell.getColumn() == 4){
                 assertTrue(c.build(p,b,cell));
-                assertEquals(cell.getLevel(), 1);
+                assertEquals(1,cell.getLevel());
             }
         }
     }

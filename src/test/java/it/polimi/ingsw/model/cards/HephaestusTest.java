@@ -30,14 +30,14 @@ public class HephaestusTest {
     @Test
     public void checkBuild_paramsNull() {
         initialize();
-        assertEquals(p.get(0).getCard().checkBuild(null, new Board()).size(), 0);
-        assertEquals(p.get(0).getCard().checkBuild(p, null).size(), 0);
+        assertEquals(0,p.get(0).getCard().checkBuild(null, new Board()).size());
+        assertEquals(0,p.get(0).getCard().checkBuild(p, null).size());
     }
 
     @Test
     public void checkBuild_noCurrentPlayerWorker() {
         initialize();
-        assertEquals(p.get(0).getCard().checkBuild(p, new Board()).size(), 0);
+        assertEquals(0,p.get(0).getCard().checkBuild(p, new Board()).size());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class HephaestusTest {
                 c.setLevel(0);
         }
         List<Cell> building = p.get(0).getCard().checkBuild(p, b);
-        assertEquals(building.size(), 3);
+        assertEquals(3,building.size());
         for (Cell c : building)
             assertTrue(c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2 || c.getRow() == 3 && c.getColumn() == 3);
     }
@@ -98,7 +98,7 @@ public class HephaestusTest {
 
         List<Cell> building = p.get(0).getCard().checkBuild(p, b);
 
-        assertEquals(building.size(), 2);
+        assertEquals(2,building.size());
         for (Cell c : building)
             assertTrue(c.getRow() == 2 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 1);
 
@@ -136,7 +136,7 @@ public class HephaestusTest {
 
         List<Cell> building = p.get(0).getCard().checkBuild(p, b);
 
-        assertEquals(building.size(), 4);
+        assertEquals(4,building.size());
         for (Cell c : building)
             assertTrue(c.getRow() == 2 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2 || c.getRow() == 3 && c.getColumn() == 3);
 
@@ -177,8 +177,8 @@ public class HephaestusTest {
         for (Cell c : b.getField())
             if (c.getRow() == 1 && c.getColumn() == 3)
                 assertEquals(0, c.getLevel());
-        assertEquals(p.get(0).getCurrentWorker().getRow(), 2);
-        assertEquals(p.get(0).getCurrentWorker().getColumn(), 2);
+        assertEquals(2,p.get(0).getCurrentWorker().getRow());
+        assertEquals(2,p.get(0).getCurrentWorker().getColumn());
     }
 
     @Test
@@ -195,16 +195,16 @@ public class HephaestusTest {
         List<Cell> b1 = p.get(0).getCard().checkBuild(p,b);
         for (Cell c : b1) {
             b.getCell(c.getRow(),c.getColumn()).setLevel(0);
-            assertEquals(c.getLevel(),0);
+            assertEquals(0,c.getLevel());
             //default build
             p.get(0).getCard().setActive(false);
             p.get(0).getCard().build(p, b, c);
-            assertEquals(b.getCell(c.getRow(),c.getColumn()).getLevel(), 1);
+            assertEquals(1,b.getCell(c.getRow(),c.getColumn()).getLevel());
             //considering that the turn is the next one, the other player are NOT influencing the board in this version
             //thus, the test is only for correction of "build" purpose
             p.get(0).getCard().setActive(true);
             p.get(0).getCard().build(p, b, c);
-            assertEquals(b.getCell(c.getRow(),c.getColumn()).getLevel(), 3);
+            assertEquals(3,b.getCell(c.getRow(),c.getColumn()).getLevel());
         }
     }
 

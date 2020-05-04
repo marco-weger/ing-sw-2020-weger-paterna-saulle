@@ -32,7 +32,7 @@ public class PrometheusTest {
     {
         initialize();
         List<Cell> ret = p.get(0).getCard().checkMove(p,null);
-        assertEquals(ret.size(),0);
+        assertEquals(0,ret.size());
         ret = p.get(0).getCard().checkMove(null,new Board());
         assertEquals(0, ret.size());
     }
@@ -66,7 +66,7 @@ public class PrometheusTest {
         List<Cell> ret = p.get(0).getCard().checkMove(p,b);
         assertEquals(2, ret.size());
         for(Cell c:ret)
-            assertEquals(c.getRow()+c.getColumn(),1);
+            assertEquals(1,c.getRow()+c.getColumn());
     }
 
 

@@ -123,7 +123,7 @@ public class AthenaTest {
                 c.setLevel(1);
         }
         List<Cell> ret = p.get(0).getCard().activeBlock(null, null, null, null);
-        assertEquals(ret.size(), 0);
+        assertEquals(0,ret.size());
     }
 
 }
