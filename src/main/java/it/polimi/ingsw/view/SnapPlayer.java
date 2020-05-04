@@ -22,12 +22,12 @@ public class SnapPlayer {
     /**
      * The chosen god
      */
-    public static CardName card;
+    public static CardName card = null;
 
     /**
      * True if this player has lost
      */
-    public static boolean loser;
+    public static boolean loser = false;
 
     /**
      * It is initialized with default value
@@ -35,10 +35,8 @@ public class SnapPlayer {
      */
     public SnapPlayer(String name){
         this.name=name;
-        this.symbol="@";
-        this.color="";
-        card=null;
-        loser=false;
+        //this.symbol="@";
+        //this.color="";
     }
 
 }

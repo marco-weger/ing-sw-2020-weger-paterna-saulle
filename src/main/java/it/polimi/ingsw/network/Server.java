@@ -60,7 +60,7 @@ public class Server {
     /**
      * Complete turn timer
      */
-    private int turnTimer;
+    private long turnTimer;
 
     /**
      * Timer before lose after a disconnection
@@ -109,7 +109,7 @@ public class Server {
     /**
      * @return the timer of current turn
      */
-    public int getTurnTimer(){ return turnTimer; }
+    public long getTurnTimer(){ return turnTimer; }
 
     /**
      * @return the timer of disconnection during a game

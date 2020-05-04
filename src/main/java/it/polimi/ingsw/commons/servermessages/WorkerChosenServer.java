@@ -7,8 +7,10 @@ public class WorkerChosenServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    final public String player;
-    final public int worker,x,y;
+    public final String player;
+    public final int worker;
+    public final int x;
+    public final int y;
 
     /**
      * The player receives this message after selecting

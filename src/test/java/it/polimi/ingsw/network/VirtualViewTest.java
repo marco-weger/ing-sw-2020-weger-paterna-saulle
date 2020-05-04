@@ -1,14 +1,16 @@
 package it.polimi.ingsw.network;
 
 
+import org.junit.Test;
+
 public class VirtualViewTest {
 
-    /*
     VirtualView vv;
     //It tests match initialization and first turn by ATLAS
     @Test
     public void AtlasCompleteTurnTEST()
     {
+        /*
         vv = new VirtualView(null);
         vv.c.setMatch(new Match(43,vv));
         assertNotNull(vv.c.getMatch());
@@ -59,7 +61,6 @@ public class VirtualViewTest {
         assertEquals(4,vv.c.getMatch().getBoard().getCell(4,1).getLevel());
         assertEquals(vv.c.getMatch().getStatus(),Status.START);
         assertEquals(vv.c.getMatch().getCurrentPlayer().getName(),"Giulio");
+        */
     }
-    */
-
 }
