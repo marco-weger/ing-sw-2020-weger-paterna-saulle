@@ -77,8 +77,11 @@ public class Server {
 
         // DEFAULT VALUE
         this.port = 1234;
-        this.pingPeriod = 5;
-        this.turnTimer = 10;
+        this.pingPeriod = 2;
+        this.timeoutSocket = 5;
+        this.turnTimer = 180;
+        this.disconnectTimer = 60;
+
     }
 
     /**
