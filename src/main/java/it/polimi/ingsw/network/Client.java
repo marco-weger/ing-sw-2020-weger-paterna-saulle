@@ -16,6 +16,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.concurrent.ExecutorService;
@@ -100,12 +101,12 @@ public class Client implements Runnable{
         return null;
     }
 
-    public void removeWorkers(ArrayList<SnapWorker> snapWorkers){
+    public void removeWorkers(List<SnapWorker> snapWorkers){
         for(SnapWorker sw : snapWorkers)
             this.workers.remove(sw);
     }
 
-    public void setPlayers(ArrayList<String> names){
+    public void setPlayers(List<String> names){
         try{
             this.players = new ArrayList<>();
             for (String name : names) {

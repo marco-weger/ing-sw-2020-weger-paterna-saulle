@@ -6,7 +6,7 @@ public class SnapCell implements Serializable {
 
     public final int row;
     public final int column;
-    public final int level;
+    public int level;
 
     /**
      *
