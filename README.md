@@ -12,7 +12,7 @@ This project was made between March and July 2020 as our final thesis project at
 
 ## How to start JARs
 
-You can find them under "deliverables/jars"
+You can find them under *deliverables/jars*
 
 <!--
 ### GUI.jar
@@ -23,7 +23,7 @@ java --module-path PATHTOJAVAFX --add-modules=javafx.controls,javafx.fxml,javafx
 
 ### Configuration
 <!-- Talk about JSON and saved-match -->
-An optional [JSON file](resources/config.json) could be saved in "./resources/config.json"; if the software can't find the file it will use default value, written in square brackets.
+An optional [JSON file](resources/config.json) could be saved in *./resources/config.json*; if the software can't find the file it will use default value, written in square brackets.
 <br>
 Allowed params:
 * ip (used by client) [127.0.0.1] - addres of server
