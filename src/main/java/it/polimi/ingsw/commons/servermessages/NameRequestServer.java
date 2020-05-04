@@ -7,7 +7,7 @@ public class NameRequestServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public static boolean isFirstTime;
+    public final boolean isFirstTime;
 
     /**
      * It informs the server if the player has already entered the server

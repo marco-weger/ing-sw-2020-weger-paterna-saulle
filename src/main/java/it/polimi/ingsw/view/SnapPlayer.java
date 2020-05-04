@@ -17,17 +17,17 @@ public class SnapPlayer {
     /**
      * The color used in CLI version
      */
-    public static String color;
+    public String color;
 
     /**
      * The chosen god
      */
-    public static CardName card = null;
+    public CardName card;
 
     /**
      * True if this player has lost
      */
-    public static boolean loser = false;
+    public boolean loser = false;
 
     /**
      * It is initialized with default value
@@ -35,8 +35,8 @@ public class SnapPlayer {
      */
     public SnapPlayer(String name){
         this.name=name;
-        //this.symbol="@";
-        //this.color="";
+        this.symbol="@";
+        this.color="";
     }
 
 }

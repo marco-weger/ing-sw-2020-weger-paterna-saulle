@@ -14,11 +14,10 @@ public class ModeChoseClient extends ClientMessage {
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
     public final int mode;
-    public transient ServerClientHandler sch;
+    public transient ServerClientHandler sch = null;
 
     public ModeChoseClient(String name, int mode){
         super(name);
         this.mode=mode;
-        this.sch=null;
     }
 }

@@ -37,7 +37,7 @@ public class HomeController extends DefaultController{
         buttonHelp.setMinSize(size,size);
     }
 
-    public void HandleHelpButton(javafx.event.ActionEvent actionEvent) {
+    public void handleHelpButton(javafx.event.ActionEvent actionEvent) {
         Parent root;
         try{
             root = FXMLLoader.load(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Rules.fxml"));

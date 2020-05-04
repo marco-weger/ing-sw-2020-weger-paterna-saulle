@@ -24,7 +24,7 @@ public class CurrentStatusServer extends ServerMessage {
     /**
      * Timer in second if set
      */
-    public static long timer;
+    public static final long timer = 0;
 
     /**
      * The player receives this message upon a request of the server,
@@ -37,6 +37,5 @@ public class CurrentStatusServer extends ServerMessage {
         super("");
         this.status=status;
         this.player=player;
-        this.timer=0;
     }
 }

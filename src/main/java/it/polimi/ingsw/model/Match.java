@@ -9,6 +9,7 @@ import it.polimi.ingsw.network.VirtualView;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Match extends Observable implements Serializable {
 
@@ -25,12 +26,12 @@ public class Match extends Observable implements Serializable {
     /**
      * List of players (2 or 3)
      */
-    private ArrayList<Player> players;
+    private List<Player> players;
 
     /**
      * List of losers
      */
-    private final ArrayList<Player> losers;
+    private final List<Player> losers;
 
     /**
      * Status of the match
@@ -71,8 +72,6 @@ public class Match extends Observable implements Serializable {
 
     public int getId() { return id; }
 
-    //public void setId(int id) { this.id = id; }
-
     public boolean isEnded() { return ended; }
 
     public void setEnded(boolean ended) { this.ended = ended; }
@@ -87,17 +86,17 @@ public class Match extends Observable implements Serializable {
         this.board = board;
     }
 
-    public ArrayList<CardName> getSelectedCard(){ return selectedCard; }
+    public List<CardName> getSelectedCard(){ return selectedCard; }
 
-    public ArrayList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(ArrayList<Player> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 
-    public ArrayList<Player> getLosers() {
+    public List<Player> getLosers() {
         return losers;
     }
 
@@ -115,9 +114,9 @@ public class Match extends Observable implements Serializable {
             CurrentStatusServer message = new CurrentStatusServer(getCurrentPlayer().getName(),status);
             if (status.equals(Status.START)){
                 getCurrentPlayer().setCurrentWorker(1);
-                message.worker1 = getCurrentPlayer().getCard().checkMove(players,board).size() > 0;
+                message.worker1 = !getCurrentPlayer().getCard().checkMove(players,board).isEmpty();
                 getCurrentPlayer().setCurrentWorker(2);
-                message.worker2 = getCurrentPlayer().getCard().checkMove(players,board).size() > 0;
+                message.worker2 = !getCurrentPlayer().getCard().checkMove(players,board).isEmpty();
                 getCurrentPlayer().setCurrentWorker(0);
             }
             if(status.getNotify())
@@ -135,10 +134,9 @@ public class Match extends Observable implements Serializable {
      * A method that add a player into the Loser List and remove it from the Active Player List
      * @param p select a player
      */
-    public void setLosers(ArrayList<Player> p, boolean isTimesUp) {
-        if(p.size() == 1){
-            if(p.get(0).isCurrent())
-                players.get((players.indexOf(getCurrentPlayer())+1)%(players.size())).setCurrent(true);
+    public void setLosers(List<Player> p, boolean isTimesUp) {
+        if(p.size() == 1 && p.get(0).isCurrent()){
+            players.get((players.indexOf(getCurrentPlayer())+1)%(players.size())).setCurrent(true);
         }
         getLosers().addAll(p);
         getPlayers().removeAll(p);
@@ -157,7 +155,7 @@ public class Match extends Observable implements Serializable {
      * A method that pick the card from the deck and notify the third player to choose.
      * @param selectedCard the list of card selected
      */
-    public void setSelectedCards(ArrayList<CardName> selectedCard){
+    public void setSelectedCards(List<CardName> selectedCard){
         this.selectedCard = new ArrayList<>();
         this.selectedCard.addAll(selectedCard);
         int i = this.getSelectedCard().size()-1;
@@ -241,13 +239,12 @@ public class Match extends Observable implements Serializable {
     /**
      * Saving the match in file for server persistence purpose
      */
-    public void saveToFile(ServerMessage sm){
-        FileOutputStream out;
+    public void saveToFile(ServerMessage sm) {
+        FileOutputStream out = null;
         ObjectOutputStream objOut;
 
-        if(!new File("resources" +File.separatorChar+"saved-match").exists())
-            if(!new File("resources" +File.separatorChar+"saved-match").mkdir())
-                return;
+        if(!new File("resources" +File.separatorChar+"saved-match").exists() && !new File("resources" +File.separatorChar+"saved-match").mkdir())
+            return;
 
         try {
 
@@ -260,6 +257,7 @@ public class Match extends Observable implements Serializable {
             objOut.writeObject(sm);
             objOut.flush();
             objOut.close();
+            out.close();
 
         } catch (IOException e) {
             e.printStackTrace();

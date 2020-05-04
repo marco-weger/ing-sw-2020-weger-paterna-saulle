@@ -34,7 +34,7 @@ public class MinotaurTest {
     {
         initialize();
         List<Cell> ret = p.get(0).getCard().checkMove(p,null);
-        assertEquals(ret.size(),0);
+        assertEquals(0,ret.size());
         ret = p.get(0).getCard().checkMove(null,new Board());
         assertEquals(0, ret.size());
     }
@@ -42,8 +42,8 @@ public class MinotaurTest {
     public void checkMove_noCurrentPlayerWorker()
     {
         initialize();
-        assertEquals(p.get(0).getCard().checkMove(p,new Board()).size(),0);
-        assertEquals(p.get(0).getCard().checkMove(p,new Board()).size(),0);
+        assertEquals(0,p.get(0).getCard().checkMove(p,new Board()).size());
+        assertEquals(0,p.get(0).getCard().checkMove(p,new Board()).size());
     }
     @Test
     public void checkMove()
@@ -65,7 +65,7 @@ public class MinotaurTest {
         assertNotNull(b);
         List<Cell> ret = p.get(0).getCard().checkMove(p,b);
 
-        assertEquals(ret.size(),3);
+        assertEquals(3,ret.size());
         for(Cell c:ret)
             assertTrue((c.getRow() == 1 && c.getColumn() == 1) || (c.getRow() == 1 && c.getColumn() == 3) || (c.getRow() == 2 && c.getColumn() == 3));
     }
@@ -114,8 +114,8 @@ public class MinotaurTest {
                 c.setLevel(4);
         }
         p.get(0).getCard().move(p,b,b.getCell(1,4));
-        assertEquals(p.get(0).getCurrentWorker().getRow(), 2);
-        assertEquals(p.get(0).getCurrentWorker().getColumn(), 3);
+        assertEquals(3,p.get(0).getCurrentWorker().getRow());
+        assertEquals(3,p.get(0).getCurrentWorker().getColumn());
     }
     @Test
     public void move_noAbility()
@@ -150,8 +150,8 @@ public class MinotaurTest {
         for(Cell cell:b.getField())
             if(cell.getRow() == 3 & cell.getColumn() == 4)
                 p.get(0).getCard().move(p,b,cell);
-        assertEquals(p.get(0).getCurrentWorker().getRow(), 3);
-        assertEquals(p.get(0).getCurrentWorker().getColumn(), 4);
+        assertEquals(3,p.get(0).getCurrentWorker().getRow());
+        assertEquals(4,p.get(0).getCurrentWorker().getColumn());
     }
     @Test
     public void move_abilityWorker1()
@@ -173,10 +173,10 @@ public class MinotaurTest {
         assertNotNull(b);
         p.get(0).setCurrentWorker(0);
         p.get(0).getCard().move(p,b,b.getCell(2,3));
-        assertEquals(p.get(0).getWorker1().getRow(), 2);
-        assertEquals(p.get(0).getWorker1().getColumn(), 3);
-        assertEquals(p.get(1).getWorker1().getRow(), 2);
-        assertEquals(p.get(1).getWorker1().getColumn(), 4);
+        assertEquals(2,p.get(0).getWorker1().getRow());
+        assertEquals(3,p.get(0).getWorker1().getColumn());
+        assertEquals(3,p.get(1).getWorker1().getRow());
+        assertEquals(4,p.get(1).getWorker1().getColumn());
     }
     @Test
     public void move_abilityWorker2()
@@ -199,9 +199,9 @@ public class MinotaurTest {
         List<Cell> available = p.get(0).getCard().checkMove(p,b);
         assertTrue(available.contains(b.getCell(1,2)));
         p.get(0).getCard().move(p,b,b.getCell(1,2));
-        assertEquals(p.get(0).getWorker1().getRow(), 1);
-        assertEquals(p.get(0).getWorker1().getColumn(), 2);
-        assertEquals(p.get(1).getWorker2().getRow(), 0);
-        assertEquals(p.get(1).getWorker2().getColumn(), 2);
+        assertEquals(1,p.get(0).getWorker1().getRow());
+        assertEquals(2,p.get(0).getWorker1().getColumn());
+        assertEquals(0,p.get(1).getWorker2().getRow());
+        assertEquals(2,p.get(1).getWorker2().getColumn());
     }
 }

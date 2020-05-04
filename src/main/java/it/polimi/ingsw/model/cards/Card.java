@@ -72,7 +72,6 @@ public class Card extends Observable implements Serializable {
     public boolean checkWin(Cell from, Cell to)
     {
         if(from != null && to != null){
-            //System.out.println("[DEBUG] " + from.getLevel() + " -> " + to.getLevel());
             return (from.getLevel() == 2 && to.getLevel() == 3);
         }
         return false;

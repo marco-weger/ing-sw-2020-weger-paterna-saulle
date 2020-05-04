@@ -79,15 +79,13 @@ public class Demeter extends Card {
             for(Player player:p)
                 if(player.getCard().getName().compareTo(this.getName()) == 0)
                     current = player;
-            if(current != null) {
-                if(current.getCurrentWorker() != null){
-                    List<Cell> available = checkBuild(p,b);
-                    if(available.contains(to)){
-                        super.build(p,b,to);
-                        lastBuild = to;
-                        notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(to)).getRow(),available.get(available.indexOf(to)).getColumn(),available.get(available.indexOf(to)).getLevel())));
-                        return true;
-                    }
+            if(current != null && current.getCurrentWorker() != null) {
+                List<Cell> available = checkBuild(p,b);
+                if(available.contains(to)){
+                    super.build(p,b,to);
+                    lastBuild = to;
+                    notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(to)).getRow(),available.get(available.indexOf(to)).getColumn(),available.get(available.indexOf(to)).getLevel())));
+                    return true;
                 }
             }
         }

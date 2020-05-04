@@ -7,9 +7,9 @@ public class MoveClient extends ClientMessage {
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    public int x;
+    public final int x;
 
-    public int y;
+    public final  int y;
 
     /**
      * This messagge will be send to the server from the client with the decision of the player about where move.

@@ -45,8 +45,6 @@ public class DefaultController {
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
                 bSize)));
-
-        //top.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.FULL)));
     }
 
     public void setClient(Client client){ this.client=client; }
@@ -70,9 +68,10 @@ public class DefaultController {
     }
 
     public void quitOnAction(ActionEvent actionEvent) {
-        Stage stage = (Stage) buttonQuit.getScene().getWindow();
+        //Stage s = (Stage) buttonQuit.getScene().getWindow();
         new Alert(Alert.AlertType.ERROR, "SHOW IF YOU ARE SURE !").showAndWait();
         stage.close();
     }
 
 }
+

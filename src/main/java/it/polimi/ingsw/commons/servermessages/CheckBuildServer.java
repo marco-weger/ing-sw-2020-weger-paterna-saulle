@@ -10,7 +10,7 @@ public class CheckBuildServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public transient final List<SnapCell> sc;
+    public final transient List<SnapCell> sc;
 
     /**
      * The player receives a list of buildable cells
