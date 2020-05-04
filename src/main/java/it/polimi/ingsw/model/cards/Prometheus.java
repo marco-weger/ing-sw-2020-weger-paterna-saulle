@@ -125,7 +125,7 @@ public class Prometheus extends Card {
 
             //PASP Prometheus Anti Suicide Protocol
             //If you have only one move, on the same level, but you have at least 2 checkbuild allowed, YOU CAN'T BUILD ON THE checkmove marked cell.
-            if(availablecm.size() < 2 && availablelow.size() == 0 && available.size() > 1 &&isActive()) {
+            if(availablecm.size() < 2 && availablelow.isEmpty() && available.size() > 1 &&isActive()) {
                 available.remove(availableeq.get(0));
             }
 
@@ -176,7 +176,7 @@ public class Prometheus extends Card {
 
         ckbd = super.checkBuild(p,b);
         //se ho a disposizione un solo movimento, sullo stesso livello, non farmi usare il potere
-        if(available.size() < 2 && availablelow.size() == 0 && ckbd.size() < 2) {
+        if(available.size() < 2 && availablelow.isEmpty() && ckbd.size() < 2) {
             current.getCard().setActive(false);
             return false;
         }

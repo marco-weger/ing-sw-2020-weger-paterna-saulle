@@ -32,7 +32,6 @@ public class Controller implements Observer, ClientMessageHandler {
                         go = true;
         }while(go);
         this.match = new Match(id,virtualView);
-        //this.match.saveToFile(new CurrentStatusServer("",Status.NAME_CHOICE));
     }
 
     /**
@@ -101,7 +100,6 @@ public class Controller implements Observer, ClientMessageHandler {
 
     @Override
     public void handleMessage(ReConnectionClient message) {
-        System.out.println(message.name + " IZBACK!");
         match.playerReConnection(message.name);
     }
 
@@ -119,7 +117,7 @@ public class Controller implements Observer, ClientMessageHandler {
         if(match.getStatus().compareTo(Status.CARD_CHOICE) == 0
                 && message.name.equals(match.getPlayers().get(0).getName())
                 && message.c.size() == match.getPlayers().size()
-                && match.getSelectedCard().size() == 0
+                && match.getSelectedCard().isEmpty()
         ){
             ArrayList<CardName> tmp = new ArrayList<>();
             for(int i = 0; i < match.getPlayers().size(); i++)
@@ -156,7 +154,7 @@ public class Controller implements Observer, ClientMessageHandler {
                 match.getPlayers().get(0).setCard(match.getSelectedCard().get(0),virtualView);
                 match.getSelectedCard().remove(match.getSelectedCard().get(0));
 
-                if(match.getSelectedCard().size() == 0)
+                if(match.getSelectedCard().isEmpty())
                     match.setStatus(Status.WORKER_CHOICE);
             }
             else {
@@ -203,9 +201,6 @@ public class Controller implements Observer, ClientMessageHandler {
     @Override
     public void handleMessage(WorkerChoseClient message) {
         if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.START) == 0){
-            //match.getCurrentPlayer().setCurrentWorker(message.worker);
-            //match.getCurrentPlayer().getCard().(match.getPlayers(),match.getBoard());
-
             match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
             match.getCurrentPlayer().setCurrentWorker(message.worker);
 
@@ -285,36 +280,33 @@ public class Controller implements Observer, ClientMessageHandler {
      */
     @Override
     public void handleMessage(BuildClient message) {
-        if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.QUESTION_B) == 0){
+        if(match.getCurrentPlayer().getName().equals(message.name) && match.getStatus().compareTo(Status.QUESTION_B) == 0
+                && match.getCurrentPlayer().getCard().build(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
+            match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
+            if(match.getStatus().equals(Status.BUILT))
 
-            if(match.getCurrentPlayer().getCard().build(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
-                match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
-                if(match.getStatus().equals(Status.BUILT))
-
-                {
-                    startTurn(true);
-                    return;
-                }
-                else if(match.getStatus().equals(Status.QUESTION_M))
-
-                {
-                    match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(), match.getBoard());
-                    return;
-                }
-                else if(match.getStatus().equals(Status.QUESTION_B))
-                {
-                    match.getCurrentPlayer().getCard().getCheckBuild(match.getPlayers(), match.getBoard());
-                    return;
-                }
-                else{
-                    System.err.println("Incompatibilità tra CurrentPlayer.State =" + match.getStatus() + "handlemessage Buildclient message");
-
-                }
+            {
+                startTurn(true);
+                return;
             }
+            else if(match.getStatus().equals(Status.QUESTION_M))
+
+            {
+                match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(), match.getBoard());
+                return;
+            }
+            else if(match.getStatus().equals(Status.QUESTION_B))
+            {
+                match.getCurrentPlayer().getCard().getCheckBuild(match.getPlayers(), match.getBoard());
+                return;
+            }
+            //else{
+            //    System.err.println("Incompatibilità tra CurrentPlayer.State =" + match.getStatus() + "handlemessage Buildclient message");
+            //}
         }
         if(match.getCurrentPlayer().getCard().build(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
 
-            System.err.println("CASO ATHENA POTERE ATTIVO CurrentPlayer.State =" + match.getStatus() + "handlemessage Buildclient message");
+            //System.err.println("CASO ATHENA POTERE ATTIVO CurrentPlayer.State =" + match.getStatus() + "handlemessage Buildclient message");
        // match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
         startTurn(true);
         }

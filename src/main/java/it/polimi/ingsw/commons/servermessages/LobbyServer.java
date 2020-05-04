@@ -9,7 +9,7 @@ public class LobbyServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public transient final List<String> players;
+    public final transient List<String> players;
     public final boolean loaded;
 
     /**

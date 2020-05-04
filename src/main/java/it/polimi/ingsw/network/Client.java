@@ -33,7 +33,7 @@ public class Client implements Runnable{
     protected final ArrayList<SnapWorker> workers;
     protected ArrayList<SnapPlayer> players;
 
-    private int pingPeriod;
+    private long pingPeriod;
     private int timeoutSocket;
     private Timer ping;
     private boolean continueReading = true;
@@ -62,7 +62,7 @@ public class Client implements Runnable{
         this.players.clear();
     }
 
-    public ArrayList<SnapPlayer> getPlayers(){ return players; }
+    public List<SnapPlayer> getPlayers(){ return players; }
 
     public ViewInterface getView() {
         return view;
@@ -72,11 +72,11 @@ public class Client implements Runnable{
         this.view = view;
     }
 
-    public ArrayList<SnapCell> getBoard() {
+    public List<SnapCell> getBoard() {
         return board;
     }
 
-    public ArrayList<SnapWorker> getWorkers() {
+    public List<SnapWorker> getWorkers() {
         return workers;
     }
 
@@ -149,7 +149,6 @@ public class Client implements Runnable{
                 System.out.flush();
 
                 try {
-                    //while(System.in.available() <= 0);
                     version = read.readLine();
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
@@ -240,7 +239,6 @@ public class Client implements Runnable{
             Thread handler = null;
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
-                //System.out.println(TextFormatting.COLOR_YELLOW+msg.toString()+TextFormatting.RESET);
 
                 if(msg != null){
                     if(msg instanceof MovedServer){

@@ -8,7 +8,7 @@ public class WorkerChoseClient extends ClientMessage {
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    final public int worker;
+    public final int worker;
 
     /**
      *This messagge will be send to the server from the client with the decision of the current player about the worker to use.

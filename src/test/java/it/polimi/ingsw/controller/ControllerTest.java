@@ -60,7 +60,7 @@ public class ControllerTest {
         initialize();
         controller.getMatch().setStatus(Status.CARD_CHOICE);
         controller.update(new ChallengerChoseClient("Giulio",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
-        assertEquals(controller.getMatch().getSelectedCard().size(),0);
+        assertEquals(0,controller.getMatch().getSelectedCard().size());
         controller.update(new ChallengerChoseClient("Marco",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
         assertTrue(controller.getMatch().getSelectedCard().containsAll(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS)));
     }
@@ -70,7 +70,7 @@ public class ControllerTest {
         initialize();
         controller.getMatch().setStatus(Status.CARD_CHOICE);
         controller.handleMessage(new ChallengerChoseClient("Giulio",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
-        assertEquals(controller.getMatch().getSelectedCard().size(),0);
+        assertEquals(0,controller.getMatch().getSelectedCard().size());
         controller.handleMessage(new ChallengerChoseClient("Marco",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
         assertTrue(controller.getMatch().getSelectedCard().containsAll(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS)));
     }
@@ -83,12 +83,12 @@ public class ControllerTest {
         controller.handleMessage(new PlayerChoseClient("Francesco",CardName.ATLAS));
         assertNull(controller.getMatch().getPlayers().get(1).getCard());
         controller.handleMessage(new PlayerChoseClient("Giulio",CardName.HEPHAESTUS));
-        assertEquals(controller.getMatch().getPlayers().get(2).getCard().getName(),CardName.HEPHAESTUS);
+        assertEquals(CardName.HEPHAESTUS,controller.getMatch().getPlayers().get(2).getCard().getName());
         controller.handleMessage(new PlayerChoseClient("Francesco",CardName.HEPHAESTUS));
         assertNull(controller.getMatch().getPlayers().get(1).getCard());
         controller.handleMessage(new PlayerChoseClient("Francesco",CardName.ATLAS));
-        assertEquals(controller.getMatch().getPlayers().get(1).getCard().getName(),CardName.ATLAS);
-        assertEquals(controller.getMatch().getPlayers().get(0).getCard().getName(),CardName.PAN);
+        assertEquals(CardName.ATLAS,controller.getMatch().getPlayers().get(1).getCard().getName());
+        assertEquals(CardName.PAN,controller.getMatch().getPlayers().get(0).getCard().getName());
     }
 
     @Test
@@ -105,18 +105,18 @@ public class ControllerTest {
         // card chose
         controller.getMatch().setStatus(Status.CARD_CHOICE);
         controller.handleMessage(new ChallengerChoseClient("Giulio",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
-        assertEquals(controller.getMatch().getSelectedCard().size(),0);
+        assertEquals(0,controller.getMatch().getSelectedCard().size());
         controller.handleMessage(new ChallengerChoseClient("Marco",new ArrayList<>(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS))));
         assertTrue(controller.getMatch().getSelectedCard().containsAll(Arrays.asList(CardName.ATLAS,CardName.PAN,CardName.HEPHAESTUS)));
         controller.handleMessage(new PlayerChoseClient("Francesco",CardName.ATLAS));
         assertNull(controller.getMatch().getPlayers().get(1).getCard());
         controller.handleMessage(new PlayerChoseClient("Giulio",CardName.HEPHAESTUS));
-        assertEquals(controller.getMatch().getPlayers().get(2).getCard().getName(),CardName.HEPHAESTUS);
+        assertEquals(CardName.HEPHAESTUS,controller.getMatch().getPlayers().get(2).getCard().getName());
         controller.handleMessage(new PlayerChoseClient("Francesco",CardName.HEPHAESTUS));
         assertNull(controller.getMatch().getPlayers().get(1).getCard());
         controller.handleMessage(new PlayerChoseClient("Francesco",CardName.ATLAS));
-        assertEquals(controller.getMatch().getPlayers().get(1).getCard().getName(),CardName.ATLAS);
-        assertEquals(controller.getMatch().getPlayers().get(0).getCard().getName(),CardName.PAN);
+        assertEquals(CardName.ATLAS,controller.getMatch().getPlayers().get(1).getCard().getName());
+        assertEquals(CardName.PAN,controller.getMatch().getPlayers().get(0).getCard().getName());
 
         controller.getMatch().setStatus(Status.WORKER_CHOICE);
         controller.handleMessage(new WorkerInitializeClient("Francesco",1,1));
@@ -131,8 +131,8 @@ public class ControllerTest {
         controller.handleMessage(new WorkerInitializeClient("Giulio",0,4));
         controller.handleMessage(new WorkerInitializeClient("Giulio",0,2));
         for(Player p:controller.getMatch().getPlayers()){
-            assertEquals(p.getWorker1().getRow()+p.getWorker1().getColumn(),4);
-            assertEquals(p.getWorker2().getRow()+p.getWorker2().getColumn(),2);
+            assertEquals(4,p.getWorker1().getRow()+p.getWorker1().getColumn());
+            assertEquals(2,p.getWorker2().getRow()+p.getWorker2().getColumn());
         }
     }
 
@@ -222,19 +222,19 @@ public class ControllerTest {
          controller.getMatch().getPlayers().get(0).setCurrent(false);
          controller.getMatch().getPlayers().get(1).setCurrent(false);
         controller.getMatch().getPlayers().get(2).setCurrent(true);
-        assertEquals(controller.getMatch().getCurrentPlayer().getName(),"Giulio");
+        assertEquals("Giulio",controller.getMatch().getCurrentPlayer().getName());
         controller.getMatch().setStatus(Status.START);
          controller.handleMessage(new AnswerAbilityClient(controller.getMatch().getCurrentPlayer().getName(), false, controller.getMatch().getStatus()));
          assertFalse(controller.getMatch().getCurrentPlayer().getCard().isActive());
-         assertEquals(controller.getMatch().getStatus(), Status.CHOSEN);
+         assertEquals(Status.CHOSEN,controller.getMatch().getStatus());
         //Giulio has answered yes to the question
          //so it will activate his ability, and switch to next turn
         controller.handleMessage(new AnswerAbilityClient(controller.getMatch().getCurrentPlayer().getName(), true, controller.getMatch().getStatus()));
          assertTrue(controller.getMatch().getCurrentPlayer().getCard().isActive());
-        assertEquals(controller.getMatch().getStatus(), Status.QUESTION_M);
+        assertEquals(Status.QUESTION_M,controller.getMatch().getStatus());
         controller.getMatch().setStatus(Status.MOVED);
          controller.handleMessage(new AnswerAbilityClient(controller.getMatch().getCurrentPlayer().getName(), true, controller.getMatch().getStatus()));
-         assertEquals(controller.getMatch().getStatus(), Status.QUESTION_B);
+         assertEquals(Status.QUESTION_B,controller.getMatch().getStatus());
          controller.getMatch().getPlayers().get(1).setCurrent(true);
          controller.getMatch().getCurrentPlayer().getCard().setActive(true);
          assertTrue(controller.getMatch().getCurrentPlayer().getCard().isActive());
@@ -388,11 +388,7 @@ public class ControllerTest {
         //controller.endGame(controller.getMatch().getPlayers().get(2));
         assertEquals(2, controller.getMatch().getLosers().size());
         assertTrue(controller.getMatch().isEnded());
-        assertEquals(controller.getMatch().getPlayers().get(0).getName(),"Giulio");
-    }
-
-    @Test
-    public void initializeMatch() {
+        assertEquals("Giulio",controller.getMatch().getPlayers().get(0).getName());
     }
 
     @Test

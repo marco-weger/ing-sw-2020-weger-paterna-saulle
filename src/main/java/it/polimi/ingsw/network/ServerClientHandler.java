@@ -49,7 +49,7 @@ public class ServerClientHandler implements Runnable {
     /**
      * Socket ping period
      */
-    private final int pingPeriod;
+    private final long pingPeriod;
 
     /**
      * Timer task to send ping to the client
@@ -99,7 +99,7 @@ public class ServerClientHandler implements Runnable {
 
     public boolean isStillConnected() {return stillConnected;}
 
-    public void setTurnTimesUp(boolean stillConnected){ this.stillConnected = stillConnected; }
+    public void setTurnTimesUp(boolean turnTimesUp){ this.turnTimesUp = turnTimesUp; }
 
     public ObjectInputStream getIn(){ return in;}
 
@@ -192,10 +192,9 @@ public class ServerClientHandler implements Runnable {
                     if(!turnTimesUp)
                         timeOut();
                 } catch (Exception e) {
-                    if(!virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
+                    if(virtualView != null && !virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
                     {
                         timeOut();
-                        //System.out.println("[MANAGE DISCONNECTION......]");
                         // DEFAULT: start timer and wait for reconnection
                         // TODO: start the timer and notify all the client with the start... timers will run asynch, the main one is server
                     }
@@ -280,16 +279,13 @@ public class ServerClientHandler implements Runnable {
                             }
                         }*/
                         // check on current vv (you cant be disconnected in the current lobby)
-                        if(ret == 0)
-                            if (server.getCurrentVirtualView2().getConnectedPlayers().containsKey(cc.name))
-                                ret = -1;
-                        if(ret == 0)
-                            if (server.getCurrentVirtualView3().getConnectedPlayers().containsKey(cc.name))
-                                ret = -1;
+                        if(ret == 0 && server.getCurrentVirtualView2().getConnectedPlayers().containsKey(cc.name))
+                            ret = -1;
+                        if(ret == 0 && server.getCurrentVirtualView3().getConnectedPlayers().containsKey(cc.name))
+                            ret = -1;
                         // check on floating players
-                        if(ret == 0)
-                            if (server.getPendingPlayers().contains(cc.name))
-                                ret = -1;
+                        if(ret == 0 && server.getPendingPlayers().contains(cc.name))
+                            ret = -1;
                     } else ret = -1;
                 } else ret = -1;
             }
@@ -396,15 +392,12 @@ public class ServerClientHandler implements Runnable {
         virtualView.notify(new DisconnectionClient(this.name,true));
         server.getPendingPlayers().remove(this.name);
         try{
-            if(socket != null)
+            if(socket != null && !socket.isClosed())
             {
-                if(!socket.isClosed())
-                {
-                    socket.shutdownInput();
-                    socket.shutdownOutput();
-                    socket.close();
-                    System.out.println("[DISCONNECTED USER] - " + this.getName());
-                }
+                socket.shutdownInput();
+                socket.shutdownOutput();
+                socket.close();
+                System.out.println("[DISCONNECTED USER] - " + this.getName());
             }
         } catch (Exception ex) {
             System.err.println("[MUST HAND] - "+ex.getMessage());
@@ -417,9 +410,8 @@ public class ServerClientHandler implements Runnable {
      */
     protected void notify(ServerMessage message) {
         // spectator mode
-        if(message instanceof SomeoneLoseServer)
-            if(this.name.equals(((SomeoneLoseServer) message).player))
-                virtualView.getLosers().add(this.name);
+        if(message instanceof SomeoneLoseServer && this.name.equals(((SomeoneLoseServer) message).player))
+            virtualView.getLosers().add(this.name);
 
         if(message instanceof SomeoneWinServer)
             if(!this.name.equals(((SomeoneWinServer) message).player))
@@ -478,7 +470,7 @@ public class ServerClientHandler implements Runnable {
             virtualView.notify(new DisconnectionClient(this.name,true));
         }
         if(timerDisconnection == null || !timerDisconnection.alive){
-            int reconnectionPeriod = 5;
+            long reconnectionPeriod = 5;
             ScheduledExecutorService timeOut = Executors.newSingleThreadScheduledExecutor();
             timerDisconnection = new TimerDisconnection(this,timeOut,reconnectionPeriod);
             timeOut.scheduleAtFixedRate(timerDisconnection, 0, reconnectionPeriod*1000, TimeUnit.MILLISECONDS);
@@ -487,6 +479,5 @@ public class ServerClientHandler implements Runnable {
 
     public void timesUp(){
         virtualView.notify(new DisconnectionClient(this.name,true));
-        //this.turnTimesUp = true;
     }
 }

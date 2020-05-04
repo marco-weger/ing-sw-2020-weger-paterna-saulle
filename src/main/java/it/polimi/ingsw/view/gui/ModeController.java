@@ -7,10 +7,10 @@ import javafx.scene.image.Image;
 public class ModeController extends DefaultController{
 
     @FXML
-    public Button TwoPlayers;
+    public Button twoPlayers;
 
     @FXML
-    public Button ThreePlayers;
+    public Button threePlayers;
 
     @FXML
     @Override

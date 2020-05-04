@@ -14,17 +14,17 @@ public class CurrentStatusServer extends ServerMessage {
     /**
      * True if the player could move the first worker
      */
-    public static boolean worker1;
+    public boolean worker1;
 
     /**
      * True if the player could move the second worker
      */
-    public static boolean worker2;
+    public boolean worker2;
 
     /**
      * Timer in second if set
      */
-    public static long timer = 0;
+    public long timer = 0;
 
     /**
      * The player receives this message upon a request of the server,

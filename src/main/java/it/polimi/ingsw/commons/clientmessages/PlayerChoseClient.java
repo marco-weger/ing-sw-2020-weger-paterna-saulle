@@ -10,7 +10,7 @@ public class PlayerChoseClient extends ClientMessage {
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    final public CardName c;
+    public final CardName c;
 
 
     /**

@@ -25,14 +25,14 @@ public class Minotaur extends Card {
     public List<Cell> checkMove(List<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
-        boolean OTAbility = false;                                                  /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON MINOTAUR*/
+        boolean otAbility = false;                                                  /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON MINOTAUR*/
         for(Player player:p){
             if(player.getCard().getName().compareTo(this.getName()) == 0) {
                 actived = player.getCurrentWorker();
             }
 
             if (player.getCard().isOpponent() && player.getCard().isActive()) {     /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON MINOTAUR*/
-                OTAbility = true;                                                   /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON MINOTAUR*/
+                otAbility = true;                                                   /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON MINOTAUR*/
             }                                                                       /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON MINOTAUR*/
 
         }
@@ -61,7 +61,7 @@ public class Minotaur extends Card {
             }
         }
 
-        if(OTAbility){                                                                                                                                                                                                              /*THIS LINE MAKE ATHENA DOMINANT ON MINOTAUR*/
+        if(otAbility){                                                                                                                                                                                                              /*THIS LINE MAKE ATHENA DOMINANT ON MINOTAUR*/
             for (Cell c : b.getField())                                                                                                                                                                                             /*THIS LINE MAKE ATHENA DOMINANT ON MINOTAUR*/
                 if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() == actived.getLevel(b) + 1 && c.isOccupied(p))                           /*THIS LINE MAKE ATHENA DOMINANT ON MINOTAUR*/
                     ret.remove(c);
