@@ -10,7 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class DefaultController {
+public class DefaultController extends GUI{
 
     private Client client;
 
@@ -68,10 +68,12 @@ public class DefaultController {
     }
 
     public void quitOnAction(ActionEvent actionEvent) {
-        //Stage s = (Stage) buttonQuit.getScene().getWindow();
         new Alert(Alert.AlertType.ERROR, "SHOW IF YOU ARE SURE !").showAndWait();
         stage.close();
+        close();
+
     }
+
 
 }
 

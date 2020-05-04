@@ -411,7 +411,7 @@ public class CLI implements ViewInterface {
         printTitle();
 
         try{
-            client.setPlayers(message.players);
+            client.setPlayers((ArrayList<String>) message.players);
             for(int i=0;i<client.getPlayers().size();i++){
                 client.getPlayers().get(i).symbol = symbols.charAt(i)+"";
                 if(i==0)

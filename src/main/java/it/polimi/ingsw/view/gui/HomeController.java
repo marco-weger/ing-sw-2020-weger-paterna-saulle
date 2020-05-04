@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.network.Client;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
@@ -66,6 +65,18 @@ public class HomeController extends DefaultController{
             rules.getScene().setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
 
             rules.show();
+        }
+        catch (IOException ex) {
+            LOGGER.log( Level.SEVERE, ex.toString(), ex );
+        }
+    }
+
+
+        public void handlePlayButton(javafx.event.ActionEvent actionEvent) {
+        try{
+            super.root = FXMLLoader.load(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/AddName.fxml"));
+            //super.stage.setScene(new Scene(super.root));
+            super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_name.png"));
         }
         catch (IOException ex) {
             LOGGER.log( Level.SEVERE, ex.toString(), ex );
