@@ -46,13 +46,13 @@ public class MatchTest {
         m.setEnded(true);
         assertTrue(m.isEnded());
         m.setSelectedCards(new ArrayList<>(Arrays.asList(CardName.ATHENA,CardName.ATLAS)));
-        assertEquals(m.getSelectedCard().get(0), CardName.ATHENA);
-        assertEquals(m.getSelectedCard().get(1), CardName.ATLAS);
+        assertEquals(CardName.ATHENA,m.getSelectedCard().get(0));
+        assertEquals( CardName.ATLAS,m.getSelectedCard().get(1));
         m.setLosers(new ArrayList<>(Collections.singletonList(m.getPlayers().get(1))),false);
         assertEquals(2,m.getPlayers().size());
         assertEquals(1,m.getLosers().size());
-        assertEquals(m.getPlayers().get(1).getCard().getName(), CardName.ATLAS);
-        assertEquals(m.getLosers().get(0).getCard().getName(), CardName.ARTEMIS);
+        assertEquals(CardName.ATLAS,m.getPlayers().get(1).getCard().getName());
+        assertEquals(CardName.ARTEMIS,m.getLosers().get(0).getCard().getName());
     }
 
     @Test

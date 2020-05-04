@@ -10,8 +10,8 @@ public class WorkerTest {
     public void move(){
         Worker w = new Worker(0,0);
         w.move(3,4);
-        assertEquals(w.getRow(),3);
-        assertEquals(w.getColumn(),4);
+        assertEquals(3,w.getRow());
+        assertEquals(4,w.getColumn());
     }
 
     // getLevel
@@ -27,7 +27,7 @@ public class WorkerTest {
         for(Cell c:b.getField())
             if(c.getRow() == 0 && c.getColumn() == 0)
                 c.setLevel(1);
-        assertEquals(new Worker(0,0).getLevel(b),1);
+        assertEquals(1,new Worker(0,0).getLevel(b));
     }
 
     @Test
