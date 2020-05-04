@@ -25,7 +25,7 @@ public class TimerDisconnection implements Runnable {
     /**
      * Period for a reconnection check
      */
-    final int reconnectionPeriod;
+    long reconnectionPeriod;
 
     /**
      * True while the timer is running
@@ -38,7 +38,7 @@ public class TimerDisconnection implements Runnable {
      * @param ses the thread manager
      * @param reconnectionPeriod period for a reconnection check
      */
-    public TimerDisconnection(ServerClientHandler sch, ScheduledExecutorService ses, int reconnectionPeriod){
+    public TimerDisconnection(ServerClientHandler sch, ScheduledExecutorService ses, long reconnectionPeriod){
         this.sch = sch;
         this.ses = ses;
         this.reconnectionPeriod = reconnectionPeriod;
