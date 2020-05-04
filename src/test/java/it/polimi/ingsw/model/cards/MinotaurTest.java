@@ -114,7 +114,7 @@ public class MinotaurTest {
                 c.setLevel(4);
         }
         p.get(0).getCard().move(p,b,b.getCell(1,4));
-        assertEquals(3,p.get(0).getCurrentWorker().getRow());
+        assertEquals(2,p.get(0).getCurrentWorker().getRow());
         assertEquals(3,p.get(0).getCurrentWorker().getColumn());
     }
     @Test
@@ -175,7 +175,7 @@ public class MinotaurTest {
         p.get(0).getCard().move(p,b,b.getCell(2,3));
         assertEquals(2,p.get(0).getWorker1().getRow());
         assertEquals(3,p.get(0).getWorker1().getColumn());
-        assertEquals(3,p.get(1).getWorker1().getRow());
+        assertEquals(2,p.get(1).getWorker1().getRow());
         assertEquals(4,p.get(1).getWorker1().getColumn());
     }
     @Test

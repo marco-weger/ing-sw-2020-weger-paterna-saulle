@@ -24,7 +24,7 @@ public class CurrentStatusServer extends ServerMessage {
     /**
      * Timer in second if set
      */
-    public static final long timer = 0;
+    public static long timer = 0;
 
     /**
      * The player receives this message upon a request of the server,
