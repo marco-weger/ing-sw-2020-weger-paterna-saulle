@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -61,7 +62,7 @@ public class HephaestusTest {
             else if (c.getRow() == 3 && c.getColumn() == 3)
                 c.setLevel(0);
         }
-        ArrayList<Cell> building = p.get(0).getCard().checkBuild(p, b);
+        List<Cell> building = p.get(0).getCard().checkBuild(p, b);
         assertEquals(building.size(), 3);
         for (Cell c : building)
             assertTrue(c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2 || c.getRow() == 3 && c.getColumn() == 3);
@@ -95,7 +96,7 @@ public class HephaestusTest {
 
         p.get(0).getCard().setActive(true);
 
-        ArrayList<Cell> building = p.get(0).getCard().checkBuild(p, b);
+        List<Cell> building = p.get(0).getCard().checkBuild(p, b);
 
         assertEquals(building.size(), 2);
         for (Cell c : building)
@@ -133,7 +134,7 @@ public class HephaestusTest {
 
         //p.get(0).getCard().setActive(true);
 
-        ArrayList<Cell> building = p.get(0).getCard().checkBuild(p, b);
+        List<Cell> building = p.get(0).getCard().checkBuild(p, b);
 
         assertEquals(building.size(), 4);
         for (Cell c : building)
@@ -191,7 +192,7 @@ public class HephaestusTest {
         p.get(2).setWorker1(new Worker(1,3));
         p.get(2).setWorker2(new Worker(2,3));
         p.get(0).setCurrentWorker(1);
-        ArrayList<Cell> b1 = p.get(0).getCard().checkBuild(p,b);
+        List<Cell> b1 = p.get(0).getCard().checkBuild(p,b);
         for (Cell c : b1) {
             b.getCell(c.getRow(),c.getColumn()).setLevel(0);
             assertEquals(c.getLevel(),0);

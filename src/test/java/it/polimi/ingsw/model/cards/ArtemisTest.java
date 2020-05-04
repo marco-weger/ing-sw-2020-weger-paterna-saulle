@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -29,7 +30,7 @@ public class ArtemisTest {
     @Test
     public void checkMove_nullAndZeros() {
         initialize();
-        ArrayList<Cell> moving = p.get(0).getCard().checkMove(p, null);
+        List<Cell> moving = p.get(0).getCard().checkMove(p, null);
         assertEquals(moving.size(), 0);
         moving = p.get(0).getCard().checkMove(null, new Board());
         assertEquals(0, moving.size());
@@ -56,7 +57,7 @@ public class ArtemisTest {
             else if (c.getRow() == 1 && c.getColumn() == 0)
                 c.setLevel(3);
         }
-        ArrayList<Cell> moving = p.get(0).getCard().checkMove(p, b);
+        List<Cell> moving = p.get(0).getCard().checkMove(p, b);
         assertEquals(0, moving.size());
         //trying changing the value in the table, expecting not to change in "moving"
         Cell c1 = b.getCell(1, 2);
@@ -87,7 +88,7 @@ public class ArtemisTest {
             else if(c.getRow() == 1 && c.getColumn() == 2)
                 c.setLevel(0);
         }
-        ArrayList<Cell> val = p.get(0).getCard().checkMove(p,b);
+        List<Cell> val = p.get(0).getCard().checkMove(p,b);
         assertEquals(1,val.size());
     }
 
@@ -127,7 +128,7 @@ public class ArtemisTest {
             else if(c.getRow() == 0 && c.getColumn() == 3)
                 c.setLevel(4);
         }
-        ArrayList<Cell> val = p.get(0).getCard().checkMove(p,b);
+        List<Cell> val = p.get(0).getCard().checkMove(p,b);
         //assertEquals(2,val.size());
 
     }
@@ -168,7 +169,7 @@ public class ArtemisTest {
             else if(c.getRow() == 0 && c.getColumn() == 3)
                 c.setLevel(4);
         }
-        ArrayList<Cell> val = p.get(0).getCard().checkMove(p,b);
+        List<Cell> val = p.get(0).getCard().checkMove(p,b);
         assertEquals(1,val.size());
 
     }
@@ -209,7 +210,7 @@ public class ArtemisTest {
             else if(c.getRow() == 0 && c.getColumn() == 3)
                 c.setLevel(0);
         }
-        ArrayList<Cell> val = p.get(0).getCard().checkMove(p,b);
+        List<Cell> val = p.get(0).getCard().checkMove(p,b);
         assertEquals(0,val.size());
 
     }

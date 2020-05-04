@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Demeter extends Card {
     Cell lastBuild;
@@ -50,7 +51,7 @@ public class Demeter extends Card {
      * @return where to build
      */
     @Override
-    public ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b)
+    public List<Cell> checkBuild(List<Player> p, Board b)
     {
         if(p == null || b == null) return new ArrayList<>();
         Worker actived = null;
@@ -58,7 +59,7 @@ public class Demeter extends Card {
             if(player.getCard().getName().compareTo(this.getName()) == 0)
                 actived = player.getCurrentWorker();
         if(actived == null) return new ArrayList<>();
-        ArrayList<Cell> ret = super.checkBuild(p,b);
+        List<Cell> ret = super.checkBuild(p,b);
         if(!this.isActive() && lastBuild != null)
             ret.remove(lastBuild);
         return ret;
@@ -72,7 +73,7 @@ public class Demeter extends Card {
      * @return true if builded
      */
     @Override
-    public boolean build(ArrayList<Player> p, Board b, Cell to){
+    public boolean build(List<Player> p, Board b, Cell to){
         if(!(p == null || b == null || to == null)){
             Player current = null;
             for(Player player:p)
@@ -80,7 +81,7 @@ public class Demeter extends Card {
                     current = player;
             if(current != null) {
                 if(current.getCurrentWorker() != null){
-                    ArrayList<Cell> available = checkBuild(p,b);
+                    List<Cell> available = checkBuild(p,b);
                     if(available.contains(to)){
                         super.build(p,b,to);
                         lastBuild = to;
@@ -100,7 +101,7 @@ public class Demeter extends Card {
      * @return true if you could activate ability in this turn
      */
     @Override
-    public boolean activable(ArrayList<Player> p, Board b) {
+    public boolean activable(List<Player> p, Board b) {
         return super.checkBuild(p, b).size() >= 2;
     }
 }

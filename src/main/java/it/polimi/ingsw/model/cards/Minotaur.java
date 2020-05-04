@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.util.ArrayList;
+import java.util.List;
+
 public class Minotaur extends Card {
 
     public Minotaur(CardName name, boolean active, boolean opponent, boolean question, Status status, VirtualView vw) {
@@ -20,7 +22,7 @@ public class Minotaur extends Card {
      * @return list of available cells
      */
     @Override
-    public ArrayList<Cell> checkMove(ArrayList<Player> p, Board b){
+    public List<Cell> checkMove(List<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
         boolean OTAbility = false;                                                  /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON MINOTAUR*/
@@ -35,7 +37,7 @@ public class Minotaur extends Card {
 
         }
         if(actived == null) return new ArrayList<>();
-        ArrayList<Cell> ret = super.checkMove(p, b);
+        List<Cell> ret = super.checkMove(p, b);
 
         for(Player player:p){
             if(player.getCard().getName().compareTo(this.getName()) != 0){
@@ -77,7 +79,7 @@ public class Minotaur extends Card {
      * @return true if moved
      */
     @Override
-    public boolean move(ArrayList<Player> p, Board b, Cell to){
+    public boolean move(List<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {
             Player current = null;
             for (Player player : p)

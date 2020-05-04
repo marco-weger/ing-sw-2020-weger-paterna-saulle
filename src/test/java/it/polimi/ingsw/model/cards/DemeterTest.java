@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -71,7 +72,7 @@ public class DemeterTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<Cell> ret = p.get(0).getCard().checkBuild(p,b);
+        List<Cell> ret = p.get(0).getCard().checkBuild(p,b);
         assertEquals(ret.size(),3);
         for(Cell c:ret)
             assertTrue(c.getRow() == 1 && c.getColumn() == 2 || c.getRow() == 1 && c.getColumn() == 3 || c.getRow() == 1 && c.getColumn() == 4);
@@ -109,7 +110,7 @@ public class DemeterTest {
         assertNotNull(p);
         assertNotNull(b);
         p.get(0).getCard().setActive(true);
-        ArrayList<Cell> ret = p.get(0).getCard().checkBuild(p,b);
+        List<Cell> ret = p.get(0).getCard().checkBuild(p,b);
         assertEquals(ret.size(),3);
         for(Cell c:ret)
             assertTrue(c.getRow() == 1 && c.getColumn() == 2 || c.getRow() == 1 && c.getColumn() == 3 || c.getRow() == 1 && c.getColumn() == 4);

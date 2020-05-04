@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Prometheus extends Card {
 
@@ -54,14 +55,14 @@ public class Prometheus extends Card {
      * @return list of available cells
      */
     @Override
-    public ArrayList<Cell> checkMove(ArrayList<Player> p, Board b) {
+    public List<Cell> checkMove(List<Player> p, Board b) {
         if (p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
         for (Player player : p)
             if (player.getCard().getName().compareTo(this.getName()) == 0)
                 actived = player.getCurrentWorker();
         if (actived == null) return new ArrayList<>();
-        ArrayList<Cell> available;
+        List<Cell> available;
         available= new ArrayList<>();
 
         if(super.isActive()){
@@ -90,7 +91,7 @@ public class Prometheus extends Card {
      * @return list of available cells
      */
     @Override
-    public ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b) {
+    public List<Cell> checkBuild(List<Player> p, Board b) {
 
         if (p == null || b == null) return new ArrayList<>();
         Worker actived = null;
@@ -100,7 +101,7 @@ public class Prometheus extends Card {
             }
 
         if (actived == null) return new ArrayList<>();
-        ArrayList<Cell> available;
+        List<Cell> available;
         ArrayList<Cell> availablecm;
         ArrayList<Cell> availablelow;
         ArrayList<Cell> availableeq;
@@ -155,7 +156,7 @@ public class Prometheus extends Card {
      * @return true if you could activate ability in this turn
      */
     @Override
-    public boolean activable(ArrayList<Player> p, Board b) {
+    public boolean activable(List<Player> p, Board b) {
         if (p == null || b == null) return true;
         Worker actived = null;
         Player current = null;
@@ -168,9 +169,8 @@ public class Prometheus extends Card {
         if (actived == null) return true;
         ArrayList<Cell> available;
         ArrayList<Cell> availablelow;
-        ArrayList<Cell> ckbd;
+        List<Cell> ckbd;
 
-        //ckbd = new ArrayList<>();
         available= new ArrayList<>();
         availablelow = new ArrayList<>();
 

@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -30,7 +31,7 @@ public class PrometheusTest {
     public void checkMove_paramsNull()
     {
         initialize();
-        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,null);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,null);
         assertEquals(ret.size(),0);
         ret = p.get(0).getCard().checkMove(null,new Board());
         assertEquals(0, ret.size());
@@ -62,7 +63,7 @@ public class PrometheusTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,b);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,b);
         assertEquals(2, ret.size());
         for(Cell c:ret)
             assertEquals(c.getRow()+c.getColumn(),1);
@@ -94,7 +95,7 @@ public class PrometheusTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,b);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,b);
         assertEquals(3, ret.size());
 
     }
@@ -180,7 +181,7 @@ public class PrometheusTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<Cell> ret = p.get(0).getCard().checkBuild(p,b);
+        List<Cell> ret = p.get(0).getCard().checkBuild(p,b);
         assertEquals(2, ret.size());
         //for(Cell c:ret)
           //  assertEquals(c.getRow()+c.getColumn(),1);

@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -32,7 +33,7 @@ public class MinotaurTest {
     public void checkMove_paramsNull()
     {
         initialize();
-        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,null);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,null);
         assertEquals(ret.size(),0);
         ret = p.get(0).getCard().checkMove(null,new Board());
         assertEquals(0, ret.size());
@@ -62,7 +63,7 @@ public class MinotaurTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,b);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,b);
 
         assertEquals(ret.size(),3);
         for(Cell c:ret)
@@ -195,7 +196,7 @@ public class MinotaurTest {
         assertNotNull(b);
         p.get(0).setCurrentWorker(0);
 
-        ArrayList<Cell> available = p.get(0).getCard().checkMove(p,b);
+        List<Cell> available = p.get(0).getCard().checkMove(p,b);
         assertTrue(available.contains(b.getCell(1,2)));
         p.get(0).getCard().move(p,b,b.getCell(1,2));
         assertEquals(p.get(0).getWorker1().getRow(), 1);

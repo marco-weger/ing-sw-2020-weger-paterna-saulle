@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Hephaestus extends Card {
 
@@ -21,7 +22,7 @@ public class Hephaestus extends Card {
      * @return where to build
      */
     @Override
-    public ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b) {
+    public List<Cell> checkBuild(List<Player> p, Board b) {
         if(p == null || b == null) return new ArrayList<>();
         Worker actived = null;
         for(Player player:p)
@@ -29,7 +30,7 @@ public class Hephaestus extends Card {
                 actived = player.getCurrentWorker();
         if(actived == null) return new ArrayList<>();
 
-        ArrayList<Cell> available = super.checkBuild(p,b);
+        List<Cell> available = super.checkBuild(p,b);
         ArrayList<Cell> toRemove = new ArrayList<>();
 
         // if the player has chosen to active the ability i remove the cell with a level more than 1 (MARCO)
@@ -51,7 +52,7 @@ public class Hephaestus extends Card {
      * @return true if builded
      */
     @Override
-    public boolean build(ArrayList<Player> p, Board b, Cell in) {
+    public boolean build(List<Player> p, Board b, Cell in) {
         if(!(p == null || b == null || in == null)){
             Player current = null;
             for(Player player:p)
@@ -59,7 +60,7 @@ public class Hephaestus extends Card {
                     current = player;
             if(current != null) {
                 if(current.getCurrentWorker() != null){
-                    ArrayList<Cell> available = checkBuild(p,b);
+                    List<Cell> available = checkBuild(p,b);
                     if(available.contains(in)){
                         if(isActive() && in.getLevel()<2){
                             available.get(available.indexOf(in)).setLevel(available.get(available.indexOf(in)).getLevel()+2);
@@ -81,7 +82,7 @@ public class Hephaestus extends Card {
 
 
     @Override
-    public boolean activable(ArrayList<Player> p, Board b) {
+    public boolean activable(List<Player> p, Board b) {
         if (p == null || b == null) return true;
         Player current = null;
         for (Player player : p) {

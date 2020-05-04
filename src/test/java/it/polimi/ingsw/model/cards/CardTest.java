@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -140,7 +141,7 @@ public class CardTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<Cell> ret = p.get(0).getCard().checkBuild(p,b);
+        List<Cell> ret = p.get(0).getCard().checkBuild(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
         assertEquals(ret.size(),3);
@@ -178,7 +179,7 @@ public class CardTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<SnapCell> ret = p.get(0).getCard().getCheckBuild(p,b);
+        List<SnapCell> ret = p.get(0).getCard().getCheckBuild(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
         assertEquals(ret.size(),3);
@@ -192,7 +193,7 @@ public class CardTest {
         Card c = FactoryCard.getCard(CardName.APOLLO,null);
         initialize();
         assertNotNull(c);
-        ArrayList<Cell> ret = c.checkMove(p,null);
+        List<Cell> ret = c.checkMove(p,null);
         assertEquals(ret.size(),0);
         ret = c.checkMove(null,new Board());
         assertEquals(0, ret.size());
@@ -238,7 +239,7 @@ public class CardTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,b);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
         assertEquals(ret.size(),1);
@@ -271,7 +272,7 @@ public class CardTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,b);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
         assertEquals(ret.size(),2);
@@ -304,7 +305,7 @@ public class CardTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<SnapCell> ret = p.get(0).getCard().getCheckMove(p,b);
+        List<SnapCell> ret = p.get(0).getCard().getCheckMove(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
         assertEquals(ret.size(),2);

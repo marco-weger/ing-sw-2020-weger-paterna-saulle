@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -32,7 +33,7 @@ public class ApolloTest {
     public void checkMove_paramsNull()
     {
         initialize();
-        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,null);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,null);
         assertEquals(ret.size(),0);
         ret = p.get(0).getCard().checkMove(null,new Board());
         assertEquals(0, ret.size());
@@ -66,7 +67,7 @@ public class ApolloTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,b);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,b);
         //for(Cell c:ret)
         //    System.out.println(c.getRow() + " - " + c.getColumn());
         assertEquals(ret.size(),1);
@@ -103,7 +104,7 @@ public class ApolloTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<Cell> ret = p.get(0).getCard().checkMove(p,b);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,b);
         assertEquals(ret.size(),2);
         for(Cell c:ret)
             assertTrue((c.getRow() == 1 && c.getColumn() == 2) || (c.getRow() == 2 && c.getColumn() == 2));

@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -67,7 +68,7 @@ public class AthenaTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<Cell> ret = p.get(0).getCard().activeBlock(p, b, w1, Status.QUESTION_M);
+        List<Cell> ret = p.get(0).getCard().activeBlock(p, b, w1, Status.QUESTION_M);
         assertEquals(2, ret.size());
     }
 
@@ -95,7 +96,7 @@ public class AthenaTest {
         }
         assertNotNull(p);
         assertNotNull(b);
-        ArrayList<Cell> ret = p.get(0).getCard().activeBlock(p, b, w1, Status.QUESTION_M);
+        List<Cell> ret = p.get(0).getCard().activeBlock(p, b, w1, Status.QUESTION_M);
         assertEquals(1, ret.size());
     }
 
@@ -121,7 +122,7 @@ public class AthenaTest {
             else if (c.getRow() == 3 && c.getColumn() == 3)
                 c.setLevel(1);
         }
-        ArrayList<Cell> ret = p.get(0).getCard().activeBlock(null, null, null, null);
+        List<Cell> ret = p.get(0).getCard().activeBlock(null, null, null, null);
         assertEquals(ret.size(), 0);
     }
 
