@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Santorini';
+    src: url("/it.polimi.ingsw/view/gui/font/santorini.ttf")
+}
+
+.text {
+    -fx-font-family: "Santorini";
+}

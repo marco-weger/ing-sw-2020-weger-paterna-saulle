@@ -5,12 +5,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class DefaultController {
+public class DefaultController extends GUI{
 
     private Client client;
 
@@ -68,9 +69,12 @@ public class DefaultController {
     }
 
     public void quitOnAction(ActionEvent actionEvent) {
-        //Stage s = (Stage) buttonQuit.getScene().getWindow();
-        new Alert(Alert.AlertType.ERROR, "SHOW IF YOU ARE SURE !").showAndWait();
-        stage.close();
+        new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro?\nMarco riceve un biscotto per ogni partita in più!").showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                stage.close();
+                close();
+            }
+        });
     }
 
 }
