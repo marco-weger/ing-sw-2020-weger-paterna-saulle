@@ -23,14 +23,13 @@ java --module-path PATHTOJAVAFX --add-modules=javafx.controls,javafx.fxml,javafx
 
 ### Configuration
 <!-- Talk about JSON and saved-match -->
-An optional JSON file could be saved in ./resources/config.json
-If the software can't find the file it will use default value, written in square brackets.
+An optional JSON file could be saved in [Config file](./resources/config.json); if the software can't find the file it will use default value, written in square brackets.
 <br>
 Allowed params:
 * ip (used by client) [127.0.0.1] - addres of server
 * port (used by cliend and server) [1234] - socket port
-* pingPeriod (used by cliend and server) [5] - useed to keep safeily alive the connection
-* timeoutSocket (used by cliend and server) [] - useed to keep safeily alive the connection
+* pingPeriod (used by cliend and server) [2] - useed to keep safeily alive the connection
+* timeoutSocket (used by cliend and server) 5] - useed to keep safeily alive the connection
 * disconnectTimer (used by server) [60] - timer used to handle a diconnection during a match
 * turnTimer (used by server) [180] - timer for a singel turn
 
