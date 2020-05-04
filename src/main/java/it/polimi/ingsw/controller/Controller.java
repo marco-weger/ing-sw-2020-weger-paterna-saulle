@@ -234,7 +234,6 @@ public class Controller implements Observer, ClientMessageHandler {
                 match.getCurrentPlayer().getCard().getCheckBuild(match.getPlayers(), match.getBoard()); }
         //TODO rimuvoere dopo i test
         else{
-            System.err.println("Incompatibilità tra Status!!! FIXA AnswerAbilityClient nel controller!  --- proseguo col turno");
             match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
         }
     }
@@ -300,15 +299,9 @@ public class Controller implements Observer, ClientMessageHandler {
                 match.getCurrentPlayer().getCard().getCheckBuild(match.getPlayers(), match.getBoard());
                 return;
             }
-            //else{
-            //    System.err.println("Incompatibilità tra CurrentPlayer.State =" + match.getStatus() + "handlemessage Buildclient message");
-            //}
         }
         if(match.getCurrentPlayer().getCard().build(match.getPlayers(),match.getBoard(),match.getBoard().getCell(message.x,message.y))){
-
-            //System.err.println("CASO ATHENA POTERE ATTIVO CurrentPlayer.State =" + match.getStatus() + "handlemessage Buildclient message");
-       // match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
-        startTurn(true);
+            startTurn(true);
         }
 
     }
@@ -325,7 +318,6 @@ public class Controller implements Observer, ClientMessageHandler {
     public void handleMessage(ModeChoseClient message) {
         if(match.getPlayers().size() < message.mode)
             match.addPlayer(new Player(message.name,virtualView));
-        else System.err.println("!ERROR!");
         if(match.getPlayers().size() == message.mode)
             startMatch();
     }

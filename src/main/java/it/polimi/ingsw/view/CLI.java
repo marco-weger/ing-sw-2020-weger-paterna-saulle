@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class CLI implements ViewInterface {
 
@@ -217,12 +218,8 @@ public class CLI implements ViewInterface {
             println(COLOR_CPU +"Type if you want to use the Ability of your God [YES/Y] or not [NO/N] " + TextFormatting.input());
             String answer;
             answer = read();
-            if (answer.equalsIgnoreCase("YES") || answer.equalsIgnoreCase("Y")) {
-                client.sendMessage(new AnswerAbilityClient(client.getUsername(), true, message.status));
-                break;
-            }
-            if (answer.equalsIgnoreCase("NO") || answer.equalsIgnoreCase("N")) {
-                client.sendMessage(new AnswerAbilityClient(client.getUsername(), false, message.status));
+            if (answer.equalsIgnoreCase("YES") || answer.equalsIgnoreCase("Y") || answer.equalsIgnoreCase("NO") || answer.equalsIgnoreCase("N")) {
+                client.sendMessage(new AnswerAbilityClient(client.getUsername(), answer.equalsIgnoreCase("YES") || answer.equalsIgnoreCase("Y"), message.status));
                 break;
             }
         }while(client.getContinueReading());
@@ -415,7 +412,6 @@ public class CLI implements ViewInterface {
 
         try{
             client.setPlayers(message.players);
-            System.out.println("OK");
             for(int i=0;i<client.getPlayers().size();i++){
                 client.getPlayers().get(i).symbol = symbols.charAt(i)+"";
                 if(i==0)

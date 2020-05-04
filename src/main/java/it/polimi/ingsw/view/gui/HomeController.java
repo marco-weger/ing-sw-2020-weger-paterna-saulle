@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.network.Client;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
@@ -11,9 +12,16 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class HomeController extends DefaultController{
+
+    /**
+     * The logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(HomeController.class.getName());
 
     @FXML
     public Button buttonPlay;
@@ -59,8 +67,8 @@ public class HomeController extends DefaultController{
 
             rules.show();
         }
-        catch (IOException e) {
-                e.printStackTrace();
+        catch (IOException ex) {
+            LOGGER.log( Level.SEVERE, ex.toString(), ex );
         }
     }
 

@@ -21,8 +21,15 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Client implements Runnable{
+
+    /**
+     * The logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(Client.class.getName());
 
     private ViewInterface view;
     private Socket socket;
@@ -129,12 +136,15 @@ public class Client implements Runnable{
             }
             return ret.toString();
         } catch (Exception ex){
-            System.out.println(ex.toString());
+            LOGGER.log( Level.SEVERE, ex.toString(), ex );
             return "*@%";
         }
     }
 
     public static void main(String[] args) {
+
+        LOGGER.log( Level.FINE, "processing {0} entries in loop", "START" );
+
         Client client = new Client();
         readParams(client);
         String version;
@@ -150,9 +160,8 @@ public class Client implements Runnable{
 
                 try {
                     version = read.readLine();
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                    System.out.flush();
+                } catch (IOException ex) {
+                    LOGGER.log( Level.SEVERE, ex.toString(), ex );
                     version = "err";
                 }
             }
@@ -227,8 +236,8 @@ public class Client implements Runnable{
             ExecutorService executor = Executors.newCachedThreadPool();
             executor.submit(this);
             return true;
-        } catch (IOException e) {
-            System.out.println("eeee_"+e.getMessage());
+        } catch (IOException ex) {
+            LOGGER.log( Level.SEVERE, ex.toString(), ex );
             return false;
         }
     }
@@ -270,9 +279,8 @@ public class Client implements Runnable{
                 }
             }
         }
-        catch (Exception e){
-            e.printStackTrace();
-            System.out.println("RUNNING ERROR... ");
+        catch (Exception ex){
+            LOGGER.log( Level.SEVERE, ex.toString(), ex );
             System.exit(0);
         }
     }
@@ -282,9 +290,8 @@ public class Client implements Runnable{
             out.reset();
             out.writeObject(msg);
             out.flush();
-        } catch (IOException e) {
-            System.out.println("SERVER UNAVAILABLE...");
-            System.out.flush();
+        } catch (IOException ex) {
+            LOGGER.log( Level.SEVERE, ex.toString(), ex );
             System.exit(0);
         }
     }
@@ -295,7 +302,7 @@ public class Client implements Runnable{
             try{
                 obj = in.readObject();
             } catch (Exception ex){
-                System.out.println("XXX");
+                LOGGER.log( Level.SEVERE, ex.toString(), ex );
                 view.close();
                 System.exit(-1);
             }
