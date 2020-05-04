@@ -412,8 +412,10 @@ public class CLI implements ViewInterface {
     public void handleMessage(LobbyServer message) { // tested
         clear();
         printTitle();
+
         try{
             client.setPlayers(message.players);
+            System.out.println("OK");
             for(int i=0;i<client.getPlayers().size();i++){
                 client.getPlayers().get(i).symbol = symbols.charAt(i)+"";
                 if(i==0)
@@ -423,7 +425,6 @@ public class CLI implements ViewInterface {
                 else if(i==2)
                     client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_PURPLE.toString()+TextFormatting.COLOR_BLACK);
             }
-
             printLobby(message.loaded);
         }catch (Exception e){
             println(e.getMessage());

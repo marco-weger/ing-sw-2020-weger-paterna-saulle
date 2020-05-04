@@ -10,7 +10,7 @@ public class ChallengerChoseClient extends ClientMessage {
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    public final transient List<CardName> c;
+    public final List<CardName> c;
 
     /**
      * This messagge will be send to the server from the client with the three or two cards picked from the deck by the challenger

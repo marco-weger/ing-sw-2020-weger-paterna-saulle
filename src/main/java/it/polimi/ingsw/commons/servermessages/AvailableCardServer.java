@@ -11,7 +11,7 @@ public class AvailableCardServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    public final transient List<CardName> cardName;
+    public final List<CardName> cardName;
 
     /**
      * The challenger will receive this message with an empty ArrayList
