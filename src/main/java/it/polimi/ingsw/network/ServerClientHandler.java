@@ -1,8 +1,8 @@
 package it.polimi.ingsw.network;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
-import it.polimi.ingsw.commons.clientMessages.*;
-import it.polimi.ingsw.commons.serverMessages.*;
+import it.polimi.ingsw.commons.clientmessages.*;
+import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.commons.Status;
 
 import java.io.*;

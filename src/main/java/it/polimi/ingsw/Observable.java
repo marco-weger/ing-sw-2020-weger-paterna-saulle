@@ -16,20 +16,11 @@ public class Observable {
         observers.add(o);
     }
 
-    /*
-    public void removeObserver(Observer observer){
-        synchronized (observers) {
-            observers.remove(observer);
-        }
-    }
-     */
-
     public void notifyObservers(Object obj){
         for(Observer i : observers)
             i.update(obj);
-        if(this instanceof Match && obj instanceof ServerMessage)
-            if(!((Match) this).getStatus().equals(Status.NAME_CHOICE))
-                ((Match) this).saveToFile((ServerMessage) obj);
+        if(this instanceof Match && obj instanceof ServerMessage && !((Match) this).getStatus().equals(Status.NAME_CHOICE))
+            ((Match) this).saveToFile((ServerMessage) obj);
     }
 
 }

@@ -2,7 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.Status;
-import it.polimi.ingsw.commons.serverMessages.PingServer;
+import it.polimi.ingsw.commons.servermessages.PingServer;
 import it.polimi.ingsw.model.Match;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

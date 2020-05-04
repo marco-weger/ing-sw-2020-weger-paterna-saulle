@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.commons.clientMessages.PingClient;
-import it.polimi.ingsw.commons.serverMessages.PingServer;
+import it.polimi.ingsw.commons.clientmessages.PingClient;
+import it.polimi.ingsw.commons.servermessages.PingServer;
 
 import java.util.TimerTask;
 

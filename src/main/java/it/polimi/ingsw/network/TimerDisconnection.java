@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.Status;
-import it.polimi.ingsw.commons.serverMessages.TimeOutServer;
+import it.polimi.ingsw.commons.servermessages.TimeOutServer;
 
 import java.util.concurrent.ScheduledExecutorService;
 

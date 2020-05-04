@@ -13,11 +13,12 @@ public class ModeController extends DefaultController{
     public Button IIIPlayers;
 
     @FXML
+    @Override
     public void initialize(){
         super.initialize();
         super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_mode.png"));
 
-        int size = 200;
+        //int size = 200;
         /*
         buttonPlay.setPrefSize(size,size);
         buttonPlay.setMaxSize(size,size);

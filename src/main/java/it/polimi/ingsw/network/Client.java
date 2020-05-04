@@ -1,10 +1,10 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.*;
-import it.polimi.ingsw.commons.serverMessages.BuiltServer;
-import it.polimi.ingsw.commons.serverMessages.CurrentStatusServer;
-import it.polimi.ingsw.commons.serverMessages.MovedServer;
-import it.polimi.ingsw.commons.serverMessages.PingServer;
+import it.polimi.ingsw.commons.servermessages.BuiltServer;
+import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
+import it.polimi.ingsw.commons.servermessages.MovedServer;
+import it.polimi.ingsw.commons.servermessages.PingServer;
 import it.polimi.ingsw.view.CLI;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.SnapPlayer;

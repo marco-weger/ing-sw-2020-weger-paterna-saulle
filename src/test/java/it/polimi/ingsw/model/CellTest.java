@@ -32,9 +32,9 @@ public class CellTest {
         c.setLevel(1);
         //c.setColumn(1);
         //c.setRow(1);
-        assertEquals(c.getRow(),1);
-        assertEquals(c.getColumn(),1);
-        assertEquals(c.getLevel(),1);
+        assertEquals(1,c.getRow());
+        assertEquals(1,c.getColumn());
+        assertEquals(1,c.getLevel());
     }
     // isOccupied
     @Test

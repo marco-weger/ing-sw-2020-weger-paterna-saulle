@@ -2,11 +2,10 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.Status;
-import it.polimi.ingsw.commons.serverMessages.BuiltServer;
+import it.polimi.ingsw.commons.servermessages.BuiltServer;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Atlas extends Card {

@@ -31,7 +31,7 @@ public class ArtemisTest {
     public void checkMove_nullAndZeros() {
         initialize();
         List<Cell> moving = p.get(0).getCard().checkMove(p, null);
-        assertEquals(moving.size(), 0);
+        assertEquals(0,moving.size());
         moving = p.get(0).getCard().checkMove(null, new Board());
         assertEquals(0, moving.size());
     }
@@ -260,8 +260,8 @@ public class ArtemisTest {
         Board b1 = new Board();
         b1.setField(p.get(0).getCard().checkMove(p,b));
         p.get(0).getCard().move(p,b1,b1.getCell(1,3));
-        assertEquals(p.get(0).getCurrentWorker().getRow(), 1);
-        assertEquals(p.get(0).getCurrentWorker().getColumn(), 1);
+        assertEquals(1,p.get(0).getCurrentWorker().getRow());
+        assertEquals(1,p.get(0).getCurrentWorker().getColumn());
     }
     @Test
     public void moveNoAbility()
@@ -287,8 +287,8 @@ public class ArtemisTest {
         Board b1 = new Board();
         b1.setField(p.get(0).getCard().checkMove(p,b));
         p.get(0).getCard().move(p,b1,b1.getCell(2,2));
-        assertEquals(p.get(0).getCurrentWorker().getRow(), 2);
-        assertEquals(p.get(0).getCurrentWorker().getColumn(), 2);
+        assertEquals(2,p.get(0).getCurrentWorker().getRow());
+        assertEquals(2,p.get(0).getCurrentWorker().getColumn());
     }
     @Test
     public void moveWhitAbility()

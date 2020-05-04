@@ -1,4 +1,4 @@
-package it.polimi.ingsw.commons.clientMessages;
+package it.polimi.ingsw.commons.clientmessages;
 
 import it.polimi.ingsw.controller.ClientMessageHandler;
 import it.polimi.ingsw.commons.ClientMessage;
@@ -7,7 +7,9 @@ public class MoveClient extends ClientMessage {
     @Override
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
-    public int x, y;
+    public int x;
+
+    public int y;
 
     /**
      * This messagge will be send to the server from the client with the decision of the player about where move.

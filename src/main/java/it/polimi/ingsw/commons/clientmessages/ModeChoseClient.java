@@ -1,4 +1,4 @@
-package it.polimi.ingsw.commons.clientMessages;
+package it.polimi.ingsw.commons.clientmessages;
 
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.controller.ClientMessageHandler;
@@ -11,11 +11,10 @@ public class ModeChoseClient extends ClientMessage {
      * @param cmh nullable
      */
     @Override
-    @Deprecated
     public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}
 
     public final int mode;
-    public ServerClientHandler sch;
+    public transient ServerClientHandler sch;
 
     public ModeChoseClient(String name, int mode){
         super(name);

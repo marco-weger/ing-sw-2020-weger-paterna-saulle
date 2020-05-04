@@ -7,27 +7,27 @@ public class SnapPlayer {
     /**
      * The name
      */
-    final public String name;
+    public final String name;
 
     /**
      * The symbol used in CLI version
      */
-    public String symbol;
+    public static String symbol;
 
     /**
      * The color used in CLI version
      */
-    public String color;
+    public static String color;
 
     /**
      * The chosen god
      */
-    public CardName card;
+    public static CardName card;
 
     /**
      * True if this player has lost
      */
-    public boolean loser;
+    public static boolean loser;
 
     /**
      * It is initialized with default value

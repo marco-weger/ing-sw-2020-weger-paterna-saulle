@@ -4,8 +4,8 @@ import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
-import it.polimi.ingsw.commons.clientMessages.ModeChoseClient;
-import it.polimi.ingsw.commons.serverMessages.*;
+import it.polimi.ingsw.commons.clientmessages.ModeChoseClient;
+import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.Match;
@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 
 public class VirtualView extends Observable implements Observer {
@@ -45,7 +46,7 @@ public class VirtualView extends Observable implements Observer {
     /**
      * List of losers
      */
-    private final ArrayList<String> losers;
+    private final List<String> losers;
 
     /**
      * Timer used to manage single turn
@@ -53,9 +54,8 @@ public class VirtualView extends Observable implements Observer {
     private Timer turn;
 
     // It is used to run some tests about VirtualView and Controller communication
-    // FIXME remove
-    @Deprecated
-    public Controller c;
+    //@Deprecated
+    //public Controller c;
 
     /**
      * Constructor used for a new game
@@ -67,7 +67,6 @@ public class VirtualView extends Observable implements Observer {
         this.connectedPlayers = new HashMap<>();
         this.currentStatus = Status.NAME_CHOICE;
         this.lastMessage = null;
-        // FIXME remove Controller attribute
         //c = new Controller(this);
         //addObserver(c);
         addObserver(new Controller(this));
@@ -106,7 +105,7 @@ public class VirtualView extends Observable implements Observer {
     /**
      * @return list of players who has lost
      */
-    public ArrayList<String> getLosers() { return losers; }
+    public List<String> getLosers() { return losers; }
 
     /**
      * @return true if the match is ended
@@ -125,13 +124,7 @@ public class VirtualView extends Observable implements Observer {
     protected void notify(ClientMessage message) {
         if(message instanceof ModeChoseClient){ // if it is a new player i add to list
             connectedPlayers.put(message.name,((ModeChoseClient) message).sch);
-        } //else if(message instanceof ReConnectionClient){ //  TODO if it is a new player i add to list
-            //connectedPlayers.remove(message.name);
-            //connectedPlayers.put(message.name,((ReConnectionClient) message).sch);
-            //if(!this.getConnectedPlayers().containsValue(null)){
-            //    this.update(lastMessage);
-            //}
-        //}
+        }
 
         if (!ended) {
             notifyObservers(message);
@@ -194,9 +187,8 @@ public class VirtualView extends Observable implements Observer {
         } catch (Exception ignored){}
         turn = new Timer();
         for(ServerClientHandler sch : getConnectedPlayers().values())
-            if(sch != null)
-                if(sch.getName().equals(player) && sch.isStillConnected())
-                    turn.schedule(new TimerTurn(sch), server.getTurnTimer()*1000);
+            if(sch != null && sch.getName().equals(player) && sch.isStillConnected())
+                turn.schedule(new TimerTurn(sch), server.getTurnTimer()*1000);
     }
 
 }

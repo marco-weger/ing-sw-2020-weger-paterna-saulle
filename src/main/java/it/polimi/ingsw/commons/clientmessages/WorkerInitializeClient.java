@@ -1,4 +1,4 @@
-package it.polimi.ingsw.commons.clientMessages;
+package it.polimi.ingsw.commons.clientmessages;
 
 import it.polimi.ingsw.controller.ClientMessageHandler;
 import it.polimi.ingsw.commons.ClientMessage;

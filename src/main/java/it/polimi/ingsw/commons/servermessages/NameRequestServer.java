@@ -1,4 +1,4 @@
-package it.polimi.ingsw.commons.serverMessages;
+package it.polimi.ingsw.commons.servermessages;
 
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.view.ViewInterface;
@@ -7,8 +7,7 @@ public class NameRequestServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
-    //public ArrayList<String> players;
-    public boolean isFirstTime;
+    public static boolean isFirstTime;
 
     /**
      * It informs the server if the player has already entered the server
@@ -19,7 +18,6 @@ public class NameRequestServer extends ServerMessage {
 
     public NameRequestServer(boolean isFirstTime){
         super("");
-        //this.players = players;
         this.isFirstTime = isFirstTime;
     }
 }

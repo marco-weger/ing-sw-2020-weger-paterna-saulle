@@ -1,17 +1,5 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.commons.clientMessages.*;
-import it.polimi.ingsw.model.Match;
-
-import it.polimi.ingsw.commons.Status;
-import it.polimi.ingsw.model.cards.CardName;
-import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.ArrayList;
-
-import static org.junit.Assert.*;
-
 
 public class VirtualViewTest {
 

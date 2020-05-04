@@ -3,8 +3,8 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
-import it.polimi.ingsw.commons.clientMessages.*;
-import it.polimi.ingsw.commons.serverMessages.*;
+import it.polimi.ingsw.commons.clientmessages.*;
+import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 

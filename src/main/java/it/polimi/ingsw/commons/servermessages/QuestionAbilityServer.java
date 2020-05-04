@@ -1,4 +1,4 @@
-package it.polimi.ingsw.commons.serverMessages;
+package it.polimi.ingsw.commons.servermessages;
 
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.Status;

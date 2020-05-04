@@ -10,7 +10,7 @@ public class RulesController {
     @FXML
     public Button buttonExit;
 
-    public void ExitOnAction(ActionEvent actionEvent) {
+    public void exitOnAction(ActionEvent actionEvent) {
         Stage stage = (Stage) buttonExit.getScene().getWindow();
         stage.close();
     }

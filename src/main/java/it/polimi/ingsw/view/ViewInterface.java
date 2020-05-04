@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.commons.serverMessages.*;
+import it.polimi.ingsw.commons.servermessages.*;
 
 public interface ViewInterface {
     void handleMessage(CheckMoveServer message);

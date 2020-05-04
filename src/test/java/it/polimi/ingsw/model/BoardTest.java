@@ -31,7 +31,7 @@ public class BoardTest{
         Board b = new Board();
         b.build(null, 3);
         for(Cell c: b.getField())
-            assertEquals(c.getLevel(),0);
+            assertEquals(0,c.getLevel());
     }
     @Test
     public void build_cellOutOfBoard()
@@ -39,7 +39,7 @@ public class BoardTest{
         Board b = new Board();
         b.build(new Cell(5,5, 3), 3);
         for(Cell c: b.getField())
-            assertEquals(c.getLevel(),0);
+            assertEquals(0,c.getLevel());
     }
     @Test
     public void build_levelOutOfRange()
@@ -48,7 +48,7 @@ public class BoardTest{
         b.build(new Cell(0,0, 3), 5);
         for(Cell c: b.getField())
             if(c.getRow() == 0 && c.getColumn() == 0)
-                assertEquals(c.getLevel(),0);
+                assertEquals(0,c.getLevel());
     }
     @Test
     public void build_correctInput()
@@ -57,6 +57,6 @@ public class BoardTest{
         b.build(new Cell(0,0, 3), 3);
         for(Cell c: b.getField())
             if(c.getRow() == 0 && c.getColumn() == 0)
-                assertEquals(c.getLevel(),3);
+                assertEquals(3,c.getLevel());
     }
 }

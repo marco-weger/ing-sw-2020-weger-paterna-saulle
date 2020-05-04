@@ -126,7 +126,6 @@ public class Prometheus extends Card {
             //PASP Prometheus Anti Suicide Protocol
             //If you have only one move, on the same level, but you have at least 2 checkbuild allowed, YOU CAN'T BUILD ON THE checkmove marked cell.
             if(availablecm.size() < 2 && availablelow.size() == 0 && available.size() > 1 &&isActive()) {
-                //if(available.size()>1 && availableeq.size()>0 && available.size() > availableeq.size())
                 available.remove(availableeq.get(0));
             }
 
@@ -134,20 +133,6 @@ public class Prometheus extends Card {
 
         return available;
     }
-
-   /*
-   OLD CHECK BUILD
-   public ArrayList<Cell> checkBuild(ArrayList<Player> p, Board b) {
-
-        ArrayList<Cell> available = super.checkBuild(p, b);
-
-        ArrayList<Cell> tmp = super.checkMove(p,b);
-        if(isActive() && tmp.size() == 1){
-            available.remove(tmp.get(0));
-        }
-
-        return available;
-    }*/
 
     /**
      * It uses the checkMove to checks if there is some build possibilities before building

@@ -16,10 +16,10 @@ public class PlayerTest {
         assertEquals(p.getName(),"Marco");
         p.setWorker1(new Worker(2,2));
         p.setWorker2(new Worker(3,1));
-        assertEquals(p.getWorker1().getRow(),2);
-        assertEquals(p.getWorker1().getColumn(),2);
-        assertEquals(p.getWorker2().getRow(),3);
-        assertEquals(p.getWorker2().getColumn(),1);
+        assertEquals(2,p.getWorker1().getRow());
+        assertEquals(2,p.getWorker1().getColumn());
+        assertEquals(3,p.getWorker2().getRow());
+        assertEquals(1,p.getWorker2().getColumn());
         p.setCard(CardName.APOLLO,null);
         assertEquals(p.getCard().getName(), CardName.APOLLO);
     }

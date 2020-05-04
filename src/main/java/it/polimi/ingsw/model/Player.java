@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.Observable;
-import it.polimi.ingsw.commons.serverMessages.CardChosenServer;
-import it.polimi.ingsw.commons.serverMessages.QuestionAbilityServer;
-import it.polimi.ingsw.commons.serverMessages.WorkerChosenServer;
+import it.polimi.ingsw.commons.servermessages.CardChosenServer;
+import it.polimi.ingsw.commons.servermessages.QuestionAbilityServer;
+import it.polimi.ingsw.commons.servermessages.WorkerChosenServer;
 import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.model.cards.FactoryCard;
@@ -24,9 +24,14 @@ public class Player extends Observable implements Serializable {
     private Card card;
 
     /**
-     * Workers
+     * Worker 1
      */
-    private Worker worker1,worker2;
+    private Worker worker1;
+
+    /**
+     * Worker 2
+     */
+    private Worker worker2;
 
     /**
      * True if this is the current player
@@ -36,7 +41,7 @@ public class Player extends Observable implements Serializable {
     public Player(String name, VirtualView vv)
     {
         this.name = name;
-        this.card = null; //FactoryCard.getCard(card);
+        this.card = null;
         this.worker1 = null;
         this.worker2 = null;
         this.current = false;

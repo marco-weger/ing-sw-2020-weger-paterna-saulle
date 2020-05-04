@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
-import it.polimi.ingsw.commons.serverMessages.MovedServer;
+import it.polimi.ingsw.commons.servermessages.MovedServer;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -25,13 +25,13 @@ public class Apollo extends Card {
     public List<Cell> checkMove(List<Player> p, Board b){
         if(p == null || b == null) return new ArrayList<>(0);
         Worker actived = null;
-        boolean OtAbility = false;                                                  /*THIS LINE MAKE "OPPONENT'S TURN ABILITIES" DOMINANT ON APOLLO*/
+        boolean otAbility = false;                                                  /*THIS LINE MAKE "OPPONENT'S TURN ABILITIES" DOMINANT ON APOLLO*/
         for(Player player:p) {
             if (player.getCard().getName().compareTo(this.getName()) == 0) {
                 actived = player.getCurrentWorker();
             }
             if (player.getCard().isOpponent() && player.getCard().isActive()) {     /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON APOLLO*/
-                OtAbility = true;                                                   /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON APOLLO*/
+                otAbility = true;                                                   /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON APOLLO*/
             }                                                                       /*THIS LINE MAKE "OPPONENT'S TURN" ABILITIES DOMINANT ON APOLLO*/
         }
         if(actived == null) return new ArrayList<>();
@@ -53,7 +53,7 @@ public class Apollo extends Card {
                 player.setCurrentWorker(0);
             }
         }
-        if(OtAbility){                                                                                                                                                                                                              /*THIS LINE MAKE ATHENA DOMINANT ON APOLLO*/
+        if(otAbility){                                                                                                                                                                                                              /*THIS LINE MAKE ATHENA DOMINANT ON APOLLO*/
             for (Cell c : b.getField())                                                                                                                                                                                             /*THIS LINE MAKE ATHENA DOMINANT ON APOLLO*/
                 if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() == actived.getLevel(b) + 1 && c.isOccupied(p))                           /*THIS LINE MAKE ATHENA DOMINANT ON APOLLO*/
                     ret.remove(c);

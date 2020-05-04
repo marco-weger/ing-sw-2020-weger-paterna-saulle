@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller;
 import it.polimi.ingsw.commons.Status;
-import it.polimi.ingsw.commons.clientMessages.*;
+import it.polimi.ingsw.commons.clientmessages.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.*;

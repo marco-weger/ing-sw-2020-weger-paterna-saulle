@@ -33,13 +33,13 @@ public class MatchTest {
         Match m = new Match(1,null);
 
         //m.setId(1);
-        assertEquals(m.getId(),1);
+        assertEquals(1,m.getId());
         m.setStatus(Status.CHOSEN);
         assertEquals(Status.CHOSEN, m.getStatus());
         Board b = new Board();
         b.getCell(0,0).setLevel(4);
         m.setBoard(b);
-        assertEquals(m.getBoard().getCell(0,0).getLevel(),4);
+        assertEquals(4,m.getBoard().getCell(0,0).getLevel());
         initialize();
         m.setPlayers(p);
         assertEquals(p,m.getPlayers());
@@ -49,8 +49,8 @@ public class MatchTest {
         assertEquals(m.getSelectedCard().get(0), CardName.ATHENA);
         assertEquals(m.getSelectedCard().get(1), CardName.ATLAS);
         m.setLosers(new ArrayList<>(Collections.singletonList(m.getPlayers().get(1))),false);
-        assertEquals(m.getPlayers().size(),2);
-        assertEquals(m.getLosers().size(),1);
+        assertEquals(2,m.getPlayers().size());
+        assertEquals(1,m.getLosers().size());
         assertEquals(m.getPlayers().get(1).getCard().getName(), CardName.ATLAS);
         assertEquals(m.getLosers().get(0).getCard().getName(), CardName.ARTEMIS);
     }

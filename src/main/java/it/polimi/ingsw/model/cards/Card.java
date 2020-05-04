@@ -4,7 +4,7 @@ import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
-import it.polimi.ingsw.commons.serverMessages.*;
+import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -72,7 +72,7 @@ public class Card extends Observable implements Serializable {
     public boolean checkWin(Cell from, Cell to)
     {
         if(from != null && to != null){
-            System.out.println("[DEBUG] " + from.getLevel() + " -> " + to.getLevel());
+            //System.out.println("[DEBUG] " + from.getLevel() + " -> " + to.getLevel());
             return (from.getLevel() == 2 && to.getLevel() == 3);
         }
         return false;
