@@ -12,7 +12,7 @@ public class SnapPlayer {
     /**
      * The symbol used in CLI version
      */
-    public static String symbol;
+    public String symbol;
 
     /**
      * The color used in CLI version
