@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.clientmessages.DisconnectionClient;
 import it.polimi.ingsw.network.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class DefaultController extends GUI{
+public class DefaultController{
 
     private Client client;
 
