@@ -194,6 +194,6 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void close(boolean isError) {
-        System.exit(0);
+
     }
 }
