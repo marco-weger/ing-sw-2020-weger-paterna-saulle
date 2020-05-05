@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.*;
+import it.polimi.ingsw.commons.clientmessages.DisconnectionClient;
 import it.polimi.ingsw.commons.servermessages.BuiltServer;
 import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
 import it.polimi.ingsw.commons.servermessages.MovedServer;
@@ -290,6 +291,11 @@ public class Client implements Runnable{
             //out.reset();
             out.writeObject(msg);
             out.flush();
+            if(msg instanceof DisconnectionClient){
+                in.close();
+                out.close();
+                socket.close();
+            }
         } catch (IOException ex) {
             LOGGER.log( Level.SEVERE, ex.toString(), ex );
             System.exit(0);
@@ -303,7 +309,7 @@ public class Client implements Runnable{
                 obj = in.readObject();
             } catch (Exception ex){
                 LOGGER.log( Level.SEVERE, ex.toString(), ex );
-                view.close();
+                view.close(true);
                 System.exit(-1);
             }
         }while (obj instanceof PingServer || !(obj instanceof ServerMessage));

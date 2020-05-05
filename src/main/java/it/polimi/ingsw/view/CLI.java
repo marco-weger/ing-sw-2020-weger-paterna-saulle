@@ -285,9 +285,7 @@ public class CLI implements ViewInterface {
 
         if(this.client.getUsername().equals(message.player)){
             clear();
-            if(message.isTimesUp)
-                println(TextFormatting.loser()+"TIME'S UP...YOU LOSE!"+TextFormatting.RESET);
-            printLose();
+            printLose(message.isTimesUp);
         }
         else{
             clear();
@@ -380,7 +378,10 @@ public class CLI implements ViewInterface {
         clear();
         if(this.client.getUsername().equals(message.player))
             printWin();
-        else printLose();
+        else {
+            clear();
+            printLose(message.isTimesUp);
+        }
     }
 
     @Override
@@ -465,7 +466,12 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(TimeOutServer message) {
-        println(TextFormatting.UNDERLINE.toString() + TextFormatting.COLOR_RED + message.player + " " + message.n + "/" + message.of + TextFormatting.RESET);
+        if(message.n == 0 && !client.getMyPlayer().loser){
+            clear();
+            printTitle();
+            printTable();
+        }
+        if(!client.getMyPlayer().loser) println(TextFormatting.UNDERLINE.toString() + TextFormatting.COLOR_RED + message.player + " has a network problem... Reconnection test " + (message.n+1) + " of " + (message.of+1) + TextFormatting.RESET);
     }
 
     @Override
@@ -484,9 +490,7 @@ public class CLI implements ViewInterface {
                 client.resetMatch();
                 client.sendMessage(new ModeChoseClient(client.getUsername(),Integer.parseInt(text)));
             } else if(text.equalsIgnoreCase("QUIT")){
-                println(COLOR_CPU + "Thank you for playing Santorini!" + TextFormatting.RESET);
-                client.sendMessage(new DisconnectionClient(client.getUsername(),false));
-                System.exit(1);
+                close(false);
             } else go = true;
         }
     }
@@ -504,10 +508,26 @@ public class CLI implements ViewInterface {
         }
     }
 
-    public void printLose(){
-        println(TextFormatting.loser()+ "                                                     888                                              "+ TextFormatting.RESET);
-        println(TextFormatting.loser()+ "                                                     888                                              "+ TextFormatting.RESET);
-        println(TextFormatting.loser()+ "                                                     888                                              "+ TextFormatting.RESET);
+    public void printLose(boolean isTimesUp){
+        if(isTimesUp){
+            println(TextFormatting.loser()+ "              88888888888 d8b                       d8b                                               "+TextFormatting.RESET);
+            println(TextFormatting.loser()+ "              88888888888 Y8P                       88P                                               "+TextFormatting.RESET);
+            println(TextFormatting.loser()+ "                  888                               8P                                                "+TextFormatting.RESET);
+            println(TextFormatting.loser()+ "  d8b d8b d8b     888     888 88888b.d88b.   .d88b. \"  .d8888b       888  888 88888b.     d8b d8b d8b "+ TextFormatting.RESET);
+            println(TextFormatting.loser()+ "  Y8P Y8P Y8P     888     888 888 \"888 \"88b d8P  Y8b   88K           888  888 888 \"88b    Y8P Y8P Y8P "+ TextFormatting.RESET);
+            println(TextFormatting.loser()+ "                  888     888 888  888  888 88888888   \"Y8888b.      888  888 888  888                "+ TextFormatting.RESET);
+            println(TextFormatting.loser()+ "  d8b d8b d8b     888     888 888  888  888 Y8b.            X88      Y88b 888 888 d88P    d8b d8b d8b "+ TextFormatting.RESET);
+            println(TextFormatting.loser()+ "  Y8P Y8P Y8P     888     888 888  888  888  \"Y8888     88888P'       \"Y88888 88888P\"     Y8P Y8P Y8P "+ TextFormatting.RESET);
+            println(TextFormatting.loser()+ "                                                                              888                     "+ TextFormatting.RESET);
+
+            println(TextFormatting.loser()+ "  d8b d8b d8b                                        888                      888         d8b d8b d8b "+ TextFormatting.RESET);
+            println(TextFormatting.loser()+ "  Y8P Y8P Y8P                                        888                      888         Y8P Y8P Y8P "+ TextFormatting.RESET);
+            println(TextFormatting.loser()+ "                                                     888                                              "+ TextFormatting.RESET);
+        } else {
+            println(TextFormatting.loser()+ "                                                     888                                              "+ TextFormatting.RESET);
+            println(TextFormatting.loser()+ "                                                     888                                              "+ TextFormatting.RESET);
+            println(TextFormatting.loser()+ "                                                     888                                              "+ TextFormatting.RESET);
+        }
         println(TextFormatting.loser()+ "  d8b d8b d8b       888  888  .d88b.  888  888       888  .d88b.  .d8888b   .d88b.        d8b d8b d8b "+ TextFormatting.RESET);
         println(TextFormatting.loser()+ "  Y8P Y8P Y8P       888  888 d88\"\"88b 888  888       888 d88\"\"88b 88K      d8P  Y8b       Y8P Y8P Y8P "+ TextFormatting.RESET);
         println(TextFormatting.loser()+ "                    888  888 888  888 888  888       888 888  888 \"Y8888b. 88888888                   "+ TextFormatting.RESET);
@@ -560,8 +580,12 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public void close() {
-        println(COLOR_CPU + "A network problem was encountered, please try again later!" + TextFormatting.RESET);
+    public void close(boolean isError) {
+        client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
+        if(isError)
+            println(COLOR_CPU + "A network problem was encountered, you have been disconnected!" + TextFormatting.RESET);
+        else println(COLOR_CPU + "Thank you for playing Santorini!" + TextFormatting.RESET);
+        System.exit(0);
     }
 
     public void clearLine(){

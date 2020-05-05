@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 */
 
+import it.polimi.ingsw.network.Client;
+import org.junit.Test;
+
 public class CLITest {
     /*
     @Test
@@ -81,6 +84,15 @@ public class CLITest {
         view.printTitle();
         view.printLobby(false);
         CLI.printCard(new ArrayList<>(Arrays.asList(CardName.values())));
+    }
+     */
+
+    /*
+    @Test
+    public void testLose(){
+        CLI view = new CLI(new Client(),"XXX");
+        //view.printLose(true);
+        view.printLose(false);
     }
      */
 }

@@ -22,7 +22,7 @@ public class TimerTurn extends TimerTask {
      */
     @Override
     public void run() {
-        System.out.println("[TIMER END]" + sch.getName());
+        System.out.println("[TIMER END] - " + sch.getName());
         sch.timesUp();
         this.cancel();
     }

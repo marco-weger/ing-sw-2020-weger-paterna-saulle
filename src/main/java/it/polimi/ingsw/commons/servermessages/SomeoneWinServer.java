@@ -9,12 +9,15 @@ public class SomeoneWinServer extends ServerMessage {
 
     public final String player;
 
+    public final boolean isTimesUp;
+
     /**
      * The players receive this message when someone win
      * @param player name of the winner
      */
-    public SomeoneWinServer(String player){
+    public SomeoneWinServer(String player, boolean isTimesUp){
         super("");
         this.player=player;
+        this.isTimesUp=isTimesUp;
     }
 }

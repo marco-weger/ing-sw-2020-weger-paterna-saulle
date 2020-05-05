@@ -72,7 +72,7 @@ public class DefaultController extends GUI{
         new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro?\nMarco riceve un biscotto per ogni partita in più!").showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 stage.close();
-                close();
+                close(false);
             }
         });
     }

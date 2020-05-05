@@ -8,10 +8,10 @@ public class TimeOutServer extends ServerMessage {
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
     public final int n;
-    public final int of;
+    public final long of;
     public final String player;
 
-    public TimeOutServer(String name, String player, int n, int of){
+    public TimeOutServer(String name, String player, int n, long of){
         super(name);
         this.player=player;
         this.n=n;

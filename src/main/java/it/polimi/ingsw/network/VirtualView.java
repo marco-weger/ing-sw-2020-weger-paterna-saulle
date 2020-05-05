@@ -4,10 +4,10 @@ import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.Observer;
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.clientmessages.ModeChoseClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.Match;
 import it.polimi.ingsw.model.Player;
 

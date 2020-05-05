@@ -23,5 +23,5 @@ public interface ViewInterface {
 
     void displayFirstWindow();
     void statusHandler(CurrentStatusServer message);
-    void close();
+    void close(boolean isError);
 }

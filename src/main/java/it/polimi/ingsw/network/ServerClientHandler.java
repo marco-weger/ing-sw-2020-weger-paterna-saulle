@@ -13,8 +13,15 @@ import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServerClientHandler implements Runnable {
+
+    /**
+     * The logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(ServerClientHandler.class.getName());
 
     /**
      * The socket
@@ -133,8 +140,8 @@ public class ServerClientHandler implements Runnable {
             stillConnected = true;
             out.writeObject(new PingServer(this.name)); // first ping fixes error of first connection of server
             startPing();
-        } catch (IOException e) {
-            System.err.println("XX - "+e.getMessage());
+        } catch (IOException ex) {
+            LOGGER.log( Level.SEVERE, ex.toString(), ex );
         } finally {
             int go = questionName(); // 1 load - 0 question - -1 error
 
@@ -150,12 +157,11 @@ public class ServerClientHandler implements Runnable {
             }
 
             if(go == 1){
-                try {
-                    ClientMessage object;
-                    // standard loop to read
-                    do{
+                ClientMessage object = null;
+                // standard loop to read
+                do{
+                    try {
                         object = (ClientMessage) readFromClient();
-
                         if(object != null){
                             System.out.println("[RECEIVED] - " + object.toString().substring(object.toString().lastIndexOf('.')+1,
                                     object.toString().lastIndexOf('@')) + " - " + (object.name.equals("") ? "ALL" : object.name));
@@ -187,18 +193,17 @@ public class ServerClientHandler implements Runnable {
                             }
                             else if(virtualView != null)
                                 virtualView.notify(object);
-                        } else virtualView.notify(new DisconnectionClient(this.name,true));
-                    }while(socket.isConnected() && object != null && !turnTimesUp);
-                    if(!turnTimesUp)
-                        timeOut();
-                } catch (Exception e) {
-                    if(virtualView != null && !virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
-                    {
-                        timeOut();
-                        // DEFAULT: start timer and wait for reconnection
-                        // TODO: start the timer and notify all the client with the start... timers will run asynch, the main one is server
+                        }
+                    } catch (Exception e) {
+                        if(virtualView != null && !virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
+                        {
+                            timeOut();
+                            // DEFAULT: start timer and wait for reconnection
+                            // TODO: start the timer and notify all the client with the start... timers will run asynch, the main one is server
+                        }
                     }
-                }
+                }while(stillConnected && !turnTimesUp);
+                System.out.println("ORA HO VERAMENTE PERSO!");
             }
             while(timerDisconnection.alive) timerDisconnection.alive = false;
         }
@@ -218,7 +223,8 @@ public class ServerClientHandler implements Runnable {
             try {
                 object = readFromClient();
                 ret = 0;
-            } catch (Exception e) {
+            } catch (Exception ex) {
+                LOGGER.log( Level.SEVERE, ex.toString(), ex );
                 disconnectionHandler();
                 return -1; // thread terminate
             } finally {
@@ -329,7 +335,8 @@ public class ServerClientHandler implements Runnable {
                 this.notify(new ModeRequestServer());
             try {
                 object = readFromClient();
-            } catch (Exception e) {
+            } catch (Exception ex) {
+                LOGGER.log( Level.SEVERE, ex.toString(), ex );
                 disconnectionHandler();
                 server.getPendingPlayers().remove(this.name);
                 return -1;
@@ -400,7 +407,7 @@ public class ServerClientHandler implements Runnable {
                 System.out.println("[DISCONNECTED USER] - " + this.getName());
             }
         } catch (Exception ex) {
-            System.err.println("[MUST HAND] - "+ex.getMessage());
+            LOGGER.log( Level.SEVERE, ex.toString(), ex );
         }
     }
 
@@ -424,8 +431,8 @@ public class ServerClientHandler implements Runnable {
                 out.flush();
             }
             //else System.err.println("ERRORE GRAVE ... "+message.toString());
-        } catch (Exception e) {
-            System.err.println("[WRITE] - " + message.toString() + " - " + e.getMessage());
+        } catch (Exception ex) {
+            //LOGGER.log( Level.SEVERE, ex.toString(), ex );
             timeOut();
         }
     }
@@ -455,6 +462,10 @@ public class ServerClientHandler implements Runnable {
             }
         }while ((obj instanceof PingClient || obj == null) && !turnTimesUp);
 
+        if(obj instanceof DisconnectionClient){
+            disconnectionHandler();
+        }
+
         if(turnTimesUp){
             System.out.println(this.name+"'S TURN TIME'S UP!");
             return null;
@@ -472,12 +483,13 @@ public class ServerClientHandler implements Runnable {
         if(timerDisconnection == null || !timerDisconnection.alive){
             long reconnectionPeriod = 5;
             ScheduledExecutorService timeOut = Executors.newSingleThreadScheduledExecutor();
-            timerDisconnection = new TimerDisconnection(this,timeOut,reconnectionPeriod);
+            timerDisconnection = new TimerDisconnection(this,timeOut,server.getdisconnectTimer()/reconnectionPeriod);
             timeOut.scheduleAtFixedRate(timerDisconnection, 0, reconnectionPeriod*1000, TimeUnit.MILLISECONDS);
         }
     }
 
     public void timesUp(){
+        System.out.println("Arrivo al metodo times up");
         virtualView.notify(new DisconnectionClient(this.name,true));
     }
 }

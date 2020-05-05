@@ -143,7 +143,7 @@ public class Match extends Observable implements Serializable {
         if(players.size() > 1)
             for (Player player : p)
                 notifyObservers(new SomeoneLoseServer(player.getName(),isTimesUp));
-        else notifyObservers(new SomeoneWinServer(players.get(0).getName()));
+        else notifyObservers(new SomeoneWinServer(players.get(0).getName(),isTimesUp));
 
         if(players.size() == 1){
             setEnded(true);
@@ -200,7 +200,7 @@ public class Match extends Observable implements Serializable {
      */
     public boolean checkCurrentPlayerWin() {
         if(players.size() == 1){
-            notifyObservers(new SomeoneWinServer(players.get(0).getName()));
+            notifyObservers(new SomeoneWinServer(players.get(0).getName(),false));
             return true;
         }
         return false;
@@ -240,7 +240,7 @@ public class Match extends Observable implements Serializable {
      * Saving the match in file for server persistence purpose
      */
     public void saveToFile(ServerMessage sm) {
-        FileOutputStream out = null;
+        FileOutputStream out;
         ObjectOutputStream objOut;
 
         if(!new File("resources" +File.separatorChar+"saved-match").exists() && !new File("resources" +File.separatorChar+"saved-match").mkdir())

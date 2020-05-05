@@ -23,9 +23,9 @@ public class TimerDisconnection implements Runnable {
     int count;
 
     /**
-     * Period for a reconnection check
+     * The number of try
      */
-    long reconnectionPeriod;
+    long numberOfTry;
 
     /**
      * True while the timer is running
@@ -36,12 +36,12 @@ public class TimerDisconnection implements Runnable {
      *
      * @param sch the client
      * @param ses the thread manager
-     * @param reconnectionPeriod period for a reconnection check
+     * @param numberOfTry number of try
      */
-    public TimerDisconnection(ServerClientHandler sch, ScheduledExecutorService ses, long reconnectionPeriod){
+    public TimerDisconnection(ServerClientHandler sch, ScheduledExecutorService ses, long numberOfTry){
         this.sch = sch;
         this.ses = ses;
-        this.reconnectionPeriod = reconnectionPeriod;
+        this.numberOfTry = numberOfTry;
         this.count = 0;
         this.alive = true;
 
@@ -49,7 +49,7 @@ public class TimerDisconnection implements Runnable {
         if(sch.getPing() != null)
             sch.getPing().cancel();
 
-        sch.setStillConnected(false);
+        //sch.setStillConnected(false);
         sch.getVirtualView().getTurn().cancel();
     }
 
@@ -66,40 +66,32 @@ public class TimerDisconnection implements Runnable {
      */
     @Override
     public void run() {
-        while(this.alive) {
-            if (sch.getVirtualView() == null) {
-                sch.disconnectionHandler();
-                this.alive = false;
-                ses.shutdown();
-            } else if (sch.getVirtualView().getCurrentStatus().equals(Status.NAME_CHOICE)) {
-                sch.disconnectionHandler();
-                this.alive = false;
-                ses.shutdown();
-            } else if (!sch.isStillConnected()) {
-                try {
-                    if (sch.getIn().available() != 0) { // if the connection is reestablished
-                        sch.setStillConnected(true);
-                        sch.startPing();
-                        this.alive = false;
-                        ses.shutdown(); // stop timer
-                    } else { // send the try to all clients
-                        sch.getServer().sendAll(new TimeOutServer("", sch.getName(), count, sch.getServer().getdisconnectTimer() / 15), sch.getVirtualView());
-                        System.out.println(count + "/" + (sch.getServer().getdisconnectTimer() / reconnectionPeriod));
-                    }
-                } catch (Exception e) {
-                    System.out.println("[TO] - " + e.getMessage());
-                }
-
-                if (++count > (sch.getServer().getdisconnectTimer() / reconnectionPeriod)) { // the timer's end
-                    sch.disconnectionHandler();
+        System.out.println(count+"/"+numberOfTry);
+        if(this.alive && sch.isStillConnected() && sch.getVirtualView() != null && !sch.getVirtualView().getCurrentStatus().equals(Status.NAME_CHOICE)) {
+            try {
+                if (sch.getIn().available() != 0) { // if the connection is reestablished
+                    sch.setStillConnected(true);
+                    sch.startPing();
                     this.alive = false;
-                    ses.shutdown();
+                    ses.shutdown(); // stop timer
+                } else { // send the try to all clients
+                    sch.getServer().sendAll(new TimeOutServer("", sch.getName(), count, numberOfTry), sch.getVirtualView());
                 }
-            } else {
+            } catch (Exception e) {
+                System.out.println("[TO] - " + e.getMessage());
+            }
+
+            if (++count > numberOfTry) { // the timer's end
                 sch.disconnectionHandler();
+                sch.setStillConnected(false);
                 this.alive = false;
                 ses.shutdown();
             }
+        } else {
+            sch.disconnectionHandler();
+            sch.setStillConnected(false);
+            this.alive = false;
+            ses.shutdown();
         }
     }
 }
