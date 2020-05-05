@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.clientmessages.DisconnectionClient;
 import it.polimi.ingsw.network.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -72,7 +73,8 @@ public class DefaultController extends GUI{
         new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro?\nMarco riceve un biscotto per ogni partita in più!").showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 stage.close();
-                close();
+                //client.sendMessage(new DisconnectionClient(client.getUsername(),false));
+                System.exit(1);
             }
         });
     }
