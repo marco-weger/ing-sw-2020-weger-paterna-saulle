@@ -81,7 +81,6 @@ public class Server {
         this.timeoutSocket = 5;
         this.turnTimer = 180;
         this.disconnectTimer = 60;
-
     }
 
     /**

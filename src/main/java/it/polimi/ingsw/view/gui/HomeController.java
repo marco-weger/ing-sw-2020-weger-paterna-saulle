@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -54,12 +55,15 @@ public class HomeController extends DefaultController{
 
             int width = 1300;
 
-            rules.setHeight(1000);
+            if(Screen.getPrimary().getBounds().getWidth() < width)
+                width = (int) Screen.getPrimary().getBounds().getWidth();
+
+            rules.setHeight(Screen.getPrimary().getBounds().getHeight()-100);
             rules.setWidth(width);
-            rules.setMinHeight(1000);
+            rules.setMinHeight(Screen.getPrimary().getBounds().getHeight()-100);
             rules.setMinWidth(width);
             rules.setMaxWidth(width);
-            rules.setMaxHeight(1000);
+            rules.setMaxHeight(Screen.getPrimary().getBounds().getHeight()-100);
             rules.initStyle(StageStyle.TRANSPARENT);
             rules.getIcons().add(new Image("/it.polimi.ingsw/view/gui/img/icon.png"));
             rules.getScene().setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
