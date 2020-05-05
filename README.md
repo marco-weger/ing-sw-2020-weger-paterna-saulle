@@ -14,6 +14,15 @@ This project was made between March and July 2020 as our final thesis project at
 
 You can find them under *deliverables/jars*
 
+### Prerequirements
+
+You need **JavaSE 14** or higher version to run this game.    
+https://www.oracle.com/java/technologies/javase-downloads.html
+
+If you use **Windows** and want to run the game in **CLI mode**, we suggest you to use the Bash to a better expirience
+https://docs.microsoft.com/en-us/windows/wsl/install-win10
+
+
 <!--
 ### GUI.jar
 Just download it and use
@@ -29,7 +38,7 @@ Allowed params:
 * ip (used by client) [127.0.0.1] - addres of server
 * port (used by cliend and server) [1234] - socket port
 * pingPeriod (used by cliend and server) [2] - useed to keep safeily alive the connection
-* timeoutSocket (used by cliend and server) 5] - useed to keep safeily alive the connection
+* timeoutSocket (used by cliend and server) [5] - useed to keep safeily alive the connection
 * disconnectTimer (used by server) [60] - timer used to handle a diconnection during a match
 * turnTimer (used by server) [180] - timer for a singel turn
 
