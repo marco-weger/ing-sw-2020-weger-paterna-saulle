@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class DefaultController extends GUI{
+public class DefaultController{
 
     private Client client;
 
