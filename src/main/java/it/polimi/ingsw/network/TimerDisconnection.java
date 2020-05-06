@@ -71,7 +71,6 @@ public class TimerDisconnection implements Runnable {
                 if (sch.getIn().available() != 0) { // if the connection is reestablished
                     sch.setStillConnected(true);
                     sch.startPing();
-                    this.alive = false;
                     ses.shutdown(); // stop timer
                 } else { // send the try to all clients
                     sch.getServer().sendAll(new TimeOutServer("", sch.getName(), count, numberOfTry), sch.getVirtualView());

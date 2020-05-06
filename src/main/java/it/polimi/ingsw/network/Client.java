@@ -8,7 +8,7 @@ import it.polimi.ingsw.commons.servermessages.MovedServer;
 import it.polimi.ingsw.commons.servermessages.PingServer;
 import it.polimi.ingsw.view.CLI;
 import it.polimi.ingsw.view.gui.GUI;
-import it.polimi.ingsw.view.SnapPlayer;
+import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import org.json.simple.JSONObject;
@@ -37,9 +37,9 @@ public class Client implements Runnable{
     ObjectInputStream in;
     ObjectOutputStream out;
     String username;
-    protected final ArrayList<SnapCell> board;
-    protected final ArrayList<SnapWorker> workers;
-    protected ArrayList<SnapPlayer> players;
+    protected List<SnapCell> board;
+    protected List<SnapWorker> workers;
+    protected List<SnapPlayer> players;
 
     private long pingPeriod;
     private int timeoutSocket;
@@ -102,6 +102,14 @@ public class Client implements Runnable{
 
     public boolean getContinueReading(){ return continueReading; }
 
+    public void setBoard(List<SnapCell> board){
+        this.board = board;
+    }
+
+    public void setWorkers(List<SnapWorker> workers){
+        this.workers = workers;
+    }
+
     public SnapPlayer getMyPlayer(){
         for(SnapPlayer sp : getPlayers())
             if(sp.name.equals(getUsername()))
@@ -114,7 +122,7 @@ public class Client implements Runnable{
             this.workers.remove(sw);
     }
 
-    public void setPlayers(List<String> names){
+    public void setPlayersByString(List<String> names){
         try{
             this.players = new ArrayList<>();
             for (String name : names) {
@@ -123,6 +131,10 @@ public class Client implements Runnable{
         }catch (Exception e){
             System.exit(-1);
         }
+    }
+
+    public void setPlayersBySnap(List<SnapPlayer> players){
+        this.players = players;
     }
 
     public static String getRandomSymbol(){

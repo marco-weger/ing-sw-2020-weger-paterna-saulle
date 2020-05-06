@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.commons.SnapCell;
+import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.clientmessages.*;
@@ -411,7 +412,7 @@ public class CLI implements ViewInterface {
         printTitle();
 
         try{
-            client.setPlayers(message.players);
+            client.setPlayersByString(message.players);
             for(int i=0;i<client.getPlayers().size();i++){
                 client.getPlayers().get(i).symbol = symbols.charAt(i)+"";
                 if(i==0)
@@ -476,7 +477,24 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(ReConnectionServer message) {
-        System.out.println("I'M BACK!");
+        if(message.player.equals(client.getUsername())){
+            client.setBoard(message.board);
+            client.setWorkers(message.workers);
+            client.setPlayersBySnap(message.players);
+            for(int i=0;i<client.getPlayers().size();i++){
+                client.getPlayers().get(i).symbol = symbols.charAt(i)+"";
+                if(i==0)
+                    client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_RED.toString()+TextFormatting.COLOR_BLACK);
+                else if(i==1)
+                    client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_YELLOW.toString()+TextFormatting.COLOR_BLACK);
+                else if(i==2)
+                    client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_PURPLE.toString()+TextFormatting.COLOR_BLACK);
+            }
+            this.currentPlayer=message.currentPlayer;
+            clear();
+            printTitle();
+            printTable();
+        } else System.out.println(COLOR_CPU + message.player+" IS BACK!" + TextFormatting.RESET);
     }
 
     public void endMatch(){

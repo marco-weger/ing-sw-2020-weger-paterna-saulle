@@ -240,66 +240,22 @@ public class ServerClientHandler implements Runnable {
                     if(((ConnectionClient) object).name.length() <= 12) {
                         ConnectionClient cc = (ConnectionClient) object;
 
-                        if(ret == 0){
-                            for (VirtualView vv : server.getVirtualViews2()){
-                                if(vv.getConnectedPlayers().containsKey(cc.name)){
-                                    System.out.println("FIND!");
-                                    ServerClientHandler sch = vv.getConnectedPlayers().get(cc.name);
-                                    if(sch.isStillConnected()){
-                                        ret = -1;
-                                        break;
-                                    } else if(!vv.getLosers().contains(cc.name) && !vv.isEnded()){
-
-                                        // TODO !!!
-
-                                        ret = 1;
-                                        /*
-                                        try{
-                                            sch.disconnectionHandler();
-                                        } catch (Exception e){ System.err.println(e.getMessage()); }
-
-                                         */
-                                        System.out.println("[RECONNECTION USER] - " + this.getName());
-
-                                        //vv.getConnectedPlayers().put(cc.name, this);
-
-                                        ArrayList<String> p = new ArrayList<>(vv.getConnectedPlayers().keySet());
-                                        this.notify(new LobbyServer(p));
-                                        vv.notify(new ReConnectionClient(cc.name));
-
-                                        this.name = cc.name;
-                                    }
-                                    /*
-                                    if(!sch.isStillConnected() && ){
-
-                                        server.getCurrentVirtualView2().getConnectedPlayers().put(cc.name, this);
-                                        ArrayList<String> p = new ArrayList<>();
-                                        for(String n : server.getCurrentVirtualView2().getConnectedPlayers().keySet())
-                                            p.add(n);
-                                        this.notify(new LobbyServer(p));
-                                        server.getCurrentVirtualView2().notify(new ReConnectionClient(cc.name));
-
-                                        this.name = cc.name;
-                                    }
-                                    */
-                                }
-                            }
-                        }
-                        /*
-                        if(ret == 0){
-                            for (VirtualView vv : server.getVirtualViews2()){
-                                ret = checkVirtualView(cc, vv);
-                                if (ret != 0) break;
-                            }
-                        }*/
                         // check on current vv (you cant be disconnected in the current lobby)
-                        if(ret == 0 && server.getCurrentVirtualView2().getConnectedPlayers().containsKey(cc.name))
+                        if(server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE) && server.getCurrentVirtualView2().getConnectedPlayers().containsKey(cc.name))
                             ret = -1;
-                        if(ret == 0 && server.getCurrentVirtualView3().getConnectedPlayers().containsKey(cc.name))
+                        else if(server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE) && server.getCurrentVirtualView3().getConnectedPlayers().containsKey(cc.name))
                             ret = -1;
                         // check on floating players
-                        if(ret == 0 && server.getPendingPlayers().contains(cc.name))
+                        else if(server.getPendingPlayers().contains(cc.name))
                             ret = -1;
+                        else {
+                            for (VirtualView vv : server.getVirtualViews2()){
+                                checkVirtualView(vv,cc);
+                            }
+                            for (VirtualView vv : server.getVirtualViews3()){
+                                checkVirtualView(vv,cc);
+                            }
+                        }
                     } else ret = -1;
                 } else ret = -1;
             }
@@ -311,26 +267,36 @@ public class ServerClientHandler implements Runnable {
         return ret;
     }
 
-    /*
+    /**
      * It iterates over an the ArrayList to find if tmpName appear in one
-     * @param cc ClientMessage received
      * @param vv the VirtualView
+     * @param cc ClientMessage received
      * @return 1 if you need to load the lobby, 0 username is ok, -1 if duplicate
      */
-    /*
-    private int checkVirtualView(ConnectionClient cc, VirtualView vv) {
-        if (vv.getConnectedPlayers().containsKey(cc.name)) {
-            if (vv.getConnectedPlayers().get(cc.name) == null && !vv.getLosers().contains(cc.name)) {
-                System.out.println("MUST LOAD THE MATCH...");
-                virtualView = vv;
-                return 1;
-            } else { // its a duplicate or a loser
+    private int checkVirtualView(VirtualView vv, ClientMessage cc) {
+        if(vv.getConnectedPlayers().containsKey(cc.name)){
+            ServerClientHandler sch = vv.getConnectedPlayers().get(cc.name);
+            if(!sch.timerDisconnection.alive){
                 return -1;
+            } else if(!vv.getLosers().contains(cc.name) && !vv.isEnded()){
+                this.name = cc.name;
+                System.out.println("[RECONNECTION USER] - " + this.getName());
+                this.virtualView = vv;
+                vv.getConnectedPlayers().put(cc.name, this);
+                ArrayList<String> p = new ArrayList<>(vv.getConnectedPlayers().keySet());
+                sch.setStillConnected(true);
+                this.startPing();
+                sch.timerDisconnection.ses.shutdown();
+                System.out.println("[0]");
+                LobbyServer ls = new LobbyServer(p);
+                ls.type = 2;
+                this.notify(ls);
+                virtualView.notify(new ReConnectionClient(this.name));
+                return 1;
             }
         }
         return 0;
     }
-    */
 
     /**
      * It asks to client for 2 or 3 players match

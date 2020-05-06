@@ -6,6 +6,7 @@ import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.clientmessages.ModeChoseClient;
+import it.polimi.ingsw.commons.clientmessages.ReConnectionClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Match;
@@ -41,7 +42,7 @@ public class VirtualView extends Observable implements Observer {
     /**
      * Last message from server to client
      */
-    private final ServerMessage lastMessage;
+    private ServerMessage lastMessage;
 
     /**
      * List of losers
@@ -166,13 +167,26 @@ public class VirtualView extends Observable implements Observer {
                     losers.add(name);
         }
 
+        if(!(sm instanceof ReConnectionServer))
+            lastMessage = sm;
         if(server != null && currentStatus != Status.END){
-            if(sm.name.equals("")){
+            if(sm.name.equals(""))
                 server.sendAll(sm,this);
-            }
-            else{
+            else
                 server.send(sm,this);
-            }
+        }
+        if(sm instanceof ReConnectionServer){
+            sendLast();
+            System.out.println("\t" + sm.name);
+        }
+    }
+
+    protected void sendLast(){
+        if(server != null && currentStatus != Status.END){
+            if(lastMessage.name.equals(""))
+                server.sendAll(lastMessage,this);
+            else
+                server.send(lastMessage,this);
         }
     }
 

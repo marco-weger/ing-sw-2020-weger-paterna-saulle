@@ -2,10 +2,13 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.commons.ServerMessage;
+import it.polimi.ingsw.commons.SnapCell;
+import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.VirtualView;
+import it.polimi.ingsw.commons.SnapPlayer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -267,9 +270,22 @@ public class Match extends Observable implements Serializable {
     }
 
     public void playerReConnection(String name){
-        for(Player p : this.players)
-            if(p.getName().equals(name))
-                this.notifyObservers(new ReConnectionServer(name));
+        ReConnectionServer rcs = new ReConnectionServer(name);
+        rcs.board = new ArrayList<>();
+        for(Cell c : getBoard().getField())
+            rcs.board.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));
+        rcs.players = new ArrayList<>();
+        rcs.workers = new ArrayList<>();
+        SnapPlayer snap;
+        for(Player p : getPlayers()){
+            snap = new SnapPlayer(p.getName());
+            snap.card = p.getCard().getName();
+            rcs.players.add(snap);
+            rcs.workers.add(new SnapWorker(p.getWorker1().getRow(),p.getWorker1().getColumn(),p.getName(),1));
+            rcs.workers.add(new SnapWorker(p.getWorker2().getRow(),p.getWorker2().getColumn(),p.getName(),2));
+        }
+        rcs.currentPlayer = getCurrentPlayer().getName();
+        this.notifyObservers(rcs);
     }
 }
 

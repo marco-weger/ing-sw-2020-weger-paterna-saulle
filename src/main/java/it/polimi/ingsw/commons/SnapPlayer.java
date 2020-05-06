@@ -1,8 +1,10 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.commons;
 
 import it.polimi.ingsw.model.cards.CardName;
 
-public class SnapPlayer {
+import java.io.Serializable;
+
+public class SnapPlayer implements Serializable  {
 
     /**
      * The name
