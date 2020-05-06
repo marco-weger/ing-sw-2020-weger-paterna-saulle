@@ -191,8 +191,6 @@ public class Client implements Runnable{
 
                 //GUI gui = new GUI(client); //GUI.waitForGUI();
                 GUI gui = GUI.waitForGUI(client);
-                System.out.println("IO DI QUI CI SON PASSATO3");
-
                 client.setView(gui);
                 client.getView().displayFirstWindow();
 
