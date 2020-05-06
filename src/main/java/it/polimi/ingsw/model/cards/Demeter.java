@@ -37,9 +37,6 @@ public class Demeter extends Card {
                 return Status.QUESTION_B;
             }
         }
-        if(current == Status.BUILT){
-            lastBuild = null;
-        }
         return super.getNextStatus(current);
     }
 
@@ -102,4 +99,7 @@ public class Demeter extends Card {
     public boolean activable(List<Player> p, Board b) {
         return super.checkBuild(p, b).size() >= 2;
     }
+
+    @Override
+    public void initializeTurn() { lastBuild = null;}
 }
