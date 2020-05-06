@@ -1,7 +1,9 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.clientmessages.ConnectionClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -144,8 +146,23 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(NameRequestServer message) {
-
+        /* do{
+            if(message.isFirstTime){
+                print(COLOR_CPU + "Type your username (max 12 characters) " + TextFormatting.input());
+            }
+            else{
+                clearLine();
+                print(COLOR_CPU + "The chosen one is not allowed, type new username (max 12 characters) " + TextFormatting.input());
+            }
+            String username = read();
+            print(COLOR_CPU + "Validating username... " + TextFormatting.RESET);
+            this.client.setUsername(username);
+            message.isFirstTime = false;
+        }while (this.client.getUsername().isEmpty() || this.client.getUsername().length() > 12 || this.client.getUsername().matches("^\\s*$") && client.getContinueReading());
+        client.sendMessage(new ConnectionClient(this.client.getUsername()));*/
     }
+
+
 
     @Override
     public void handleMessage(LobbyServer message) {

@@ -2,13 +2,12 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.AddNameController">
    <top>
-      <AnchorPane fx:id="top" onMouseDragged="#topDragged" onMousePressed="#topPressed" prefHeight="138.0"
-                  prefWidth="950.0">
-         <Button fx:id="buttonQuit" layoutX="839.0" layoutY="30.0" mnemonicParsing="false" onAction="#quitOnAction"
-                 prefHeight="79.0" prefWidth="79.0" styleClass="button, quit" stylesheets="@../css/button.css" />
+      <AnchorPane fx:id="top" onMouseDragged="#topDragged" onMousePressed="#topPressed" prefHeight="138.0" prefWidth="950.0">
+         <Button fx:id="buttonQuit" layoutX="839.0" layoutY="30.0" mnemonicParsing="false" onAction="#quitOnAction" prefHeight="79.0" prefWidth="79.0" styleClass="button, quit" stylesheets="@../css/button.css" />
       </AnchorPane>
    </top>
    <bottom>
@@ -16,9 +15,11 @@
    </bottom>
    <center>
       <AnchorPane fx:id="center" prefHeight="500.0" prefWidth="950.0" BorderPane.alignment="CENTER">
-         <Button fx:id="checkName" layoutX="599.0" layoutY="436.0" mnemonicParsing="false" text="check" />
-         <Button fx:id="next" layoutX="763.0" layoutY="436.0" mnemonicParsing="false" text="Next" />
-         <TextField layoutX="354.0" layoutY="436.0" styleClass="text" text="Insert Name" style="-fx-font-family: Santorini" />
+         <Button fx:id="Login" layoutX="607.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleLoginButton" prefHeight="203.0" prefWidth="311.0" styleClass="button, play" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="607.0" />
+         <TextField fx:id="insertname" layoutX="354.0" layoutY="436.0" promptText="Insert Name">
+            <font>
+               <Font name="Nefelibata-Brush" size="20.0" />
+            </font></TextField>
       </AnchorPane>
    </center>
 </BorderPane>

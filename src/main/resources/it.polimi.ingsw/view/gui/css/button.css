@@ -35,3 +35,9 @@
 .IIIPlayersButton {
     -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/3players.png");
 }
+
+
+.login{
+    -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/login.png");
+}
+

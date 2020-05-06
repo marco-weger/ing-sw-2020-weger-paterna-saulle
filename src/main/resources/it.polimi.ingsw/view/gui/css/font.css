@@ -1,8 +1,16 @@
 @font-face {
-    font-family: 'Santorini';
-    src: url("/it.polimi.ingsw/view/gui/font/santorini.ttf")
+    font-family: 'Nefelibata-Brush';
+    src: url("/it.polimi.ingsw/view/gui/font/Nefelibata-Brush.ttf")
 }
 
 .text {
-    -fx-font-family: "Santorini";
+    -fx-font-family: "Nefelibata-Brush";
+}
+
+.text-area{
+    -fx-font-family: "Nefelibata-Brush";
+}
+
+.text-field{
+    -fx-font-family: "Nefelibata-Brush";
 }
