@@ -72,7 +72,7 @@ public class DefaultController{
     public void quitOnAction(ActionEvent actionEvent) {
         new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro?\nMarco riceve un biscotto per ogni partita in più!").showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                stage.close();
+                //stage.close();
                 System.exit(0);
             }
         });

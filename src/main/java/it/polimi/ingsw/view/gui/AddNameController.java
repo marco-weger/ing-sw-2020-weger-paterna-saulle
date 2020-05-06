@@ -8,6 +8,7 @@ public class AddNameController extends DefaultController{
 
 
     public Button checkName;
+    public Button next;
 
     @FXML
     @Override
