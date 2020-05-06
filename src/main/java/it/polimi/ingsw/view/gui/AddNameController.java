@@ -9,8 +9,7 @@ import javafx.scene.image.Image;
 public class AddNameController extends DefaultController{
 
 
-    public Button Login;
-    public Button Home;
+    public Button buttonLogin;
     public TextField insertname;
 
     @FXML
@@ -18,6 +17,13 @@ public class AddNameController extends DefaultController{
     public void initialize(){
         super.initialize();
         super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_name.png"));
+
+
+        int sizex = 230;
+        int sizey = 100;
+        buttonLogin.setPrefSize(sizex,sizey);
+        buttonLogin.setMaxSize(sizex,sizey);
+        buttonLogin.setMinSize(sizex,sizey);
     }
 
     public void handleLoginButton(ActionEvent actionEvent) {

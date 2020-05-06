@@ -41,3 +41,8 @@
     -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/login.png");
 }
 
+.login:pressed{
+    -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/login_pressed.png");
+}
+
+
