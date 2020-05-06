@@ -32,9 +32,17 @@
 .IIPlayersButton {
     -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/2players.png");
 }
+.IIPlayersButton:pressed {
+    -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/2players_pressed.png");
+}
+
 .IIIPlayersButton {
     -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/3players.png");
 }
+.IIIPlayersButton:pressed {
+    -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/3players_pressed.png");
+}
+
 
 
 .login{

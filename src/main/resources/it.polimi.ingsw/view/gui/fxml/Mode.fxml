@@ -6,9 +6,7 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.ModeController">
    <top>
       <AnchorPane fx:id="top" onMouseDragged="#topDragged" onMousePressed="#topPressed" prefHeight="138.0" prefWidth="950.0">
-         <children>
-            <Button fx:id="buttonQuit" layoutX="839.0" layoutY="30.0" mnemonicParsing="false" onAction="#quitOnAction" prefHeight="79.0" prefWidth="79.0" styleClass="button, quit" stylesheets="@../css/button.css" />
-         </children>
+         <Button fx:id="buttonQuit" layoutX="839.0" layoutY="30.0" mnemonicParsing="false" onAction="#quitOnAction" prefHeight="79.0" prefWidth="79.0" styleClass="button, quit" stylesheets="@../css/button.css" />
       </AnchorPane>
    </top>
    <bottom>
@@ -16,10 +14,8 @@
    </bottom>
    <center>
       <AnchorPane fx:id="center" prefHeight="500.0" prefWidth="950.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="buttonPlay" layoutX="14.0" layoutY="271.0" mnemonicParsing="false" prefHeight="254.0" prefWidth="311.0" styleClass="button, play" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="126.0" />
-            <Button fx:id="buttonHelp" layoutX="562.0" layoutY="230.0" mnemonicParsing="false" prefHeight="255.0" prefWidth="354.0" styleClass="button, help" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="126.0" />
-         </children>
+         <Button fx:id="buttonIIplayers" layoutX="14.0" layoutY="271.0" mnemonicParsing="false" prefHeight="254.0" prefWidth="311.0" styleClass="button, IIPlayersButton" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="180.0" />
+         <Button fx:id="buttonIIIplayers" layoutX="562.0" layoutY="230.0" mnemonicParsing="false" prefHeight="255.0" prefWidth="354.0" styleClass="button, IIIPlayersButton" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="200.0" AnchorPane.rightAnchor="160.0" />
       </AnchorPane>
    </center>
 </BorderPane>
