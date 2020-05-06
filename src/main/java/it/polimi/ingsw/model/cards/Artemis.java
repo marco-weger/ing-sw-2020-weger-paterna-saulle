@@ -31,9 +31,6 @@ public class Artemis extends Card {
     @Override
     public Status getNextStatus(Status current) {
         if (!super.isActive()) {
-            if(current == Status.QUESTION_B) {
-                lastMoved = null;
-            }
             return super.getNextStatus(current);
         }
         else {
@@ -115,5 +112,8 @@ public class Artemis extends Card {
         }
         return !available.isEmpty();
     }
+
+    @Override
+    public void initializeTurn() { lastMoved = null;}
 
 }
