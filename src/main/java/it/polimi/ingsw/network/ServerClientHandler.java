@@ -1,11 +1,15 @@
 package it.polimi.ingsw.network;
+
 import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.clientmessages.*;
 import it.polimi.ingsw.commons.servermessages.*;
-import it.polimi.ingsw.commons.Status;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
@@ -118,6 +122,10 @@ public class ServerClientHandler implements Runnable {
 
     public Timer getPing(){ return ping; }
 
+    public ObjectInputStream getInputStream(){ return in; }
+
+    public ObjectOutputStream getOutputStream(){ return out; }
+
     /**
      * When an object implementing interface <code>Runnable</code> is used
      * to create a thread, starting the thread causes the object's
@@ -157,7 +165,7 @@ public class ServerClientHandler implements Runnable {
             }
 
             if(go == 1){
-                ClientMessage object = null;
+                ClientMessage object;
                 // standard loop to read
                 do{
                     try {
@@ -203,7 +211,7 @@ public class ServerClientHandler implements Runnable {
                         }
                     }
                 }while(stillConnected && !turnTimesUp);
-                System.out.println("ORA HO VERAMENTE PERSO!");
+                //System.out.println("ORA HO VERAMENTE PERSO!");
             }
             while(timerDisconnection.alive) timerDisconnection.alive = false;
         }
@@ -299,7 +307,7 @@ public class ServerClientHandler implements Runnable {
 
         this.name = ((ConnectionClient) object).name;
         if(ret==0) server.getPendingPlayers().add(this.name);
-        System.out.println("--->"+ret);
+        System.out.println("---reconnection--->"+ret);
         return ret;
     }
 
@@ -475,12 +483,24 @@ public class ServerClientHandler implements Runnable {
     public void timeOut(){
         if(virtualView == null){
             disconnectionHandler();
-        }
-        if(virtualView.getCurrentStatus().equals(Status.NAME_CHOICE)){
+        } else if(virtualView.getCurrentStatus().equals(Status.NAME_CHOICE)){
             virtualView.getConnectedPlayers().remove(this.name);
+            server.getPendingPlayers().remove(this.name);
             virtualView.notify(new DisconnectionClient(this.name,true));
+            this.close();
         }
-        if(timerDisconnection == null || !timerDisconnection.alive){
+        else if(virtualView.getCurrentStatus().equals(Status.CARD_CHOICE) || virtualView.getCurrentStatus().equals(Status.WORKER_CHOICE) && stillConnected){
+            virtualView.getTurn().cancel();
+            virtualView.getConnectedPlayers().remove(this.name);
+            server.getVirtualViews2().remove(this.getVirtualView());
+            server.getVirtualViews3().remove(this.getVirtualView());
+            for(ServerClientHandler sch : virtualView.getConnectedPlayers().values())
+                sch.reset(virtualView.getConnectedPlayers().size() + 1);
+            this.close();
+        }
+        else if((virtualView.getLosers().contains(this.getName()) || virtualView.isEnded()) && stillConnected){
+            this.close();
+        } else if(timerDisconnection == null || !timerDisconnection.alive){
             long reconnectionPeriod = 5;
             ScheduledExecutorService timeOut = Executors.newSingleThreadScheduledExecutor();
             timerDisconnection = new TimerDisconnection(this,timeOut,server.getdisconnectTimer()/reconnectionPeriod);
@@ -492,4 +512,36 @@ public class ServerClientHandler implements Runnable {
         System.out.println("Arrivo al metodo times up");
         virtualView.notify(new DisconnectionClient(this.name,true));
     }
+
+    public void close(){
+        if(ping != null)
+            ping.cancel();
+        stillConnected = false;
+        this.virtualView = null;
+        if(timerDisconnection != null){
+            timerDisconnection.alive = false;
+            timerDisconnection.ses.shutdown();
+        }
+    }
+
+    public void reset(int numberOfPlayer){
+        ModeChoseClient object = new ModeChoseClient(name,numberOfPlayer);
+        object.forced = true;
+        object.sch = this;
+        this.turnTimesUp = false;
+        if(numberOfPlayer == 2){
+            if(!server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE)){
+                server.newCurrentVirtualView2();
+            }
+            virtualView = server.getCurrentVirtualView2();
+        }
+        else if(numberOfPlayer == 3){
+            if(!server.getCurrentVirtualView3().getCurrentStatus().equals(Status.NAME_CHOICE)){
+                server.newCurrentVirtualView3();
+            }
+            virtualView = server.getCurrentVirtualView3();
+        }
+        virtualView.notify(object);
+    }
+
 }

@@ -155,7 +155,7 @@ public class CLI implements ViewInterface {
         getPlayerByName(message.player).card = message.cardName;
         clear();
         printTitle();
-        printLobby(false);
+        printLobby(0);
     }
 
     @Override
@@ -411,7 +411,7 @@ public class CLI implements ViewInterface {
         printTitle();
 
         try{
-            client.setPlayers((ArrayList<String>) message.players);
+            client.setPlayers(message.players);
             for(int i=0;i<client.getPlayers().size();i++){
                 client.getPlayers().get(i).symbol = symbols.charAt(i)+"";
                 if(i==0)
@@ -421,7 +421,7 @@ public class CLI implements ViewInterface {
                 else if(i==2)
                     client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_PURPLE.toString()+TextFormatting.COLOR_BLACK);
             }
-            printLobby(message.loaded);
+            printLobby(message.type);
         }catch (Exception e){
             println(e.getMessage());
         }
@@ -800,15 +800,17 @@ public class CLI implements ViewInterface {
         return null;
     }
 
-    public void printLobby(boolean loaded){
+    public void printLobby(int type){
         try {
             String[] toPrint = new String[7];
             Arrays.fill(toPrint, "");
 
             toPrint[0] = color[0] + "╭────────────────────────────────────╮";
             toPrint[1] = color[0] + "│               LOBBY                │";
-            if (loaded)
+            if (type == 2)
                 toPrint[1] += "      Match resumed... Keep waiting for other reconnection!";
+            else if(type == 1)
+                toPrint[1] += "      A player had got a network problem, you are in a new lobby!";
 
             toPrint[2] = color[0] + "├────────────────────────────────────┤";
 

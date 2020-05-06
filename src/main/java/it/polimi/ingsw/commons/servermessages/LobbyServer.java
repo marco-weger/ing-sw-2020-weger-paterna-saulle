@@ -10,7 +10,11 @@ public class LobbyServer extends ServerMessage {
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
     public final List<String> players;
-    public final boolean loaded;
+
+    /**
+     * 1 new lobby - 2 loaded - others normal
+     */
+    public int type;
 
     /**
      * The players receive this message after choosing which mode
@@ -21,6 +25,6 @@ public class LobbyServer extends ServerMessage {
     public LobbyServer(List<String> players){
         super("");
         this.players=players;
-        this.loaded=false;
+        this.type=0;
     }
 }

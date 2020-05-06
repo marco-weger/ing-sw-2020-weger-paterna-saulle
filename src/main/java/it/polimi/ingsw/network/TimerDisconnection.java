@@ -45,7 +45,6 @@ public class TimerDisconnection implements Runnable {
         this.count = 0;
         this.alive = true;
 
-        System.out.println("\tTIME OUT THREAD!");
         if(sch.getPing() != null)
             sch.getPing().cancel();
 
@@ -66,7 +65,7 @@ public class TimerDisconnection implements Runnable {
      */
     @Override
     public void run() {
-        System.out.println(count+"/"+numberOfTry);
+        //System.out.println(count+"/"+numberOfTry);
         if(this.alive && sch.isStillConnected() && sch.getVirtualView() != null && !sch.getVirtualView().getCurrentStatus().equals(Status.NAME_CHOICE)) {
             try {
                 if (sch.getIn().available() != 0) { // if the connection is reestablished

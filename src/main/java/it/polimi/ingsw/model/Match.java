@@ -211,12 +211,14 @@ public class Match extends Observable implements Serializable {
      * it notifies the Lobby
      */
 
-    public void addPlayer(Player p){
+    public void addPlayer(Player p, boolean forced){
         getPlayers().add(p);
         ArrayList<String> names = new ArrayList<>();
         for(Player player:players)
             names.add(player.getName());
-        notifyObservers(new LobbyServer(names));
+        LobbyServer ls = new LobbyServer(names);
+        ls.type = forced ? 1 : 0;
+        notifyObservers(ls);
     }
 
     /**

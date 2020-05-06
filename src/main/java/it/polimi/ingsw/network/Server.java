@@ -11,11 +11,18 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class Server {
+
+    /**
+     * The logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 
     /**
      * The socket port
@@ -86,17 +93,17 @@ public class Server {
     /**
      * @return a list of 2 players virtual view
      */
-    public ArrayList<VirtualView> getVirtualViews2() { return virtualViews2; }
+    public List<VirtualView> getVirtualViews2() { return virtualViews2; }
 
     /**
      * @return a list of 3 players virtual view
      */
-    public ArrayList<VirtualView> getVirtualViews3() { return virtualViews3; }
+    public List<VirtualView> getVirtualViews3() { return virtualViews3; }
 
     /**
      * @return a list of player who hasn not choose the mode
      */
-    public ArrayList<String> getPendingPlayers() { return pendingPlayers; }
+    public List<String> getPendingPlayers() { return pendingPlayers; }
 
     /**
      * @return the current virtual view of 2 players match
@@ -123,7 +130,7 @@ public class Server {
      * It iterates on all VirtualViews and all ServerClientHandlers
      * @return all players in a match
      */
-    public ArrayList<String> getPlayers(){
+    public List<String> getPlayers(){
         ArrayList<String> players = new ArrayList<>();
         for(VirtualView vv : getVirtualViews2()){
             players.addAll(vv.getConnectedPlayers().keySet());
@@ -321,4 +328,5 @@ public class Server {
         //for(String file : toDelete)
         //    new File(file).delete();
     }
+
 }

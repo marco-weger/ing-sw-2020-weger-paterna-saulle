@@ -16,8 +16,11 @@ public class ModeChoseClient extends ClientMessage {
     public final int mode;
     public transient ServerClientHandler sch = null;
 
+    public transient boolean forced;
+
     public ModeChoseClient(String name, int mode){
         super(name);
         this.mode=mode;
+        forced = false;
     }
 }

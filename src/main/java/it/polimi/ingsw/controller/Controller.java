@@ -316,8 +316,9 @@ public class Controller implements Observer, ClientMessageHandler {
 
     @Override
     public void handleMessage(ModeChoseClient message) {
+        //System.out.println(message.forced);
         if(match.getPlayers().size() < message.mode)
-            match.addPlayer(new Player(message.name,virtualView));
+            match.addPlayer(new Player(message.name,virtualView),message.forced);
         if(match.getPlayers().size() == message.mode)
             startMatch();
     }
