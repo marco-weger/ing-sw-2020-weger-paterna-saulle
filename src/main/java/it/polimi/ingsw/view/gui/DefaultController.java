@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.commons.clientmessages.DisconnectionClient;
 import it.polimi.ingsw.network.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,7 +29,7 @@ public class DefaultController{
 
     int initialX = 0;
     int initialY = 0;
-    Stage stage;
+    Stage mainstage;
 
     @FXML
     public void initialize(){
@@ -60,19 +59,18 @@ public class DefaultController{
     }
 
     public void topPressed(MouseEvent mouseEvent) {
-        initialX = (int) (stage.getX() - mouseEvent.getScreenX());
-        initialY = (int) (stage.getY() - mouseEvent.getScreenY());
+        initialX = (int) (mainstage.getX() - mouseEvent.getScreenX());
+        initialY = (int) (mainstage.getY() - mouseEvent.getScreenY());
     }
 
     public void topDragged(MouseEvent mouseEvent) {
-        stage.setX(mouseEvent.getScreenX() + initialX);
-        stage.setY(mouseEvent.getScreenY() + initialY);
+        mainstage.setX(mouseEvent.getScreenX() + initialX);
+        mainstage.setY(mouseEvent.getScreenY() + initialY);
     }
 
     public void quitOnAction(ActionEvent actionEvent) {
         new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro?\nMarco riceve un biscotto per ogni partita in più!").showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                //stage.close();
                 System.exit(0);
             }
         });

@@ -80,7 +80,7 @@ public class HomeController extends DefaultController{
         Parent root;
         try{
             root = FXMLLoader.load(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/AddName.fxml"));
-            stage.setScene(new Scene(root));
+            mainstage.setScene(new Scene(root));
         }
         catch (IOException ex) {
             LOGGER.log( Level.SEVERE, ex.toString(), ex );

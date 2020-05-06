@@ -26,7 +26,7 @@ public class GUI extends Application implements ViewInterface {
 
     Scene scene;
     Parent root;
-    DefaultController controller;
+    DefaultController defaultcontroller;
 
     public static final CountDownLatch latch = new CountDownLatch(1);
     public static GUI gui;
@@ -61,27 +61,27 @@ public class GUI extends Application implements ViewInterface {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(file));
             root = loader.load();
-            controller = loader.getController();
+            defaultcontroller = loader.getController();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         double limitY = 190* sceneWidth /1300;
 
-        controller.top.setMinWidth(sceneWidth);
-        controller.top.setMinHeight(limitY);
-        controller.top.setMaxWidth(sceneWidth);
-        controller.top.setMaxHeight(limitY);
-        controller.bottom.setMinWidth(sceneWidth);
-        controller.bottom.setMinHeight(limitY);
-        controller.bottom.setMaxWidth(sceneWidth);
-        controller.bottom.setMaxHeight(limitY);
-        controller.center.setMinWidth(sceneWidth);
-        controller.center.setMaxWidth(sceneWidth);
+        defaultcontroller.top.setMinWidth(sceneWidth);
+        defaultcontroller.top.setMinHeight(limitY);
+        defaultcontroller.top.setMaxWidth(sceneWidth);
+        defaultcontroller.top.setMaxHeight(limitY);
+        defaultcontroller.bottom.setMinWidth(sceneWidth);
+        defaultcontroller.bottom.setMinHeight(limitY);
+        defaultcontroller.bottom.setMaxWidth(sceneWidth);
+        defaultcontroller.bottom.setMaxHeight(limitY);
+        defaultcontroller.center.setMinWidth(sceneWidth);
+        defaultcontroller.center.setMaxWidth(sceneWidth);
 
-        controller.buttonQuit.setLayoutX(sceneWidth-100);
+        defaultcontroller.buttonQuit.setLayoutX(sceneWidth-100);
 
-        controller.setClient(client);
+        defaultcontroller.setClient(client);
 
         scene = new Scene(Objects.requireNonNull(root), sceneWidth, sceneHeight, Color.TRANSPARENT);
         scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
@@ -91,7 +91,7 @@ public class GUI extends Application implements ViewInterface {
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
         stage.getIcons().add(new Image("/it.polimi.ingsw/view/gui/img/icon.png"));
-        controller.stage = stage;
+        defaultcontroller.mainstage = stage;
 
         stage.setScene(scene);
         stage.show();
