@@ -5,6 +5,7 @@ import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
+import it.polimi.ingsw.view.gui.HomeController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
@@ -15,12 +16,17 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GUI extends Application implements ViewInterface {
 
+    private static final Logger LOGGER = Logger.getLogger(HomeController.class.getName());;
     //int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
     //int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
     double sceneWidth = 0;
@@ -57,6 +63,7 @@ public class GUI extends Application implements ViewInterface {
         sceneWidth = 950;
         sceneHeight = 800;
         load(stage,"/it.polimi.ingsw/view/gui/fxml/Home.fxml");
+        displayFirstWindow();
     }
 
     public void load(Stage stage, String file){
@@ -146,20 +153,7 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(NameRequestServer message) {
-        /* do{
-            if(message.isFirstTime){
-                print(COLOR_CPU + "Type your username (max 12 characters) " + TextFormatting.input());
-            }
-            else{
-                clearLine();
-                print(COLOR_CPU + "The chosen one is not allowed, type new username (max 12 characters) " + TextFormatting.input());
-            }
-            String username = read();
-            print(COLOR_CPU + "Validating username... " + TextFormatting.RESET);
-            this.client.setUsername(username);
-            message.isFirstTime = false;
-        }while (this.client.getUsername().isEmpty() || this.client.getUsername().length() > 12 || this.client.getUsername().matches("^\\s*$") && client.getContinueReading());
-        client.sendMessage(new ConnectionClient(this.client.getUsername()));*/
+        load(defaultcontroller.mainstage, "/it.polimi.ingsw/view/gui/fxml/AddName.fxml");
     }
 
 
@@ -171,6 +165,7 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(ModeRequestServer message) {
+        load(defaultcontroller.mainstage,"/it.polimi.ingsw/view/gui/fxml/Home.fxml" );
 
     }
 
@@ -201,8 +196,29 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void displayFirstWindow() {
+        Parent root;
+        FXMLLoader loader = new FXMLLoader();
 
+        //Lan Case
+        //loader.setLocation(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/InsertServer.fxml"));
+        //defaultcontroller.playloader = loader;
+
+
+       // while(!client.connect())
+      //  {
+         //   try {
+                //client.setPort(Integer.parseInt(new Scanner(System.in).nextLine()));
+          //  } catch (NumberFormatException nfe) { client.setPort(1234); }
+       // }
+
+        //Online Case
+        loader.setLocation(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/AddName.fxml"));
+        defaultcontroller.playloader = loader;
     }
+
+
+
+
 
     @Override
     public void statusHandler(CurrentStatusServer message) {

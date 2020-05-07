@@ -3,6 +3,9 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.network.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.ImageCursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -10,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class DefaultController{
 
@@ -30,9 +34,15 @@ public class DefaultController{
     int initialX = 0;
     int initialY = 0;
     Stage mainstage;
+    FXMLLoader playloader;
 
     @FXML
     public void initialize(){
+
+        mainstage = new Stage();
+        mainstage.setTitle("Santorini");
+        mainstage.initStyle(StageStyle.TRANSPARENT);
+
         BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
 
         top.setBackground(new Background(new BackgroundImage(new Image("/it.polimi.ingsw/view/gui/img/scene/top.png"),
@@ -47,6 +57,8 @@ public class DefaultController{
                 BackgroundPosition.CENTER,
                 bSize)));
     }
+
+
 
     public void setClient(Client client){ this.client=client; }
 
@@ -69,12 +81,19 @@ public class DefaultController{
     }
 
     public void quitOnAction(ActionEvent actionEvent) {
-        new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro?\nMarco riceve un biscotto per ogni partita in più!").showAndWait().ifPresent(response -> {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Santorini Exit");
+        alert.setHeaderText("Sei sicuro?");
+        alert.setContentText("Marco riceve un biscotto per ogni partita in piu!");
+        alert.initStyle(StageStyle.UNIFIED);
+        alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 System.exit(0);
             }
         });
     }
+
+
 
 }
 

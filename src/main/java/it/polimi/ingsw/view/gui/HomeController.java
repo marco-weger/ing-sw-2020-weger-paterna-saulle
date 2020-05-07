@@ -77,14 +77,17 @@ public class HomeController extends DefaultController{
 
 
         public void handlePlayButton(javafx.event.ActionEvent actionEvent) {
-        Parent root;
-        try{
-            root = FXMLLoader.load(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/AddName.fxml"));
-            mainstage.setScene(new Scene(root));
-        }
-        catch (IOException ex) {
-            LOGGER.log( Level.SEVERE, ex.toString(), ex );
-        }
+            Parent root;
+
+            try{
+                root = playloader.load();
+                mainstage.setScene(new Scene(root));
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            mainstage.show();
     }
+
 
 }
