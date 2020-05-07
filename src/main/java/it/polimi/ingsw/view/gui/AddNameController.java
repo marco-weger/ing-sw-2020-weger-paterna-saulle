@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -45,6 +46,7 @@ public class AddNameController extends DefaultController {
             loader.setLocation(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Mode.fxml"));
             ModeParent = loader.load();
             Scene ModeScene = new Scene(ModeParent);
+            ModeScene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
             mainstage.setScene(ModeScene);
             mainstage.show();
 

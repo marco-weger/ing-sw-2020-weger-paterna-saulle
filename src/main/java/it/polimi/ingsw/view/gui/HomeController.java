@@ -81,7 +81,9 @@ public class HomeController extends DefaultController{
 
             try{
                 root = playloader.load();
-                mainstage.setScene(new Scene(root));
+                Scene scene = new Scene(root);
+                scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+                mainstage.setScene(scene);
             }
             catch (IOException e) {
                 e.printStackTrace();
