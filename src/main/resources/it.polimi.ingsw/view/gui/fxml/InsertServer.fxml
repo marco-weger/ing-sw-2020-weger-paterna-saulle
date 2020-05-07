@@ -15,8 +15,9 @@
     <center>
         <AnchorPane fx:id="center" prefHeight="500.0" prefWidth="950.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField layoutX="454.0" layoutY="249.0" promptText="Ip" />
-            <TextField layoutX="454.0" layoutY="324.0" promptText="port" />
+            <TextField layoutX="380.0" layoutY="153.0" promptText="ip:       xxx.xxx.xxx.xxx" />
+            <TextField layoutX="380.0" layoutY="236.0" promptText="port:         xxxx" />
+            <Button layoutX="424.0" layoutY="367.0" mnemonicParsing="false" text="Connect" />
          </children></AnchorPane>
     </center>
 </BorderPane>
