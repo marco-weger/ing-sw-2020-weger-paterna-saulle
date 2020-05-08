@@ -327,6 +327,7 @@ public class ArtemisTest {
         }
         assertEquals(1,p.get(0).getCard().checkMove(p,b).size());
         p.get(0).getCard().move(p,b, b.getCell(2,2));
+        assertTrue(p.get(0).getCard().activable(p,b));
         p.get(0).getCard().setActive(true);
         assertEquals(1,p.get(0).getCard().checkMove(p,b).size());
 
