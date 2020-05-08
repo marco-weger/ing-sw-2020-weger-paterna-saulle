@@ -47,7 +47,6 @@ public class NameController extends DefaultController {
         this.gui.getClient().setUsername(name.getText());
         if(!(this.gui.getClient().getUsername().isEmpty() || this.gui.getClient().getUsername().length() > 12 || this.gui.getClient().getUsername().matches("^\\s*$")))
             this.gui.getClient().sendMessage(new ConnectionClient(this.gui.getClient().getUsername()));
-        ;
     }
 
 
