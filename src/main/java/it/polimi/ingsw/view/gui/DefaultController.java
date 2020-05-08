@@ -107,7 +107,6 @@ public class DefaultController{
         alert.setTitle("Santorini Exit");
         alert.setHeaderText("Sei sicuro?");
         alert.setContentText("Marco riceve un biscotto per ogni partita in piu!");
-        alert.initStyle(StageStyle.UNIFIED);
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 Platform.exit();
