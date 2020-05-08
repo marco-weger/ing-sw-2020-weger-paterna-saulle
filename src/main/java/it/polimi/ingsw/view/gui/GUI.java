@@ -46,85 +46,7 @@ public class GUI extends Application implements ViewInterface {
         client.setView(this);
 
         displayFirstWindow();
-
-        /*
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        */
-
-        /*
-        this.primaryStage = primaryStage;
-
-        //List<String> args = getParameters().getRaw();
-
-
-
-
-        /*
-        // initialize your splash stage.
-        Platform.setImplicitExit(false);
-        splashStage.initStyle(StageStyle.TRANSPARENT);
-. . .
-// create your main stage.
-        Stage mainStage = new Stage();
-        mainStage.setScene(mainScene);
-        mainStage.initStyle(StageStyle.DECORATED);
-        mainStage.setOnHide(event -> Platform.exit())
-                . . .
-// on some later event hide your splash stage and show your main stage.
-        splashStage.hide();
-        mainStage.show();
-
-        //primaryStage.
-        primaryStage.setTitle("Santorini");
-        primaryStage.initStyle(StageStyle.TRANSPARENT);
-        primaryStage.setScene(scene);
-        primaryStage.getIcons().add(new Image("/it.polimi.ingsw/view/gui/img/icon.png"));
-        //defaultcontroller.mainstage = primaryStage;
-
-
-
-        //startMusic();
-        */
     }
-
-    /*
-    public static GUI waitForGUI(Client client) {
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return gui;
-    }
-
-    public static void setGUI(GUI gui) {
-        GUI.gui = gui;
-        latch.countDown();
-    }
-
-    public static void main(String[] args) {
-        Application.launch(args);
-    }
-
-    @Override
-    public void start(Stage stage) {
-        sceneWidth = 950;
-        sceneHeight = 800;
-        load(stage,"/it.polimi.ingsw/view/gui/fxml/Home.fxml");
-        displayFirstWindow();
-    }
-    */
 
     public Scene load(String file){
         try {
@@ -154,17 +76,7 @@ public class GUI extends Application implements ViewInterface {
 
         Scene scene = new Scene(Objects.requireNonNull(root), sceneWidth, sceneHeight, Color.TRANSPARENT);
         scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
-
-        //Stage s  = new Stage();
-        //s.setTitle("Santorini");
-        //s.initStyle(StageStyle.TRANSPARENT);
-        //s.setScene(scene);
-        //s.getIcons().add(new Image("/it.polimi.ingsw/view/gui/img/icon.png"));
         defaultcontroller.mainstage = primaryStage;
-
-
-        //primaryStage.setScene(scene);
-        //primaryStage.show();
         return scene;
     }
 
@@ -261,21 +173,8 @@ public class GUI extends Application implements ViewInterface {
     @Override
     public void displayFirstWindow() {
         Scene scene;
-        if(!client.connect())
-        {
-            /*
-            println(TextFormatting.RESET+"Server unreachable!");
-            print(TextFormatting.RESET+"Type new ip address " + TextFormatting.input());
-            client.setIp(new Scanner(System.in).nextLine());
-            print(TextFormatting.RESET+"Type new port " + TextFormatting.input());
-            try {
-                client.setPort(Integer.parseInt(new Scanner(System.in).nextLine()));
-            } catch (NumberFormatException nfe) { client.setPort(1234); }
-            */
-            System.out.println("ARRIVO QUI... DEVO CHIEDERE NUOVO IP");
-
-            scene =load("/it.polimi.ingsw/view/gui/fxml/Server.fxml");
-        } else scene = load("/it.polimi.ingsw/view/gui/fxml/Name.fxml");
+        if(!client.connect()) scene = load("/it.polimi.ingsw/view/gui/fxml/Server.fxml");
+        else scene = load("/it.polimi.ingsw/view/gui/fxml/Name.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
