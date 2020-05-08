@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.ServerController">
+    <top>
+        <AnchorPane fx:id="top" onMouseDragged="#topDragged" onMousePressed="#topPressed" prefHeight="138.0" prefWidth="950.0">
+            <Button fx:id="buttonQuit" layoutX="839.0" layoutY="30.0" mnemonicParsing="false" onAction="#quitOnAction" prefHeight="79.0" prefWidth="79.0" styleClass="button, quit" stylesheets="@../css/button.css" />
+        </AnchorPane>
+    </top>
+    <bottom>
+        <AnchorPane fx:id="bottom" prefHeight="138.0" prefWidth="950.0" BorderPane.alignment="CENTER" />
+    </bottom>
+    <center>
+        <AnchorPane fx:id="center" prefHeight="500.0" prefWidth="950.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="ip1" layoutX="345.0" layoutY="153.0" prefHeight="25.0" prefWidth="49.0" promptText="12" stylesheets="@../css/text-field.css" />
+             <TextField fx:id="ip2" layoutX="401.0" layoutY="153.0" prefHeight="25.0" prefWidth="44.0" promptText="34" stylesheets="@../css/text-field.css" />
+             <TextField fx:id="ip3" layoutX="455.0" layoutY="153.0" prefHeight="25.0" prefWidth="53.0" promptText="56" stylesheets="@../css/text-field.css" />
+             <TextField fx:id="ip4" layoutX="519.0" layoutY="153.0" prefHeight="25.0" prefWidth="48.0" promptText="78" stylesheets="@../css/text-field.css" />
+            <TextField fx:id="port" layoutX="380.0" layoutY="236.0" promptText="Port" />
+            <Button layoutX="424.0" layoutY="367.0" mnemonicParsing="false" onAction="#connection" text="Connect" />
+         </children>
+        </AnchorPane>
+    </center>
+</BorderPane>

@@ -187,11 +187,13 @@ public class Client implements Runnable{
             }
             else if(version.equalsIgnoreCase("GUI")){
                 System.out.println("RUN GUI...");
-                Application.launch(GUI.class,args);
+                Application.launch(GUI.class, args);
+
+                //Application.launch(GUI.class,args);
 
                 //GUI gui = new GUI(client); //GUI.waitForGUI();
-                GUI gui = GUI.waitForGUI(client);
-                client.setView(gui);
+                //GUI gui = GUI.waitForGUI(client);
+                //client.setView(gui);
 
                 //startUpTest.printSomething();
 
@@ -263,6 +265,8 @@ public class Client implements Runnable{
             Thread handler = null;
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
+
+                System.out.println(msg.toString());
 
                 if(msg != null){
                     if(msg instanceof MovedServer){

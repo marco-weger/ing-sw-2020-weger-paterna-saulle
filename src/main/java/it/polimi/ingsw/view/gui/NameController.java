@@ -9,18 +9,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.stage.Stage;
-import it.polimi.ingsw.view.gui.HomeController;
 
 
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AddNameController extends DefaultController {
+public class NameController extends DefaultController {
 
 
-    private static final Logger LOGGER = Logger.getLogger(AddNameController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NameController.class.getName());
     public Button buttonLogin;
     public TextField insertname;
 

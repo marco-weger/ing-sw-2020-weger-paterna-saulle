@@ -1,11 +1,10 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.network.Client;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.ImageCursor;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -17,7 +16,7 @@ import javafx.stage.StageStyle;
 
 public class DefaultController{
 
-    private Client client;
+    protected Client client;
 
     @FXML
     public AnchorPane top;
@@ -88,6 +87,7 @@ public class DefaultController{
         alert.initStyle(StageStyle.UNIFIED);
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
+                Platform.exit();
                 System.exit(0);
             }
         });

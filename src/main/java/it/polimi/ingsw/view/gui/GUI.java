@@ -1,12 +1,10 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.commons.clientmessages.ConnectionClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
-import it.polimi.ingsw.view.gui.HomeController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
@@ -16,30 +14,91 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Scanner;
-import java.util.concurrent.CountDownLatch;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GUI extends Application implements ViewInterface {
 
-    private static final Logger LOGGER = Logger.getLogger(HomeController.class.getName());;
+    private static final Logger LOGGER = Logger.getLogger(HomeController.class.getName());
     //int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
     //int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
     double sceneWidth = 0;
     double sceneHeight = 0;
 
-    Scene scene;
     Parent root;
     DefaultController defaultcontroller;
 
-    public static final CountDownLatch latch = new CountDownLatch(1);
-    public static GUI gui;
     private Client client;
+    private Stage primaryStage;
 
+    @Override
+    public void start(Stage primaryStage) {
+        sceneWidth = 950;
+        sceneHeight = 800;
+
+        this.primaryStage = primaryStage;
+        primaryStage.setTitle("Santorini");
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        primaryStage.getIcons().add(new Image("/it.polimi.ingsw/view/gui/img/icon.png"));
+
+        client = new Client();
+        client.setView(this);
+
+        displayFirstWindow();
+
+        /*
+        Button btn = new Button();
+        btn.setText("Say 'Hello World'");
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Hello World!");
+            }
+        });
+
+        StackPane root = new StackPane();
+        root.getChildren().add(btn);
+        */
+
+        /*
+        this.primaryStage = primaryStage;
+
+        //List<String> args = getParameters().getRaw();
+
+
+
+
+        /*
+        // initialize your splash stage.
+        Platform.setImplicitExit(false);
+        splashStage.initStyle(StageStyle.TRANSPARENT);
+. . .
+// create your main stage.
+        Stage mainStage = new Stage();
+        mainStage.setScene(mainScene);
+        mainStage.initStyle(StageStyle.DECORATED);
+        mainStage.setOnHide(event -> Platform.exit())
+                . . .
+// on some later event hide your splash stage and show your main stage.
+        splashStage.hide();
+        mainStage.show();
+
+        //primaryStage.
+        primaryStage.setTitle("Santorini");
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        primaryStage.setScene(scene);
+        primaryStage.getIcons().add(new Image("/it.polimi.ingsw/view/gui/img/icon.png"));
+        //defaultcontroller.mainstage = primaryStage;
+
+
+
+        //startMusic();
+        */
+    }
+
+    /*
     public static GUI waitForGUI(Client client) {
         try {
             latch.await();
@@ -65,8 +124,9 @@ public class GUI extends Application implements ViewInterface {
         load(stage,"/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         displayFirstWindow();
     }
+    */
 
-    public void load(Stage stage, String file){
+    public Scene load(String file){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(file));
             root = loader.load();
@@ -92,18 +152,20 @@ public class GUI extends Application implements ViewInterface {
 
         defaultcontroller.setClient(client);
 
-        scene = new Scene(Objects.requireNonNull(root), sceneWidth, sceneHeight, Color.TRANSPARENT);
+        Scene scene = new Scene(Objects.requireNonNull(root), sceneWidth, sceneHeight, Color.TRANSPARENT);
         scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
 
-        stage = new Stage();
-        stage.setTitle("Santorini");
-        stage.initStyle(StageStyle.TRANSPARENT);
-        stage.setScene(scene);
-        stage.getIcons().add(new Image("/it.polimi.ingsw/view/gui/img/icon.png"));
-        defaultcontroller.mainstage = stage;
+        //Stage s  = new Stage();
+        //s.setTitle("Santorini");
+        //s.initStyle(StageStyle.TRANSPARENT);
+        //s.setScene(scene);
+        //s.getIcons().add(new Image("/it.polimi.ingsw/view/gui/img/icon.png"));
+        defaultcontroller.mainstage = primaryStage;
 
-        stage.setScene(scene);
-        stage.show();
+
+        //primaryStage.setScene(scene);
+        //primaryStage.show();
+        return scene;
     }
 
     @Override
@@ -153,7 +215,10 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(NameRequestServer message) {
-        load(defaultcontroller.mainstage, "/it.polimi.ingsw/view/gui/fxml/AddName.fxml");
+        Platform.runLater(() -> {
+            primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/Name.fxml"));
+            primaryStage.show();
+        });
     }
 
 
@@ -165,8 +230,7 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(ModeRequestServer message) {
-        load(defaultcontroller.mainstage,"/it.polimi.ingsw/view/gui/fxml/Home.fxml" );
-
+        //load("/it.polimi.ingsw/view/gui/fxml/Name.fxml");
     }
 
     @Override
@@ -196,24 +260,24 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void displayFirstWindow() {
-        Parent root;
-        FXMLLoader loader = new FXMLLoader();
+        Scene scene;
+        if(!client.connect())
+        {
+            /*
+            println(TextFormatting.RESET+"Server unreachable!");
+            print(TextFormatting.RESET+"Type new ip address " + TextFormatting.input());
+            client.setIp(new Scanner(System.in).nextLine());
+            print(TextFormatting.RESET+"Type new port " + TextFormatting.input());
+            try {
+                client.setPort(Integer.parseInt(new Scanner(System.in).nextLine()));
+            } catch (NumberFormatException nfe) { client.setPort(1234); }
+            */
+            System.out.println("ARRIVO QUI... DEVO CHIEDERE NUOVO IP");
 
-        //Lan Case
-        //loader.setLocation(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/InsertServer.fxml"));
-        //defaultcontroller.playloader = loader;
-
-
-       // while(!client.connect())
-      //  {
-         //   try {
-                //client.setPort(Integer.parseInt(new Scanner(System.in).nextLine()));
-          //  } catch (NumberFormatException nfe) { client.setPort(1234); }
-       // }
-
-        //Online Case
-        loader.setLocation(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/AddName.fxml"));
-        defaultcontroller.playloader = loader;
+            scene =load("/it.polimi.ingsw/view/gui/fxml/Server.fxml");
+        } else scene = load("/it.polimi.ingsw/view/gui/fxml/Name.fxml");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
 

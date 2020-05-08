@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.AddNameController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.NameController">
    <top>
       <AnchorPane fx:id="top" onMouseDragged="#topDragged" onMousePressed="#topPressed" prefHeight="138.0" prefWidth="950.0">
          <Button fx:id="buttonQuit" layoutX="839.0" layoutY="30.0" mnemonicParsing="false" onAction="#quitOnAction" prefHeight="79.0" prefWidth="79.0" styleClass="button, quit" stylesheets="@../css/button.css" />
