@@ -4,6 +4,9 @@
     -fx-border: none;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
+
+    -fx-border-color: blue ;
+    -fx-border-width: 5 ;
 }
 .play {
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/play.png");
@@ -13,7 +16,7 @@
     -fx-background-size: 100% auto;
 }
 .help{
-    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/helper.png");
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/help.png");
     -fx-background-size: 90% auto;
 }
 .help:hover{
@@ -21,13 +24,20 @@
 }
 .quit{
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/quit.png");
-    -fx-background-size: 55px auto;
+    -fx-background-size: auto 100%;
 }
 .quit:hover{
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/quit_hover.png");
-    -fx-background-size: 55px auto;
+    -fx-background-size: auto 100%
 }
-
+.helper{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/helper.png");
+    -fx-background-size: auto 100%
+}
+.helper:hover{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/helper_pressed.png");
+    -fx-background-size: auto 100%
+}
 
 .IIPlayersButton {
     -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/2players.png");
@@ -42,15 +52,13 @@
 .IIIPlayersButton:pressed {
     -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/3players_pressed.png");
 }
-
-
-
 .login{
-    -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/login.png");
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/login.png");
+    -fx-background-size: 150px auto;
 }
-
 .login:pressed{
-    -fx-graphic: url("/it.polimi.ingsw/view/gui/img/button/login_pressed.png");
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/login_pressed.png");
+    -fx-background-size: 150px auto;
 }
 
 

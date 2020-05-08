@@ -32,8 +32,11 @@ public class NameController extends DefaultController {
         int sizex = 230;
         int sizey = 100;
         buttonLogin.setPrefSize(sizex, sizey);
-        buttonLogin.setMaxSize(sizex, sizey);
-        buttonLogin.setMinSize(sizex, sizey);
+        //buttonLogin.setMaxSize(sizex, sizey);
+        //buttonLogin.setMinSize(sizex, sizey);
+        buttonLogin.setLayoutX(150);
+        buttonLogin.setLayoutY(86);
+
     }
 
     public void handleLoginButton(ActionEvent login) {

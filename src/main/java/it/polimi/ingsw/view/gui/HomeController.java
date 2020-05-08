@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
@@ -17,11 +19,6 @@ import java.util.logging.Logger;
 
 
 public class HomeController extends DefaultController{
-
-    /**
-     * The logger
-     */
-    private static final Logger LOGGER = Logger.getLogger(HomeController.class.getName());
 
     @FXML
     public Button buttonPlay;
@@ -43,53 +40,23 @@ public class HomeController extends DefaultController{
         buttonHelp.setPrefSize(size,size);
         buttonHelp.setMaxSize(size,size);
         buttonHelp.setMinSize(size,size);
+
+        buttonHelper.setVisible(false);
     }
 
     public void handleHelpButton(javafx.event.ActionEvent actionEvent) {
-        Parent root;
-        try{
-            root = FXMLLoader.load(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Rules.fxml"));
-            Stage rules = new Stage();
-            rules.setTitle("Santorini Rules");
-            rules.setScene(new Scene(root));
-
-            int width = 1300;
-
-            if(Screen.getPrimary().getBounds().getWidth() < width)
-                width = (int) Screen.getPrimary().getBounds().getWidth();
-
-            rules.setHeight(Screen.getPrimary().getBounds().getHeight()-100);
-            rules.setWidth(width);
-            rules.setMinHeight(Screen.getPrimary().getBounds().getHeight()-100);
-            rules.setMinWidth(width);
-            rules.setMaxWidth(width);
-            rules.setMaxHeight(Screen.getPrimary().getBounds().getHeight()-100);
-            rules.initStyle(StageStyle.TRANSPARENT);
-            rules.getIcons().add(new Image("/it.polimi.ingsw/view/gui/img/icon.png"));
-            rules.getScene().setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
-
-            rules.show();
-        }
-        catch (IOException ex) {
-            LOGGER.log( Level.SEVERE, ex.toString(), ex );
-        }
+        showHelper();
     }
 
 
-        public void handlePlayButton(javafx.event.ActionEvent actionEvent) {
-            Parent root;
-
-            try{
-                root = playloader.load();
-                Scene scene = new Scene(root);
-                scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
-                mainstage.setScene(scene);
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            mainstage.show();
+    public void handlePlayButton(javafx.event.ActionEvent actionEvent) {
+        Platform.runLater(() -> {
+            if(!client.connect()) getCurrentView().getPrimaryStage().setScene(getCurrentView().load("/it.polimi.ingsw/view/gui/fxml/Server.fxml"));
+            else getCurrentView().getPrimaryStage().setScene(getCurrentView().load("/it.polimi.ingsw/view/gui/fxml/Name.fxml"));
+            getCurrentView().getPrimaryStage().show();
+        });
     }
+
 
 
 }

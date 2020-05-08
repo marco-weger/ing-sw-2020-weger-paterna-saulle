@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -31,6 +32,10 @@ public class GUI extends Application implements ViewInterface {
 
     private Client client;
     private Stage primaryStage;
+
+    public Stage getPrimaryStage(){
+        return primaryStage;
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -70,7 +75,16 @@ public class GUI extends Application implements ViewInterface {
         defaultcontroller.center.setMinWidth(sceneWidth);
         defaultcontroller.center.setMaxWidth(sceneWidth);
 
-        defaultcontroller.buttonQuit.setLayoutX(sceneWidth-100);
+        defaultcontroller.buttonQuit.setMinSize(40,40);
+        defaultcontroller.buttonQuit.setMaxSize(40,40);
+        defaultcontroller.buttonQuit.setPrefSize(40,40);
+        defaultcontroller.buttonHelper.setMinSize(62,40);
+        defaultcontroller.buttonHelper.setMaxSize(62,40);
+        defaultcontroller.buttonHelper.setPrefSize(62,40);
+        defaultcontroller.buttonQuit.setLayoutY(limitY/2-20);
+        defaultcontroller.buttonHelper.setLayoutY(limitY/2-20);
+        defaultcontroller.buttonQuit.setLayoutX(sceneWidth-50);
+        defaultcontroller.buttonHelper.setLayoutX(sceneWidth-120);
 
         defaultcontroller.setClient(client);
 
@@ -172,9 +186,7 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void displayFirstWindow() {
-        Scene scene;
-        if(!client.connect()) scene = load("/it.polimi.ingsw/view/gui/fxml/Server.fxml");
-        else scene = load("/it.polimi.ingsw/view/gui/fxml/Name.fxml");
+        Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
