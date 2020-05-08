@@ -44,6 +44,7 @@ public class GUI extends Application implements ViewInterface {
 
         client = new Client();
         client.setView(this);
+        client.readParams(client);
 
         displayFirstWindow();
     }
