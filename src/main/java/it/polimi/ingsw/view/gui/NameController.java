@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.clientmessages.ConnectionClient;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +23,7 @@ public class NameController extends DefaultController {
     private static final Logger LOGGER = Logger.getLogger(NameController.class.getName());
     public Button buttonLogin;
     public TextField insertname;
+    public String name;
 
     @FXML
     @Override
@@ -40,6 +43,13 @@ public class NameController extends DefaultController {
     }
 
     public void handleLoginButton(ActionEvent login) {
+
+        if(insertname != null){
+            name = insertname.getText();
+            client.setUsername(name);
+            client.sendMessage(new ConnectionClient(name));
+        }
+
         Parent ModeParent;
         try {
 
@@ -48,8 +58,11 @@ public class NameController extends DefaultController {
             ModeParent = loader.load();
             Scene ModeScene = new Scene(ModeParent);
             ModeScene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+
+
             mainstage.setScene(ModeScene);
             mainstage.show();
+
 
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, ex.toString(), ex);
