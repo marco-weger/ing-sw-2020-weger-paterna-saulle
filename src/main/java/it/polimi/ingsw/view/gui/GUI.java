@@ -154,7 +154,7 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(LobbyServer message) {
-
+        System.out.println("LOBBBY...");
     }
 
     @Override

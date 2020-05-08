@@ -49,5 +49,4 @@ public class NameController extends DefaultController {
             this.gui.getClient().sendMessage(new ConnectionClient(this.gui.getClient().getUsername()));
     }
 
-
 }
