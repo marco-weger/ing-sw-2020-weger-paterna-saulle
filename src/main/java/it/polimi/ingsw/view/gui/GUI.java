@@ -161,7 +161,10 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(ModeRequestServer message) {
-        //load("/it.polimi.ingsw/view/gui/fxml/Name.fxml");
+        Platform.runLater(() -> {
+        primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/Mode.fxml"));
+        primaryStage.show();
+      });
     }
 
     @Override

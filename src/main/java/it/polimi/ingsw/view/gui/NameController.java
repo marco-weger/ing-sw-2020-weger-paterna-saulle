@@ -41,11 +41,6 @@ public class NameController extends DefaultController {
             client.setUsername(name);
             client.sendMessage(new ConnectionClient(name));
         }
-
-        Platform.runLater(() -> {
-            getCurrentView().getPrimaryStage().setScene(getCurrentView().load("/it.polimi.ingsw/view/gui/fxml/Mode.fxml"));
-            getCurrentView().getPrimaryStage().show();
-        });
     }
 
 
