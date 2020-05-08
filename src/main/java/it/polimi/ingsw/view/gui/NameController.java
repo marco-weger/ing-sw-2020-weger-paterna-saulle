@@ -1,12 +1,11 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.commons.clientmessages.ConnectionClient;
+import javafx.application.Platform;
+import it.polimi.ingsw.commons.clientmessages.ConnectionClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.ImageCursor;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -14,6 +13,7 @@ import javafx.scene.image.Image;
 
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class NameController extends DefaultController {
 
@@ -47,6 +47,12 @@ public class NameController extends DefaultController {
         this.gui.getClient().setUsername(name.getText());
         if(!(this.gui.getClient().getUsername().isEmpty() || this.gui.getClient().getUsername().length() > 12 || this.gui.getClient().getUsername().matches("^\\s*$")))
             this.gui.getClient().sendMessage(new ConnectionClient(this.gui.getClient().getUsername()));
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error Name");
+            alert.setHeaderText("The chosen one is not allowed");
+            alert.setContentText("type new username (max 12 characters)");
+            alert.showAndWait();
+        }
     }
-
 }
