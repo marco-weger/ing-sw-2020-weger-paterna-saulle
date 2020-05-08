@@ -1,21 +1,9 @@
 package it.polimi.ingsw.view.gui;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.ImageCursor;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class HomeController extends DefaultController{
@@ -50,13 +38,15 @@ public class HomeController extends DefaultController{
 
 
     public void handlePlayButton(javafx.event.ActionEvent actionEvent) {
+        boolean go = this.gui.getClient().connect();
         Platform.runLater(() -> {
-            if(!client.connect()) getCurrentView().getPrimaryStage().setScene(getCurrentView().load("/it.polimi.ingsw/view/gui/fxml/Server.fxml"));
-            else getCurrentView().getPrimaryStage().setScene(getCurrentView().load("/it.polimi.ingsw/view/gui/fxml/Name.fxml"));
-            getCurrentView().getPrimaryStage().show();
+            if(go)
+                this.gui.getPrimaryStage().setScene(this.gui.load("/it.polimi.ingsw/view/gui/fxml/Name.fxml"));
+            else
+                this.gui.getPrimaryStage().setScene(this.gui.load("/it.polimi.ingsw/view/gui/fxml/Server.fxml"));
+
+            this.gui.getPrimaryStage().show();
         });
     }
-
-
 
 }

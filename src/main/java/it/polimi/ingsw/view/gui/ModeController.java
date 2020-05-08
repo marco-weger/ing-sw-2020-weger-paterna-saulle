@@ -6,7 +6,10 @@ import javafx.scene.image.Image;
 
 public class ModeController extends DefaultController{
 
+    @FXML
     public Button buttonIIplayers;
+
+    @FXML
     public Button buttonIIIplayers;
 
     @FXML
@@ -15,14 +18,11 @@ public class ModeController extends DefaultController{
         super.initialize();
         super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_mode.png"));
 
-        int sizex = 130;
-        int sizex2 = 230;
-        int sizey = 100;
-        buttonIIplayers.setPrefSize(sizex, sizey);
-        buttonIIplayers.setMaxSize(sizex, sizey);
-        buttonIIplayers.setMinSize(sizex, sizey);
-        buttonIIIplayers.setPrefSize(sizex2, sizey);
-        buttonIIIplayers.setMaxSize(sizex2, sizey);
-        buttonIIIplayers.setMinSize(sizex2, sizey);
+        buttonIIplayers.setMinSize(200,114);
+        buttonIIplayers.setMaxSize(200,114);
+        buttonIIplayers.setPrefSize(200,114);
+        buttonIIIplayers.setMinSize(200,114);
+        buttonIIIplayers.setMaxSize(200,114);
+        buttonIIIplayers.setPrefSize(200,114);
     }
 }

@@ -27,9 +27,10 @@ public class DefaultController{
     /**
      * The logger
      */
-    private static final Logger LOGGER = Logger.getLogger(DefaultController.class.getName());
+    protected static final Logger LOGGER = Logger.getLogger(DefaultController.class.getName());
 
-    protected Client client;
+    //protected Client client;
+    protected GUI gui;
 
     @FXML
     public AnchorPane top;
@@ -49,7 +50,6 @@ public class DefaultController{
     int initialX = 0;
     int initialY = 0;
     Stage mainstage;
-    //FXMLLoader playloader;
 
     @FXML
     public void initialize(){
@@ -72,17 +72,11 @@ public class DefaultController{
                 BackgroundPosition.CENTER,
                 bSize)));
 
-        /*
-        buttonQuit.setLayoutX(mainstage.getWidth()-100);
-        buttonQuit.setLayoutY(50);
-        buttonHelper.setLayoutX(mainstage.getWidth()-200);
-        buttonHelper.setLayoutY(50);
-         */
     }
 
+    public void setup(){}
 
-
-    public void setClient(Client client){ this.client=client; }
+    public void setGUI(GUI gui){ this.gui=gui; }
 
     public void setBackground(Image image){
         center.setBackground(new Background(new BackgroundImage(image,
@@ -149,12 +143,5 @@ public class DefaultController{
             LOGGER.log( Level.SEVERE, ex.toString(), ex );
         }
     }
-
-    public GUI getCurrentView(){
-        if(client.getView() instanceof GUI)
-           return (GUI)client.getView();
-        else return null;
-    }
-
 }
 

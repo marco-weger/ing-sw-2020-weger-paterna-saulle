@@ -1,6 +1,9 @@
 .text-field {
-    -fx-text-box-border: black ;
     -fx-focus-color: black ;
+    -fx-background-color: rgba(255,255,255,0.3);
+    -fx-prompt-text-fill: rgba(0,0,0,0.5);;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold
 }
 .error {
     -fx-text-box-border: red !important;

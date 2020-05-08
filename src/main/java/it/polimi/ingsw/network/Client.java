@@ -158,8 +158,6 @@ public class Client implements Runnable{
 
         LOGGER.log( Level.FINE, "processing {0} entries in loop", "START" );
 
-        Client client = new Client();
-        readParams(client);
         String version;
         boolean go;
 
@@ -182,29 +180,14 @@ public class Client implements Runnable{
 
             if(version.equalsIgnoreCase("CLI")){
                 System.out.print("Connection to the server...");
+                Client client = new Client();
+                readParams(client);
                 client.setView(new CLI(client,getRandomSymbol()));
                 client.getView().displayFirstWindow();
             }
             else if(version.equalsIgnoreCase("GUI")){
                 System.out.println("RUN GUI...");
                 Application.launch(GUI.class, args);
-
-                //Application.launch(GUI.class,args);
-
-                //GUI gui = new GUI(client); //GUI.waitForGUI();
-                //GUI gui = GUI.waitForGUI(client);
-                //client.setView(gui);
-
-                //startUpTest.printSomething();
-
-                //client.setView(new GUI(client));
-                //new Thread(() -> Application.launch(GUI.class)).start();
-                //GUI startUpTest = GUI.waitForStartUpTest();
-                //client.getView().displayFirstWindow();
-                //GUI gui = new GUI(); // .start()
-                //new Thread(() -> gui.).start();
-                //GUI startUpTest = GUI.waitForStartUpTest();
-                //startUpTest.printSomething();
             }
             else go = true;
         }while(go);

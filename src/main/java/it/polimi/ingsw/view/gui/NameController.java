@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.clientmessages.ConnectionClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,14 +14,14 @@ import javafx.scene.image.Image;
 
 import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class NameController extends DefaultController {
 
-
-    private static final Logger LOGGER = Logger.getLogger(NameController.class.getName());
+    @FXML
     public Button buttonLogin;
-    public TextField insertname;
+
+    @FXML
+    public TextField name;
 
     @FXML
     @Override
@@ -28,33 +29,25 @@ public class NameController extends DefaultController {
         super.initialize();
         super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_name.png"));
 
+        buttonLogin.setMinSize(200,114);
+        buttonLogin.setMaxSize(200,114);
+        buttonLogin.setPrefSize(200,114);
+        buttonLogin.setMinSize(200,114);
+        buttonLogin.setMaxSize(200,114);
+        buttonLogin.setPrefSize(200,114);
+    }
 
-        int sizex = 230;
-        int sizey = 100;
-        buttonLogin.setPrefSize(sizex, sizey);
-        //buttonLogin.setMaxSize(sizex, sizey);
-        //buttonLogin.setMinSize(sizex, sizey);
-        buttonLogin.setLayoutX(150);
-        buttonLogin.setLayoutY(86);
-
+    @Override
+    public void setup(){
+        super.setup();
+        buttonLogin.setLayoutX(gui.sceneWidth/2-100);
     }
 
     public void handleLoginButton(ActionEvent login) {
-        Parent ModeParent;
-        try {
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Mode.fxml"));
-            ModeParent = loader.load();
-            Scene ModeScene = new Scene(ModeParent);
-            ModeScene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
-            mainstage.setScene(ModeScene);
-            mainstage.show();
-
-        } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, ex.toString(), ex);
-        }
-
+        this.gui.getClient().setUsername(name.getText());
+        if(!(this.gui.getClient().getUsername().isEmpty() || this.gui.getClient().getUsername().length() > 12 || this.gui.getClient().getUsername().matches("^\\s*$")))
+            this.gui.getClient().sendMessage(new ConnectionClient(this.gui.getClient().getUsername()));
+        ;
     }
 
 
