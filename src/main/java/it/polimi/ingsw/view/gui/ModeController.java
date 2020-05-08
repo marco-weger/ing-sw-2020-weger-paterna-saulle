@@ -28,11 +28,11 @@ public class ModeController extends DefaultController{
     }
 
     public void handler2playersButton(ActionEvent actionEvent) {
-        client.getUsername();
+        client.sendMessage(new ModeChoseClient(client.getUsername(),2));
     }
 
+
     public void handler3playersButton(ActionEvent actionEvent) {
-        System.out.println("CIAO 3");
-         //client.sendMessage(new ModeChoseClient(client.getUsername(), 3));
+        client.sendMessage(new ModeChoseClient(client.getUsername(),3));
     }
 }

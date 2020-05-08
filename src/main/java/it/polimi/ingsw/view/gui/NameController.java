@@ -4,17 +4,9 @@ import it.polimi.ingsw.commons.clientmessages.ConnectionClient;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.ImageCursor;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-
-
-import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class NameController extends DefaultController {
@@ -50,24 +42,10 @@ public class NameController extends DefaultController {
             client.sendMessage(new ConnectionClient(name));
         }
 
-        Parent ModeParent;
-        try {
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Mode.fxml"));
-            ModeParent = loader.load();
-            Scene ModeScene = new Scene(ModeParent);
-            ModeScene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
-
-
-            mainstage.setScene(ModeScene);
-            mainstage.show();
-
-
-        } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, ex.toString(), ex);
-        }
-
+        Platform.runLater(() -> {
+            getCurrentView().getPrimaryStage().setScene(getCurrentView().load("/it.polimi.ingsw/view/gui/fxml/Mode.fxml"));
+            getCurrentView().getPrimaryStage().show();
+        });
     }
 
 
