@@ -18,7 +18,7 @@ public class ModeController extends DefaultController{
     @Override
     public void initialize(){
         super.initialize();
-        super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_mode.png"));
+        super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_mode2.png"));
 
         button2.setMinSize(200,114);
         button2.setMaxSize(200,114);
