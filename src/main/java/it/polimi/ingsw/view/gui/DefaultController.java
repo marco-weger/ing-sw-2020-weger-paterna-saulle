@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.network.Client;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -32,6 +31,8 @@ public class DefaultController{
      * The logger
      */
     protected static final Logger LOGGER = Logger.getLogger(DefaultController.class.getName());
+
+    Font f = Font.loadFont(getClass().getResourceAsStream("/it.polimi.ingsw/view/gui/font/Nefelibata-Brush.ttf"),13);
 
     //protected Client client;
     protected GUI gui;
@@ -148,7 +149,6 @@ public class DefaultController{
     }
 
     public void setUpTextField(TextField tf){
-        Font f = Font.loadFont(getClass().getResourceAsStream("/it.polimi.ingsw/view/gui/font/Nefelibata-Brush.ttf"),13);
         tf.setFont(f);
         tf.focusedProperty().addListener(new ChangeListener<Boolean>()
         {

@@ -41,6 +41,7 @@ public class NameController extends DefaultController {
     public void setup(){
         super.setup();
         buttonLogin.setLayoutX(gui.sceneWidth/2-100);
+        setUpTextField(name);
     }
 
     public void handleLoginButton(ActionEvent login) {
