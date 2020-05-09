@@ -21,7 +21,7 @@
              <TextField fx:id="ip3" layoutX="475.0" layoutY="168.0" prefHeight="25.0" prefWidth="53.0" promptText="0" styleClass="text-field" stylesheets="@../css/text-field.css" />
              <TextField fx:id="ip4" layoutX="528.0" layoutY="168.0" prefHeight="25.0" prefWidth="53.0" promptText="1" styleClass="text-field" stylesheets="@../css/text-field.css" />
             <TextField fx:id="port" layoutX="369.0" layoutY="239.0" prefHeight="25.0" prefWidth="212.0" promptText="Port" styleClass="text-field" stylesheets="@../css/text-field.css" />
-            <Button fx:id="buttonConnect" layoutX="406.0" layoutY="359.0" mnemonicParsing="false" onAction="#connection" prefHeight="25.0" prefWidth="138.0" styleClass="button, connect" stylesheets="@../css/button.css" />
+            <Button fx:id="buttonConnect"  layoutX="406.0" layoutY="359.0" mnemonicParsing="false" onAction="#connection" prefHeight="25.0" prefWidth="138.0" styleClass="button, connect" stylesheets="@../css/button.css" />
          </children>
         </AnchorPane>
     </center>

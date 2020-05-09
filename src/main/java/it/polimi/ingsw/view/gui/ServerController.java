@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class ServerController extends DefaultController {
 
@@ -97,6 +99,21 @@ public class ServerController extends DefaultController {
         super.setup();
         buttonConnect.setLayoutX(gui.sceneWidth/2-100);
         buttonConnect.setLayoutX(gui.sceneWidth/2-100);
+
+        /*
+        Font myFontloadFontAirstreamNF20 = Font.loadFont(getClass().getResourceAsStream("/it.polimi.ingsw/view/gui/font/Nefelibata-Brush.ttf"),13);
+        ip1.setFont(myFontloadFontAirstreamNF20);
+        ip2.setFont(myFontloadFontAirstreamNF20);
+        ip3.setFont(myFontloadFontAirstreamNF20);
+        ip4.setFont(myFontloadFontAirstreamNF20);
+        port.setFont(myFontloadFontAirstreamNF20);
+         */
+
+        setUpTextField(port);
+        setUpTextField(ip1);
+        setUpTextField(ip2);
+        setUpTextField(ip3);
+        setUpTextField(ip4);
     }
 
     public void connection(ActionEvent actionEvent) {
