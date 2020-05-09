@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.NameController">
    <top>
@@ -18,9 +17,7 @@
       <AnchorPane fx:id="center" prefHeight="500.0" prefWidth="950.0" BorderPane.alignment="CENTER">
          <Button fx:id="buttonLogin" layoutX="104.0" layoutY="345.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoginButton" prefHeight="50.0" prefWidth="100.0" styleClass="button, login" stylesheets="@../css/button.css" />
          <TextField fx:id="name" layoutX="355.0" layoutY="196.0" prefHeight="25.0" promptText="Insert Name" styleClass="text-field" stylesheets="@../css/text-field.css">
-            <font>
-               <Font name="Nefelibata-Brush" size="20.0" />
-            </font></TextField>
+         </TextField>
       </AnchorPane>
    </center>
 </BorderPane>
