@@ -27,7 +27,7 @@ public class NameController extends DefaultController {
     @Override
     public void initialize() {
         super.initialize();
-        super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_name.png"));
+        super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_name2.png"));
 
         buttonLogin.setMinSize(200,114);
         buttonLogin.setMaxSize(200,114);
