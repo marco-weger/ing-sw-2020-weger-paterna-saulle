@@ -100,15 +100,6 @@ public class ServerController extends DefaultController {
         buttonConnect.setLayoutX(gui.sceneWidth/2-100);
         buttonConnect.setLayoutX(gui.sceneWidth/2-100);
 
-        /*
-        Font myFontloadFontAirstreamNF20 = Font.loadFont(getClass().getResourceAsStream("/it.polimi.ingsw/view/gui/font/Nefelibata-Brush.ttf"),13);
-        ip1.setFont(myFontloadFontAirstreamNF20);
-        ip2.setFont(myFontloadFontAirstreamNF20);
-        ip3.setFont(myFontloadFontAirstreamNF20);
-        ip4.setFont(myFontloadFontAirstreamNF20);
-        port.setFont(myFontloadFontAirstreamNF20);
-         */
-
         setUpTextField(port);
         setUpTextField(ip1);
         setUpTextField(ip2);
@@ -117,6 +108,18 @@ public class ServerController extends DefaultController {
     }
 
     public void connection(ActionEvent actionEvent) {
+        tryConnect();
+    }
+
+    public void portOnAction(ActionEvent actionEvent) {
+        tryConnect();
+    }
+
+    public void ip1OnAction(ActionEvent actionEvent) {
+        tryConnect();
+    }
+
+    public void tryConnect(){
         this.gui.getClient().setIp(ip1.getText()+'.'+ip2.getText()+'.'+ip3.getText()+'.'+ip4.getText());
         this.gui.getClient().setPort(Integer.parseInt(port.getText()));
         if(!this.gui.getClient().connect()){ // TODO show wait image round
@@ -126,5 +129,17 @@ public class ServerController extends DefaultController {
             ip4.getStyleClass().add("error");
             port.getStyleClass().add("error");
         }
+    }
+
+    public void ip2OnAction(ActionEvent actionEvent) {
+        tryConnect();
+    }
+
+    public void ip3OnAction(ActionEvent actionEvent) {
+        tryConnect();
+    }
+
+    public void ip4OnAction(ActionEvent actionEvent) {
+        tryConnect();
     }
 }

@@ -41,10 +41,19 @@ public class NameController extends DefaultController {
     public void setup(){
         super.setup();
         buttonLogin.setLayoutX(gui.sceneWidth/2-100);
+        name.setLayoutX(gui.sceneWidth/2-100);
         setUpTextField(name);
     }
 
     public void handleLoginButton(ActionEvent login) {
+        trySetName();
+    }
+
+    public void nameOnAction(ActionEvent actionEvent) {
+        trySetName();
+    }
+
+    public void trySetName(){
         this.gui.getClient().setUsername(name.getText());
         if(!(this.gui.getClient().getUsername().isEmpty() || this.gui.getClient().getUsername().length() > 12 || this.gui.getClient().getUsername().matches("^\\s*$")))
             this.gui.getClient().sendMessage(new ConnectionClient(this.gui.getClient().getUsername()));
