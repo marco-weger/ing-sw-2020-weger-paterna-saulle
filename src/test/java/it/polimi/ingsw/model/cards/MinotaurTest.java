@@ -60,12 +60,16 @@ public class MinotaurTest {
         for(Cell c:b.getField()){
             if(c.getRow() == 3)
                 c.setLevel(3);
+            if(c.getRow() == 2 && c.getColumn() == 3)
+                c.setLevel(2);
+            if(c.getRow() == 2 && c.getColumn() == 2)
+                c.setLevel(0);
         }
         assertNotNull(p);
         assertNotNull(b);
         List<Cell> ret = p.get(0).getCard().checkMove(p,b);
 
-        assertEquals(3,ret.size());
+        assertEquals(2,ret.size());
         for(Cell c:ret)
             assertTrue((c.getRow() == 1 && c.getColumn() == 1) || (c.getRow() == 1 && c.getColumn() == 3) || (c.getRow() == 2 && c.getColumn() == 3));
     }
