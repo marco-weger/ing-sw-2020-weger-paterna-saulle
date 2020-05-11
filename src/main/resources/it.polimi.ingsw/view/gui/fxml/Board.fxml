@@ -44,6 +44,31 @@
                <ImageView fx:id="block42" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="222.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true" />
                <ImageView fx:id="block43" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="317.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true" />
                <ImageView fx:id="block44" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="404.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square00" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="56.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square01" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="153.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square02" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="242.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square03" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="337.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square04" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="424.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square10" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="59.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square11" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="153.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square12" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="242.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square13" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="337.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square14" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="424.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square20" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="59.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square21" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="153.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square22" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="242.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square23" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="337.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square24" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="424.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square30" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="59.0" layoutY="338.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square31" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="153.0" layoutY="338.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square32" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="242.0" layoutY="338.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square33" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="337.0" layoutY="338.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square34" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="424.0" layoutY="338.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square40" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="59.0" layoutY="426.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square41" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="153.0" layoutY="426.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square42" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="242.0" layoutY="426.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square43" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="337.0" layoutY="426.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="square44" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="424.0" layoutY="426.0" pickOnBounds="true" preserveRatio="true" />
                <Button fx:id="cell00" alignment="CENTER" contentDisplay="TOP" layoutX="36.0" layoutY="39.0" mnemonicParsing="false" onAction="#cell00" prefHeight="80.0" prefWidth="80.0" styleClass="button, board" stylesheets="@../css/button.css" />
                <Button fx:id="cell01" layoutX="133.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell01" prefHeight="80.0" prefWidth="80.0" styleClass="button, board" stylesheets="@../css/button.css" />
                <Button fx:id="cell02" layoutX="222.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell02" prefHeight="80.0" prefWidth="80.0" styleClass="button, board" stylesheets="@../css/button.css" />
