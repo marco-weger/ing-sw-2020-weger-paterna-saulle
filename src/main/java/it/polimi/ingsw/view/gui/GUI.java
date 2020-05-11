@@ -123,8 +123,10 @@ public class GUI extends Application implements ViewInterface {
         FXMLLoader loaderX = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Board.fxml"));
         try{
             rootX = loaderX.load();
-            Scene scene = new Scene(Objects.requireNonNull(rootX), sceneWidth, sceneHeight, Color.TRANSPARENT);
-            primaryStage.setScene(scene);
+            Platform.runLater(() -> {
+                primaryStage.setScene(new Scene(Objects.requireNonNull(rootX), sceneWidth, sceneHeight, Color.TRANSPARENT));
+                primaryStage.show();
+        });
 
         }
         catch (IOException e){
@@ -139,7 +141,7 @@ public class GUI extends Application implements ViewInterface {
         boardController.setPawn(boardController.square22, boardController.green);
         boardController.setPawn(boardController.square33, boardController.bronze);
         boardController.setPawn(boardController.square44, boardController.yellow);
-        primaryStage.show();
+
 
     }
 
