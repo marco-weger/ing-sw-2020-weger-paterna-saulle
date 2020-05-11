@@ -7,8 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 public class ServerController extends DefaultController {
 
@@ -35,7 +33,6 @@ public class ServerController extends DefaultController {
      */
     private static final String zeroTo255
             = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])";
-
 
     @FXML
     @Override

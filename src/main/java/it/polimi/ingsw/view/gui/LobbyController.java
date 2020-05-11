@@ -17,9 +17,9 @@ public class LobbyController extends DefaultController {
     public void initialize(){
         super.initialize();
         super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_lobby.png"));
-        textAreaLobby.setMinSize(450,200);
-        textAreaLobby.setMaxSize(450,200);
-        textAreaLobby.setPrefSize(450,200);
+        textAreaLobby.setMinSize(450,240);
+        textAreaLobby.setMaxSize(450,260);
+        textAreaLobby.setPrefSize(450,260);
 
         imageLobby.setImage(new Image("/it.polimi.ingsw/view/gui/img/other/lobby.png"));
         imageLobby.setPreserveRatio(true);
@@ -32,8 +32,8 @@ public class LobbyController extends DefaultController {
         imageLobby.setLayoutX(gui.sceneWidth/2-203);
         imageLobby.setLayoutY(65);
         //textAreaLobby.setLayoutX(gui.sceneWidth/2-200);
-        textAreaLobby.setLayoutX(950/2-200);
-        textAreaLobby.setLayoutY(73);
+        textAreaLobby.setLayoutX(950/2-225);
+        textAreaLobby.setLayoutY(95);
 
         textAreaLobby.setFont(f);
         textAreaLobby.focusedProperty().addListener(new ChangeListener<Boolean>()

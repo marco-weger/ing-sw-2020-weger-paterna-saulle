@@ -16,7 +16,7 @@
     <center>
         <AnchorPane fx:id="center" maxHeight="522.0" maxWidth="950.0" minHeight="522.0" minWidth="950.0" prefHeight="522.0" prefWidth="950.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="ip1" layoutX="313.0" layoutY="160.0" onAction="#ip1OnAction" prefHeight="56.0" prefWidth="81.0" promptText="127" styleClass="text-field" stylesheets="@../css/text-field.css" />
+            <TextField fx:id="ip1" layoutX="313.0" layoutY="160.0" onAction="#ip1OnAction" prefHeight="25.0" prefWidth="81.0" promptText="127" styleClass="text-field" stylesheets="@../css/text-field.css" />
              <TextField fx:id="ip2" layoutX="394.0" layoutY="160.0" onAction="#ip2OnAction" prefHeight="25.0" prefWidth="81.0" promptText="0" styleClass="text-field" stylesheets="@../css/text-field.css" />
              <TextField fx:id="ip3" layoutX="475.0" layoutY="160.0" onAction="#ip3OnAction" prefHeight="25.0" prefWidth="81.0" promptText="0" styleClass="text-field" stylesheets="@../css/text-field.css" />
              <TextField fx:id="ip4" layoutX="556.0" layoutY="160.0" onAction="#ip4OnAction" prefHeight="25.0" prefWidth="81.0" promptText="1" styleClass="text-field" stylesheets="@../css/text-field.css" />
