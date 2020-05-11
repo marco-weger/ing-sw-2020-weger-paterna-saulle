@@ -19,19 +19,33 @@
          <children>
             <StackPane accessibleRole="IMAGE_VIEW" alignment="TOP_CENTER" />
             <AnchorPane fx:id="center" prefHeight="500.0" prefWidth="950.0">
-               <ImageView cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="222.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../img/tower/floor3.png" />
-                  </image>
-               </ImageView>
-
-               <ImageView cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="36.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../img/tower/floor1.png" />
-                  </image>
-               </ImageView>
+               <ImageView fx:id="block00" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="36.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block01" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="133.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block02" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="222.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block03" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="317.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block04" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="404.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block10" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="39.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block11" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="133.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block12" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="222.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block13" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="317.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block14" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="404.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block20" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="39.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block21" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="133.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block22" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="222.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block23" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="317.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block24" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="404.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block30" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="39.0" layoutY="318.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block31" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="133.0" layoutY="318.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block32" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="222.0" layoutY="318.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block33" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="317.0" layoutY="318.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block34" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="404.0" layoutY="318.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block40" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="39.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block41" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="133.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block42" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="222.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block43" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="317.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true" />
+               <ImageView fx:id="block44" cache="true" fitHeight="80.0" fitWidth="80.0" layoutX="404.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true" />
                <Button fx:id="cell00" alignment="CENTER" contentDisplay="TOP" layoutX="36.0" layoutY="39.0" mnemonicParsing="false" onAction="#cell00" prefHeight="80.0" prefWidth="80.0" styleClass="button, board" stylesheets="@../css/button.css" />
-                              <Button fx:id="cell01" layoutX="133.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell01" prefHeight="80.0" prefWidth="80.0" styleClass="button, board" stylesheets="@../css/button.css" />
+               <Button fx:id="cell01" layoutX="133.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell01" prefHeight="80.0" prefWidth="80.0" styleClass="button, board" stylesheets="@../css/button.css" />
                <Button fx:id="cell02" layoutX="222.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell02" prefHeight="80.0" prefWidth="80.0" styleClass="button, board" stylesheets="@../css/button.css" />
                <Button fx:id="cell03" layoutX="317.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell03" prefHeight="80.0" prefWidth="80.0" styleClass="button, board" stylesheets="@../css/button.css" />
                <Button fx:id="cell04" layoutX="404.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell04" prefHeight="80.0" prefWidth="80.0" styleClass="button, board" stylesheets="@../css/button.css" />
