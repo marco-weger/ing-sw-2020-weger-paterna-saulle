@@ -13,10 +13,11 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Logger;
+
+
 
 public class GUI extends Application implements ViewInterface {
 
@@ -28,6 +29,7 @@ public class GUI extends Application implements ViewInterface {
 
     Parent root;
     DefaultController defaultcontroller;
+    BoardController boardController;
 
     private Client client;
     private Stage primaryStage;
@@ -117,7 +119,32 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(WorkerChosenServer message) {
+        Parent rootX;
+        FXMLLoader loaderX = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Board.fxml"));
+        try{
+            rootX = loaderX.load();
+            Platform.runLater(() -> {
+                primaryStage.setScene(new Scene(Objects.requireNonNull(rootX), sceneWidth, sceneHeight, Color.TRANSPARENT));
+                primaryStage.show();
+        });
 
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+
+        boardController = loaderX.getController();
+        boardController.setState(0);
+
+        /*
+        boardController.setLevel(boardController.block00, boardController.floor1);
+        boardController.setLevel(boardController.block22, boardController.dome);
+        boardController.setLevel(boardController.block04, boardController.floor3);
+        boardController.setPawn(boardController.square00, boardController.red);
+        boardController.setPawn(boardController.square11, boardController.blu);
+        boardController.setPawn(boardController.square22, boardController.green);
+        boardController.setPawn(boardController.square33, boardController.bronze);
+        boardController.setPawn(boardController.square44, boardController.yellow);*/
     }
 
     @Override

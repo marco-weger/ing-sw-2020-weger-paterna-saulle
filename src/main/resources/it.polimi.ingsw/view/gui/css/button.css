@@ -71,7 +71,8 @@
     -fx-background-size: auto 100%
 }
 .board {
-    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/allow.png");
+    -fx-background-image: null;
+    /*-fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/allow.png");*/
     -fx-background-size: 80px 80px
 }
 .board:hover{

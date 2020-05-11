@@ -1,5 +1,10 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.SnapWorker;
+import it.polimi.ingsw.commons.clientmessages.ConnectionClient;
+import it.polimi.ingsw.commons.clientmessages.WorkerChoseClient;
+import it.polimi.ingsw.commons.clientmessages.WorkerInitializeClient;
+import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -7,9 +12,12 @@ import javafx.scene.image.ImageView;
 
 public class BoardController extends DefaultController {
 
+
     int towerSize = 80;
     int pawnSize = 40;
 
+    int state = 4;
+    CurrentStatusServer Css;
 
 
     Image floor1 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor1.png", towerSize, towerSize,true,false);
@@ -61,82 +69,632 @@ public class BoardController extends DefaultController {
         square.setImage(pawn);
     }
 
+    public void setState(int state) {
+        this.state = state;
+    }
+
+
+
+    public void WorkerInitialize(int x, int y){
+        this.gui.getClient().sendMessage(new WorkerInitializeClient(this.gui.getClient().getUsername(),x,y));
+    }
+
+    public void ChoseWorker(int x,int y){
+        for(SnapWorker sw : this.gui.getClient().getWorkers()) {
+            if (sw.row == 0 && sw.column == 0 && sw.name.equals(this.gui.getClient().getUsername()) && (Css.worker1 && sw.n == 1 || Css.worker2 && sw.n == 2)) {
+                this.gui.getClient().sendMessage(new WorkerChoseClient(this.gui.getClient().getUsername(), sw.n));
+            }
+        }
+    }
+
+    public void Move(int x, int y){
+        //TODO Move
+            System.out.println(x +y);
+    }
+
+    public void Build(int x, int y){
+        //TODO Build
+            System.out.println(x + y);
+    }
+
+
+
+
+
+
+    /**
+     * @param actionEvent click event
+     *
+     * [ 0 = WorkerInitialize |  1 = WorkerChose |  2 = Move  | 3 = Build  | 4 = Wait ]
+     */
 
 
     public void cell00(ActionEvent actionEvent) {
+       int x = 0;
+       int y = 0;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell01(ActionEvent actionEvent) {
+        int x = 0;
+        int y = 1;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell02(ActionEvent actionEvent) {
+        int x = 0;
+        int y = 2;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell03(ActionEvent actionEvent) {
+        int x = 0;
+        int y = 3;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell04(ActionEvent actionEvent) {
+        int x = 0;
+        int y = 4;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
+
     }
 
     public void cell10(ActionEvent actionEvent) {
+        int x = 1;
+        int y = 0;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell11(ActionEvent actionEvent) {
+        int x = 1;
+        int y = 1;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell12(ActionEvent actionEvent) {
+        int x = 1;
+        int y = 2;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell13(ActionEvent actionEvent) {
+        int x = 1;
+        int y = 3;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell14(ActionEvent actionEvent) {
+        int x = 1;
+        int y = 4;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell20(ActionEvent actionEvent) {
+        int x = 2;
+        int y = 0;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell21(ActionEvent actionEvent) {
+        int x = 2;
+        int y = 1;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell22(ActionEvent actionEvent) {
+        int x = 2;
+        int y = 2;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell23(ActionEvent actionEvent) {
+        int x = 2;
+        int y = 3;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell24(ActionEvent actionEvent) {
+        int x = 2;
+        int y = 4;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell30(ActionEvent actionEvent) {
+        int x = 3;
+        int y = 0;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell31(ActionEvent actionEvent) {
+        int x = 3;
+        int y = 1;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell32(ActionEvent actionEvent) {
+        int x = 3;
+        int y = 2;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell33(ActionEvent actionEvent) {
+        int x = 3;
+        int y = 3;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell34(ActionEvent actionEvent) {
+        int x = 3;
+        int y = 4;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell40(ActionEvent actionEvent) {
+        int x = 0;
+        int y = 4;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell41(ActionEvent actionEvent) {
+        int x = 4;
+        int y = 1;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell42(ActionEvent actionEvent) {
+        int x = 4;
+        int y = 2;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
 
     public void cell43(ActionEvent actionEvent) {
+        int x = 4;
+        int y = 3;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
     public void cell44(ActionEvent actionEvent) {
+        int x = 4;
+        int y = 4;
+        if(state == 0){   //WorkerInitialize
+            WorkerInitialize(x,y);
+            setState(4);
+        }
+
+        if(state == 1){   //ChoseWorker
+            ChoseWorker(x,y);
+            setState(4);
+        }
+        if(state == 2){  //Move
+            Move(x,y);
+            setState(4);
+        }
+        if(state == 3){  //Build
+            Build(x,y);
+            setState(4);
+        }
     }
 
 }
