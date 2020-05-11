@@ -60,12 +60,16 @@ public class MinotaurTest {
         for(Cell c:b.getField()){
             if(c.getRow() == 3)
                 c.setLevel(3);
+            if(c.getRow() == 2 && c.getColumn() == 3)
+                c.setLevel(2);
+            if(c.getRow() == 2 && c.getColumn() == 2)
+                c.setLevel(0);
         }
         assertNotNull(p);
         assertNotNull(b);
         List<Cell> ret = p.get(0).getCard().checkMove(p,b);
 
-        assertEquals(3,ret.size());
+        assertEquals(2,ret.size());
         for(Cell c:ret)
             assertTrue((c.getRow() == 1 && c.getColumn() == 1) || (c.getRow() == 1 && c.getColumn() == 3) || (c.getRow() == 2 && c.getColumn() == 3));
     }
@@ -114,6 +118,32 @@ public class MinotaurTest {
                 c.setLevel(4);
         }
         p.get(0).getCard().move(p,b,b.getCell(1,4));
+        assertEquals(2,p.get(0).getCurrentWorker().getRow());
+        assertEquals(3,p.get(0).getCurrentWorker().getColumn());
+    }
+
+
+    @Test
+    public void move_error_2()
+    {
+        initialize();
+        p.get(0).setWorker1(new Worker(2,3));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(0,1));
+        p.get(1).setWorker2(new Worker(0,2));
+        p.get(2).setWorker1(new Worker(0,3));
+        p.get(2).setWorker2(new Worker(2,2));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
+        for(Cell c:b.getField()){
+            if(c.getRow() == 2 && c.getColumn() == 2)
+                c.setLevel(2);
+            else if(c.getRow() == 2 && c.getColumn() == 1)
+                c.setLevel(0);
+            else if(c.getRow() == 2 && c.getColumn() == 3)
+                c.setLevel(0);
+        }
+        p.get(0).getCard().move(p,b,b.getCell(2,2));
         assertEquals(2,p.get(0).getCurrentWorker().getRow());
         assertEquals(3,p.get(0).getCurrentWorker().getColumn());
     }
@@ -203,5 +233,79 @@ public class MinotaurTest {
         assertEquals(2,p.get(0).getWorker1().getColumn());
         assertEquals(0,p.get(1).getWorker2().getRow());
         assertEquals(2,p.get(1).getWorker2().getColumn());
+    }
+
+    @Test
+    public void checkMove_stresstest()
+    {
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(4,4));
+        p.get(1).setWorker1(new Worker(1,1));
+        p.get(1).setWorker2(new Worker(2,1));
+        p.get(2).setWorker1(new Worker(3,1));
+        p.get(2).setWorker2(new Worker(1,2));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
+        for(Cell c:b.getField()){
+            if(c.getRow() == 2 && c.getColumn()== 2)
+                c.setLevel(0);
+            if(c.getRow() == 4 && c.getColumn() == 4)
+                c.setLevel(0);
+            if(c.getRow() == 1 && c.getColumn() == 2)
+                c.setLevel(2);
+            if(c.getRow() == 1 && c.getColumn() == 1)
+                c.setLevel(2);
+            if(c.getRow() == 2 && c.getColumn() == 1)
+                c.setLevel(2);
+            if(c.getRow() == 3 && c.getColumn() == 1)
+                c.setLevel(1);
+
+        }
+        assertNotNull(p);
+        assertNotNull(b);
+        List<Cell> ret = p.get(0).getCard().checkMove(p,b);
+
+        assertEquals(5,ret.size());
+    }
+
+        @Test
+    public void move_stresstest()
+    {
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(4,4));
+        p.get(1).setWorker1(new Worker(1,1));
+        p.get(1).setWorker2(new Worker(2,1));
+        p.get(2).setWorker1(new Worker(3,1));
+        p.get(2).setWorker2(new Worker(1,2));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
+        for(Cell c:b.getField()){
+            if(c.getRow() == 2 && c.getColumn()== 2)
+                c.setLevel(0);
+            if(c.getRow() == 4 && c.getColumn() == 4)
+                c.setLevel(0);
+            if(c.getRow() == 1 && c.getColumn() == 2)
+                c.setLevel(2);
+            if(c.getRow() == 1 && c.getColumn() == 1)
+                c.setLevel(2);
+            if(c.getRow() == 2 && c.getColumn() == 1)
+                c.setLevel(2);
+            if(c.getRow() == 3 && c.getColumn() == 1)
+                c.setLevel(1);
+
+        }
+        assertNotNull(p);
+        assertNotNull(b);
+        p.get(0).getCard().move(p,b,b.getCell(1,2));
+        p.get(0).getCard().move(p,b,b.getCell(1,1));
+        p.get(0).getCard().move(p,b,b.getCell(2,1));
+        assertEquals(2,p.get(0).getCurrentWorker().getRow());
+        assertEquals(2,p.get(0).getCurrentWorker().getColumn());
+        p.get(0).getCard().move(p,b,b.getCell(3,1));
+        assertEquals(3,p.get(0).getCurrentWorker().getRow());
+        assertEquals(1,p.get(0).getCurrentWorker().getColumn());
+
     }
 }
