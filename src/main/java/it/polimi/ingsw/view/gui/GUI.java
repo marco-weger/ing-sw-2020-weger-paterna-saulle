@@ -1,9 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.commons.clientmessages.ConnectionClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -11,17 +9,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Logger;
+
+
 
 public class GUI extends Application implements ViewInterface {
 
@@ -33,6 +29,7 @@ public class GUI extends Application implements ViewInterface {
 
     Parent root;
     DefaultController defaultcontroller;
+    BoardController boardController;
 
     private Client client;
     private Stage primaryStage;
@@ -122,6 +119,27 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(WorkerChosenServer message) {
+        Parent rootX;
+        FXMLLoader loaderX = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Board.fxml"));
+        try{
+            rootX = loaderX.load();
+            Scene scene = new Scene(Objects.requireNonNull(rootX), sceneWidth, sceneHeight, Color.TRANSPARENT);
+            primaryStage.setScene(scene);
+
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        boardController = loaderX.getController();
+        boardController.setLevel(boardController.block00, boardController.floor1);
+        boardController.setLevel(boardController.block22, boardController.dome);
+        boardController.setLevel(boardController.block04, boardController.floor3);
+        boardController.setPawn(boardController.square00, boardController.red);
+        boardController.setPawn(boardController.square11, boardController.blu);
+        boardController.setPawn(boardController.square22, boardController.green);
+        boardController.setPawn(boardController.square33, boardController.bronze);
+        boardController.setPawn(boardController.square44, boardController.yellow);
+        primaryStage.show();
 
     }
 
