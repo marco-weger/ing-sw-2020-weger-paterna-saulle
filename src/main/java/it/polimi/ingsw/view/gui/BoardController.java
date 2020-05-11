@@ -114,18 +114,21 @@ public class BoardController extends DefaultController {
        int y = 0;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
-
+            setState(4);
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -134,18 +137,22 @@ public class BoardController extends DefaultController {
         int y = 1;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -154,18 +161,22 @@ public class BoardController extends DefaultController {
         int y = 2;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -174,18 +185,21 @@ public class BoardController extends DefaultController {
         int y = 3;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
-
+            setState(4);
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -194,18 +208,22 @@ public class BoardController extends DefaultController {
         int y = 4;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
 
     }
@@ -215,18 +233,22 @@ public class BoardController extends DefaultController {
         int y = 0;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -235,18 +257,22 @@ public class BoardController extends DefaultController {
         int y = 1;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -255,18 +281,22 @@ public class BoardController extends DefaultController {
         int y = 2;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -275,18 +305,22 @@ public class BoardController extends DefaultController {
         int y = 3;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -295,18 +329,22 @@ public class BoardController extends DefaultController {
         int y = 4;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -315,18 +353,22 @@ public class BoardController extends DefaultController {
         int y = 0;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -335,18 +377,22 @@ public class BoardController extends DefaultController {
         int y = 1;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -355,18 +401,22 @@ public class BoardController extends DefaultController {
         int y = 2;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -375,18 +425,22 @@ public class BoardController extends DefaultController {
         int y = 3;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -395,18 +449,22 @@ public class BoardController extends DefaultController {
         int y = 4;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -415,18 +473,22 @@ public class BoardController extends DefaultController {
         int y = 0;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -435,18 +497,22 @@ public class BoardController extends DefaultController {
         int y = 1;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -455,18 +521,22 @@ public class BoardController extends DefaultController {
         int y = 2;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -475,18 +545,22 @@ public class BoardController extends DefaultController {
         int y = 3;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
+            setState(4);
 
         }
         if(state == 2){  //Move
             Move(x,y);
+            setState(4);
 
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -495,18 +569,20 @@ public class BoardController extends DefaultController {
         int y = 4;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
-
+            setState(4);
         }
         if(state == 2){  //Move
             Move(x,y);
-
+            setState(4);
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -515,18 +591,20 @@ public class BoardController extends DefaultController {
         int y = 4;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
-
+            setState(4);
         }
         if(state == 2){  //Move
             Move(x,y);
-
+            setState(4);
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -535,18 +613,20 @@ public class BoardController extends DefaultController {
         int y = 1;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
-
+            setState(4);
         }
         if(state == 2){  //Move
             Move(x,y);
-
+            setState(4);
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -555,18 +635,20 @@ public class BoardController extends DefaultController {
         int y = 2;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
-
+            setState(4);
         }
         if(state == 2){  //Move
             Move(x,y);
-
+            setState(4);
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -576,18 +658,20 @@ public class BoardController extends DefaultController {
         int y = 3;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
-
+            setState(4);
         }
         if(state == 2){  //Move
             Move(x,y);
-
+            setState(4);
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 
@@ -596,18 +680,20 @@ public class BoardController extends DefaultController {
         int y = 4;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setState(4);
         }
 
         if(state == 1){   //ChoseWorker
             ChoseWorker(x,y);
-
+            setState(4);
         }
         if(state == 2){  //Move
             Move(x,y);
-
+            setState(4);
         }
         if(state == 3){  //Build
             Build(x,y);
+            setState(4);
         }
     }
 

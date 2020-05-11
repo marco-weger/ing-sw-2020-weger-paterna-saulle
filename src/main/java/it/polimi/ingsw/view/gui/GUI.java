@@ -132,7 +132,11 @@ public class GUI extends Application implements ViewInterface {
         catch (IOException e){
             e.printStackTrace();
         }
+
         boardController = loaderX.getController();
+        boardController.setState(0);
+
+        /*
         boardController.setLevel(boardController.block00, boardController.floor1);
         boardController.setLevel(boardController.block22, boardController.dome);
         boardController.setLevel(boardController.block04, boardController.floor3);
@@ -140,9 +144,7 @@ public class GUI extends Application implements ViewInterface {
         boardController.setPawn(boardController.square11, boardController.blu);
         boardController.setPawn(boardController.square22, boardController.green);
         boardController.setPawn(boardController.square33, boardController.bronze);
-        boardController.setPawn(boardController.square44, boardController.yellow);
-
-
+        boardController.setPawn(boardController.square44, boardController.yellow);*/
     }
 
     @Override
