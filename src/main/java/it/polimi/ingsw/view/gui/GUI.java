@@ -1,9 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.commons.clientmessages.ConnectionClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -11,9 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -142,7 +137,11 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(AvailableCardServer message) {
-
+        Platform.runLater(() -> {
+            if(message.cardName.isEmpty())
+                primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/CardChallenger.fxml"));
+            primaryStage.show();
+        });
     }
 
     @Override
@@ -160,6 +159,7 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(LobbyServer message) {
+        client.setPlayersByString(message.players);
         Platform.runLater(() -> {
             Scene s = load("/it.polimi.ingsw/view/gui/fxml/Lobby.fxml");
 
@@ -168,10 +168,7 @@ public class GUI extends Application implements ViewInterface {
             if(controller instanceof LobbyController){
                 ((LobbyController) controller).textAreaLobby.setEditable(false);
                 for(int i=0; i<message.players.size(); i++){
-                    //if(i==0)
-                    //    ((LobbyController) controller).textAreaLobby.setText(message.players.get(i));
-                    //else
-                        ((LobbyController) controller).textAreaLobby.setText(((LobbyController) controller).textAreaLobby.getText()+"\n"+message.players.get(i));
+                    ((LobbyController) controller).textAreaLobby.setText(((LobbyController) controller).textAreaLobby.getText()+"\n"+message.players.get(i));
                 }
             }
 
@@ -228,5 +225,9 @@ public class GUI extends Application implements ViewInterface {
         Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
+        //Platform.runLater(() -> {
+            //primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/CardChallenger.fxml"));
+            //primaryStage.show();
+        //});
     }
 }

@@ -3,7 +3,7 @@
     -fx-background-color: rgba(255,255,255,0.3);
     -fx-prompt-text-fill: rgba(0,0,0,0.5);
     -fx-font-size: 26px;
-    -fx-font-weight: bold
+    -fx-font-weight: bold;
 }
 .error {
     -fx-text-box-border: red !important;
@@ -11,17 +11,46 @@
 }
 .text-area {
     -fx-focus-color: black ;
-    -fx-prompt-text-fill: rgba(0,0,0,0.5);;
+    -fx-prompt-text-fill: rgba(0,0,0,0.5);
     -fx-font-size: 26px;
     -fx-font-weight: bold;
     -fx-text-alignment: center;
+
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
 }
 .text-area, .text-area .viewport, .text-area .content {
     -fx-background-color: rgba(255,255,255,0.3);
+
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
 }
 .text-area .text {
     -fx-line-spacing: 0px;
 }
 .text-area .content {
-    -fx-cursor: url('../img/pointer.png') ;
+    -fx-cursor: url('../img/pointer.png');
+}
+.cardDescription{
+    -fx-focus-color: black;
+    -fx-background-color: rgba(255,255,255,0) !important;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-border-radius: 10 10 0 0;
+    -fx-background-radius: 10 10 0 0;
+    -fx-padding: 15px 0px 0px 0px;
+}
+.cardDescription .text {
+    -fx-line-spacing: 0px;
+    -fx-text-alignment: center;
+}
+.godName{
+    -fx-font-size: 26px;
+    -fx-background-color: rgba(255,255,255,0) !important;
+    -fx-text-inner-color: #f1b11c !important;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/other/title.png");
+    -fx-background-size: 100% 100%;
 }
