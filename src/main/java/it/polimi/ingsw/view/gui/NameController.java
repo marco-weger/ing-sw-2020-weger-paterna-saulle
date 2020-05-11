@@ -1,8 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.commons.clientmessages.ConnectionClient;
-import javafx.application.Platform;
-import it.polimi.ingsw.commons.clientmessages.ConnectionClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -11,9 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class NameController extends DefaultController {
 
@@ -27,7 +22,7 @@ public class NameController extends DefaultController {
     @Override
     public void initialize() {
         super.initialize();
-        super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_name2.png"));
+        super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_name.png"));
 
         buttonLogin.setMinSize(200,114);
         buttonLogin.setMaxSize(200,114);
