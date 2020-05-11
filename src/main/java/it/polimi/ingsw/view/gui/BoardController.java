@@ -69,6 +69,11 @@ public class BoardController extends DefaultController {
         square.setImage(pawn);
     }
 
+    public void setState(int state) {
+        this.state = state;
+    }
+
+
 
     public void WorkerInitialize(int x, int y){
         this.gui.getClient().sendMessage(new WorkerInitializeClient(this.gui.getClient().getUsername(),x,y));
