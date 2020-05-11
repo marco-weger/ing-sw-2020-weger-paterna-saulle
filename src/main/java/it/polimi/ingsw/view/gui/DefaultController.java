@@ -149,6 +149,7 @@ public class DefaultController{
     }
 
     public void setUpTextField(TextField tf){
+        tf.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
         tf.setFont(f);
         tf.focusedProperty().addListener(new ChangeListener<Boolean>()
         {

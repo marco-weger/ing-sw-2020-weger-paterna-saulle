@@ -1,11 +1,27 @@
 .text-field {
     -fx-focus-color: black ;
     -fx-background-color: rgba(255,255,255,0.3);
-    -fx-prompt-text-fill: rgba(0,0,0,0.5);;
-    -fx-font-size: 18px;
+    -fx-prompt-text-fill: rgba(0,0,0,0.5);
+    -fx-font-size: 26px;
     -fx-font-weight: bold
 }
 .error {
     -fx-text-box-border: red !important;
     -fx-focus-color: red !important;
+}
+.text-area {
+    -fx-focus-color: black ;
+    -fx-prompt-text-fill: rgba(0,0,0,0.5);;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+}
+.text-area, .text-area .viewport, .text-area .content {
+    -fx-background-color: rgba(255,255,255,0.3);
+}
+.text-area .text {
+    -fx-line-spacing: 0px;
+}
+.text-area .content {
+    -fx-cursor: url('../img/pointer.png') ;
 }

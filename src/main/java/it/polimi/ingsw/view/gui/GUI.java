@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -94,6 +95,7 @@ public class GUI extends Application implements ViewInterface {
 
             Scene scene = new Scene(Objects.requireNonNull(root), sceneWidth, sceneHeight, Color.TRANSPARENT);
             scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+            scene.setUserData(loader);
             defaultcontroller.mainstage = primaryStage;
             defaultcontroller.setup();
             return scene;
@@ -158,7 +160,24 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(LobbyServer message) {
-        System.out.println("LOBBBY...");
+        Platform.runLater(() -> {
+            Scene s = load("/it.polimi.ingsw/view/gui/fxml/Lobby.fxml");
+
+            FXMLLoader loader = (FXMLLoader) s.getUserData();
+            DefaultController controller = loader.getController();
+            if(controller instanceof LobbyController){
+                ((LobbyController) controller).textAreaLobby.setEditable(false);
+                for(int i=0; i<message.players.size(); i++){
+                    //if(i==0)
+                    //    ((LobbyController) controller).textAreaLobby.setText(message.players.get(i));
+                    //else
+                        ((LobbyController) controller).textAreaLobby.setText(((LobbyController) controller).textAreaLobby.getText()+"\n"+message.players.get(i));
+                }
+            }
+
+            primaryStage.setScene(s);
+            primaryStage.show();
+        });
     }
 
     @Override

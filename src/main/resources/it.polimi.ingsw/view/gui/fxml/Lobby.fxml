@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.LobbyController">
@@ -14,7 +15,11 @@
       <AnchorPane fx:id="bottom" prefHeight="138.0" prefWidth="950.0" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <AnchorPane fx:id="center" prefHeight="500.0" prefWidth="950.0" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="center" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextArea fx:id="textAreaLobby" layoutX="278.0" layoutY="162.0" prefHeight="200.0" prefWidth="395.0" styleClass="text-area" stylesheets="@../css/text-field.css" />
+            <ImageView fx:id="imageLobby" fitHeight="112.0" fitWidth="537.0" layoutX="207.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
       </AnchorPane>
    </center>
 </BorderPane>

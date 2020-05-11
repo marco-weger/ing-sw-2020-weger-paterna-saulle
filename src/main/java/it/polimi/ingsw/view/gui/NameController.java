@@ -32,16 +32,16 @@ public class NameController extends DefaultController {
         buttonLogin.setMinSize(200,114);
         buttonLogin.setMaxSize(200,114);
         buttonLogin.setPrefSize(200,114);
-        buttonLogin.setMinSize(200,114);
-        buttonLogin.setMaxSize(200,114);
-        buttonLogin.setPrefSize(200,114);
+        name.setMinSize(400,50);
+        name.setMaxSize(400,50);
+        name.setPrefSize(400,50);
     }
 
     @Override
     public void setup(){
         super.setup();
         buttonLogin.setLayoutX(gui.sceneWidth/2-100);
-        name.setLayoutX(gui.sceneWidth/2-100);
+        name.setLayoutX(gui.sceneWidth/2-200);
         setUpTextField(name);
     }
 
