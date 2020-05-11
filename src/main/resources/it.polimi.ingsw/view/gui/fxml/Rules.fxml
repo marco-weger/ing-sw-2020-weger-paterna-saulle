@@ -8,7 +8,7 @@
    <AnchorPane>
       <children>
          <ImageView nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../img/scene/rules.png" />
+            <Image url="@../img/scene/rules2.png" />
          </ImageView>
          <Button fx:id="buttonExit" layoutX="1200.0" layoutY="5.0" mnemonicParsing="false" onAction="#exitOnAction" prefHeight="79.0" prefWidth="79.0" styleClass="button, quit" stylesheets="@../css/button.css" />
       </children>
