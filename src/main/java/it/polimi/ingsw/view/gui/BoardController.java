@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +43,6 @@ public class BoardController extends DefaultController {
     public void setCbs(CheckBuildServer cbs) {
         Cbs = cbs;
     }
-
-    public void setWcs(WorkerChosenServer wcs) { Wcs = wcs; }
 
 
 
@@ -105,7 +104,8 @@ public class BoardController extends DefaultController {
 
 
     public void WorkerInitialize(int x, int y) {
-        this.gui.getClient().sendMessage(new WorkerInitializeClient(this.gui.getClient().getUsername(), x, y));
+        SnapCell c = new SnapCell(x,y,-1);
+        this.gui.getClient().sendMessage(new WorkerInitializeClient(this.gui.getClient().getUsername(), c.row, c.column));
     }
 
     public void ChoseWorker(int x, int y) {
@@ -893,5 +893,7 @@ public class BoardController extends DefaultController {
             }
 
         }
+
+
 
 }

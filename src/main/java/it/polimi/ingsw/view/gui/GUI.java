@@ -15,6 +15,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -143,11 +145,29 @@ public class GUI extends Application implements ViewInterface {
     public void handleMessage(WorkerChosenServer message) {
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
-        if(controller instanceof BoardController){
-            ((BoardController) controller).setWcs(message);
-            ((BoardController) controller).setState(0);
+        //client.getWorkers().add(new SnapWorker(message.x, message.y, message.player, message.worker));
+        if (message.player.equals(this.client.getUsername())) {
+            if (message.worker == 1) {
+                //second Worker
+                System.out.println("second worker!");
+                if (controller instanceof BoardController) {
+                    ((BoardController) controller).setState(0);
+                }
+            }
         }
+        else {
+            for (int i = 0; i < client.getPlayers().size() - 1; i++) {
+                if (client.getPlayers().get(i).name.equals(message.player) && client.getPlayers().get(i + 1).name.equals(client.getUsername()) && message.worker == 2) {
+                        System.out.println("Type the position of first worker [x-y]");
+                        if (controller instanceof BoardController) {
+                            ((BoardController) controller).setState(0);
+                        }
+                }
 
+
+            }
+
+        }
         /*
         boardController.setLevel(boardController.block00, boardController.floor1);
         boardController.setLevel(boardController.block22, boardController.dome);
@@ -166,7 +186,7 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(CurrentStatusServer message) {
-       // if(!client.getMyPlayer().loser && message.player.equals(client.getUsername())){
+        if(!client.getMyPlayer().loser && message.player.equals(client.getUsername())){
         FXMLLoader loader;
         DefaultController controller;
             switch(message.status){
@@ -175,6 +195,7 @@ public class GUI extends Application implements ViewInterface {
                         Scene s = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
                         FXMLLoader xloader = (FXMLLoader) s.getUserData();
                         DefaultController xcontroller = xloader.getController();
+                        System.out.println("Type the position of first worker [x-y]");
                         if(xcontroller instanceof BoardController){
                             ((BoardController) xcontroller).setState(0);
                             ((BoardController) xcontroller).setCss(message);
@@ -188,7 +209,7 @@ public class GUI extends Application implements ViewInterface {
                     //TODO wirte on the bottom "It's your turn!"
                     //TODO print timer
                     //TODO write on the bottom "Chose the worker to play with [x-y] "
-                    //boardController.setState(1);
+                    System.out.println("Chose the worker to play with [x-y]");
                     loader = (FXMLLoader) primaryStage.getScene().getUserData();
                     controller = loader.getController();
                     if(controller instanceof BoardController){
@@ -199,7 +220,7 @@ public class GUI extends Application implements ViewInterface {
                     break;
             }
         }
-  //  }
+    }
 
 
 
