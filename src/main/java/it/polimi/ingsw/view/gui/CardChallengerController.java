@@ -21,10 +21,10 @@ public class CardChallengerController extends DefaultController {
 
     @FXML
     public ImageView imageViewCard;
-    
+
     @FXML
     public Button buttonRight;
-    
+
     @FXML
     public Button buttonLeft;
 
@@ -42,10 +42,10 @@ public class CardChallengerController extends DefaultController {
     public Button buttonSend;
     public Label labelTEST;
 
-    List<CardName> cards;
+    public List<CardName> cards;
 
     int count = 0;
-    
+
     List<CardName> selected;
 
     @FXML
@@ -171,4 +171,5 @@ public class CardChallengerController extends DefaultController {
             gui.getClient().sendMessage(new ChallengerChoseClient(gui.getClient().getUsername(), selected));
         }
     }
+
 }
