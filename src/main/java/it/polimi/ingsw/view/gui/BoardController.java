@@ -2,9 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapWorker;
-import it.polimi.ingsw.commons.clientmessages.ConnectionClient;
-import it.polimi.ingsw.commons.clientmessages.WorkerChoseClient;
-import it.polimi.ingsw.commons.clientmessages.WorkerInitializeClient;
+import it.polimi.ingsw.commons.clientmessages.*;
 import it.polimi.ingsw.commons.servermessages.CheckBuildServer;
 import it.polimi.ingsw.commons.servermessages.CheckMoveServer;
 import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
@@ -29,42 +27,38 @@ public class BoardController extends DefaultController {
     CheckBuildServer Cbs;
 
 
-    Image floor1 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor1.png", towerSize, towerSize,true,false);
-    Image floor2 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor2.png", towerSize, towerSize,true,false);
-    Image floor3 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor3.png", towerSize, towerSize,true,false);
-    Image dome = new Image("/it.polimi.ingsw/view/gui/img/tower/dome.png", towerSize, towerSize,true,false);
+    Image floor1 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor1.png", towerSize, towerSize, true, false);
+    Image floor2 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor2.png", towerSize, towerSize, true, false);
+    Image floor3 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor3.png", towerSize, towerSize, true, false);
+    Image dome = new Image("/it.polimi.ingsw/view/gui/img/tower/dome.png", towerSize, towerSize, true, false);
 
-    Image red = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png", pawnSize, pawnSize,false,false);
-    Image blu = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png", pawnSize, pawnSize,false,false);
-    Image yellow = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png", pawnSize, pawnSize,false,false);
-    Image bronze = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_bronze.png", pawnSize, pawnSize,false,false);
-    Image green = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_green.png", pawnSize, pawnSize,false,false);
+    Image red = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png", pawnSize, pawnSize, false, false);
+    Image blu = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png", pawnSize, pawnSize, false, false);
+    Image yellow = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png", pawnSize, pawnSize, false, false);
+    Image bronze = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_bronze.png", pawnSize, pawnSize, false, false);
+    Image green = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_green.png", pawnSize, pawnSize, false, false);
 
 
     @FXML
     Button cell00, cell01, cell02, cell03, cell04,
-           cell10, cell11, cell12, cell13, cell14,
-           cell20, cell21, cell22, cell23, cell24,
-           cell30, cell31, cell32, cell33, cell34,
-           cell40, cell41, cell42, cell43, cell44;
+            cell10, cell11, cell12, cell13, cell14,
+            cell20, cell21, cell22, cell23, cell24,
+            cell30, cell31, cell32, cell33, cell34,
+            cell40, cell41, cell42, cell43, cell44;
 
     @FXML
     ImageView block00, block01, block02, block03, block04,
-              block10, block11, block12, block13 ,block14,
-              block20, block21, block22, block23, block24,
-              block30, block31, block32, block33, block34,
-              block40, block41, block42, block43, block44;
+            block10, block11, block12, block13, block14,
+            block20, block21, block22, block23, block24,
+            block30, block31, block32, block33, block34,
+            block40, block41, block42, block43, block44;
 
-     @FXML
-     ImageView square00,square01,square02,square03,square04,
-               square10,square11,square12,square13,square14,
-               square20,square21,square22,square23,square24,
-               square30,square31,square32,square33,square34,
-               square40,square41,square42,square43,square44;
-
-
-
-
+    @FXML
+    ImageView square00, square01, square02, square03, square04,
+            square10, square11, square12, square13, square14,
+            square20, square21, square22, square23, square24,
+            square30, square31, square32, square33, square34,
+            square40, square41, square42, square43, square44;
 
 
     @FXML
@@ -75,12 +69,12 @@ public class BoardController extends DefaultController {
     }
 
 
-    public void setLevel(ImageView block, Image floor){
+    public void setLevel(ImageView block, Image floor) {
         block.setImage(floor);
     }
 
 
-    public void setPawn(ImageView square, Image pawn){
+    public void setPawn(ImageView square, Image pawn) {
         square.setImage(pawn);
     }
 
@@ -89,13 +83,12 @@ public class BoardController extends DefaultController {
     }
 
 
-
-    public void WorkerInitialize(int x, int y){
-        this.gui.getClient().sendMessage(new WorkerInitializeClient(this.gui.getClient().getUsername(),x,y));
+    public void WorkerInitialize(int x, int y) {
+        this.gui.getClient().sendMessage(new WorkerInitializeClient(this.gui.getClient().getUsername(), x, y));
     }
 
-    public void ChoseWorker(int x,int y){
-        for(SnapWorker sw : this.gui.getClient().getWorkers()) {
+    public void ChoseWorker(int x, int y) {
+        for (SnapWorker sw : this.gui.getClient().getWorkers()) {
             if (sw.row == 0 && sw.column == 0 && sw.name.equals(this.gui.getClient().getUsername()) && (Css.worker1 && sw.n == 1 || Css.worker2 && sw.n == 2)) {
                 this.gui.getClient().sendMessage(new WorkerChoseClient(this.gui.getClient().getUsername(), sw.n));
             }
@@ -103,15 +96,25 @@ public class BoardController extends DefaultController {
     }
 
 
-    public void Move(int x, int y){
-        //TODO Move
-            System.out.println(x +y);
+    public void Move(int x, int y) {
+        for (SnapCell cell : Cms.sc) {
+            if (cell.row == x && cell.column == y) {
+                this.gui.getClient().sendMessage(new MoveClient(this.gui.getClient().getUsername(), x, y));
+            }
+        }
     }
 
-    public void Build(int x, int y){
-        //TODO Build
-            System.out.println(x + y);
+    public void Build(int x, int y) {
+        for (SnapCell cell : Cbs.sc) {
+            if (cell.row == x && cell.column == y) {
+                this.gui.getClient().sendMessage(new BuildClient(this.gui.getClient().getUsername(), x, y));
+            }
+        }
     }
+
+
+
+
 
 
     public void lighitup(Button Cell){
@@ -841,4 +844,5 @@ public class BoardController extends DefaultController {
             }
 
         }
+
 }
