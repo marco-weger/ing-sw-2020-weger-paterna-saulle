@@ -145,16 +145,12 @@ public class GUI extends Application implements ViewInterface {
     public void handleMessage(WorkerChosenServer message) {
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
-
-        client.getWorkers().add(new SnapWorker(message.x, message.y, message.player, message.worker));
+        //client.getWorkers().add(new SnapWorker(message.x, message.y, message.player, message.worker));
         if (message.player.equals(this.client.getUsername())) {
             if (message.worker == 1) {
-                                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setHeaderText("It's your turn!");
-                        alert.setContentText("Type the position of the second worker [x-y]");
-                        alert.showAndWait();
+                //second Worker
+                System.out.println("second worker!");
                 if (controller instanceof BoardController) {
-                    ((BoardController) controller).setWcs(message);
                     ((BoardController) controller).setState(0);
                 }
             }
@@ -162,12 +158,10 @@ public class GUI extends Application implements ViewInterface {
         else {
             for (int i = 0; i < client.getPlayers().size() - 1; i++) {
                 if (client.getPlayers().get(i).name.equals(message.player) && client.getPlayers().get(i + 1).name.equals(client.getUsername()) && message.worker == 2) {
-                                            Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setHeaderText("It's your turn!");
-                        alert.setContentText("Type the position of first worker [x-y]");
-                        alert.showAndWait();
-                    ((BoardController) controller).setWcs(message);
-                    ((BoardController) controller).setState(0);
+                        System.out.println("Type the position of first worker [x-y]");
+                        if (controller instanceof BoardController) {
+                            ((BoardController) controller).setState(0);
+                        }
                 }
 
 
@@ -192,7 +186,7 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(CurrentStatusServer message) {
-       // if(!client.getMyPlayer().loser && message.player.equals(client.getUsername())){
+        if(!client.getMyPlayer().loser && message.player.equals(client.getUsername())){
         FXMLLoader loader;
         DefaultController controller;
             switch(message.status){
@@ -201,10 +195,7 @@ public class GUI extends Application implements ViewInterface {
                         Scene s = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
                         FXMLLoader xloader = (FXMLLoader) s.getUserData();
                         DefaultController xcontroller = xloader.getController();
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setHeaderText("It's your turn!");
-                        alert.setContentText("Type the position of first worker [x-y]");
-                        alert.showAndWait();
+                        System.out.println("Type the position of first worker [x-y]");
                         if(xcontroller instanceof BoardController){
                             ((BoardController) xcontroller).setState(0);
                             ((BoardController) xcontroller).setCss(message);
@@ -218,10 +209,7 @@ public class GUI extends Application implements ViewInterface {
                     //TODO wirte on the bottom "It's your turn!"
                     //TODO print timer
                     //TODO write on the bottom "Chose the worker to play with [x-y] "
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setHeaderText("It's your turn!");
-                    alert.setContentText("Chose the worker to play with [x-y]");
-                    alert.showAndWait();
+                    System.out.println("Chose the worker to play with [x-y]");
                     loader = (FXMLLoader) primaryStage.getScene().getUserData();
                     controller = loader.getController();
                     if(controller instanceof BoardController){
@@ -232,7 +220,7 @@ public class GUI extends Application implements ViewInterface {
                     break;
             }
         }
-  //  }
+    }
 
 
 
