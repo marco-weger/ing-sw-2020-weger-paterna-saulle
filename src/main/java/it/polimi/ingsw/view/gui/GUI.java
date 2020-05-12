@@ -106,12 +106,18 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(CheckMoveServer message) {
-
+        boardController.setCms(message);
+        boardController.showcheckmove(message);
+        boardController.setState(2);
     }
+
+
 
     @Override
     public void handleMessage(CheckBuildServer message) {
-
+        boardController.setCbs(message);
+        boardController.showcheckbuild(message);
+        boardController.setState(3);
     }
 
     @Override
