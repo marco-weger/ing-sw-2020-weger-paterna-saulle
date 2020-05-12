@@ -17,11 +17,25 @@ public class BoardController extends DefaultController {
 
     int towerSize = 80;
     int pawnSize = 40;
-
     int state = 4;
+
+
     CurrentStatusServer Css;
     CheckMoveServer Cms;
     CheckBuildServer Cbs;
+
+    public void setCss(CurrentStatusServer css) {
+        Css = css;
+    }
+
+    public void setCms(CheckMoveServer cms) {
+        Cms = cms;
+    }
+
+
+    public void setCbs(CheckBuildServer cbs) {
+        Cbs = cbs;
+    }
 
 
     Image floor1 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor1.png", towerSize, towerSize, true, false);
