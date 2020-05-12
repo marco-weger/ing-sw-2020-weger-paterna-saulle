@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.commons.servermessages.*;
+import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
@@ -173,8 +174,29 @@ public class GUI extends Application implements ViewInterface {
     @Override
     public void handleMessage(AvailableCardServer message) {
         Platform.runLater(() -> {
-            if(message.cardName.isEmpty())
+            if(message.cardName.isEmpty()){
                 primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/CardChallenger.fxml"));
+            }
+            else{
+                Scene s = load("/it.polimi.ingsw/view/gui/fxml/Card.fxml");
+
+                FXMLLoader loader = (FXMLLoader) s.getUserData();
+                DefaultController controller = loader.getController();
+                if(controller instanceof CardController){
+                    ((CardController) controller).cards = message.cardName;
+                    if(message.cardName.size() == 2){
+                        ((CardController) controller).button1.setText(message.cardName.get(0).toString());
+                        ((CardController) controller).button2.setText(message.cardName.get(1).toString());
+                        ((CardController) controller).button3.setDisable(true);
+                    } else if(message.cardName.size() == 3){
+                        ((CardController) controller).button1.setText(message.cardName.get(0).toString());
+                        ((CardController) controller).button2.setText(message.cardName.get(1).toString());
+                        ((CardController) controller).button3.setText(message.cardName.get(2).toString());
+                    }
+                }
+
+                primaryStage.setScene(s);
+            }
             primaryStage.show();
         });
     }
