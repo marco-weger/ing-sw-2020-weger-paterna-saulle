@@ -144,7 +144,7 @@ public class GUI extends Application implements ViewInterface {
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
         if(controller instanceof BoardController){
-            ((BoardController) controller).setState(1);
+            ((BoardController) controller).setState(0);
         }
 
         /*
@@ -176,6 +176,7 @@ public class GUI extends Application implements ViewInterface {
                         DefaultController xcontroller = xloader.getController();
                         if(xcontroller instanceof BoardController){
                             ((BoardController) xcontroller).setState(0);
+                            ((BoardController) xcontroller).setCss(message);
                         }
 
                         primaryStage.setScene(s);
