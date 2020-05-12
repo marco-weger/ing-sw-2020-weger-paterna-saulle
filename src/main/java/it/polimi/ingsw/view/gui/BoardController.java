@@ -6,14 +6,11 @@ import it.polimi.ingsw.commons.clientmessages.*;
 import it.polimi.ingsw.commons.servermessages.CheckBuildServer;
 import it.polimi.ingsw.commons.servermessages.CheckMoveServer;
 import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
-import it.polimi.ingsw.view.TextFormatting;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import java.util.ArrayList;
 
 public class BoardController extends DefaultController {
 
