@@ -7,6 +7,7 @@ import it.polimi.ingsw.commons.clientmessages.*;
 import it.polimi.ingsw.commons.servermessages.CheckBuildServer;
 import it.polimi.ingsw.commons.servermessages.CheckMoveServer;
 import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
+import it.polimi.ingsw.commons.servermessages.WorkerChosenServer;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.Client;
 import javafx.event.ActionEvent;
@@ -28,6 +29,7 @@ public class BoardController extends DefaultController {
     CurrentStatusServer Css;
     CheckMoveServer Cms;
     CheckBuildServer Cbs;
+    WorkerChosenServer Wcs;
 
     public void setCss(CurrentStatusServer css) {
         Css = css;
@@ -37,10 +39,12 @@ public class BoardController extends DefaultController {
         Cms = cms;
     }
 
-
     public void setCbs(CheckBuildServer cbs) {
         Cbs = cbs;
     }
+
+    public void setWcs(WorkerChosenServer wcs) { Wcs = wcs; }
+
 
 
     Image floor1 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor1.png", towerSize, towerSize, true, false);
@@ -91,22 +95,8 @@ public class BoardController extends DefaultController {
 
 
     public void setPawn(ImageView square) {
-        int i = 0;
-        for(SnapPlayer sp : this.gui.getClient().getPlayers()){
-            if(sp.name == Css.name){
-                square.setImage(red);
-                break;
-            }
-            else{
-                i++;
-            }
-        }
-        if(i==1)
-            square.setImage(blu);
-        if(i==2)
-            square.setImage(yellow);
-        else
-            square.setImage(green);
+        Image p1 = new Image(this.gui.getClient().getMyPlayer().color, pawnSize,pawnSize, false,false);
+                square.setImage(p1);
     }
 
     public void setState(int state) {

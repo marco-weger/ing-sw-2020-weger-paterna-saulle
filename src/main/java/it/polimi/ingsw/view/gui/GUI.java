@@ -144,6 +144,7 @@ public class GUI extends Application implements ViewInterface {
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
         if(controller instanceof BoardController){
+            ((BoardController) controller).setWcs(message);
             ((BoardController) controller).setState(0);
         }
 
@@ -263,7 +264,16 @@ public class GUI extends Application implements ViewInterface {
                 for(int i=0; i<message.players.size(); i++){
                     ((LobbyController) controller).textAreaLobby.setText(((LobbyController) controller).textAreaLobby.getText()+"\n"+message.players.get(i));
                 }
+
+            for(int i=0;i<client.getPlayers().size();i++){
+                if(i==0)
+                    client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png";
+                else if(i==1)
+                    client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png";
+                else if(i==2)
+                    client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png";
             }
+    }
 
             primaryStage.setScene(s);
             primaryStage.show();
