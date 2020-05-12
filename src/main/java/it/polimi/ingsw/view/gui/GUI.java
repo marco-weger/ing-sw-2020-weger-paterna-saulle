@@ -37,7 +37,7 @@ public class GUI extends Application implements ViewInterface {
 
     Parent root, root2;
     DefaultController defaultcontroller;
-    BoardController boardController;
+    //BoardController boardController;
 
     private Client client;
     private Stage primaryStage;
@@ -112,18 +112,26 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(CheckMoveServer message) {
-        boardController.setCms(message);
-        boardController.showcheckmove(message);
-        boardController.setState(2);
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+        if(controller instanceof BoardController){
+            ((BoardController) controller).setCms(message);
+            ((BoardController) controller).showcheckmove(message);
+            ((BoardController) controller).setState(2);
+        }
     }
 
 
 
     @Override
     public void handleMessage(CheckBuildServer message) {
-        boardController.setCbs(message);
-        boardController.showcheckbuild(message);
-        boardController.setState(3);
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+        if(controller instanceof BoardController){
+            ((BoardController) controller).setCbs(message);
+            ((BoardController) controller).showcheckbuild(message);
+            ((BoardController) controller).setState(3);
+        }
     }
 
     @Override
@@ -133,7 +141,11 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(WorkerChosenServer message) {
-        boardController.setState(1);
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+        if(controller instanceof BoardController){
+            ((BoardController) controller).setState(1);
+        }
 
         /*
         boardController.setLevel(boardController.block00, boardController.floor1);
@@ -154,31 +166,32 @@ public class GUI extends Application implements ViewInterface {
     @Override
     public void handleMessage(CurrentStatusServer message) {
        // if(!client.getMyPlayer().loser && message.player.equals(client.getUsername())){
+        FXMLLoader loader;
+        DefaultController controller;
             switch(message.status){
                 case WORKER_CHOICE:
-                     try {
-                         FXMLLoader loaderX = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Board.fxml"));
-                         root2 = loaderX.load();
-                         boardController = loaderX.getController();
-                         boardController.setGUI(this);
-                         Scene scenex = new Scene(root2);
-                         scenex.setUserData(loaderX);
-                         Platform.runLater(() -> {
-                                    primaryStage.setScene(scenex);
-                         });
+                    Platform.runLater(() -> {
+                        Scene s = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
+                        FXMLLoader xloader = (FXMLLoader) s.getUserData();
+                        DefaultController xcontroller = xloader.getController();
+                        if(xcontroller instanceof BoardController){
+                            ((BoardController) xcontroller).setState(0);
+                        }
 
-                         boardController.setState(0);
-                         primaryStage.show();
-                     }
-                     catch (IOException e){
-                         e.printStackTrace();
-                     }
+                        primaryStage.setScene(s);
+                        primaryStage.show();
+                    });
                     break;
                 case START:
                     //TODO wirte on the bottom "It's your turn!"
                     //TODO print timer
                     //TODO write on the bottom "Chose the worker to play with [x-y] "
-                    boardController.setState(1);
+                    //boardController.setState(1);
+                    loader = (FXMLLoader) primaryStage.getScene().getUserData();
+                    controller = loader.getController();
+                    if(controller instanceof BoardController){
+                        ((BoardController) controller).setState(1);
+                    }
                     break;
                 default:
                     break;
@@ -305,10 +318,19 @@ public class GUI extends Application implements ViewInterface {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        //Platform.runLater(() -> {
-            //primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/CardChallenger.fxml"));
-            //primaryStage.show();
-        //});
+        /*
+        Platform.runLater(() -> {
+            Scene s = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
+            FXMLLoader xloader = (FXMLLoader) s.getUserData();
+            DefaultController xcontroller = xloader.getController();
+            if(xcontroller instanceof BoardController){
+                ((BoardController) xcontroller).setState(0);
+            }
+
+            primaryStage.setScene(s);
+            primaryStage.show();
+        });
+         */
     }
 
 }
