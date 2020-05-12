@@ -328,20 +328,6 @@ public class GUI extends Application implements ViewInterface {
         Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        /*
-        Platform.runLater(() -> {
-            Scene s = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
-            FXMLLoader xloader = (FXMLLoader) s.getUserData();
-            DefaultController xcontroller = xloader.getController();
-            if(xcontroller instanceof BoardController){
-                ((BoardController) xcontroller).setState(0);
-            }
-
-            primaryStage.setScene(s);
-            primaryStage.show();
-        });
-         */
     }
 
 }
