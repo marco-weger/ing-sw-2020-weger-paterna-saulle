@@ -138,7 +138,11 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(CardChosenServer message) {
-
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+        if(controller instanceof BoardController){
+            ((BoardController) controller).setState(0);
+        }
     }
 
     @Override
@@ -311,12 +315,20 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(BuiltServer message) {
-
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+        if(controller instanceof BoardController){
+            ((BoardController) controller).refresh();
+        }
     }
 
     @Override
     public void handleMessage(MovedServer message) {
-
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+        if(controller instanceof BoardController){
+            ((BoardController) controller).refresh();
+        }
     }
 
     @Override

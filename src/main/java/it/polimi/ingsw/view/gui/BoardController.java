@@ -87,6 +87,134 @@ public class BoardController extends DefaultController {
         super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_match.png"));
     }
 
+    public Image getConstruction(int lvl){
+        if(lvl == 1)
+            return floor1;
+        if(lvl == 2)
+            return floor2;
+        if(lvl == 3)
+            return floor3;
+        if(lvl == 4)
+            return dome;
+        return null;
+    }
+
+    public Button getCell(int x, int y){
+        if(x == 0 && y == 0)
+            return cell00;
+        if(x == 0 && y == 1)
+            return cell01;
+        if(x == 0 && y == 2)
+            return cell02;
+        if(x == 0 && y == 3)
+            return cell03;
+        if(x == 0 && y == 4)
+            return cell04;
+        if(x == 1 && y == 0)
+            return cell10;
+        if(x == 1 && y == 1)
+            return cell11;
+        if(x == 1 && y == 2)
+            return cell12;
+        if(x == 1 && y == 3)
+            return cell13;
+        if(x == 1 && y == 4)
+            return cell14;
+        if(x == 2 && y == 0)
+            return cell20;
+        if(x == 2 && y == 1)
+            return cell21;
+        if(x == 2 && y == 2)
+            return cell22;
+        if(x == 2 && y == 3)
+            return cell23;
+        if(x == 2 && y == 4)
+            return cell24;
+        if(x == 3 && y == 0)
+            return cell30;
+        if(x == 3 && y == 1)
+            return cell31;
+        if(x == 3 && y == 2)
+            return cell32;
+        if(x == 3 && y == 3)
+            return cell33;
+        if(x == 3 && y == 4)
+            return cell34;
+        if(x == 4 && y == 0)
+            return cell40;
+        if(x == 4 && y == 1)
+            return cell41;
+        if(x == 4 && y == 2)
+            return cell42;
+        if(x == 4 && y == 3)
+            return cell43;
+        if(x == 4 && y == 4)
+            return cell44;
+        return null;
+    }
+
+    public ImageView getSquare(int x, int y){
+        if(x == 0 && y == 0)
+            return square00;
+        if(x == 0 && y == 1)
+            return square01;
+        if(x == 0 && y == 2)
+            return square02;
+        if(x == 0 && y == 3)
+            return square03;
+        if(x == 0 && y == 4)
+            return square04;
+        if(x == 1 && y == 0)
+            return square10;
+        if(x == 1 && y == 1)
+            return square11;
+        if(x == 1 && y == 2)
+            return square12;
+        if(x == 1 && y == 3)
+            return square13;
+        if(x == 1 && y == 4)
+            return square14;
+        if(x == 2 && y == 0)
+            return square20;
+        if(x == 2 && y == 1)
+            return square21;
+        if(x == 2 && y == 2)
+            return square22;
+        if(x == 2 && y == 3)
+            return square23;
+        if(x == 2 && y == 4)
+            return square24;
+        if(x == 3 && y == 0)
+            return square30;
+        if(x == 3 && y == 1)
+            return square31;
+        if(x == 3 && y == 2)
+            return square32;
+        if(x == 3 && y == 3)
+            return square33;
+        if(x == 3 && y == 4)
+            return square34;
+        if(x == 4 && y == 0)
+            return square40;
+        if(x == 4 && y == 1)
+            return square41;
+        if(x == 4 && y == 2)
+            return square42;
+        if(x == 4 && y == 3)
+            return square43;
+        if(x == 4 && y == 4)
+            return square44;
+        return null;
+    }
+
+    public void refresh() {
+        for (SnapCell cell : gui.getClient().getBoard()) {
+               setLevel(getSquare(cell.row, cell.column),getConstruction(cell.level));
+            }
+        for (SnapWorker w : gui.getClient().getWorkers()){
+                setPawn(getSquare(w.row,w.column));
+            }
+        }
 
     public void setLevel(ImageView block, Image floor) {
         block.setImage(floor);
