@@ -1,17 +1,22 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.commons.SnapCell;
+import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.clientmessages.*;
 import it.polimi.ingsw.commons.servermessages.CheckBuildServer;
 import it.polimi.ingsw.commons.servermessages.CheckMoveServer;
 import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BoardController extends DefaultController {
 
@@ -86,13 +91,22 @@ public class BoardController extends DefaultController {
 
 
     public void setPawn(ImageView square) {
-        int i = this.gui.getClient().getPlayers().indexOf(Css.player);
-        if(i == 0)
-            square.setImage(red);
+        int i = 0;
+        for(SnapPlayer sp : this.gui.getClient().getPlayers()){
+            if(sp.name == Css.name){
+                square.setImage(red);
+                break;
+            }
+            else{
+                i++;
+            }
+        }
         if(i==1)
             square.setImage(blu);
         if(i==2)
             square.setImage(yellow);
+        else
+            square.setImage(green);
     }
 
     public void setState(int state) {
@@ -405,6 +419,7 @@ public class BoardController extends DefaultController {
         int y = 0;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square20);
             setState(4);
         }
 
