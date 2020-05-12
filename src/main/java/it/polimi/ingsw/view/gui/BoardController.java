@@ -6,6 +6,7 @@ import it.polimi.ingsw.commons.clientmessages.*;
 import it.polimi.ingsw.commons.servermessages.CheckBuildServer;
 import it.polimi.ingsw.commons.servermessages.CheckMoveServer;
 import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
+import it.polimi.ingsw.network.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,7 +19,6 @@ public class BoardController extends DefaultController {
     int towerSize = 80;
     int pawnSize = 40;
     private int state;
-
 
     CurrentStatusServer Css;
     CheckMoveServer Cms;
@@ -85,8 +85,14 @@ public class BoardController extends DefaultController {
     }
 
 
-    public void setPawn(ImageView square, Image pawn) {
-        square.setImage(pawn);
+    public void setPawn(ImageView square) {
+        int i = this.gui.getClient().getPlayers().indexOf(Css.player);
+        if(i == 0)
+            square.setImage(red);
+        if(i==1)
+            square.setImage(blu);
+        if(i==2)
+            square.setImage(yellow);
     }
 
     public void setState(int state) {
@@ -147,6 +153,7 @@ public class BoardController extends DefaultController {
        int y = 0;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square00);
             setState(4);
         }
 
@@ -173,6 +180,7 @@ public class BoardController extends DefaultController {
         int y = 1;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square01);
             setState(4);
         }
 
@@ -197,6 +205,7 @@ public class BoardController extends DefaultController {
         int y = 2;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square02);
             setState(4);
         }
 
@@ -221,6 +230,7 @@ public class BoardController extends DefaultController {
         int y = 3;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square03);
             setState(4);
         }
 
@@ -244,6 +254,7 @@ public class BoardController extends DefaultController {
         int y = 4;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square04);
             setState(4);
         }
 
@@ -269,6 +280,7 @@ public class BoardController extends DefaultController {
         int y = 0;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square10);
             setState(4);
         }
 
@@ -293,6 +305,7 @@ public class BoardController extends DefaultController {
         int y = 1;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square11);
             setState(4);
         }
 
@@ -317,6 +330,7 @@ public class BoardController extends DefaultController {
         int y = 2;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square12);
             setState(4);
         }
 
@@ -341,6 +355,7 @@ public class BoardController extends DefaultController {
         int y = 3;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square13);
             setState(4);
         }
 
@@ -365,6 +380,7 @@ public class BoardController extends DefaultController {
         int y = 4;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square14);
             setState(4);
         }
 
@@ -413,6 +429,7 @@ public class BoardController extends DefaultController {
         int y = 1;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square21);
             setState(4);
         }
 
@@ -437,6 +454,7 @@ public class BoardController extends DefaultController {
         int y = 2;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square22);
             setState(4);
         }
 
@@ -461,6 +479,7 @@ public class BoardController extends DefaultController {
         int y = 3;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square23);
             setState(4);
         }
 
@@ -485,6 +504,7 @@ public class BoardController extends DefaultController {
         int y = 4;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square24);
             setState(4);
         }
 
@@ -509,6 +529,7 @@ public class BoardController extends DefaultController {
         int y = 0;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square30);
             setState(4);
         }
 
@@ -533,6 +554,7 @@ public class BoardController extends DefaultController {
         int y = 1;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square31);
             setState(4);
         }
 
@@ -557,6 +579,7 @@ public class BoardController extends DefaultController {
         int y = 2;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square32);
             setState(4);
         }
 
@@ -581,6 +604,7 @@ public class BoardController extends DefaultController {
         int y = 3;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square33);
             setState(4);
         }
 
@@ -605,6 +629,7 @@ public class BoardController extends DefaultController {
         int y = 4;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square34);
             setState(4);
         }
 
@@ -627,6 +652,7 @@ public class BoardController extends DefaultController {
         int y = 4;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square40);
             setState(4);
         }
 
@@ -649,6 +675,7 @@ public class BoardController extends DefaultController {
         int y = 1;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square41);
             setState(4);
         }
 
@@ -671,6 +698,7 @@ public class BoardController extends DefaultController {
         int y = 2;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square42);
             setState(4);
         }
 
@@ -694,6 +722,7 @@ public class BoardController extends DefaultController {
         int y = 3;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square43);
             setState(4);
         }
 
@@ -716,6 +745,7 @@ public class BoardController extends DefaultController {
         int y = 4;
         if(state == 0){   //WorkerInitialize
             WorkerInitialize(x,y);
+            setPawn(square44);
             setState(4);
         }
 
