@@ -1,8 +1,13 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.SnapCell;
+import it.polimi.ingsw.commons.SnapWorker;
+import it.polimi.ingsw.commons.clientmessages.WorkerChoseClient;
+import it.polimi.ingsw.commons.clientmessages.WorkerInitializeClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -30,7 +35,7 @@ public class GUI extends Application implements ViewInterface {
     double sceneWidth = 0;
     double sceneHeight = 0;
 
-    Parent root;
+    Parent root, root2;
     DefaultController defaultcontroller;
     BoardController boardController;
 
@@ -128,22 +133,7 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(WorkerChosenServer message) {
-        Parent rootX;
-        FXMLLoader loaderX = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Board.fxml"));
-        try{
-            rootX = loaderX.load();
-            Platform.runLater(() -> {
-                primaryStage.setScene(new Scene(Objects.requireNonNull(rootX), sceneWidth, sceneHeight, Color.TRANSPARENT));
-                primaryStage.show();
-        });
-
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-
-        boardController = loaderX.getController();
-        boardController.setState(0);
+        boardController.setState(1);
 
         /*
         boardController.setLevel(boardController.block00, boardController.floor1);
@@ -163,8 +153,40 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(CurrentStatusServer message) {
+       // if(!client.getMyPlayer().loser && message.player.equals(client.getUsername())){
+            switch(message.status){
+                case WORKER_CHOICE:
+                     try {
+                         FXMLLoader loaderX = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Board.fxml"));
+                         root2 = loaderX.load();
+                         boardController = loaderX.getController();
+                         boardController.setGUI(this);
+                         Scene scenex = new Scene(root2);
+                         scenex.setUserData(loaderX);
+                         Platform.runLater(() -> {
+                                    primaryStage.setScene(scenex);
+                         });
 
-    }
+                         boardController.setState(0);
+                         primaryStage.show();
+                     }
+                     catch (IOException e){
+                         e.printStackTrace();
+                     }
+                    break;
+                case START:
+                    //TODO wirte on the bottom "It's your turn!"
+                    //TODO print timer
+                    //TODO write on the bottom "Chose the worker to play with [x-y] "
+                    boardController.setState(1);
+                    break;
+                default:
+                    break;
+            }
+        }
+  //  }
+
+
 
     @Override
     public void handleMessage(SomeoneLoseServer message) {
@@ -288,4 +310,5 @@ public class GUI extends Application implements ViewInterface {
             //primaryStage.show();
         //});
     }
+
 }

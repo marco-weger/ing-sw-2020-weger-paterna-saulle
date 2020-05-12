@@ -17,7 +17,7 @@ public class BoardController extends DefaultController {
 
     int towerSize = 80;
     int pawnSize = 40;
-    int state = 4;
+    private int state;
 
 
     CurrentStatusServer Css;
@@ -162,6 +162,9 @@ public class BoardController extends DefaultController {
         if(state == 3){  //Build
             Build(x,y);
             setState(4);
+        }
+        else{
+            System.out.println("Null");
         }
     }
 
