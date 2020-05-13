@@ -4,17 +4,19 @@ import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.clientmessages.*;
-import it.polimi.ingsw.commons.servermessages.CheckBuildServer;
-import it.polimi.ingsw.commons.servermessages.CheckMoveServer;
-import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
-import it.polimi.ingsw.commons.servermessages.WorkerChosenServer;
+import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ import java.util.List;
 public class BoardController extends DefaultController {
 
 
+    Font f = Font.loadFont(getClass().getResourceAsStream("/it.polimi.ingsw/view/gui/font/Nefelibata-Brush.ttf"),18);
+
     int towerSize = 80;
     int pawnSize = 40;
     private int state;
@@ -30,7 +34,7 @@ public class BoardController extends DefaultController {
     CurrentStatusServer Css;
     CheckMoveServer Cms;
     CheckBuildServer Cbs;
-    WorkerChosenServer Wcs;
+    QuestionAbilityServer Qas;
 
     public void setCss(CurrentStatusServer css) {
         Css = css;
@@ -44,6 +48,9 @@ public class BoardController extends DefaultController {
         Cbs = cbs;
     }
 
+    public void setQas(QuestionAbilityServer qas) { Qas = qas; }
+
+
 
 
     Image floor1 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor1.png", towerSize, towerSize, true, false);
@@ -51,6 +58,14 @@ public class BoardController extends DefaultController {
     Image floor3 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor3.png", towerSize, towerSize, true, false);
     Image dome = new Image("/it.polimi.ingsw/view/gui/img/tower/dome.png", towerSize, towerSize, true, false);
 
+
+    @FXML
+    TextField banner;
+
+    Text questionab = new Text("Do you want to use you God ability?");
+
+    @FXML
+    Button yes,no;
 
     @FXML
     Button cell00, cell01, cell02, cell03, cell04,
@@ -1177,6 +1192,36 @@ public class BoardController extends DefaultController {
 
         }
 
+    public void question(){
+        yes.getStyleClass().add("yes");
+        no.getStyleClass().add("no");
+        setUpBanner(banner);
+        banner.setText("Do You Want To Use Your God Ability?");
 
+    }
 
+    //TODO rendere safe yes e no
+    public void yes(ActionEvent actionEvent) {
+        this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(),true, Qas.status));
+        yes.getStyleClass().remove("yes");
+        yes.getStyleClass().add("empty");
+        no.getStyleClass().remove("no");
+        no.getStyleClass().add("empty");
+        banner.setText("");
+    }
+
+    public void no(ActionEvent actionEvent) {
+        this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(),true, Qas.status));
+        yes.getStyleClass().remove("yes");
+        yes.getStyleClass().add("empty");
+        no.getStyleClass().remove("no");
+        no.getStyleClass().add("empty");
+        banner.setText("");
+        refresh();
+    }
+
+    public void setUpBanner(TextField tf){
+        tf.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+        tf.setFont(f);
+    }
 }

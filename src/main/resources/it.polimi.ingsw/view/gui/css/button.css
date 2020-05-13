@@ -170,3 +170,25 @@
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/clear_pressed.png");
     -fx-background-size: 100% auto
 }
+.yes{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/yes.png");
+    -fx-background-size: 100% auto
+}
+.yes:pressed{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/yes_pressed.png");
+    -fx-background-size: 100% auto
+}
+.no{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/no.png");
+    -fx-background-size: 100% auto
+}
+.no:pressed{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/no_pressed.png");
+    -fx-background-size: 100% auto
+}
+.empty{
+    -fx-background-image: null;
+}
+.empty:pressed{
+    -fx-background-image: null;
+}
