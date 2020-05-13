@@ -51,12 +51,6 @@ public class BoardController extends DefaultController {
     Image floor3 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor3.png", towerSize, towerSize, true, false);
     Image dome = new Image("/it.polimi.ingsw/view/gui/img/tower/dome.png", towerSize, towerSize, true, false);
 
-    Image red = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png", pawnSize, pawnSize, false, false);
-    Image blu = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png", pawnSize, pawnSize, false, false);
-    Image yellow = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png", pawnSize, pawnSize, false, false);
-    Image bronze = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_bronze.png", pawnSize, pawnSize, false, false);
-    Image green = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_green.png", pawnSize, pawnSize, false, false);
-
 
     @FXML
     Button cell00, cell01, cell02, cell03, cell04,
@@ -207,11 +201,73 @@ public class BoardController extends DefaultController {
         return null;
     }
 
-    public void refresh() {
-        for (SnapCell cell : this.gui.getClient().getBoard()) {
-               setLevel(getSquare(cell.row, cell.column),getConstruction(cell.level));
-            }
+        public ImageView getBLock(int x, int y){
+        if(x == 0 && y == 0)
+            return block00;
+        if(x == 0 && y == 1)
+            return block01;
+        if(x == 0 && y == 2)
+            return block02;
+        if(x == 0 && y == 3)
+            return block03;
+        if(x == 0 && y == 4)
+            return block04;
+        if(x == 1 && y == 0)
+            return block10;
+        if(x == 1 && y == 1)
+            return block11;
+        if(x == 1 && y == 2)
+            return block12;
+        if(x == 1 && y == 3)
+            return block13;
+        if(x == 1 && y == 4)
+            return block14;
+        if(x == 2 && y == 0)
+            return block20;
+        if(x == 2 && y == 1)
+            return block21;
+        if(x == 2 && y == 2)
+            return block22;
+        if(x == 2 && y == 3)
+            return block23;
+        if(x == 2 && y == 4)
+            return block24;
+        if(x == 3 && y == 0)
+            return block30;
+        if(x == 3 && y == 1)
+            return block31;
+        if(x == 3 && y == 2)
+            return block32;
+        if(x == 3 && y == 3)
+            return block33;
+        if(x == 3 && y == 4)
+            return block34;
+        if(x == 4 && y == 0)
+            return block40;
+        if(x == 4 && y == 1)
+            return block41;
+        if(x == 4 && y == 2)
+            return block42;
+        if(x == 4 && y == 3)
+            return block43;
+        if(x == 4 && y == 4)
+            return block44;
+        return null;
+    }
 
+    public void refresh() {
+        //update tower state
+        for (SnapCell cell : this.gui.getClient().getBoard()) {
+            if(cell.level != 0) {
+                setLevel(getBLock(cell.row, cell.column), getConstruction(cell.level));
+            }
+        }
+        //clean old workers position
+        for (SnapCell cell : this.gui.getClient().getBoard()) {
+                getSquare(cell.row, cell.column).setImage(null);
+
+        }
+        //get new workers position
         for(SnapPlayer p : this.gui.getClient().getPlayers())
             for (SnapWorker w : this.gui.getClient().getWorkers()){
                 if(w.name == p.name) {
@@ -219,7 +275,7 @@ public class BoardController extends DefaultController {
                     getSquare(w.row,w.column).setImage(p2);
                 }
             }
-        }
+    }
 
     public void setLevel(ImageView block, Image floor) {
         block.setImage(floor);
@@ -247,39 +303,107 @@ public class BoardController extends DefaultController {
          return true;
     }
 
-    public void ChoseWorker(int x, int y) {
+    public boolean ChoseWorker(int x, int y) {
         for (SnapWorker sw : this.gui.getClient().getWorkers()) {
-            if (sw.row == 0 && sw.column == 0 && sw.name.equals(this.gui.getClient().getUsername()) && (Css.worker1 && sw.n == 1 || Css.worker2 && sw.n == 2)) {
+            if (sw.row == x && sw.column == y && sw.name.equals(this.gui.getClient().getUsername()) && (Css.worker1 && sw.n == 1 || Css.worker2 && sw.n == 2)) {
                 this.gui.getClient().sendMessage(new WorkerChoseClient(this.gui.getClient().getUsername(), sw.n));
+                return true;
             }
         }
+        return false;
     }
 
 
-    public void Move(int x, int y) {
+    public boolean Move(int x, int y) {
         for (SnapCell cell : Cms.sc) {
             if (cell.row == x && cell.column == y) {
                 this.gui.getClient().sendMessage(new MoveClient(this.gui.getClient().getUsername(), x, y));
+                        for (SnapCell cellx : Cms.sc) {
+                            lighitdown(getCell(cellx.row,cellx.column));
+                        }
+                        return true;
             }
         }
+        return false;
     }
 
-    public void Build(int x, int y) {
+    public boolean Build(int x, int y) {
         for (SnapCell cell : Cbs.sc) {
             if (cell.row == x && cell.column == y) {
                 this.gui.getClient().sendMessage(new BuildClient(this.gui.getClient().getUsername(), x, y));
+                    for (SnapCell cellx : Cbs.sc) {
+                        lighitdown(getCell(cellx.row,cellx.column));
+                    }
+                    return true;
             }
+        }
+        return false;
+    }
+
+    public void setFloor(int x,int y) {
+        for (SnapCell cell : this.gui.getClient().getBoard()) {
+            if (cell.row == x && cell.column == y) {
+                if (cell.level == 1) {
+                    getBLock(x, y).setImage(floor1);
+                }
+                if (cell.level == 2) {
+                    getBLock(x, y).setImage(floor2);
+                }
+                if (cell.level == 3) {
+                    getBLock(x, y).setImage(floor3);
+                }
+                if (cell.level == 4) {
+                    getBLock(x, y).setImage(dome);
+                }
+            }
+
         }
     }
 
 
 
+    @Override
+    public void setup(){
+        cell00.getStyleClass().add("board");
+        cell01.getStyleClass().add("board");
+        cell02.getStyleClass().add("board");
+        cell03.getStyleClass().add("board");
+        cell04.getStyleClass().add("board");
+        cell10.getStyleClass().add("board");
+        cell11.getStyleClass().add("board");
+        cell12.getStyleClass().add("board");
+        cell13.getStyleClass().add("board");
+        cell14.getStyleClass().add("board");
+        cell20.getStyleClass().add("board");
+        cell21.getStyleClass().add("board");
+        cell22.getStyleClass().add("board");
+        cell23.getStyleClass().add("board");
+        cell24.getStyleClass().add("board");
+        cell30.getStyleClass().add("board");
+        cell31.getStyleClass().add("board");
+        cell32.getStyleClass().add("board");
+        cell33.getStyleClass().add("board");
+        cell34.getStyleClass().add("board");
+        cell40.getStyleClass().add("board");
+        cell41.getStyleClass().add("board");
+        cell42.getStyleClass().add("board");
+        cell43.getStyleClass().add("board");
+        cell44.getStyleClass().add("board");
 
+
+
+
+    }
 
 
     public void lighitup(Button Cell){
-        Image image = new Image("/it.polimi.ingsw/view/gui/img/button/allow.png");
-        Cell.setGraphic(new ImageView(image));
+        Cell.getStyleClass().remove("board");
+        Cell.getStyleClass().add("boardL");
+    }
+
+    public void lighitdown(Button Cell){
+        Cell.getStyleClass().remove("boardL");
+        Cell.getStyleClass().add("board");
     }
 
 
@@ -297,24 +421,25 @@ public class BoardController extends DefaultController {
         if(state == 0){   //WorkerInitialize
             if(WorkerInitialize(x,y)){
             setPawn(square00);
-            setState(4);}
+            setState(4);
+            }
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)) {
+                setState(4);
+            }
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
-        }
-        else{
-            System.out.println("Null");
+            if(Build(x,y)) {
+                block00.setImage(new Image("/it.polimi.ingsw/view/gui/img/tower/floor1.png"));
+                setState(4);
+            }
         }
     }
 
@@ -324,22 +449,24 @@ public class BoardController extends DefaultController {
         if(state == 0){   //WorkerInitialize
             if(WorkerInitialize(x,y)){
             setPawn(square01);
-            setState(4);}
+            setState(4);
+            }
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)) {
+                setState(4);
+            }
         }
-        if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+        if(state == 2){//Move
+            if(Move(x, y)){
+                setState(4);
+            }
         }
-        if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+        if(state == 3) {  //Build
+            if (Build(x, y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -349,22 +476,23 @@ public class BoardController extends DefaultController {
         if(state == 0){   //WorkerInitialize
             if(WorkerInitialize(x,y)){
             setPawn(square02);
-            setState(4);}
+            setState(4); }
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)) {
+                setState(4);
+            }
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -376,19 +504,21 @@ public class BoardController extends DefaultController {
             setPawn(square03);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)) {
+                setState(4);
+            }
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -400,22 +530,21 @@ public class BoardController extends DefaultController {
             setPawn(square04);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
-
     }
 
     public void cell10(ActionEvent actionEvent) {
@@ -428,18 +557,20 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -451,20 +582,20 @@ public class BoardController extends DefaultController {
             setPawn(square11);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -476,20 +607,20 @@ public class BoardController extends DefaultController {
             setPawn(square12);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -501,20 +632,20 @@ public class BoardController extends DefaultController {
             setPawn(square13);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -526,20 +657,20 @@ public class BoardController extends DefaultController {
             setPawn(square14);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -551,20 +682,20 @@ public class BoardController extends DefaultController {
             setPawn(square20);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -576,20 +707,20 @@ public class BoardController extends DefaultController {
             setPawn(square21);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -601,20 +732,20 @@ public class BoardController extends DefaultController {
             setPawn(square22);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -626,20 +757,20 @@ public class BoardController extends DefaultController {
             setPawn(square23);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -651,20 +782,20 @@ public class BoardController extends DefaultController {
             setPawn(square24);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -676,20 +807,20 @@ public class BoardController extends DefaultController {
             setPawn(square30);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -701,20 +832,20 @@ public class BoardController extends DefaultController {
             setPawn(square31);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -726,20 +857,20 @@ public class BoardController extends DefaultController {
             setPawn(square32);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -751,20 +882,20 @@ public class BoardController extends DefaultController {
             setPawn(square33);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
-
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
-
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -776,18 +907,20 @@ public class BoardController extends DefaultController {
             setPawn(square34);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -799,18 +932,20 @@ public class BoardController extends DefaultController {
             setPawn(square40);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -822,18 +957,20 @@ public class BoardController extends DefaultController {
             setPawn(square41);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -845,18 +982,20 @@ public class BoardController extends DefaultController {
             setPawn(square42);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -869,18 +1008,20 @@ public class BoardController extends DefaultController {
             setPawn(square43);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -892,18 +1033,20 @@ public class BoardController extends DefaultController {
             setPawn(square44);
             setState(4);}
         }
-
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
-            Move(x,y);
-            setState(4);
+            if(Move(x,y)) {
+                setState(4);
+            }
         }
         if(state == 3){  //Build
-            Build(x,y);
-            setState(4);
+            if(Build(x,y)) {
+                setFloor(x,y);
+                setState(4);
+            }
         }
     }
 
@@ -966,7 +1109,8 @@ public class BoardController extends DefaultController {
                     if(x == 4 && y == 4)
                         lighitup(cell44);
                     }
-            }
+           }
+
 
         }
 

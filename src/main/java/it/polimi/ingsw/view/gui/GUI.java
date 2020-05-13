@@ -1,7 +1,10 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
+import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.commons.clientmessages.AnswerAbilityClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
@@ -12,6 +15,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -19,6 +24,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -115,6 +121,7 @@ public class GUI extends Application implements ViewInterface {
             ((BoardController) controller).setCms(message);
             ((BoardController) controller).showcheckmove(message);
             ((BoardController) controller).setState(2);
+            ((BoardController) controller).refresh();
         }
     }
 
@@ -128,6 +135,7 @@ public class GUI extends Application implements ViewInterface {
             ((BoardController) controller).setCbs(message);
             ((BoardController) controller).showcheckbuild(message);
             ((BoardController) controller).setState(3);
+            ((BoardController) controller).refresh();
         }
     }
 
@@ -167,6 +175,7 @@ public class GUI extends Application implements ViewInterface {
                             DefaultController controllerx = loader2.getController();
 
                             if (controllerx instanceof BoardController) {
+                                ((BoardController) controllerx).setup();
                                 ((BoardController) controllerx).setState(0);
                                 ((BoardController) controllerx).refresh();
                                 primaryStage.setScene(sn);
@@ -190,6 +199,19 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(QuestionAbilityServer message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("GOD ABILITY");
+        alert.setHeaderText("Do you want to use your God ability?");
+        alert.setContentText("Press OK or ");
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.YES) {
+                client.sendMessage(new AnswerAbilityClient(client.getUsername(),true, message.status));
+            }
+            if (response == ButtonType.NO){
+               client.sendMessage(new AnswerAbilityClient(client.getUsername(),false, message.status));
+
+           }
+        });
 
     }
 
@@ -207,6 +229,7 @@ public class GUI extends Application implements ViewInterface {
                         System.out.println("Type the position of first worker [x-y]");
                         if(xcontroller instanceof BoardController){
                             ((BoardController) xcontroller).refresh();
+                            ((BoardController) xcontroller).setup();
                             ((BoardController) xcontroller).setState(0);
                         }
 
@@ -222,6 +245,7 @@ public class GUI extends Application implements ViewInterface {
                     loader = (FXMLLoader) primaryStage.getScene().getUserData();
                     controller = loader.getController();
                     if(controller instanceof BoardController){
+                        ((BoardController) controller).setCss(message);
                         ((BoardController) controller).refresh();
                         ((BoardController) controller).setState(1);
                     }
@@ -359,6 +383,29 @@ public class GUI extends Application implements ViewInterface {
         Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
+       /*
+         Platform.runLater(() -> {
+                        Scene s = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
+                        FXMLLoader xloader = (FXMLLoader) s.getUserData();
+                        DefaultController xcontroller = xloader.getController();
+                        System.out.println("Type the position of first worker [x-y]");
+                        if(xcontroller instanceof BoardController){
+                            ((BoardController) xcontroller).square00.setImage(new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png"));
+                            ((BoardController) xcontroller).block00.setImage(new Image("/it.polimi.ingsw/view/gui/img/tower/floor1.png"));
+                            ((BoardController) xcontroller).block01.setImage(((BoardController) xcontroller).dome);
+                            ((BoardController) xcontroller).getBLock(2,2).setImage(((BoardController) xcontroller).floor2);
+                            ((BoardController) xcontroller).refresh();
+                            //((BoardController) xcontroller).refresh();
+                            //((BoardController) xcontroller).refresh();
+                            ((BoardController) xcontroller).setup();
+                        }
+
+                        primaryStage.setScene(s);
+                        primaryStage.show();
+                    });
+                    */
+
     }
+
 
 }
