@@ -211,8 +211,9 @@ public class BoardController extends DefaultController {
         for (SnapCell cell : this.gui.getClient().getBoard()) {
                setLevel(getSquare(cell.row, cell.column),getConstruction(cell.level));
             }
-        for (SnapWorker w : this.gui.getClient().getWorkers()){
-            for(SnapPlayer p : this.gui.getClient().getPlayers())
+
+        for(SnapPlayer p : this.gui.getClient().getPlayers())
+            for (SnapWorker w : this.gui.getClient().getWorkers()){
                 if(w.name == p.name) {
                     Image p2 = new Image(p.color, pawnSize, pawnSize, false, false);
                     getSquare(w.row,w.column).setImage(p2);
@@ -791,8 +792,8 @@ public class BoardController extends DefaultController {
     }
 
     public void cell40(ActionEvent actionEvent) {
-        int x = 0;
-        int y = 4;
+        int x = 4;
+        int y = 0;
         if(state == 0){   //WorkerInitialize
             if(WorkerInitialize(x,y)){
             setPawn(square40);

@@ -143,11 +143,13 @@ public class GUI extends Application implements ViewInterface {
     @Override
     public void handleMessage(WorkerChosenServer message) {
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-        DefaultController controllerx = loader.getController();
         client.getWorkers().add(new SnapWorker(message.x, message.y, message.player, message.worker));
         if (message.player.equals(this.client.getUsername())) {
             if (message.worker == 1) {
+                DefaultController controllerx;
+                controllerx = loader.getController();
                 //second Worker
+
                 System.out.println("second worker!");
                 if (controllerx instanceof BoardController) {
                     ((BoardController) controllerx).refresh();
@@ -160,19 +162,18 @@ public class GUI extends Application implements ViewInterface {
                 if (client.getPlayers().get(i).name.equals(message.player) && client.getPlayers().get(i + 1).name.equals(client.getUsername()) && message.worker == 2) {
                         System.out.println("Type the position of first worker player 2 [x-y]");
                         Platform.runLater(() -> {
-                            Scene s = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
-                            FXMLLoader loaderxx = (FXMLLoader) primaryStage.getScene().getUserData();
-                            DefaultController controllerxx = loaderxx.getController();
-                            if (controllerxx instanceof BoardController) {
-                                ((BoardController) controllerxx).refresh();
-                                ((BoardController) controllerxx).setState(0);
-                            }
-                                primaryStage.setScene(s);
+                            Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
+                            FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
+                            DefaultController controllerx = loader2.getController();
+
+                            if (controllerx instanceof BoardController) {
+                                ((BoardController) controllerx).setState(0);
+                                ((BoardController) controllerx).refresh();
+                                primaryStage.setScene(sn);
                                 primaryStage.show();
+                            }
                         });
                 }
-
-
             }
 
         }
