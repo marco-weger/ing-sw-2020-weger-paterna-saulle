@@ -16,10 +16,17 @@
     <center>
         <AnchorPane fx:id="center" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="button1" layoutX="449.0" layoutY="250.0" mnemonicParsing="false" onAction="#button1OnAction" text="Button" />
-             <Button fx:id="button2" layoutX="107.0" layoutY="250.0" mnemonicParsing="false" onAction="#button2OnAction" text="Button" />
-            <Button fx:id="button3" layoutX="784.0" layoutY="250.0" mnemonicParsing="false" onAction="#button3OnAction" text="Button" />
-            <Button fx:id="buttonSend" layoutX="865.0" layoutY="477.0" mnemonicParsing="false" onAction="#buttonSend"  text="Button" />
+             <Button fx:id="buttonSelected1" onAction="#setGod1" layoutX="54.0" layoutY="298.0" mnemonicParsing="false" styleClass="button, podium" stylesheets="@../css/button.css" />
+             <Button fx:id="buttonSelected2" onAction="#setGod2" layoutX="54.0" layoutY="298.0" mnemonicParsing="false" styleClass="button, podium" stylesheets="@../css/button.css" />
+             <Button fx:id="buttonSelected3" onAction="#setGod3" layoutX="54.0" layoutY="298.0" mnemonicParsing="false" styleClass="button, podium" stylesheets="@../css/button.css" />
+             <Button fx:id="buttonGod1" onAction="#setGod1" layoutX="54.0" layoutY="298.0" mnemonicParsing="false" styleClass="button" stylesheets="@../css/button.css" />
+             <Button fx:id="buttonGod2" onAction="#setGod2" layoutX="182.0" layoutY="292.0" mnemonicParsing="false" styleClass="button" stylesheets="@../css/button.css"  />
+             <Button fx:id="buttonGod3" onAction="#setGod3" layoutX="324.0" layoutY="288.0" mnemonicParsing="false" styleClass="button" stylesheets="@../css/button.css" />
+             <TextArea fx:id="textAreaDescription" layoutX="552.0" layoutY="125.0" prefHeight="200.0" prefWidth="331.0" styleClass="cardDescription" stylesheets="@../css/text-field.css" />
+             <TextField fx:id="textFieldName1" alignment="CENTER" layoutX="251.0" layoutY="387.0" styleClass="godName" stylesheets="@../css/text-field.css" text="Label" />
+             <TextField fx:id="textFieldName2" alignment="CENTER" layoutX="251.0" layoutY="387.0" styleClass="godName" stylesheets="@../css/text-field.css" text="Label" />
+             <TextField fx:id="textFieldName3" alignment="CENTER" layoutX="251.0" layoutY="387.0" styleClass="godName" stylesheets="@../css/text-field.css" text="Label" />
+             <Button fx:id="buttonSend" layoutX="692.0" layoutY="390.0" mnemonicParsing="false" onAction="#sendOnAction" styleClass="button, confirm" stylesheets="@../css/button.css" />
          </children></AnchorPane>
     </center>
 </BorderPane>

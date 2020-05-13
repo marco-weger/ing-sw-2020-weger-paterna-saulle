@@ -4,8 +4,8 @@
     -fx-border: none;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-border-color: blue ;
-    -fx-border-width: 5 ;
+    -fx-border-color: chartreuse;
+    -fx-border-width: 1;
 }
 .play {
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/play.png");
@@ -82,7 +82,7 @@
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/left.png");
     -fx-background-size: auto 100%
 }
-.left:pressed {
+.left:pressed{
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/left_pressed.png");
     -fx-background-size: auto 100%
 }
@@ -90,7 +90,75 @@
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/right.png");
     -fx-background-size: auto 100%
 }
-.right:pressed {
+.right:pressed{
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/right_pressed.png");
     -fx-background-size: auto 100%
+}
+.select{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/select.png");
+    -fx-background-size: 100% auto
+}
+.select:pressed{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/select_pressed.png");
+    -fx-background-size: 100% auto
+}
+.podium{
+    -fx-background-image: url('/it.polimi.ingsw/view/gui/img/other/podium.png');
+    -fx-background-size: auto 100%;
+}
+.podiumGold{
+    -fx-background-image: url('/it.polimi.ingsw/view/gui/img/other/podium_gold.png');
+    -fx-background-size: auto 100%;
+}
+.apollo{
+    -fx-background-image: url('/it.polimi.ingsw/view/gui/img/god/apollo.png');
+    -fx-background-size: auto 100%
+}
+.artemis{
+    -fx-background-image: url('/it.polimi.ingsw/view/gui/img/god/artemis.png');
+    -fx-background-size: auto 100%
+}
+.athena{
+    -fx-background-image: url('/it.polimi.ingsw/view/gui/img/god/athena.png');
+    -fx-background-size: auto 100%
+}
+.atlas{
+    -fx-background-image: url('/it.polimi.ingsw/view/gui/img/god/atlas.png');
+    -fx-background-size: auto 100%
+}
+.demeter{
+    -fx-background-image: url('/it.polimi.ingsw/view/gui/img/god/demeter.png');
+    -fx-background-size: auto 100%
+}
+.hephaestus{
+    -fx-background-image: url('/it.polimi.ingsw/view/gui/img/god/hephaestus.png');
+    -fx-background-size: auto 100%
+}
+.minotaur{
+    -fx-background-image: url('/it.polimi.ingsw/view/gui/img/god/minotaur.png');
+    -fx-background-size: auto 100%
+}
+.pan{
+    -fx-background-image: url('/it.polimi.ingsw/view/gui/img/god/pan.png');
+    -fx-background-size: auto 100%
+}
+.prometheus{
+    -fx-background-image: url('/it.polimi.ingsw/view/gui/img/god/prometheus.png');
+    -fx-background-size: auto 100%
+}
+.confirm{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/confirm.png");
+    -fx-background-size: 100% auto
+}
+.confirm:pressed{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/confirm_pressed.png");
+    -fx-background-size: 100% auto
+}
+.clear{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/clear.png");
+    -fx-background-size: 100% auto
+}
+.clear:pressed{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/clear_pressed.png");
+    -fx-background-size: 100% auto
 }

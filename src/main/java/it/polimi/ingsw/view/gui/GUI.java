@@ -1,13 +1,9 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.commons.SnapCell;
-import it.polimi.ingsw.commons.SnapWorker;
-import it.polimi.ingsw.commons.clientmessages.WorkerChoseClient;
-import it.polimi.ingsw.commons.clientmessages.WorkerInitializeClient;
+import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -15,8 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -233,27 +227,19 @@ public class GUI extends Application implements ViewInterface {
     public void handleMessage(AvailableCardServer message) {
         Platform.runLater(() -> {
             if(message.cardName.isEmpty()){
-                primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/CardChallenger.fxml"));
+                primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/Challenger.fxml"));
             }
             else{
-                Scene s = load("/it.polimi.ingsw/view/gui/fxml/Card.fxml");
+                Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Card.fxml");
 
-                FXMLLoader loader = (FXMLLoader) s.getUserData();
+                FXMLLoader loader = (FXMLLoader) scene.getUserData();
                 DefaultController controller = loader.getController();
                 if(controller instanceof CardController){
                     ((CardController) controller).cards = message.cardName;
-                    if(message.cardName.size() == 2){
-                        ((CardController) controller).button1.setText(message.cardName.get(0).toString());
-                        ((CardController) controller).button2.setText(message.cardName.get(1).toString());
-                        ((CardController) controller).button3.setDisable(true);
-                    } else if(message.cardName.size() == 3){
-                        ((CardController) controller).button1.setText(message.cardName.get(0).toString());
-                        ((CardController) controller).button2.setText(message.cardName.get(1).toString());
-                        ((CardController) controller).button3.setText(message.cardName.get(2).toString());
-                    }
+                    ((CardController) controller).setGods();
                 }
 
-                primaryStage.setScene(s);
+                primaryStage.setScene(scene);
             }
             primaryStage.show();
         });
