@@ -178,6 +178,14 @@ public class Client implements Runnable{
             }
             go = false;
 
+            /*
+            TODO
+            Uunico jar che, in assenza di parametri su linea di comando apra la GUI, se lanciato con un parametro
+            (es. java -jar Client.jar -cli) lancia la cli, senza "strane" richieste all'utente che non avrebbero molto senso in un contesto di interfaccia grafica.
+            Se lancio il jar con un doppio click da interfaccia grafica non voglio veder apparire una shell con la richiesta se aprire cli o gui, ma voglio direttamente la gui.
+            Se voglio la cli apro la shell e metto il parametro "-cli" su linea di comando.
+             */
+
             if(version.equalsIgnoreCase("CLI")){
                 System.out.print("Connection to the server...");
                 Client client = new Client();
