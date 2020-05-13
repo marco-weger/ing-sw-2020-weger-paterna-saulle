@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.BoardController">
    <top>
@@ -12,7 +13,15 @@
       </AnchorPane>
    </top>
    <bottom>
-      <AnchorPane fx:id="bottom" prefHeight="138.0" prefWidth="950.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="bottom" prefHeight="138.0" prefWidth="950.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="banner" editable="false" layoutX="140.0" layoutY="26.0" prefHeight="87.0" prefWidth="460.0" styleClass="banner" stylesheets="@../css/text-field.css">
+               <font>
+                  <Font size="20.0" />
+               </font></TextField>
+            <Button fx:id="no" layoutX="735.0" layoutY="39.0" mnemonicParsing="false" onAction="#no" prefHeight="61.0" prefWidth="90.0" stylesheets="@../css/button.css" />
+            <Button fx:id="yes" layoutX="614.0" layoutY="39.0" mnemonicParsing="false" onAction="#yes" prefHeight="61.0" prefWidth="90.0" stylesheets="@../css/button.css" />
+         </children></AnchorPane>
    </bottom>
    <center>
       <StackPane BorderPane.alignment="CENTER">
@@ -69,31 +78,31 @@
                <ImageView fx:id="square42" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="242.0" layoutY="426.0" pickOnBounds="true" preserveRatio="true" />
                <ImageView fx:id="square43" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="337.0" layoutY="426.0" pickOnBounds="true" preserveRatio="true" />
                <ImageView fx:id="square44" cache="true" fitHeight="40.0" fitWidth="40.0" layoutX="424.0" layoutY="426.0" pickOnBounds="true" preserveRatio="true" />
-               <Button fx:id="cell00" layoutX="36.0" layoutY="39.0" mnemonicParsing="false" onAction="#cell00" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell01" layoutX="133.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell01" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell02" layoutX="222.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell02" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell03" layoutX="317.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell03" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell04" layoutX="404.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell04" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell10" layoutX="39.0" layoutY="128.0" mnemonicParsing="false" onAction="#cell10" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell11" layoutX="133.0" layoutY="128.0" mnemonicParsing="false" onAction="#cell11" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell12" layoutX="222.0" layoutY="128.0" mnemonicParsing="false" onAction="#cell12" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell13" layoutX="317.0" layoutY="128.0" mnemonicParsing="false" onAction="#cell13" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell14" layoutX="404.0" layoutY="128.0" mnemonicParsing="false" onAction="#cell14" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell20" layoutX="39.0" layoutY="222.0" mnemonicParsing="false" onAction="#cell20" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell21" layoutX="133.0" layoutY="222.0" mnemonicParsing="false" onAction="#cell21" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell22" layoutX="222.0" layoutY="222.0" mnemonicParsing="false" onAction="#cell22" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell23" layoutX="317.0" layoutY="222.0" mnemonicParsing="false" onAction="#cell23" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell24" layoutX="404.0" layoutY="222.0" mnemonicParsing="false" onAction="#cell24" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
+               <Button fx:id="cell00" layoutX="36.0" layoutY="39.0" mnemonicParsing="false" onAction="#cell00" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell01" layoutX="133.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell01" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell02" layoutX="222.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell02" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell03" layoutX="317.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell03" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell04" layoutX="404.0" layoutY="40.0" mnemonicParsing="false" onAction="#cell04" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell10" layoutX="39.0" layoutY="128.0" mnemonicParsing="false" onAction="#cell10" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell11" layoutX="133.0" layoutY="128.0" mnemonicParsing="false" onAction="#cell11" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell12" layoutX="222.0" layoutY="128.0" mnemonicParsing="false" onAction="#cell12" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell13" layoutX="317.0" layoutY="128.0" mnemonicParsing="false" onAction="#cell13" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell14" layoutX="404.0" layoutY="128.0" mnemonicParsing="false" onAction="#cell14" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell20" layoutX="39.0" layoutY="222.0" mnemonicParsing="false" onAction="#cell20" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell21" layoutX="133.0" layoutY="222.0" mnemonicParsing="false" onAction="#cell21" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell22" layoutX="222.0" layoutY="222.0" mnemonicParsing="false" onAction="#cell22" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell23" layoutX="317.0" layoutY="222.0" mnemonicParsing="false" onAction="#cell23" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell24" layoutX="404.0" layoutY="222.0" mnemonicParsing="false" onAction="#cell24" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
                <Button fx:id="cell30" layoutX="39.0" layoutY="315.0" mnemonicParsing="false" onAction="#cell30" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
-               <Button fx:id="cell31" layoutX="133.0" layoutY="315.0" mnemonicParsing="false" onAction="#cell31" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell32" layoutX="222.0" layoutY="315.0" mnemonicParsing="false" onAction="#cell32" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell33" layoutX="317.0" layoutY="315.0" mnemonicParsing="false" onAction="#cell33" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell34" layoutX="404.0" layoutY="315.0" mnemonicParsing="false" onAction="#cell34" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell40" layoutX="39.0" layoutY="406.0" mnemonicParsing="false" onAction="#cell40" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell41" layoutX="133.0" layoutY="406.0" mnemonicParsing="false" onAction="#cell41" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell42" layoutX="222.0" layoutY="406.0" mnemonicParsing="false" onAction="#cell42" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell43" layoutX="317.0" layoutY="406.0" mnemonicParsing="false" onAction="#cell43" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
-               <Button fx:id="cell44" layoutX="404.0" layoutY="406.0" mnemonicParsing="false" onAction="#cell44" prefHeight="80.0" prefWidth="80.0"  stylesheets="@../css/button.css" />
+               <Button fx:id="cell31" layoutX="133.0" layoutY="315.0" mnemonicParsing="false" onAction="#cell31" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell32" layoutX="222.0" layoutY="315.0" mnemonicParsing="false" onAction="#cell32" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell33" layoutX="317.0" layoutY="315.0" mnemonicParsing="false" onAction="#cell33" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell34" layoutX="404.0" layoutY="315.0" mnemonicParsing="false" onAction="#cell34" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell40" layoutX="39.0" layoutY="406.0" mnemonicParsing="false" onAction="#cell40" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell41" layoutX="133.0" layoutY="406.0" mnemonicParsing="false" onAction="#cell41" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell42" layoutX="222.0" layoutY="406.0" mnemonicParsing="false" onAction="#cell42" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell43" layoutX="317.0" layoutY="406.0" mnemonicParsing="false" onAction="#cell43" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+               <Button fx:id="cell44" layoutX="404.0" layoutY="406.0" mnemonicParsing="false" onAction="#cell44" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
             </AnchorPane>
          </children>
       </StackPane>

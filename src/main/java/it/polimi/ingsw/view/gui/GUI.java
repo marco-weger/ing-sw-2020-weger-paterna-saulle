@@ -199,21 +199,16 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(QuestionAbilityServer message) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("GOD ABILITY");
-        alert.setHeaderText("Do you want to use your God ability?");
-        alert.setContentText("Press OK or ");
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.YES) {
-                client.sendMessage(new AnswerAbilityClient(client.getUsername(),true, message.status));
-            }
-            if (response == ButtonType.NO){
-               client.sendMessage(new AnswerAbilityClient(client.getUsername(),false, message.status));
-
-           }
-        });
-
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+        if(controller instanceof BoardController){
+            ((BoardController) controller).setQas(message);
+            ((BoardController) controller).question();
+            ((BoardController) controller).refresh();
+        }
     }
+
+
 
     @Override
     public void handleMessage(CurrentStatusServer message) {
@@ -383,7 +378,7 @@ public class GUI extends Application implements ViewInterface {
         Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
-       /*
+/*
          Platform.runLater(() -> {
                         Scene s = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
                         FXMLLoader xloader = (FXMLLoader) s.getUserData();
@@ -392,7 +387,7 @@ public class GUI extends Application implements ViewInterface {
                         if(xcontroller instanceof BoardController){
                             ((BoardController) xcontroller).square00.setImage(new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png"));
                             ((BoardController) xcontroller).block00.setImage(new Image("/it.polimi.ingsw/view/gui/img/tower/floor1.png"));
-                            ((BoardController) xcontroller).block01.setImage(((BoardController) xcontroller).dome);
+                            ((BoardController) xcontroller).question();
                             ((BoardController) xcontroller).getBLock(2,2).setImage(((BoardController) xcontroller).floor2);
                             ((BoardController) xcontroller).refresh();
                             //((BoardController) xcontroller).refresh();
@@ -403,7 +398,7 @@ public class GUI extends Application implements ViewInterface {
                         primaryStage.setScene(s);
                         primaryStage.show();
                     });
-                    */
+*/
 
     }
 
