@@ -132,30 +132,41 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(CardChosenServer message) {
-
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+        if(controller instanceof BoardController){
+            ((BoardController) controller).setState(0);
+        }
     }
 
     @Override
     public void handleMessage(WorkerChosenServer message) {
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-        DefaultController controller = loader.getController();
+        DefaultController controllerx = loader.getController();
         //client.getWorkers().add(new SnapWorker(message.x, message.y, message.player, message.worker));
         if (message.player.equals(this.client.getUsername())) {
             if (message.worker == 1) {
                 //second Worker
                 System.out.println("second worker!");
-                if (controller instanceof BoardController) {
-                    ((BoardController) controller).setState(0);
+                if (controllerx instanceof BoardController) {
+                    ((BoardController) controllerx).setState(0);
                 }
             }
         }
         else {
             for (int i = 0; i < client.getPlayers().size() - 1; i++) {
                 if (client.getPlayers().get(i).name.equals(message.player) && client.getPlayers().get(i + 1).name.equals(client.getUsername()) && message.worker == 2) {
-                        System.out.println("Type the position of first worker [x-y]");
-                        if (controller instanceof BoardController) {
-                            ((BoardController) controller).setState(0);
-                        }
+                        System.out.println("Type the position of first worker player 2 [x-y]");
+                        Platform.runLater(() -> {
+                            Scene s = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
+                            if (controllerx instanceof BoardController) {
+                                ((BoardController) controllerx).setState(0);
+                                ((BoardController) controllerx).refresh();
+
+                            }
+                                primaryStage.setScene(s);
+                                primaryStage.show();
+                        });
                 }
 
 
@@ -207,6 +218,7 @@ public class GUI extends Application implements ViewInterface {
                     loader = (FXMLLoader) primaryStage.getScene().getUserData();
                     controller = loader.getController();
                     if(controller instanceof BoardController){
+                        ((BoardController) controller).refresh();
                         ((BoardController) controller).setState(1);
                     }
                     break;
@@ -297,12 +309,20 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(BuiltServer message) {
-
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+        if(controller instanceof BoardController){
+            ((BoardController) controller).refresh();
+        }
     }
 
     @Override
     public void handleMessage(MovedServer message) {
-
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+        if(controller instanceof BoardController){
+            ((BoardController) controller).refresh();
+        }
     }
 
     @Override
