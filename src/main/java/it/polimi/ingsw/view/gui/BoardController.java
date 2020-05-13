@@ -210,6 +210,7 @@ public class BoardController extends DefaultController {
     public void refresh() {
         for (SnapCell cell : this.gui.getClient().getBoard()) {
                setLevel(getSquare(cell.row, cell.column),getConstruction(cell.level));
+
             }
 
         for(SnapPlayer p : this.gui.getClient().getPlayers())
@@ -286,17 +287,48 @@ public class BoardController extends DefaultController {
 
 
 
+    @Override
+    public void setup(){
+        cell00.getStyleClass().add("board");
+        cell01.getStyleClass().add("board");
+        cell02.getStyleClass().add("board");
+        cell03.getStyleClass().add("board");
+        cell04.getStyleClass().add("board");
+        cell10.getStyleClass().add("board");
+        cell11.getStyleClass().add("board");
+        cell12.getStyleClass().add("board");
+        cell13.getStyleClass().add("board");
+        cell14.getStyleClass().add("board");
+        cell20.getStyleClass().add("board");
+        cell21.getStyleClass().add("board");
+        cell22.getStyleClass().add("board");
+        cell23.getStyleClass().add("board");
+        cell24.getStyleClass().add("board");
+        cell30.getStyleClass().add("board");
+        cell31.getStyleClass().add("board");
+        cell32.getStyleClass().add("board");
+        cell33.getStyleClass().add("board");
+        cell34.getStyleClass().add("board");
+        cell40.getStyleClass().add("board");
+        cell41.getStyleClass().add("board");
+        cell42.getStyleClass().add("board");
+        cell43.getStyleClass().add("board");
+        cell44.getStyleClass().add("board");
 
+
+
+
+    }
 
 
     public void lighitup(Button Cell){
-        Cell.getStyleClass().removeAll();
-        Cell.getStyleClass().add("button, boardL");
+        Cell.getStyleClass().remove("board");
+        Cell.getStyleClass().add("boardL");
     }
 
     public void lighitdown(Button Cell){
-        Cell.getStyleClass().removeAll();
-        Cell.getStyleClass().add("button, board");
+        Cell.getStyleClass().remove("boardL");
+        Cell.getStyleClass().add("board");
     }
 
 
@@ -977,7 +1009,8 @@ public class BoardController extends DefaultController {
                     if(x == 4 && y == 4)
                         lighitup(cell44);
                     }
-            }
+           }
+
 
         }
 

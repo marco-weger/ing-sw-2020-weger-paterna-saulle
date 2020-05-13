@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
@@ -23,6 +24,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -173,6 +175,7 @@ public class GUI extends Application implements ViewInterface {
                             DefaultController controllerx = loader2.getController();
 
                             if (controllerx instanceof BoardController) {
+                                ((BoardController) controllerx).setup();
                                 ((BoardController) controllerx).setState(0);
                                 ((BoardController) controllerx).refresh();
                                 primaryStage.setScene(sn);
@@ -226,6 +229,7 @@ public class GUI extends Application implements ViewInterface {
                         System.out.println("Type the position of first worker [x-y]");
                         if(xcontroller instanceof BoardController){
                             ((BoardController) xcontroller).refresh();
+                            ((BoardController) xcontroller).setup();
                             ((BoardController) xcontroller).setState(0);
                         }
 
@@ -379,6 +383,7 @@ public class GUI extends Application implements ViewInterface {
         Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
 }
