@@ -208,11 +208,15 @@ public class BoardController extends DefaultController {
     }
 
     public void refresh() {
-        for (SnapCell cell : gui.getClient().getBoard()) {
+        for (SnapCell cell : this.gui.getClient().getBoard()) {
                setLevel(getSquare(cell.row, cell.column),getConstruction(cell.level));
             }
-        for (SnapWorker w : gui.getClient().getWorkers()){
-                setPawn(getSquare(w.row,w.column));
+        for (SnapWorker w : this.gui.getClient().getWorkers()){
+            for(SnapPlayer p : this.gui.getClient().getPlayers())
+                if(w.name == p.name) {
+                    Image p2 = new Image(p.color, pawnSize, pawnSize, false, false);
+                    getSquare(w.row,w.column).setImage(p2);
+                }
             }
         }
 

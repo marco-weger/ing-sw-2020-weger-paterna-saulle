@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.commons.SnapPlayer;
+import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
@@ -143,12 +144,13 @@ public class GUI extends Application implements ViewInterface {
     public void handleMessage(WorkerChosenServer message) {
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controllerx = loader.getController();
-        //client.getWorkers().add(new SnapWorker(message.x, message.y, message.player, message.worker));
+        client.getWorkers().add(new SnapWorker(message.x, message.y, message.player, message.worker));
         if (message.player.equals(this.client.getUsername())) {
             if (message.worker == 1) {
                 //second Worker
                 System.out.println("second worker!");
                 if (controllerx instanceof BoardController) {
+                    ((BoardController) controllerx).refresh();
                     ((BoardController) controllerx).setState(0);
                 }
             }
@@ -159,9 +161,11 @@ public class GUI extends Application implements ViewInterface {
                         System.out.println("Type the position of first worker player 2 [x-y]");
                         Platform.runLater(() -> {
                             Scene s = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
-                            if (controllerx instanceof BoardController) {
-                                ((BoardController) controllerx).setState(0);
-                                ((BoardController) controllerx).refresh();
+                            FXMLLoader loaderxx = (FXMLLoader) primaryStage.getScene().getUserData();
+                            DefaultController controllerxx = loaderxx.getController();
+                            if (controllerxx instanceof BoardController) {
+                                ((BoardController) controllerxx).setState(0);
+                                ((BoardController) controllerxx).refresh();
 
                             }
                                 primaryStage.setScene(s);
@@ -203,7 +207,7 @@ public class GUI extends Application implements ViewInterface {
                         System.out.println("Type the position of first worker [x-y]");
                         if(xcontroller instanceof BoardController){
                             ((BoardController) xcontroller).setState(0);
-                            ((BoardController) xcontroller).setCss(message);
+                            ((BoardController) xcontroller).refresh();
                         }
 
                         primaryStage.setScene(s);
