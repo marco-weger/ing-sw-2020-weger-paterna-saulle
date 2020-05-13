@@ -247,12 +247,14 @@ public class BoardController extends DefaultController {
          return true;
     }
 
-    public void ChoseWorker(int x, int y) {
+    public boolean ChoseWorker(int x, int y) {
         for (SnapWorker sw : this.gui.getClient().getWorkers()) {
-            if (sw.row == 0 && sw.column == 0 && sw.name.equals(this.gui.getClient().getUsername()) && (Css.worker1 && sw.n == 1 || Css.worker2 && sw.n == 2)) {
+            if (sw.row == x && sw.column == y && sw.name.equals(this.gui.getClient().getUsername()) && (Css.worker1 && sw.n == 1 || Css.worker2 && sw.n == 2)) {
                 this.gui.getClient().sendMessage(new WorkerChoseClient(this.gui.getClient().getUsername(), sw.n));
+                return true;
             }
         }
+        return false;
     }
 
 
@@ -402,8 +404,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -428,8 +430,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -453,8 +455,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -478,8 +480,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -503,8 +505,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -528,8 +530,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -553,8 +555,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -578,8 +580,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -603,8 +605,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -628,8 +630,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -653,8 +655,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -678,8 +680,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -703,8 +705,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -728,8 +730,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -753,8 +755,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
 
         }
         if(state == 2){  //Move
@@ -778,8 +780,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
             Move(x,y);
@@ -801,8 +803,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
             Move(x,y);
@@ -824,8 +826,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
             Move(x,y);
@@ -847,8 +849,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
             Move(x,y);
@@ -871,8 +873,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
             Move(x,y);
@@ -894,8 +896,8 @@ public class BoardController extends DefaultController {
         }
 
         if(state == 1){   //ChoseWorker
-            ChoseWorker(x,y);
-            setState(4);
+            if(ChoseWorker(x,y)){
+            setState(4);}
         }
         if(state == 2){  //Move
             Move(x,y);

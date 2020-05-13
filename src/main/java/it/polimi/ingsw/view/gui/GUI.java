@@ -222,6 +222,7 @@ public class GUI extends Application implements ViewInterface {
                     loader = (FXMLLoader) primaryStage.getScene().getUserData();
                     controller = loader.getController();
                     if(controller instanceof BoardController){
+                        ((BoardController) controller).setCss(message);
                         ((BoardController) controller).refresh();
                         ((BoardController) controller).setState(1);
                     }
