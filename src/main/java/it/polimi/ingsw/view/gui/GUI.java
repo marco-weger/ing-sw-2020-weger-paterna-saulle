@@ -164,9 +164,8 @@ public class GUI extends Application implements ViewInterface {
                             FXMLLoader loaderxx = (FXMLLoader) primaryStage.getScene().getUserData();
                             DefaultController controllerxx = loaderxx.getController();
                             if (controllerxx instanceof BoardController) {
-                                ((BoardController) controllerxx).setState(0);
                                 ((BoardController) controllerxx).refresh();
-
+                                ((BoardController) controllerxx).setState(0);
                             }
                                 primaryStage.setScene(s);
                                 primaryStage.show();
@@ -206,8 +205,8 @@ public class GUI extends Application implements ViewInterface {
                         DefaultController xcontroller = xloader.getController();
                         System.out.println("Type the position of first worker [x-y]");
                         if(xcontroller instanceof BoardController){
-                            ((BoardController) xcontroller).setState(0);
                             ((BoardController) xcontroller).refresh();
+                            ((BoardController) xcontroller).setState(0);
                         }
 
                         primaryStage.setScene(s);
