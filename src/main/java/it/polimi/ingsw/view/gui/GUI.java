@@ -2,6 +2,8 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
+import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.commons.clientmessages.AnswerAbilityClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
@@ -12,6 +14,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -190,6 +194,19 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(QuestionAbilityServer message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("GOD ABILITY");
+        alert.setHeaderText("Do you want to use your God ability?");
+        alert.setContentText("Press OK or ");
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.YES) {
+                client.sendMessage(new AnswerAbilityClient(client.getUsername(),true, message.status));
+            }
+            if (response == ButtonType.NO){
+               client.sendMessage(new AnswerAbilityClient(client.getUsername(),false, message.status));
+
+           }
+        });
 
     }
 

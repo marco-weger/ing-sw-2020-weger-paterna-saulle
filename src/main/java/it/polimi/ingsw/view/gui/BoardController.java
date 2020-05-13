@@ -262,6 +262,11 @@ public class BoardController extends DefaultController {
         for (SnapCell cell : Cms.sc) {
             if (cell.row == x && cell.column == y) {
                 this.gui.getClient().sendMessage(new MoveClient(this.gui.getClient().getUsername(), x, y));
+                        for (SnapCell cellx : Cms.sc) {
+                            lighitdown(getCell(cellx.row,cellx.column));
+                        }
+
+
             }
         }
     }
@@ -281,7 +286,14 @@ public class BoardController extends DefaultController {
 
     public void lighitup(Button Cell){
         Image image = new Image("/it.polimi.ingsw/view/gui/img/button/allow.png");
-        Cell.setGraphic(new ImageView(image));
+        Cell.getStyleClass().remove("button, board");
+        Cell.getStyleClass().add("button, boardL");
+    }
+
+    public void lighitdown(Button Cell){
+        Image image = new Image("/it.polimi.ingsw/view/gui/img/button/allow.png");
+        Cell.getStyleClass().remove("button, boardL");
+        Cell.getStyleClass().add("button, board");
     }
 
 
