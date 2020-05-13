@@ -1211,7 +1211,7 @@ public class BoardController extends DefaultController {
     }
 
     public void no(ActionEvent actionEvent) {
-        this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(),true, Qas.status));
+        this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(),false, Qas.status));
         yes.getStyleClass().remove("yes");
         yes.getStyleClass().add("empty");
         no.getStyleClass().remove("no");
