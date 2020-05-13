@@ -51,12 +51,6 @@ public class BoardController extends DefaultController {
     Image floor3 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor3.png", towerSize, towerSize, true, false);
     Image dome = new Image("/it.polimi.ingsw/view/gui/img/tower/dome.png", towerSize, towerSize, true, false);
 
-    Image red = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png", pawnSize, pawnSize, false, false);
-    Image blu = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png", pawnSize, pawnSize, false, false);
-    Image yellow = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png", pawnSize, pawnSize, false, false);
-    Image bronze = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_bronze.png", pawnSize, pawnSize, false, false);
-    Image green = new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_green.png", pawnSize, pawnSize, false, false);
-
 
     @FXML
     Button cell00, cell01, cell02, cell03, cell04,
@@ -207,12 +201,73 @@ public class BoardController extends DefaultController {
         return null;
     }
 
+        public ImageView getBLock(int x, int y){
+        if(x == 0 && y == 0)
+            return block00;
+        if(x == 0 && y == 1)
+            return block01;
+        if(x == 0 && y == 2)
+            return block02;
+        if(x == 0 && y == 3)
+            return block03;
+        if(x == 0 && y == 4)
+            return block04;
+        if(x == 1 && y == 0)
+            return block10;
+        if(x == 1 && y == 1)
+            return block11;
+        if(x == 1 && y == 2)
+            return block12;
+        if(x == 1 && y == 3)
+            return block13;
+        if(x == 1 && y == 4)
+            return block14;
+        if(x == 2 && y == 0)
+            return block20;
+        if(x == 2 && y == 1)
+            return block21;
+        if(x == 2 && y == 2)
+            return block22;
+        if(x == 2 && y == 3)
+            return block23;
+        if(x == 2 && y == 4)
+            return block24;
+        if(x == 3 && y == 0)
+            return block30;
+        if(x == 3 && y == 1)
+            return block31;
+        if(x == 3 && y == 2)
+            return block32;
+        if(x == 3 && y == 3)
+            return block33;
+        if(x == 3 && y == 4)
+            return block34;
+        if(x == 4 && y == 0)
+            return block40;
+        if(x == 4 && y == 1)
+            return block41;
+        if(x == 4 && y == 2)
+            return block42;
+        if(x == 4 && y == 3)
+            return block43;
+        if(x == 4 && y == 4)
+            return block44;
+        return null;
+    }
+
     public void refresh() {
+        //update tower state
         for (SnapCell cell : this.gui.getClient().getBoard()) {
-               setLevel(getSquare(cell.row, cell.column),getConstruction(cell.level));
-
+            if(cell.level != 0) {
+                setLevel(getBLock(cell.row, cell.column), getConstruction(cell.level));
             }
+        }
+        //clean old workers position
+        for (SnapCell cell : this.gui.getClient().getBoard()) {
+                getSquare(cell.row, cell.column).setImage(null);
 
+        }
+        //get new workers position
         for(SnapPlayer p : this.gui.getClient().getPlayers())
             for (SnapWorker w : this.gui.getClient().getWorkers()){
                 if(w.name == p.name) {
@@ -220,7 +275,7 @@ public class BoardController extends DefaultController {
                     getSquare(w.row,w.column).setImage(p2);
                 }
             }
-        }
+    }
 
     public void setLevel(ImageView block, Image floor) {
         block.setImage(floor);
@@ -276,13 +331,33 @@ public class BoardController extends DefaultController {
         for (SnapCell cell : Cbs.sc) {
             if (cell.row == x && cell.column == y) {
                 this.gui.getClient().sendMessage(new BuildClient(this.gui.getClient().getUsername(), x, y));
-                for (SnapCell cellx : Cms.sc) {
-                            lighitdown(getCell(cellx.row,cellx.column));
-                        }
+                    for (SnapCell cellx : Cbs.sc) {
+                        lighitdown(getCell(cellx.row,cellx.column));
+                    }
+                    return true;
             }
-            return true;
         }
         return false;
+    }
+
+    public void setFloor(int x,int y) {
+        for (SnapCell cell : this.gui.getClient().getBoard()) {
+            if (cell.row == x && cell.column == y) {
+                if (cell.level == 1) {
+                    getBLock(x, y).setImage(floor1);
+                }
+                if (cell.level == 2) {
+                    getBLock(x, y).setImage(floor2);
+                }
+                if (cell.level == 3) {
+                    getBLock(x, y).setImage(floor3);
+                }
+                if (cell.level == 4) {
+                    getBLock(x, y).setImage(dome);
+                }
+            }
+
+        }
     }
 
 
@@ -362,6 +437,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                block00.setImage(new Image("/it.polimi.ingsw/view/gui/img/tower/floor1.png"));
                 setState(4);
             }
         }
@@ -388,6 +464,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3) {  //Build
             if (Build(x, y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -413,6 +490,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -438,6 +516,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -462,6 +541,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -488,6 +568,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -512,6 +593,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -536,6 +618,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -560,6 +643,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -584,6 +668,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -608,6 +693,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -632,6 +718,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -656,6 +743,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -680,6 +768,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -704,6 +793,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -728,6 +818,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -752,6 +843,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -776,6 +868,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -800,6 +893,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -824,6 +918,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -848,6 +943,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -872,6 +968,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -896,6 +993,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -921,6 +1019,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
@@ -945,6 +1044,7 @@ public class BoardController extends DefaultController {
         }
         if(state == 3){  //Build
             if(Build(x,y)) {
+                setFloor(x,y);
                 setState(4);
             }
         }
