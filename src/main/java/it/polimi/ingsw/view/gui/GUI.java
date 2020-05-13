@@ -119,6 +119,7 @@ public class GUI extends Application implements ViewInterface {
             ((BoardController) controller).setCms(message);
             ((BoardController) controller).showcheckmove(message);
             ((BoardController) controller).setState(2);
+            ((BoardController) controller).refresh();
         }
     }
 
@@ -132,6 +133,7 @@ public class GUI extends Application implements ViewInterface {
             ((BoardController) controller).setCbs(message);
             ((BoardController) controller).showcheckbuild(message);
             ((BoardController) controller).setState(3);
+            ((BoardController) controller).refresh();
         }
     }
 
