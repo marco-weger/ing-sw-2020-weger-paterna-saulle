@@ -186,9 +186,11 @@
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/no_pressed.png");
     -fx-background-size: 100% auto
 }
-.empty{
-    -fx-background-image: null;
+.cl{
+    -fx-background-color: transparent;
+    -fx-background-size: 100% auto
 }
-.empty:pressed{
-    -fx-background-image: null;
+.cl:pressed{
+    -fx-background-color: transparent;
+    -fx-background-size: 100% auto
 }

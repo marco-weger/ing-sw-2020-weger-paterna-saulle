@@ -247,7 +247,7 @@ public class CLI implements ViewInterface {
                     println(TextFormatting.COLOR_YELLOW + "TIMER: " + (message.timer == 0 ? "inf." : message.timer)+TextFormatting.RESET);
                     boolean go = true;
                     clearLine();
-                    print(COLOR_CPU +"Chose the worker to play with [x-y] " + TextFormatting.input());
+                    print(COLOR_CPU +"Choose the worker to play with [x-y] " + TextFormatting.input());
                     do {
                         c = readCell();
                         if(c != null){
@@ -261,7 +261,7 @@ public class CLI implements ViewInterface {
                         }
                         if(c != null && go){
                             clearLine();
-                            print(COLOR_CPU +"Selected worker isn't valid, chose the worker to play with [x-y] " + TextFormatting.input());
+                            print(COLOR_CPU +"Selected worker isn't valid, choose the worker to play with [x-y] " + TextFormatting.input());
                         }
                     } while(go && client.getContinueReading());
                     break;
@@ -302,7 +302,7 @@ public class CLI implements ViewInterface {
             // im the challenger
             ArrayList<CardName> chosen = new ArrayList<>();
 
-            println(COLOR_CPU +"You are the challenger! Chose "+client.getPlayers().size()+" card from:");
+            println(COLOR_CPU +"You are the challenger! Choose "+client.getPlayers().size()+" card from:");
             printCard(new ArrayList<>(Arrays.asList(CardName.values())));
 
             // first
@@ -433,7 +433,7 @@ public class CLI implements ViewInterface {
         int mode;
         do{
             clearLine();
-            print(COLOR_CPU + "Chose game mode (2 or 3 players) [2/3] " + TextFormatting.input());
+            print(COLOR_CPU + "Choose game mode (2 or 3 players) [2/3] " + TextFormatting.input());
             try
             {
                 String stringMode = read();
