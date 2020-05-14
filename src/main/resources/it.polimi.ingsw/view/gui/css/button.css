@@ -186,11 +186,11 @@
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/no_pressed.png");
     -fx-background-size: 100% auto
 }
-.clr{
-    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/empty.png");;
+.cl{
+    -fx-background-color: transparent;
     -fx-background-size: 100% auto
 }
-.clr:pressed{
-    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/empty_pressed.png");;
+.cl:pressed{
+    -fx-background-color: transparent;
     -fx-background-size: 100% auto
 }

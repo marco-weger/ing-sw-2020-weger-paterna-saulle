@@ -410,8 +410,8 @@ public class BoardController extends DefaultController {
         cell41.getStyleClass().add("board");
         cell42.getStyleClass().add("board");
         cell43.getStyleClass().add("board");
-        yes.getStyleClass().add("clr");
-        no.getStyleClass().add("clr");
+        yes.getStyleClass().add("cl");
+        no.getStyleClass().add("cl");
         setUpBanner(banner);
     }
 
@@ -427,13 +427,25 @@ public class BoardController extends DefaultController {
     }
 
     public void yOn(Button Cell){
-        Cell.getStyleClass().remove("empty");
+        Cell.getStyleClass().remove("cl");
         Cell.getStyleClass().add("yes");
     }
 
     public void yOff(Button Cell){
         Cell.getStyleClass().remove("yes");
-        Cell.getStyleClass().add("empty");
+        Cell.getStyleClass().add("cl");
+    }
+
+
+    public void nOn(Button Cell){
+        Cell.getStyleClass().remove("cl");
+        Cell.getStyleClass().add("no");
+    }
+
+
+    public void nOff(Button Cell){
+        Cell.getStyleClass().remove("no");
+        Cell.getStyleClass().add("cl");
     }
 
 
@@ -1208,8 +1220,7 @@ public class BoardController extends DefaultController {
 
     public void question(){
         yOn(yes);
-        no.getStyleClass().remove("clr");
-        no.getStyleClass().add("no");
+        nOn(no);
         banner.setText(questionTA.getText());
 
     }
@@ -1218,17 +1229,14 @@ public class BoardController extends DefaultController {
     public void yes(ActionEvent actionEvent) {
         this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(),true, Qas.status));
         yOff(yes);
-        no.getStyleClass().remove("no");
-        no.getStyleClass().add("clr");
+        nOff(no);
         refresh();
     }
 
     public void no(ActionEvent actionEvent) {
         this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(),false, Qas.status));
-        yes.getStyleClass().remove("yes");
-        no.getStyleClass().remove("no");
-        yes.getStyleClass().add("clr");
-        no.getStyleClass().add("clr");
+        yOff(yes);
+        nOff(no);
         refresh();
     }
 
