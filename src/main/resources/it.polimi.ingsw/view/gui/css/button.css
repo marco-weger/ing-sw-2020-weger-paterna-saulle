@@ -187,10 +187,10 @@
     -fx-background-size: 100% auto
 }
 .clr{
-    -fx-background-image: null;
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/empty.png");;
     -fx-background-size: 100% auto
 }
 .clr:pressed{
-    -fx-background-image: null;
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/empty_pressed.png");;
     -fx-background-size: 100% auto
 }

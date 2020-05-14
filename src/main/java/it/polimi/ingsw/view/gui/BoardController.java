@@ -276,6 +276,8 @@ public class BoardController extends DefaultController {
     }
 
     public void refresh() {
+        //yes.getStyle();
+        //no.getStyle();
         //update tower state
         for (SnapCell cell : this.gui.getClient().getBoard()) {
             if(cell.level != 0) {
@@ -424,6 +426,15 @@ public class BoardController extends DefaultController {
         Cell.getStyleClass().add("board");
     }
 
+    public void yOn(Button Cell){
+        Cell.getStyleClass().remove("empty");
+        Cell.getStyleClass().add("yes");
+    }
+
+    public void yOff(Button Cell){
+        Cell.getStyleClass().remove("yes");
+        Cell.getStyleClass().add("empty");
+    }
 
 
     /**
@@ -1196,9 +1207,8 @@ public class BoardController extends DefaultController {
         }
 
     public void question(){
-        yes.getStyleClass().remove("clr");
+        yOn(yes);
         no.getStyleClass().remove("clr");
-        yes.getStyleClass().add("yes");
         no.getStyleClass().add("no");
         banner.setText(questionTA.getText());
 
@@ -1207,11 +1217,9 @@ public class BoardController extends DefaultController {
     //TODO rendere safe yes e no
     public void yes(ActionEvent actionEvent) {
         this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(),true, Qas.status));
-        yes.getStyleClass().remove("yes");
-        yes.getStyleClass().add("clr");
+        yOff(yes);
         no.getStyleClass().remove("no");
         no.getStyleClass().add("clr");
-        banner.setText("");
         refresh();
     }
 
@@ -1221,7 +1229,6 @@ public class BoardController extends DefaultController {
         no.getStyleClass().remove("no");
         yes.getStyleClass().add("clr");
         no.getStyleClass().add("clr");
-        banner.setText("");
         refresh();
     }
 

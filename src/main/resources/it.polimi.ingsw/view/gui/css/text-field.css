@@ -57,4 +57,5 @@
 .banner{
     -fx-background-color: transparent;
     -fx-text-fill: aliceblue;
+    -fx-alignment: center;
 }
