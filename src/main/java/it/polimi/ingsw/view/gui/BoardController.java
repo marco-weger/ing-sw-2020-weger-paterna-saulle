@@ -7,10 +7,13 @@ import it.polimi.ingsw.commons.clientmessages.*;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.Client;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,7 +28,7 @@ import java.util.List;
 public class BoardController extends DefaultController {
 
 
-    Font f = Font.loadFont(getClass().getResourceAsStream("/it.polimi.ingsw/view/gui/font/Nefelibata-Brush.ttf"),18);
+    Font f = Font.loadFont(getClass().getResourceAsStream("/it.polimi.ingsw/view/gui/font/Nefelibata-Brush.ttf"),20);
 
     int towerSize = 80;
     int pawnSize = 40;
@@ -39,15 +42,12 @@ public class BoardController extends DefaultController {
     public void setCss(CurrentStatusServer css) {
         Css = css;
     }
-
     public void setCms(CheckMoveServer cms) {
         Cms = cms;
     }
-
     public void setCbs(CheckBuildServer cbs) {
         Cbs = cbs;
     }
-
     public void setQas(QuestionAbilityServer qas) { Qas = qas; }
 
 
@@ -61,8 +61,13 @@ public class BoardController extends DefaultController {
 
     @FXML
     TextField banner;
-
-    Text questionab = new Text("Do you want to use you God ability?");
+    Text workerITA = new Text("Choose the position of the first worker");
+    Text workerITA2 = new Text("Choose the position of the second worker");
+    Text workerCTA = new Text("Choose a Worker");
+    Text moveTA = new Text("Choose the cell where you want to move");
+    Text buildTA = new Text("Choose the cell where you want to build");
+    Text opponentTA = new Text("Opponent's turn");
+    Text questionTA = new Text("Do you want to use you God ability?");
 
     @FXML
     Button yes,no;
@@ -403,11 +408,9 @@ public class BoardController extends DefaultController {
         cell41.getStyleClass().add("board");
         cell42.getStyleClass().add("board");
         cell43.getStyleClass().add("board");
-        cell44.getStyleClass().add("board");
-
-
-
-
+        yes.getStyleClass().add("clr");
+        no.getStyleClass().add("clr");
+        setUpBanner(banner);
     }
 
 
@@ -1193,10 +1196,11 @@ public class BoardController extends DefaultController {
         }
 
     public void question(){
+        yes.getStyleClass().remove("clr");
+        no.getStyleClass().remove("clr");
         yes.getStyleClass().add("yes");
         no.getStyleClass().add("no");
-        setUpBanner(banner);
-        banner.setText("Do You Want To Use Your God Ability?");
+        banner.setText(questionTA.getText());
 
     }
 
@@ -1204,24 +1208,33 @@ public class BoardController extends DefaultController {
     public void yes(ActionEvent actionEvent) {
         this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(),true, Qas.status));
         yes.getStyleClass().remove("yes");
-        yes.getStyleClass().add("empty");
+        yes.getStyleClass().add("clr");
         no.getStyleClass().remove("no");
-        no.getStyleClass().add("empty");
+        no.getStyleClass().add("clr");
         banner.setText("");
+        refresh();
     }
 
     public void no(ActionEvent actionEvent) {
         this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(),false, Qas.status));
         yes.getStyleClass().remove("yes");
-        yes.getStyleClass().add("empty");
         no.getStyleClass().remove("no");
-        no.getStyleClass().add("empty");
+        yes.getStyleClass().add("clr");
+        no.getStyleClass().add("clr");
         banner.setText("");
         refresh();
     }
 
     public void setUpBanner(TextField tf){
-        tf.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
         tf.setFont(f);
+        tf.focusedProperty().addListener(new ChangeListener<Boolean>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+            {
+                tf.setFont(f);
+            }
+        });
     }
+
 }

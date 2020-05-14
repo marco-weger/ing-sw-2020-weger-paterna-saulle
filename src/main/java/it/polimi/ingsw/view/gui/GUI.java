@@ -378,8 +378,8 @@ public class GUI extends Application implements ViewInterface {
         Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
-/*
-         Platform.runLater(() -> {
+
+       /*  Platform.runLater(() -> {
                         Scene s = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
                         FXMLLoader xloader = (FXMLLoader) s.getUserData();
                         DefaultController xcontroller = xloader.getController();
@@ -387,18 +387,17 @@ public class GUI extends Application implements ViewInterface {
                         if(xcontroller instanceof BoardController){
                             ((BoardController) xcontroller).square00.setImage(new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png"));
                             ((BoardController) xcontroller).block00.setImage(new Image("/it.polimi.ingsw/view/gui/img/tower/floor1.png"));
-                            ((BoardController) xcontroller).question();
                             ((BoardController) xcontroller).getBLock(2,2).setImage(((BoardController) xcontroller).floor2);
+                            ((BoardController) xcontroller).question();
                             ((BoardController) xcontroller).refresh();
-                            //((BoardController) xcontroller).refresh();
-                            //((BoardController) xcontroller).refresh();
-                            ((BoardController) xcontroller).setup();
+
+
                         }
 
                         primaryStage.setScene(s);
                         primaryStage.show();
-                    });
-*/
+                    });*/
+
 
     }
 
