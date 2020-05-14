@@ -410,6 +410,7 @@ public class BoardController extends DefaultController {
         cell41.getStyleClass().add("board");
         cell42.getStyleClass().add("board");
         cell43.getStyleClass().add("board");
+        cell44.getStyleClass().add("board");
         yes.getStyleClass().add("cl");
         no.getStyleClass().add("cl");
         setUpBanner(banner);
