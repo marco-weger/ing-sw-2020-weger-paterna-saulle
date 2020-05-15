@@ -197,9 +197,7 @@
 .banner{
     -fx-background-color: rgba(0,0,0,0);
     -fx-text-alignment: center;
-    -fx-focus-color: aliceblue !important;
-    -fx-prompt-text-fill: aliceblue !important;
-    -fx-text-inner-color: aliceblue !important;
+    -fx-text-fill: white !important;
     -fx-font-size: 26px;
     -fx-font-family: Nefelibata-Brush;
 }
