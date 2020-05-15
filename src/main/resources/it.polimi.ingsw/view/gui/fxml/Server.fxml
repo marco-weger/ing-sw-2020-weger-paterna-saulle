@@ -11,7 +11,11 @@
         </AnchorPane>
     </top>
     <bottom>
-        <AnchorPane fx:id="bottom" prefHeight="138.0" prefWidth="950.0" BorderPane.alignment="CENTER" />
+        <AnchorPane fx:id="bottom" prefHeight="138.0" prefWidth="950.0" BorderPane.alignment="CENTER">
+         <children>
+             <Button fx:id="banner" layoutX="248.0" layoutY="56.0" prefHeight="27.0" prefWidth="409.0" styleClass="banner" stylesheets="@../css/button.css" />
+         </children>
+        </AnchorPane>
     </bottom>
     <center>
         <AnchorPane fx:id="center" maxHeight="522.0" maxWidth="950.0" minHeight="522.0" minWidth="950.0" prefHeight="522.0" prefWidth="950.0" BorderPane.alignment="CENTER">
@@ -22,7 +26,7 @@
              <TextField fx:id="ip4" layoutX="556.0" layoutY="160.0" onAction="#ip4OnAction" prefHeight="25.0" prefWidth="81.0" promptText="1" styleClass="text-field" stylesheets="@../css/text-field.css" />
             <TextField fx:id="port" layoutX="369.0" layoutY="239.0" onAction="#portOnAction" prefHeight="25.0" prefWidth="212.0" promptText="Port" styleClass="text-field" stylesheets="@../css/text-field.css" />
             <Button fx:id="buttonConnect" layoutX="406.0" layoutY="359.0" mnemonicParsing="false" onAction="#connection" prefHeight="25.0" prefWidth="138.0" styleClass="button, connect" stylesheets="@../css/button.css" />
-         </children>
+            </children>
         </AnchorPane>
     </center>
 </BorderPane>

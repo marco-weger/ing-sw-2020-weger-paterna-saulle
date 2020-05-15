@@ -4,31 +4,53 @@ import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.clientmessages.*;
-import it.polimi.ingsw.commons.servermessages.*;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.commons.servermessages.CheckBuildServer;
+import it.polimi.ingsw.commons.servermessages.CheckMoveServer;
+import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
+import it.polimi.ingsw.commons.servermessages.QuestionAbilityServer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BoardController extends DefaultController {
 
+    @FXML
+    public Button buttonSelected1;
 
-    Font f = Font.loadFont(getClass().getResourceAsStream("/it.polimi.ingsw/view/gui/font/Nefelibata-Brush.ttf"),20);
+    @FXML
+    public Button buttonSelected2;
+
+    @FXML
+    public Button buttonSelected3;
+
+    @FXML
+    public Button buttonGod1;
+
+    @FXML
+    public Button buttonGod2;
+
+    @FXML
+    public Button buttonGod3;
+
+    @FXML
+    public Button buttonName1;
+
+    @FXML
+    public Button buttonName2;
+
+    @FXML
+    public Button buttonName3;
+
+    @FXML
+    public Button buttonDescription;
+
+    //Font f = Font.loadFont(getClass().getResourceAsStream("/it.polimi.ingsw/view/gui/font/Nefelibata-Brush.ttf"),20);
 
     int towerSize = 80;
     int pawnSize = 40;
@@ -49,9 +71,6 @@ public class BoardController extends DefaultController {
         Cbs = cbs;
     }
     public void setQas(QuestionAbilityServer qas) { Qas = qas; }
-
-
-
 
     Image floor1 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor1.png", towerSize, towerSize, true, false);
     Image floor2 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor2.png", towerSize, towerSize, true, false);
@@ -99,6 +118,210 @@ public class BoardController extends DefaultController {
     public void initialize() {
         super.initialize();
         super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_match.png"));
+
+        double w = 120;
+        buttonSelected1.setPrefSize(w,60);
+        buttonSelected2.setPrefSize(w,60);
+        buttonSelected3.setPrefSize(w,60);
+
+        double h = 130;
+        w = 130;
+        buttonGod1.setMinSize(w,h);
+        buttonGod1.setMaxSize(w,h);
+        buttonGod1.setPrefSize(w,h);
+        buttonGod2.setMinSize(w,h);
+        buttonGod2.setMaxSize(w,h);
+        buttonGod2.setPrefSize(w,h);
+        buttonGod3.setMinSize(w,h);
+        buttonGod3.setMaxSize(w,h);
+        buttonGod3.setPrefSize(w,h);
+
+        h = 70;
+        w = 120;
+        buttonName3.setMinSize(w,h);
+        buttonName3.setMaxSize(w,h);
+        buttonName3.setPrefSize(w,h);
+        buttonName1.setMinSize(w,h);
+        buttonName1.setMaxSize(w,h);
+        buttonName1.setPrefSize(w,h);
+        buttonName2.setMinSize(w,h);
+        buttonName2.setMaxSize(w,h);
+        buttonName2.setPrefSize(w,h);
+
+        buttonDescription.setMinSize(375,200);
+        buttonDescription.setMaxSize(375,200);
+        buttonDescription.setPrefSize(375,200);
+    }
+
+    @Override
+    public void setup(){
+        int start = 550;
+        buttonGod1.getStyleClass().clear();
+        buttonGod2.getStyleClass().clear();
+        buttonGod3.getStyleClass().clear();
+
+        buttonName1.setLayoutY(10);
+        buttonName2.setLayoutY(10);
+        buttonName3.setLayoutY(10);
+
+        buttonDescription.setLayoutX(start + (gui.sceneWidth-start)/2 - buttonDescription.getPrefWidth()/2);
+        buttonDescription.setLayoutY(gui.sceneHeight-bottom.getPrefHeight()-top.getPrefHeight()-buttonDescription.getPrefHeight()-10);
+
+        setDescription("");
+
+        if(gui.getClient().getPlayers().size() == 3){
+            int offset = 30;
+            if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(0).name)){
+                buttonGod1.getStyleClass().addAll("button",gui.getClient().getPlayers().get(1).card.toString().toLowerCase());
+                buttonName1.setText(gui.getClient().getPlayers().get(1).name + "\n" + gui.getClient().getPlayers().get(1).card.toString());
+                buttonGod3.getStyleClass().addAll("button",gui.getClient().getPlayers().get(2).card.toString().toLowerCase());
+                buttonName3.setText(gui.getClient().getPlayers().get(2).name + "\n" + gui.getClient().getPlayers().get(2).card.toString());
+            } else if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(1).name)){
+                buttonGod1.getStyleClass().addAll("button",gui.getClient().getPlayers().get(0).card.toString().toLowerCase());
+                buttonName1.setText(gui.getClient().getPlayers().get(0).name + "\n" + gui.getClient().getPlayers().get(0).card.toString());
+                buttonGod3.getStyleClass().addAll("button",gui.getClient().getPlayers().get(2).card.toString().toLowerCase());
+                buttonName3.setText(gui.getClient().getPlayers().get(2).name + "\n" + gui.getClient().getPlayers().get(2).card.toString());
+            } else if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(2).name)){
+                buttonGod1.getStyleClass().addAll("button",gui.getClient().getPlayers().get(0).card.toString().toLowerCase());
+                buttonName1.setText(gui.getClient().getPlayers().get(0).name + "\n" + gui.getClient().getPlayers().get(0).card.toString());
+                buttonGod3.getStyleClass().addAll("button",gui.getClient().getPlayers().get(1).card.toString().toLowerCase());
+                buttonName3.setText(gui.getClient().getPlayers().get(1).name + "\n" + gui.getClient().getPlayers().get(1).card.toString());
+            }
+
+            buttonGod2.getStyleClass().addAll("button",gui.getClient().getMyPlayer().card.toString().toLowerCase());
+            buttonSelected2.getStyleClass().addAll("button","podiumGold");
+            buttonName2.setText(gui.getClient().getMyPlayer().name + "\n" + gui.getClient().getMyPlayer().card);
+
+            buttonName1.setLayoutX(start + (gui.sceneWidth-start)/4 - buttonName1.getPrefWidth()/2-offset);
+            buttonName2.setLayoutX(start + (gui.sceneWidth-start)/2 - buttonName2.getPrefWidth()/2);
+            buttonName3.setLayoutX(start + 3*(gui.sceneWidth-start)/4 - buttonName3.getPrefWidth()/2+offset);
+
+            buttonSelected1.setLayoutX(start + (gui.sceneWidth-start)/4 - buttonSelected1.getPrefWidth()/2-offset);
+            buttonSelected2.setLayoutX(start + (gui.sceneWidth-start)/2 - buttonSelected2.getPrefWidth()/2);
+            buttonSelected3.setLayoutX(start + 3*(gui.sceneWidth-start)/4 - buttonSelected3.getPrefWidth()/2+offset);
+
+            buttonGod1.setLayoutX(start + (gui.sceneWidth-start)/4 - buttonGod1.getPrefWidth()/2-offset);
+            buttonGod2.setLayoutX(start + (gui.sceneWidth-start)/2 - buttonGod2.getPrefWidth()/2);
+            buttonGod3.setLayoutX(start + 3*(gui.sceneWidth-start)/4 - buttonGod3.getPrefWidth()/2+offset);
+
+            buttonName2.getStyleClass().add(3,"nameSelected");
+        } else if(gui.getClient().getPlayers().size() == 2){
+            int offset = 30;
+
+            if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(0).name)){
+                buttonGod2.getStyleClass().addAll("button",gui.getClient().getPlayers().get(1).card.toString().toLowerCase());
+                buttonName2.setText(gui.getClient().getPlayers().get(1).name + "\n" + gui.getClient().getPlayers().get(1).card.toString());
+            } else if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(1).name)){
+                buttonGod2.getStyleClass().addAll("button",gui.getClient().getPlayers().get(0).card.toString().toLowerCase());
+                buttonName2.setText(gui.getClient().getPlayers().get(0).name + "\n" + gui.getClient().getPlayers().get(0).card.toString());
+            }
+
+            buttonGod1.getStyleClass().addAll("button",gui.getClient().getMyPlayer().card.toString().toLowerCase());
+            buttonSelected1.getStyleClass().addAll("button","podiumGold");
+            buttonName1.setText(gui.getClient().getMyPlayer().name + "\n" + gui.getClient().getMyPlayer().card);
+
+            buttonName1.setLayoutX(start + (gui.sceneWidth-start)/3 - buttonName1.getPrefWidth()/2-offset);
+            buttonName2.setLayoutX(start + 2*(gui.sceneWidth-start)/3 - buttonName2.getPrefWidth()/2+offset);
+
+            buttonSelected1.setLayoutX(start + (gui.sceneWidth-start)/3 - buttonSelected1.getPrefWidth()/2-offset);
+            buttonSelected2.setLayoutX(start + 2*(gui.sceneWidth-start)/3 - buttonSelected1.getPrefWidth()/2+offset);
+
+            buttonGod1.setLayoutX(start + (gui.sceneWidth-start)/3 - buttonGod1.getPrefWidth()/2-offset);
+            buttonGod2.setLayoutX(start + 2*(gui.sceneWidth-start)/3 - buttonGod2.getPrefWidth()/2+offset);
+            buttonGod3.setVisible(false); buttonName3.setVisible(false); buttonSelected3.setVisible(false);
+
+            buttonName1.getStyleClass().add(3,"nameSelected");
+        }
+
+        buttonSelected1.setLayoutY(210);
+        buttonSelected2.setLayoutY(210);
+        buttonSelected3.setLayoutY(210);
+        buttonGod1.setLayoutY(100);
+        buttonGod2.setLayoutY(100);
+        buttonGod3.setLayoutY(100);
+
+        cell00.getStyleClass().add("board");
+        cell01.getStyleClass().add("board");
+        cell02.getStyleClass().add("board");
+        cell03.getStyleClass().add("board");
+        cell04.getStyleClass().add("board");
+        cell10.getStyleClass().add("board");
+        cell11.getStyleClass().add("board");
+        cell12.getStyleClass().add("board");
+        cell13.getStyleClass().add("board");
+        cell14.getStyleClass().add("board");
+        cell20.getStyleClass().add("board");
+        cell21.getStyleClass().add("board");
+        cell22.getStyleClass().add("board");
+        cell23.getStyleClass().add("board");
+        cell24.getStyleClass().add("board");
+        cell30.getStyleClass().add("board");
+        cell31.getStyleClass().add("board");
+        cell32.getStyleClass().add("board");
+        cell33.getStyleClass().add("board");
+        cell34.getStyleClass().add("board");
+        cell40.getStyleClass().add("board");
+        cell41.getStyleClass().add("board");
+        cell42.getStyleClass().add("board");
+        cell43.getStyleClass().add("board");
+        yes.getStyleClass().add("cl");
+        no.getStyleClass().add("cl");
+        setUpBanner(banner);
+
+        setDescription(gui.getClient().getMyPlayer().card.name());
+    }
+
+    public void god1OnAction(ActionEvent actionEvent) {
+        setDescription(buttonName1.getText().split("\n")[1]);
+
+        while(buttonName3.getStyleClass().size() > 3)
+            buttonName3.getStyleClass().remove(3);
+        while(buttonName2.getStyleClass().size() > 3)
+            buttonName2.getStyleClass().remove(3);
+
+        buttonName1.getStyleClass().add(3,"nameSelected");
+    }
+    public void god2OnAction(ActionEvent actionEvent) {
+        setDescription(buttonName2.getText().split("\n")[1]);
+
+        while(buttonName1.getStyleClass().size() > 3)
+            buttonName1.getStyleClass().remove(3);
+        while(buttonName3.getStyleClass().size() > 3)
+            buttonName3.getStyleClass().remove(3);
+
+        buttonName2.getStyleClass().add(3,"nameSelected");
+    }
+    public void god3OnAction(ActionEvent actionEvent) {
+        setDescription(buttonName3.getText().split("\n")[1]);
+
+        while(buttonName1.getStyleClass().size() > 3)
+            buttonName1.getStyleClass().remove(3);
+        while(buttonName2.getStyleClass().size() > 3)
+            buttonName2.getStyleClass().remove(3);
+
+        buttonName3.getStyleClass().add(3,"nameSelected");
+    }
+
+    public void setDescription(String name){
+        try{
+            String[] splitted = new String[0];
+            for(SnapPlayer p : gui.getClient().getPlayers())
+                if(p.card.toString().equals(name))
+                    splitted = p.card.getDescription().split(" ");
+            String desc = "";
+            int cc = 0;
+            for(int i=0; i<splitted.length; i++){
+                cc += splitted[i].length();
+                desc += splitted[i];
+                if(cc > 30){
+                    cc = 0;
+                    desc += (i+1 == splitted.length ? "" : "\n");
+                } else desc += " ";
+            }
+            buttonDescription.setText(desc);
+        } catch (Exception ex){
+            buttonDescription.setText("");
+        }
     }
 
     public Image getConstruction(int lvl){
@@ -381,40 +604,6 @@ public class BoardController extends DefaultController {
 
         }
     }
-
-
-
-    @Override
-    public void setup(){
-        cell00.getStyleClass().add("board");
-        cell01.getStyleClass().add("board");
-        cell02.getStyleClass().add("board");
-        cell03.getStyleClass().add("board");
-        cell04.getStyleClass().add("board");
-        cell10.getStyleClass().add("board");
-        cell11.getStyleClass().add("board");
-        cell12.getStyleClass().add("board");
-        cell13.getStyleClass().add("board");
-        cell14.getStyleClass().add("board");
-        cell20.getStyleClass().add("board");
-        cell21.getStyleClass().add("board");
-        cell22.getStyleClass().add("board");
-        cell23.getStyleClass().add("board");
-        cell24.getStyleClass().add("board");
-        cell30.getStyleClass().add("board");
-        cell31.getStyleClass().add("board");
-        cell32.getStyleClass().add("board");
-        cell33.getStyleClass().add("board");
-        cell34.getStyleClass().add("board");
-        cell40.getStyleClass().add("board");
-        cell41.getStyleClass().add("board");
-        cell42.getStyleClass().add("board");
-        cell43.getStyleClass().add("board");
-        yes.getStyleClass().add("cl");
-        no.getStyleClass().add("cl");
-        setUpBanner(banner);
-    }
-
 
     public void lighitup(Button Cell){
         Cell.getStyleClass().remove("board");
@@ -1238,18 +1427,6 @@ public class BoardController extends DefaultController {
         yOff(yes);
         nOff(no);
         refresh();
-    }
-
-    public void setUpBanner(TextField tf){
-        tf.setFont(f);
-        tf.focusedProperty().addListener(new ChangeListener<Boolean>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-            {
-                tf.setFont(f);
-            }
-        });
     }
 
 }

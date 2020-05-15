@@ -160,5 +160,17 @@ public class DefaultController{
             }
         });
     }
+
+    public void setUpBanner(TextField tf){
+        tf.setFont(f);
+        tf.focusedProperty().addListener(new ChangeListener<Boolean>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+            {
+                tf.setFont(f);
+            }
+        });
+    }
 }
 

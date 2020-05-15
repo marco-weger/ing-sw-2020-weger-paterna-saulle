@@ -17,7 +17,7 @@
    <center>
       <AnchorPane fx:id="center" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TextArea fx:id="textAreaLobby" layoutX="278.0" layoutY="162.0" prefHeight="200.0" prefWidth="450.0" styleClass="text-area" stylesheets="@../css/text-field.css" />
+            <Button fx:id="buttonLobby" layoutX="278.0" layoutY="162.0" prefHeight="200.0" prefWidth="450.0" styleClass="lobby" stylesheets="@../css/text-field.css" />
             <ImageView fx:id="imageLobby" fitHeight="112.0" fitWidth="537.0" layoutX="207.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>

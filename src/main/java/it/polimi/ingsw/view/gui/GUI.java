@@ -1,14 +1,10 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
-import it.polimi.ingsw.commons.Status;
-import it.polimi.ingsw.commons.clientmessages.AnswerAbilityClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -16,21 +12,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
-
-
 
 public class GUI extends Application implements ViewInterface {
 
@@ -74,7 +65,7 @@ public class GUI extends Application implements ViewInterface {
 
     public Scene load(String file){
         try {
-            System.out.println(file);
+            //System.out.println(file);
             FXMLLoader loader = new FXMLLoader(getClass().getResource(file));
             root = loader.load();
             defaultcontroller = loader.getController();
@@ -145,6 +136,7 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(CardChosenServer message) {
+        getPlayerByName(message.player).card = message.cardName;
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
         if(controller instanceof BoardController){
@@ -171,20 +163,20 @@ public class GUI extends Application implements ViewInterface {
         else {
             for (int i = 0; i < client.getPlayers().size() - 1; i++) {
                 if (client.getPlayers().get(i).name.equals(message.player) && client.getPlayers().get(i + 1).name.equals(client.getUsername()) && message.worker == 2) {
-                        Platform.runLater(() -> {
-                            Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
-                            FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
-                            DefaultController controllerx = loader2.getController();
+                    Platform.runLater(() -> {
+                        Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
+                        FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
+                        DefaultController controllerx = loader2.getController();
 
-                            if (controllerx instanceof BoardController) {
-                                ((BoardController) controllerx).setup();
-                                ((BoardController) controllerx).banner.setText(((BoardController) controllerx).workerITA.getText());
-                                ((BoardController) controllerx).setState(0);
-                                ((BoardController) controllerx).refresh();
-                                primaryStage.setScene(sn);
-                                primaryStage.show();
-                            }
-                        });
+                        if (controllerx instanceof BoardController) {
+                            controllerx.setup();
+                            ((BoardController) controllerx).banner.setText(((BoardController) controllerx).workerITA.getText());
+                            ((BoardController) controllerx).setState(0);
+                            ((BoardController) controllerx).refresh();
+                            primaryStage.setScene(sn);
+                            primaryStage.show();
+                        }
+                    });
                 }
             }
 
@@ -228,7 +220,7 @@ public class GUI extends Application implements ViewInterface {
                         if(xcontroller instanceof BoardController){
                             ((BoardController) xcontroller).refresh();
                             ((BoardController) xcontroller).banner.setText(((BoardController) xcontroller).workerITA.getText());
-                            ((BoardController) xcontroller).setup();
+                            xcontroller.setup();
                             ((BoardController) xcontroller).setState(0);
                         }
 
@@ -284,8 +276,6 @@ public class GUI extends Application implements ViewInterface {
             ((BoardController) controller).refresh();
         }
     }
-
-
 
     @Override
     public void handleMessage(AvailableCardServer message) {
@@ -344,21 +334,20 @@ public class GUI extends Application implements ViewInterface {
             FXMLLoader loader = (FXMLLoader) s.getUserData();
             DefaultController controller = loader.getController();
             if(controller instanceof LobbyController){
-                ((LobbyController) controller).textAreaLobby.setEditable(false);
                 for(int i=0; i<message.players.size(); i++){
-                    ((LobbyController) controller).textAreaLobby.setText(((LobbyController) controller).textAreaLobby.getText()+"\n"+message.players.get(i));
+                    ((LobbyController) controller).buttonLobby.setText(((LobbyController) controller).buttonLobby.getText()+message.players.get(i)
+                            +(i+1 == message.players.size() ? "" : "\n"));
                 }
 
-            for(int i=0;i<client.getPlayers().size();i++){
-                if(i==0)
-                    client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png";
-                else if(i==1)
-                    client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png";
-                else if(i==2)
-                    client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png";
+                for(int i=0;i<client.getPlayers().size();i++){
+                    if(i==0)
+                        client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png";
+                    else if(i==1)
+                        client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png";
+                    else if(i==2)
+                        client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png";
+                }
             }
-    }
-
             primaryStage.setScene(s);
             primaryStage.show();
         });
@@ -421,28 +410,39 @@ public class GUI extends Application implements ViewInterface {
         Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
+        /*
+        SnapPlayer p = new SnapPlayer("asdasd");
+        p.card = CardName.ARTEMIS;
+        client.getPlayers().add(p);
+        p = new SnapPlayer("fdggh");
+        p.card = CardName.MINOTAUR;
+        client.getPlayers().add(p);
+        p = new SnapPlayer("dfgds");
+        p.card = CardName.DEMETER;
+        client.getPlayers().add(p);
+        client.setUsername("fdggh");
 
-       /*  Platform.runLater(() -> {
-                        Scene s = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
-                        FXMLLoader xloader = (FXMLLoader) s.getUserData();
-                        DefaultController xcontroller = xloader.getController();
-                        System.out.println("Type the position of first worker [x-y]");
-                        if(xcontroller instanceof BoardController){
-                            ((BoardController) xcontroller).square00.setImage(new Image("/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png"));
-                            ((BoardController) xcontroller).block00.setImage(new Image("/it.polimi.ingsw/view/gui/img/tower/floor1.png"));
-                            ((BoardController) xcontroller).getBLock(2,2).setImage(((BoardController) xcontroller).floor2);
-                            ((BoardController) xcontroller).question();
-                            ((BoardController) xcontroller).refresh();
+        Platform.runLater(() -> {
+            Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
+            FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
+            DefaultController controllerx = loader2.getController();
 
-
-                        }
-
-                        primaryStage.setScene(s);
-                        primaryStage.show();
-                    });*/
-
-
+            if (controllerx instanceof BoardController) {
+                controllerx.setup();
+                ((BoardController) controllerx).banner.setText(((BoardController) controllerx).workerITA.getText());
+                ((BoardController) controllerx).setState(0);
+                ((BoardController) controllerx).refresh();
+                primaryStage.setScene(sn);
+                primaryStage.show();
+            }
+        });
+         */
     }
 
-
+    public SnapPlayer getPlayerByName(String name){
+        for(SnapPlayer p : client.getPlayers())
+            if(p.name.equals(name))
+                return p;
+        return null;
+    }
 }

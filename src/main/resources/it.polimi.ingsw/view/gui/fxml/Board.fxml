@@ -99,6 +99,17 @@
                <Button fx:id="cell42" layoutX="222.0" layoutY="406.0" mnemonicParsing="false" onAction="#cell42" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
                <Button fx:id="cell43" layoutX="317.0" layoutY="406.0" mnemonicParsing="false" onAction="#cell43" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
                <Button fx:id="cell44" layoutX="404.0" layoutY="406.0" mnemonicParsing="false" onAction="#cell44" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/button.css" />
+
+               <Button fx:id="buttonSelected1" layoutX="54.0" layoutY="298.0" mnemonicParsing="false" onAction="#god1OnAction" styleClass="button, podium" stylesheets="@../css/button.css" />
+               <Button fx:id="buttonSelected2" layoutX="54.0" layoutY="298.0" mnemonicParsing="false" onAction="#god2OnAction" styleClass="button, podium" stylesheets="@../css/button.css" />
+               <Button fx:id="buttonSelected3" layoutX="54.0" layoutY="298.0" mnemonicParsing="false" onAction="#god3OnAction" styleClass="button, podium" stylesheets="@../css/button.css" />
+               <Button fx:id="buttonGod1" layoutX="54.0" layoutY="298.0" mnemonicParsing="false" onAction="#god1OnAction" styleClass="button" stylesheets="@../css/button.css" />
+               <Button fx:id="buttonGod2" layoutX="182.0" layoutY="292.0" mnemonicParsing="false" onAction="#god2OnAction" styleClass="button" stylesheets="@../css/button.css"  />
+               <Button fx:id="buttonGod3" layoutX="324.0" layoutY="288.0" mnemonicParsing="false" onAction="#god3OnAction" styleClass="button" stylesheets="@../css/button.css" />
+               <Button fx:id="buttonName1" layoutX="251.0" layoutY="387.0" onAction="#god1OnAction" styleClass="name, name1" stylesheets="@../css/text-field.css" />
+               <Button fx:id="buttonName2" layoutX="251.0" layoutY="387.0" onAction="#god2OnAction" styleClass="name, name2" stylesheets="@../css/text-field.css" />
+               <Button fx:id="buttonName3" layoutX="251.0" layoutY="387.0" onAction="#god3OnAction" styleClass="name, name3" stylesheets="@../css/text-field.css" />
+               <Button fx:id="buttonDescription" styleClass="boardDescription" stylesheets="@../css/text-field.css" />
             </AnchorPane>
          </children>
       </StackPane>

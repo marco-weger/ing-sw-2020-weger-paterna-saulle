@@ -4,42 +4,38 @@
     -fx-prompt-text-fill: rgba(0,0,0,0.5);
     -fx-font-size: 26px;
     -fx-font-weight: bold;
+    /* -fx-cursor: url("/it.polimi.ingsw/view/gui/img/pointer.png") */
 }
 .error {
     -fx-text-box-border: red !important;
     -fx-focus-color: red !important;
 }
-.text-area {
+.lobby {
     -fx-focus-color: black ;
     -fx-prompt-text-fill: rgba(0,0,0,0.5);
     -fx-font-size: 26px;
     -fx-font-weight: bold;
     -fx-text-alignment: center;
+    -fx-font-family: Nefelibata-Brush;
 
-    -fx-border-radius: 10 10 10 10;
-    -fx-background-radius: 10 10 10 10;
-}
-.text-area, .text-area .viewport, .text-area .content {
     -fx-background-color: rgba(255,255,255,0.3);
-
     -fx-border-radius: 10 10 10 10;
     -fx-background-radius: 10 10 10 10;
 }
-.text-area .text {
+.lobby .text {
     -fx-line-spacing: 0px;
 }
-.text-area .content {
-    -fx-cursor: url('../img/pointer.png');
-}
 .cardDescription{
-    -fx-focus-color: black;
-    -fx-background-color: rgba(255,255,255,0) !important;
-    -fx-font-size: 22px;
+    -fx-focus-color: black ;
+    -fx-prompt-text-fill: rgba(0,0,0,0.5);
     -fx-font-weight: bold;
     -fx-text-alignment: center;
-    -fx-border-radius: 10 10 0 0;
-    -fx-background-radius: 10 10 0 0;
-    -fx-padding: 15px 0px 0px 0px;
+    -fx-font-family: Nefelibata-Brush;
+    -fx-background-color: rgba(255,255,255,0.3); /* 0.3 */
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+    -fx-font-size: 22px;
+    -fx-padding: 0px 0px 0px 0px;
 }
 .cardDescription .text {
     -fx-line-spacing: 0px;
@@ -58,4 +54,52 @@
     -fx-background-color: transparent;
     -fx-text-fill: aliceblue;
     -fx-alignment: center;
+}
+.name {
+    -fx-font-family: Nefelibata-Brush;
+    -fx-font-size: 13px;
+    -fx-text-inner-color: black;
+    -fx-focus-color: black;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+}
+.name .text{
+    -fx-line-spacing: 0px;
+    -fx-text-alignment: center;
+}
+.name1{
+    -fx-background-color: rgba(0,255,0,0.3) !important;
+    -fx-border-color: rgba(0,255,0,1);
+    -fx-border-width: 0;
+}
+.name2{
+    -fx-background-color: rgba(255,255,0,0.3) !important;
+    -fx-border-color: rgba(255,255,0,1);
+    -fx-border-width: 0;
+}
+.name3{
+    -fx-background-color: rgba(255,0,0,0.3) !important;
+    -fx-border-color: rgba(255,0,0,1);
+    -fx-border-width: 0;
+}
+.nameSelected, .name1:hover, .name2:hover, .name3:hover{
+    -fx-border-width: 2 !important;
+}
+.boardDescription{
+    -fx-font-family: Nefelibata-Brush;
+    -fx-focus-color: black;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+    -fx-prompt-text-fill: rgba(0,0,0,0.5);
+    -fx-background-color: rgba(255,255,255,0); /* 0.3 */
+    -fx-padding: 0px 0px 0px 0px;
+}
+.boardDescription .text {
+    -fx-line-spacing: 0px;
+    -fx-text-alignment: center;
 }

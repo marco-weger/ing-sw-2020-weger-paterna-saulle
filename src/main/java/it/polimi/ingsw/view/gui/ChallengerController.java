@@ -1,14 +1,12 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.commons.clientmessages.ChallengerChoseClient;
-import it.polimi.ingsw.model.cards.Card;
 import it.polimi.ingsw.model.cards.CardName;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -33,7 +31,7 @@ public class ChallengerController extends DefaultController {
     public ImageView imageViewFrame;
 
     @FXML
-    public TextArea textAreaDescription;
+    public Button buttonDescription;
 
     @FXML
     public Button buttonAccept;
@@ -96,9 +94,9 @@ public class ChallengerController extends DefaultController {
         buttonLeft.setMaxSize(50,50);
         buttonLeft.setPrefSize(50,50);
 
-        textAreaDescription.setMinSize(525,190);
-        textAreaDescription.setMaxSize(525,190);
-        textAreaDescription.setPrefSize(525,190);
+        buttonDescription.setMinSize(525,175);
+        buttonDescription.setMaxSize(525,175);
+        buttonDescription.setPrefSize(525,175);
 
         buttonAccept.setMinSize(197,48);
         buttonAccept.setMaxSize(197,48);
@@ -190,8 +188,8 @@ public class ChallengerController extends DefaultController {
         buttonRight.setLayoutX(gui.sceneWidth/5-imageViewFrame.getFitWidth()/2+10+169);
         buttonRight.setLayoutY(y+imageViewFrame.getFitHeight()/2-25);
 
-        textAreaDescription.setLayoutY(y+38);
-        textAreaDescription.setLayoutX(400);
+        buttonDescription.setLayoutY(y+imageViewFrame.getFitHeight()-buttonDescription.getPrefHeight());
+        buttonDescription.setLayoutX(400);
 
         buttonAccept.setLayoutY(y);
         buttonAccept.setLayoutX(400+525-197);
@@ -199,15 +197,7 @@ public class ChallengerController extends DefaultController {
         textFieldName.setLayoutY(y);
         textFieldName.setLayoutX(400);
         setUpTextField(textFieldName);
-        textAreaDescription.setFont(f);
-        textAreaDescription.focusedProperty().addListener(new ChangeListener<Boolean>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-            {
-                textAreaDescription.setFont(f);
-            }
-        });
+        buttonDescription.setFont(f);
     }
 
     public void rightCard(ActionEvent actionEvent) {
@@ -235,11 +225,11 @@ public class ChallengerController extends DefaultController {
                     desc += (i+1 == splitted.length ? "" : "\n");
                 } else desc += " ";
             }
-            textAreaDescription.setText(desc);
+            buttonDescription.setText(desc);
         } catch (Exception ex){
             imageViewCard.setImage(new Image("/it.polimi.ingsw/view/gui/img/card/random.png"));
             textFieldName.setText(cards.get(count).toString());
-            textAreaDescription.setText("");
+            buttonDescription.setText("");
         }
     }
 

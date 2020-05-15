@@ -28,6 +28,9 @@ public class ServerController extends DefaultController {
     @FXML
     public Button buttonConnect;
 
+    @FXML
+    public Button banner;
+
     /**
      * Regex for an IP address (ref. https://mkyong.com/regular-expressions/how-to-validate-ip-address-with-regular-expression/)
      */
@@ -89,6 +92,11 @@ public class ServerController extends DefaultController {
         buttonConnect.setMaxSize(200,114);
         buttonConnect.setPrefSize(200,114);
 
+        banner.setMinSize(400,60);
+        banner.setMaxSize(400,60);
+        banner.setPrefSize(400,60);
+        banner.setText("Server unreachable! Try later...");
+        banner.setVisible(false);
     }
 
     @Override
@@ -96,6 +104,9 @@ public class ServerController extends DefaultController {
         super.setup();
         buttonConnect.setLayoutX(gui.sceneWidth/2-100);
         buttonConnect.setLayoutX(gui.sceneWidth/2-100);
+
+        banner.setLayoutY(gui.sceneHeight-top.getPrefHeight()-center.getPrefHeight()-bottom.getPrefHeight()/2-banner.getPrefHeight()/2);
+        banner.setLayoutX((gui.sceneWidth/2)-200);
 
         setUpTextField(port);
         setUpTextField(ip1);
@@ -120,11 +131,7 @@ public class ServerController extends DefaultController {
         this.gui.getClient().setIp(ip1.getText()+'.'+ip2.getText()+'.'+ip3.getText()+'.'+ip4.getText());
         this.gui.getClient().setPort(Integer.parseInt(port.getText()));
         if(!this.gui.getClient().connect()){ // TODO show wait image round
-            ip1.getStyleClass().add("error");
-            ip2.getStyleClass().add("error");
-            ip3.getStyleClass().add("error");
-            ip4.getStyleClass().add("error");
-            port.getStyleClass().add("error");
+            banner.setVisible(true);
         }
     }
 

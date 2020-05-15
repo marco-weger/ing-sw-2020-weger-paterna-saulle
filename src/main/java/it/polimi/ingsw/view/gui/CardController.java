@@ -7,7 +7,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 
@@ -15,9 +14,6 @@ import java.util.List;
 
 public class CardController extends DefaultController {
 
-    public Button button1;
-    public Button button2;
-    public Button button3;
     public Button buttonSend;
 
     @FXML
@@ -38,9 +34,16 @@ public class CardController extends DefaultController {
     @FXML
     public Button buttonGod3;
 
-    public TextArea textAreaDescription;
+    @FXML
+    public Button buttonDescription;
+
+    @FXML
     public TextField textFieldName1;
+
+    @FXML
     public TextField textFieldName2;
+
+    @FXML
     public TextField textFieldName3;
 
     public CardName cardName;
@@ -98,15 +101,7 @@ public class CardController extends DefaultController {
             setPodium(buttonSelected3,newValue,2);
         });
 
-        textAreaDescription.setFont(f);
-        textAreaDescription.focusedProperty().addListener(new ChangeListener<Boolean>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-            {
-                textAreaDescription.setFont(f);
-            }
-        });
+        buttonDescription.setFont(f);
 
         textFieldName1.setMinSize(180,48);
         textFieldName1.setMaxSize(180,48);
@@ -176,11 +171,11 @@ public class CardController extends DefaultController {
         buttonSend.setLayoutY(425);
         buttonSend.setLayoutX(gui.sceneWidth/2-buttonSend.getPrefWidth()/2);
 
-        textAreaDescription.setMinSize(gui.sceneWidth-200,130);
-        textAreaDescription.setMaxSize(gui.sceneWidth-200,130);
-        textAreaDescription.setPrefSize(gui.sceneWidth-200,130);
-        textAreaDescription.setLayoutY(285);
-        textAreaDescription.setLayoutX(100);
+        buttonDescription.setMinSize(gui.sceneWidth-200,120);
+        buttonDescription.setMaxSize(gui.sceneWidth-200,120);
+        buttonDescription.setPrefSize(gui.sceneWidth-200,120);
+        buttonDescription.setLayoutY(295);
+        buttonDescription.setLayoutX(100);
 
         buttonSend.setVisible(false);
         buttonSend.setDisable(true);
@@ -243,7 +238,7 @@ public class CardController extends DefaultController {
                 desc += (i+1 == splitted.length ? "" : "\n");
             } else desc += " ";
         }
-        textAreaDescription.setText(desc);
+        buttonDescription.setText(desc);
     }
 
     public void setGod1(ActionEvent actionEvent) {

@@ -1,15 +1,17 @@
 package it.polimi.ingsw.view.gui;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class LobbyController extends DefaultController {
 
-    public TextArea textAreaLobby;
+    @FXML
+    public Button buttonLobby;
+
+    @FXML
     public ImageView imageLobby;
 
     @FXML
@@ -17,9 +19,9 @@ public class LobbyController extends DefaultController {
     public void initialize(){
         super.initialize();
         super.setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/bg_lobby.png"));
-        textAreaLobby.setMinSize(450,240);
-        textAreaLobby.setMaxSize(450,260);
-        textAreaLobby.setPrefSize(450,260);
+        buttonLobby.setMinSize(450,240);
+        buttonLobby.setMaxSize(450,240);
+        buttonLobby.setPrefSize(450,240); //240
 
         imageLobby.setImage(new Image("/it.polimi.ingsw/view/gui/img/other/lobby.png"));
         imageLobby.setPreserveRatio(true);
@@ -29,20 +31,12 @@ public class LobbyController extends DefaultController {
     @Override
     public void setup(){
         super.setup();
+        buttonLobby.setPadding(new Insets(30, 0, 0, 0));
         imageLobby.setLayoutX(gui.sceneWidth/2-203);
         imageLobby.setLayoutY(65);
-        //textAreaLobby.setLayoutX(gui.sceneWidth/2-200);
-        textAreaLobby.setLayoutX(950/2-225);
-        textAreaLobby.setLayoutY(95);
+        buttonLobby.setLayoutX(950/2-225);
+        buttonLobby.setLayoutY(95);
 
-        textAreaLobby.setFont(f);
-        textAreaLobby.focusedProperty().addListener(new ChangeListener<Boolean>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-            {
-                textAreaLobby.setFont(f);
-            }
-        });
+        buttonLobby.setFont(f);
     }
 }
