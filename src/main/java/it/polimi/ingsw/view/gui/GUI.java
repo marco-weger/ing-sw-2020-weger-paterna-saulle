@@ -2,9 +2,11 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -163,20 +165,22 @@ public class GUI extends Application implements ViewInterface {
         else {
             for (int i = 0; i < client.getPlayers().size() - 1; i++) {
                 if (client.getPlayers().get(i).name.equals(message.player) && client.getPlayers().get(i + 1).name.equals(client.getUsername()) && message.worker == 2) {
-                    Platform.runLater(() -> {
-                        Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
-                        FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
-                        DefaultController controllerx = loader2.getController();
+                   // Platform.runLater(() -> {
+                       // Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
+                      //  FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
+                       // DefaultController controllerx = loader2.getController();
+                    DefaultController controllerx;
+                    controllerx = loader.getController();
 
                         if (controllerx instanceof BoardController) {
                             controllerx.setup();
                             ((BoardController) controllerx).banner.setText(((BoardController) controllerx).workerITA.getText());
                             ((BoardController) controllerx).setState(0);
                             ((BoardController) controllerx).refresh();
-                            primaryStage.setScene(sn);
-                            primaryStage.show();
+                            //primaryStage.setScene(sn);
+                            //primaryStage.show();
                         }
-                    });
+                   // });
                 }
             }
 
@@ -207,16 +211,17 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(CurrentStatusServer message) {
-        if(!client.getMyPlayer().loser && message.player.equals(client.getUsername())){
+        int loading = 0;
         FXMLLoader loader;
         DefaultController controller;
+        if(!client.getMyPlayer().loser && message.player.equals(client.getUsername())){
             switch(message.status){
                 case WORKER_CHOICE:
                     Platform.runLater(() -> {
                         Scene s = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
                         FXMLLoader xloader = (FXMLLoader) s.getUserData();
                         DefaultController xcontroller = xloader.getController();
-                        System.out.println("Type the position of first worker [x-y]");
+                        //player1, initalize first worker
                         if(xcontroller instanceof BoardController){
                             ((BoardController) xcontroller).refresh();
                             ((BoardController) xcontroller).banner.setText(((BoardController) xcontroller).workerITA.getText());
@@ -241,6 +246,27 @@ public class GUI extends Application implements ViewInterface {
                 default:
                     break;
             }
+        }
+        if(!message.player.equals(client.getUsername()) && !client.getMyPlayer().loser && message.status == Status.WORKER_CHOICE ){
+                    Platform.runLater(() -> {
+                        Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
+                        FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
+                        DefaultController controllerx = loader2.getController();
+                        if(controllerx instanceof BoardController){
+                            ((BoardController) controllerx).banner.setText("WAIT, "+message.player+"'s Turn");
+                            ((BoardController) controllerx).refresh();
+                        }
+
+                        primaryStage.setScene(sn);
+                        primaryStage.show();
+                    });
+
+        }
+        if(!message.player.equals(client.getUsername()) && !client.getMyPlayer().loser && message.status != Status.WORKER_CHOICE ){
+            loader = (FXMLLoader) primaryStage.getScene().getUserData();
+            controller = loader.getController();
+            ((BoardController) controller).banner.setText("WAIT, "+message.player+"'s Turn");
+
         }
     }
 
@@ -306,7 +332,7 @@ public class GUI extends Application implements ViewInterface {
         if(this.client.getUsername().equals(message.player))
             end.setText("YOU WIN!");
         else {
-            end.setText("Time is Up... YOU LOSE!");
+            end.setText("YOU LOSE!");
         }
 
     FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
@@ -366,7 +392,6 @@ public class GUI extends Application implements ViewInterface {
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
         if(controller instanceof BoardController){
-            ((BoardController) controller).banner.setText(((BoardController) controller).opponentTA.getText());
             ((BoardController) controller).refresh();
         }
     }
@@ -395,9 +420,12 @@ public class GUI extends Application implements ViewInterface {
 
     }
 
+    //private String currentPlayer = "";
     @Override
-    public void statusHandler(CurrentStatusServer message) {
+    public void statusHandler(CurrentStatusServer message){
 
+     //       } else this.currentPlayer=message.player;
+  //      }
     }
 
     @Override

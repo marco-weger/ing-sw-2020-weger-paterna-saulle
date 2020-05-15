@@ -85,7 +85,6 @@ public class BoardController extends DefaultController {
     Text workerCTA = new Text("Choose a Worker");
     Text moveTA = new Text("Choose the cell where you want to move");
     Text buildTA = new Text("Choose the cell where you want to build");
-    Text opponentTA = new Text("Opponent's turn");
     Text questionTA = new Text("Do you want to use you God ability?");
 
     @FXML
