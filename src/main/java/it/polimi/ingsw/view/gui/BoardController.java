@@ -50,10 +50,24 @@ public class BoardController extends DefaultController {
     @FXML
     public Button buttonDescription;
 
-    //Font f = Font.loadFont(getClass().getResourceAsStream("/it.polimi.ingsw/view/gui/font/Nefelibata-Brush.ttf"),20);
-
+    /**
+     * Choose size of the Image for Towers Floors
+     */
     int towerSize = 80;
+
+    /**
+     * Choose size of the Image for Pawns
+     */
     int pawnSize = 40;
+
+    /**
+     * state of the buttons to change the ClientMessage generated once clicked
+     * 0 = Worker Initialize
+     * 1 = Worker Choose
+     * 2 = Move
+     * 3 = Build
+     * 4 = No Action
+     */
     private int state;
 
     CurrentStatusServer Css;
@@ -268,6 +282,7 @@ public class BoardController extends DefaultController {
         no.getStyleClass().add("cl");
         setUpBanner(banner);
         setDescription(gui.getClient().getMyPlayer().card.name());
+        state = 4;
     }
 
     public void god1OnAction(ActionEvent actionEvent) {
@@ -335,6 +350,11 @@ public class BoardController extends DefaultController {
         return null;
     }
 
+    /**
+     * @param x row coordinate
+     * @param y column coordinate
+     * @return the button (On Stackpane for buttons) with coordinate(x,y)
+     */
     public Button getCell(int x, int y){
         if(x == 0 && y == 0)
             return cell00;
@@ -389,6 +409,11 @@ public class BoardController extends DefaultController {
         return null;
     }
 
+    /**
+     * @param x row coordinate
+     * @param y column coordinate
+     * @return the sqaure (StackPane for Pawns ImageView) with coordinate(x,y)
+     */
     public ImageView getSquare(int x, int y){
         if(x == 0 && y == 0)
             return square00;
@@ -443,6 +468,11 @@ public class BoardController extends DefaultController {
         return null;
     }
 
+    /**
+     * @param x row coordinate
+     * @param y column coordinate
+     * @return the sqaure (StackPane With Tower's ImageView) with coordinate(x,y)
+     */
         public ImageView getBLock(int x, int y){
         if(x == 0 && y == 0)
             return block00;
@@ -497,10 +527,11 @@ public class BoardController extends DefaultController {
         return null;
     }
 
+    /**
+     * refresh the scene, for towers,buttons and pawns update
+     */
     public void refresh() {
-        //yes.getStyle();
-        //no.getStyle();
-        //update tower state
+
         for (SnapCell cell : this.gui.getClient().getBoard()) {
             if(cell.level != 0) {
                 setLevel(getBLock(cell.row, cell.column), getConstruction(cell.level));
@@ -521,23 +552,36 @@ public class BoardController extends DefaultController {
             }
     }
 
+    /**
+     * Setter for set the image of the floor to a tower
+     * @param block Imageview for load towers Image
+     * @param floor Images of towers floors
+     */
     public void setLevel(ImageView block, Image floor) {
         block.setImage(floor);
     }
 
 
+    /**
+     * Setter fot set the image of the player's pawn into their square Imageview
+     * @param square Imageview for load towers Image
+     */
     public void setPawn(ImageView square) {
         Image p1 = new Image(this.gui.getClient().getMyPlayer().color, pawnSize,pawnSize, false,false);
                 square.setImage(p1);
     }
 
+    /**
+     * set the state of the buttons to change sendMessage generated once clicked
+     * @param state
+     */
     public void setState(int state) {
         this.state = state;
     }
 
 
+
     public boolean WorkerInitialize(int x, int y) {
-        //SnapCell c = new SnapCell(x,y,-1);
          for (SnapWorker sw : this.gui.getClient().getWorkers()) {
              if (sw.row == x && sw.column == y) {
                  return false;
@@ -604,44 +648,60 @@ public class BoardController extends DefaultController {
         }
     }
 
+    /**
+     * Change the Css to set the yellow color of the active cells (buttons) after a getCheckMove or getCheckBuild
+     * @param Cell the cell of the button
+     */
     public void lighitup(Button Cell){
         Cell.getStyleClass().remove("board");
         Cell.getStyleClass().add("boardL");
     }
 
+    /**
+     * Change the Css to remove the yellow color of the active cells (buttons) after a getCheckMove or getCheckBuild
+     * @param Cell the cell of the button
+     */
     public void lighitdown(Button Cell){
         Cell.getStyleClass().remove("boardL");
         Cell.getStyleClass().add("board");
     }
 
+    /**
+     * Change the Css to make visible the YES button after an QuestionAbilityServer
+     * @param Cell the cell of the button
+     */
     public void yOn(Button Cell){
         Cell.getStyleClass().remove("cl");
         Cell.getStyleClass().add("yes");
     }
 
+    /**
+     * Change the Css to make invisible the YES button after an QuestionAbilityServer
+     * @param Cell the cell of the button
+     */
     public void yOff(Button Cell){
         Cell.getStyleClass().remove("yes");
         Cell.getStyleClass().add("cl");
     }
 
-
+    /**
+     * Change the Css to make visible the NO button after an QuestionAbilityServer
+     * @param Cell the cell of the button
+     */
     public void nOn(Button Cell){
         Cell.getStyleClass().remove("cl");
         Cell.getStyleClass().add("no");
     }
 
-
+    /**
+     * Change the Css to make invisible the NO button after an QuestionAbilityServer
+     * @param Cell the cell of the button
+     */
     public void nOff(Button Cell){
         Cell.getStyleClass().remove("no");
         Cell.getStyleClass().add("cl");
     }
 
-
-    /**
-     * @param actionEvent click event
-     *
-     * [ 0 = WorkerInitialize |  1 = WorkerChose |  2 = Move  | 3 = Build  | 4 = Wait ]
-     */
 
 
     public void cell00(ActionEvent actionEvent) {
@@ -1341,11 +1401,11 @@ public class BoardController extends DefaultController {
            }
 
 
-        }
+    }
 
 
 
-        public void showcheckbuild(CheckBuildServer sb) {
+    public void showcheckbuild(CheckBuildServer sb) {
         int x, y;
         if (Cbs.name.equals(this.gui.getClient().getUsername())) {
             for (SnapCell cell : Cbs.sc) {
@@ -1413,18 +1473,21 @@ public class BoardController extends DefaultController {
 
     }
 
-    //TODO rendere safe yes e no
     public void yes(ActionEvent actionEvent) {
-        this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(),true, Qas.status));
-        yOff(yes);
-        nOff(no);
-        refresh();
+        if(yes.getStyleClass().toString() == "yes") {
+            this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), true, Qas.status));
+            yOff(yes);
+            nOff(no);
+            refresh();
+        }
     }
 
     public void no(ActionEvent actionEvent) {
-        this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(),false, Qas.status));
-        yOff(yes);
-        nOff(no);
-        refresh();
+        if(no.getStyleClass().toString() == "no") {
+            this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), false, Qas.status));
+            yOff(yes);
+            nOff(no);
+            refresh();
+        }
     }
 }
