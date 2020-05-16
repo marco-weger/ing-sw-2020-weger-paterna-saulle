@@ -263,8 +263,10 @@ public class GUI extends Application implements ViewInterface {
         if(!message.player.equals(client.getUsername()) && !client.getMyPlayer().loser && message.status != Status.WORKER_CHOICE ){
             loader = (FXMLLoader) primaryStage.getScene().getUserData();
             controller = loader.getController();
-            ((BoardController) controller).banner.setText("WAIT, "+message.player+"'s Turn");
-            ((BoardController) controller).refresh();
+            if(controller instanceof BoardController){
+                ((BoardController) controller).banner.setText("WAIT, "+message.player+"'s Turn");
+                ((BoardController) controller).refresh();
+            }
 
         }
     }

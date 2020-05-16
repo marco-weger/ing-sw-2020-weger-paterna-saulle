@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Server {
@@ -170,12 +171,15 @@ public class Server {
             try{
                 serverSocket = new ServerSocket(port);
                 serverSocket.close();
-            }catch (IOException e){
-                if(e.getMessage().contains("Address already in use")){
+            }catch (IOException ex){
+                if(ex.getMessage().contains("Address already in use")){
                     port++;
                     go=true;
                 }
-                else return;
+                else {
+                    LOGGER.log(Level.SEVERE, ex.toString(), ex);
+                    return;
+                }
             }
         }while (go);
 
