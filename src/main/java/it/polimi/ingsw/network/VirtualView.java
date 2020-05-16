@@ -6,7 +6,6 @@ import it.polimi.ingsw.commons.ClientMessage;
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.clientmessages.ModeChoseClient;
-import it.polimi.ingsw.commons.clientmessages.ReConnectionClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Match;
@@ -202,7 +201,7 @@ public class VirtualView extends Observable implements Observer {
         turn = new Timer();
         for(ServerClientHandler sch : getConnectedPlayers().values())
             if(sch != null && sch.getName().equals(player) && sch.isStillConnected())
-                turn.schedule(new TimerTurn(sch), server.getTurnTimer()*1000);
+                turn.schedule(new TimerTurnServer(sch), server.getTurnTimer()*1000);
     }
 
 }

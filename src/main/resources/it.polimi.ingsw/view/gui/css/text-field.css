@@ -103,3 +103,11 @@
     -fx-line-spacing: 0px;
     -fx-text-alignment: center;
 }
+.buttonTimer{
+    -fx-font-family: Nefelibata-Brush;
+    -fx-text-fill: white !important;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-background-color: rgba(255,255,255,0); /* 0.3 */
+}

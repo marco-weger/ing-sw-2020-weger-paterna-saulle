@@ -2,7 +2,7 @@ package it.polimi.ingsw.network;
 
 import java.util.TimerTask;
 
-public class TimerTurn extends TimerTask {
+public class TimerTurnServer extends TimerTask {
 
     /**
      * The client
@@ -12,7 +12,7 @@ public class TimerTurn extends TimerTask {
     /**
      * @param sch the client
      */
-    public TimerTurn(ServerClientHandler sch){
+    public TimerTurnServer(ServerClientHandler sch){
         System.out.println("[TIMER] - " + sch.getName());
         this.sch = sch;
     }

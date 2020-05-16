@@ -166,13 +166,14 @@ public class Server {
 
         // if port is unavailable is start searching a free a port from port+1 and so on
         ServerSocket serverSocket = null;
+        int count=0;
         do {
             go=false;
             try{
                 serverSocket = new ServerSocket(port);
                 serverSocket.close();
             }catch (IOException ex){
-                if(ex.getMessage().contains("Address already in use")){
+                if(ex.toString().contains("BindException")){
                     port++;
                     go=true;
                 }
@@ -181,7 +182,7 @@ public class Server {
                     return;
                 }
             }
-        }while (go);
+        }while (go && count++ < 100);
 
         // TODO use this function
         // loadMatch();

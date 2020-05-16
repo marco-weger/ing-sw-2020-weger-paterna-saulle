@@ -4,7 +4,11 @@ import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.servermessages.*;
+import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.TimerDisconnection;
+import it.polimi.ingsw.network.TimerTurnClient;
+import it.polimi.ingsw.network.TimerTurnServer;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -21,6 +25,10 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class GUI extends Application implements ViewInterface {
@@ -33,7 +41,8 @@ public class GUI extends Application implements ViewInterface {
 
     Parent root, root2;
     DefaultController defaultcontroller;
-    //BoardController boardController;
+
+    private TimerTurnClient timer;
 
     private Client client;
     private Stage primaryStage;
@@ -424,9 +433,22 @@ public class GUI extends Application implements ViewInterface {
     //private String currentPlayer = "";
     @Override
     public void statusHandler(CurrentStatusServer message){
-
-     //       } else this.currentPlayer=message.player;
-  //      }
+        if(message.status.equals(Status.START) || message.status.equals(Status.WORKER_CHOICE)){
+            Platform.runLater(() -> {
+                FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+                DefaultController controller = loader.getController();
+                if(controller instanceof BoardController){
+                    try{
+                        timer.cancel(); // Delete last timer if exists
+                    } catch (Exception ignored){}
+                    try{
+                        timer = new TimerTurnClient(this,message.timer);
+                        ScheduledExecutorService timeOut = Executors.newSingleThreadScheduledExecutor();
+                        timeOut.scheduleAtFixedRate(timer, 0, 1000, TimeUnit.MILLISECONDS);
+                    } catch (Exception ignored){}
+                }
+            });
+        }
     }
 
     @Override
@@ -463,9 +485,35 @@ public class GUI extends Application implements ViewInterface {
                 ((BoardController) controllerx).refresh();
                 primaryStage.setScene(sn);
                 primaryStage.show();
+
+
             }
+        });*/
+    }
+
+    public void setTimerText(long val){
+        Platform.runLater(() -> {
+            try{
+                FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+                DefaultController controller = loader.getController();
+                if(controller instanceof BoardController){
+                    ((BoardController) controller).buttonTimer.setVisible(true);
+                    ((BoardController) controller).buttonTimer.setText(val+"");
+                }
+            } catch (Exception ignored){}
         });
-         */
+    }
+
+    public void unShowTimer(){
+        Platform.runLater(() -> {
+            try{
+                FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+                DefaultController controller = loader.getController();
+                if(controller instanceof BoardController){
+                    ((BoardController) controller).buttonTimer.setVisible(false);
+                }
+            } catch (Exception ignored){}
+        });
     }
 
     public SnapPlayer getPlayerByName(String name){

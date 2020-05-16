@@ -48,6 +48,9 @@ public class BoardController extends DefaultController {
     @FXML
     public Button buttonDescription;
 
+    @FXML
+    public Button buttonTimer;
+
     /**
      * Choose size of the Image for Towers Floors
      */
@@ -165,6 +168,12 @@ public class BoardController extends DefaultController {
         buttonDescription.setMinSize(375,200);
         buttonDescription.setMaxSize(375,200);
         buttonDescription.setPrefSize(375,200);
+
+        h = 50;
+        w = 80;
+        buttonTimer.setMinSize(w,h);
+        buttonTimer.setMaxSize(w,h);
+        buttonTimer.setPrefSize(w,h);
     }
 
 
@@ -184,6 +193,8 @@ public class BoardController extends DefaultController {
 
         buttonDescription.setLayoutX(start + (gui.sceneWidth-start)/2 - buttonDescription.getPrefWidth()/2);
         buttonDescription.setLayoutY(gui.sceneHeight-bottom.getPrefHeight()-top.getPrefHeight()-buttonDescription.getPrefHeight()-10);
+        buttonTimer.setLayoutX(50);
+        buttonTimer.setLayoutY(bottom.getPrefHeight()/2-buttonTimer.getPrefHeight()/2);
 
         setDescription("");
 

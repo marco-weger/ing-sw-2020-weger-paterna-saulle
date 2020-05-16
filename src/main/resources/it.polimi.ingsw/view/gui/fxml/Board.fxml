@@ -17,6 +17,7 @@
             <TextField fx:id="banner" editable="false" layoutX="140.0" layoutY="26.0" prefHeight="87.0" prefWidth="460.0" styleClass="banner" stylesheets="@../css/text-field.css" />
             <Button fx:id="no" layoutX="735.0" layoutY="39.0" mnemonicParsing="false" onAction="#no" prefHeight="61.0" prefWidth="90.0" stylesheets="@../css/button.css" />
             <Button fx:id="yes" layoutX="614.0" layoutY="39.0" mnemonicParsing="false" onAction="#yes" prefHeight="61.0" prefWidth="90.0" stylesheets="@../css/button.css" />
+            <Button fx:id="buttonTimer" layoutX="614.0" layoutY="39.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="90.0" styleClass="buttonTimer" stylesheets="@../css/text-field.css" />
          </children></AnchorPane>
    </bottom>
    <center>
@@ -110,6 +111,8 @@
                <Button fx:id="buttonName2" layoutX="251.0" layoutY="387.0" onAction="#god2OnAction" styleClass="name, name2" stylesheets="@../css/text-field.css" />
                <Button fx:id="buttonName3" layoutX="251.0" layoutY="387.0" onAction="#god3OnAction" styleClass="name, name3" stylesheets="@../css/text-field.css" />
                <Button fx:id="buttonDescription" styleClass="boardDescription" stylesheets="@../css/text-field.css" />
+
+
             </AnchorPane>
          </children>
       </StackPane>
