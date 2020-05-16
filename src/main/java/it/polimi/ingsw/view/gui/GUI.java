@@ -266,6 +266,7 @@ public class GUI extends Application implements ViewInterface {
             loader = (FXMLLoader) primaryStage.getScene().getUserData();
             controller = loader.getController();
             ((BoardController) controller).banner.setText("WAIT, "+message.player+"'s Turn");
+            ((BoardController) controller).refresh();
 
         }
     }
