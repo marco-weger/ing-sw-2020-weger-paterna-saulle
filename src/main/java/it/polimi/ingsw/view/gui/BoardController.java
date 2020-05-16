@@ -288,6 +288,7 @@ public class BoardController extends DefaultController {
         setUpBanner(banner);
         setDescription(gui.getClient().getMyPlayer().card.name());
         state = 4;
+        flag = false;
     }
 
 
@@ -908,20 +909,30 @@ public class BoardController extends DefaultController {
         yOn(yes);
         nOn(no);
         banner.setText(questionTA.getText());
+        flag = true;
 
     }
 
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
 
+    public boolean isFlag() {
+        return flag;
+    }
+
+    private boolean flag;
     /**
      * If the button YES is visible, send a true AnswerAbilityClient when it's clicked
      * and makes the buttons YES and NO invisible and inactive after it
      * @param actionEvent
      */
     public void yes(ActionEvent actionEvent) {
-        if(yes.getStyleClass().toString() == "yes") {
+        if(flag == true) {
             this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), true, Qas.status));
             yOff(yes);
             nOff(no);
+            flag = false;
             refresh();
         }
     }
@@ -933,10 +944,11 @@ public class BoardController extends DefaultController {
      * @param actionEvent
      */
     public void no(ActionEvent actionEvent) {
-        if(no.getStyleClass().toString() == "no") {
+        if(flag == true) {
             this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), false, Qas.status));
             yOff(yes);
             nOff(no);
+            flag = false;
             refresh();
         }
     }
