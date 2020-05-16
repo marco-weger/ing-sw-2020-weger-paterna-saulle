@@ -169,7 +169,7 @@ public class BoardController extends DefaultController {
 
 
     /**
-     * Initalize every object on the board
+     * Initialize every object on the board
      */
     @Override
     public void setup(){
