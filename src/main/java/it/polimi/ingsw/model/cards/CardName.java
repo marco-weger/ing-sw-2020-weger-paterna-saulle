@@ -20,7 +20,10 @@ public enum CardName {
         this.description = description;
     }
 
-    public String getDescription(){return description;}
 
+    /**
+     * @return return the card Description
+     */
+    public String getDescription(){return description;}
 }
 

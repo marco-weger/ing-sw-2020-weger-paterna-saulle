@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Cell implements Serializable {
 
+
     /**
      * The row
      */
@@ -32,6 +33,7 @@ public class Cell implements Serializable {
 
     public int getLevel() {return level;}
 
+
     /**
      * It checks for a level from 0 to 4
      * @param level the level
@@ -41,13 +43,13 @@ public class Cell implements Serializable {
             this.level = level;
     }
 
+
     /**
      * It checks for any workers in the cell
      * @param p list of players
      * @return true if occupied
      */
-    public boolean isOccupied(List<Player> p)
-    {
+    public boolean isOccupied(List<Player> p) {
         if(p != null){
             for(Player player:p){
                 if(player.getWorker1() != null && player.getWorker1().getRow() == this.row && player.getWorker1().getColumn() == this.column){

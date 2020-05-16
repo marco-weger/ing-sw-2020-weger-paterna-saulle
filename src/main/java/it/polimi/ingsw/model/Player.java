@@ -38,8 +38,7 @@ public class Player extends Observable implements Serializable {
      */
     private boolean current;
 
-    public Player(String name, VirtualView vv)
-    {
+    public Player(String name, VirtualView vv) {
         this.name = name;
         this.card = null;
         this.worker1 = null;
@@ -61,6 +60,23 @@ public class Player extends Observable implements Serializable {
         return card;
     }
 
+    public Worker getWorker1() {
+        return worker1;
+    }
+
+    public Worker getWorker2() {
+        return worker2;
+    }
+
+    public void setCurrent(boolean current){
+        this.current = current;
+    }
+
+    public boolean isCurrent(){
+        return current;
+    }
+
+
     /**
      * The card is instanced by FACTORY class, all players will be notified
      * @param card value from card ENUM
@@ -70,9 +86,6 @@ public class Player extends Observable implements Serializable {
         notifyObservers(new CardChosenServer(name,card));
     }
 
-    public Worker getWorker1() {
-        return worker1;
-    }
 
     /**
      * The first worker is instanced, all players will be notified
@@ -83,9 +96,6 @@ public class Player extends Observable implements Serializable {
         notifyObservers(new WorkerChosenServer(name,1,worker1.getRow(),worker1.getColumn()));
     }
 
-    public Worker getWorker2() {
-        return worker2;
-    }
 
     /**
      * The first worker is instanced, all players will be notified
@@ -96,13 +106,6 @@ public class Player extends Observable implements Serializable {
         notifyObservers(new WorkerChosenServer(name,2,worker2.getRow(),worker2.getColumn()));
     }
 
-    public void setCurrent(boolean current){
-        this.current = current;
-    }
-
-    public boolean isCurrent(){
-        return current;
-    }
 
     /**
      *a method to get the current worker
@@ -115,17 +118,18 @@ public class Player extends Observable implements Serializable {
          else return null;
     }
 
+
     /**
      * Only one worker a time could be active
      * @param i 1 first worker, 2 the second one
      */
-    public void setCurrentWorker(int i)
-    {
+    public void setCurrentWorker(int i) {
         if(i==1||i==2) {
             worker1.setActive(i == 1);
             worker2.setActive(i == 2);
         }
     }
+
 
     /**
      * When called notify the view that it's the moment to make the quest to user

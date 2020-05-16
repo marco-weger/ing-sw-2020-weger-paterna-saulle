@@ -103,6 +103,7 @@ public class Match extends Observable implements Serializable {
         return losers;
     }
 
+
     /**
      * When the status changes the view will be notified with current one and current player
      * @param status the new status
@@ -133,6 +134,7 @@ public class Match extends Observable implements Serializable {
 
     }
 
+
     /**
      * A method that add a player into the Loser List and remove it from the Active Player List
      * @param p select a player
@@ -154,6 +156,7 @@ public class Match extends Observable implements Serializable {
         }
     }
 
+
     /**
      * A method that pick the card from the deck and notify the third player to choose.
      * @param selectedCard the list of card selected
@@ -165,6 +168,7 @@ public class Match extends Observable implements Serializable {
         notifyObservers(new AvailableCardServer(this.getPlayers().get(i).getName(),selectedCard));
     }
 
+
     /**
      * Current player getter
      */
@@ -174,6 +178,7 @@ public class Match extends Observable implements Serializable {
                 return p;
         return null;
     }
+
 
     /**
      * This method set next player, disable all workers and set START status
@@ -198,6 +203,7 @@ public class Match extends Observable implements Serializable {
         status=Status.START;
     }
 
+
     /**
      * @return It verifies if the current player win for other players defeat
      */
@@ -208,6 +214,7 @@ public class Match extends Observable implements Serializable {
         }
         return false;
     }
+
 
     /**
      * When a player is added to the list players
@@ -223,6 +230,7 @@ public class Match extends Observable implements Serializable {
         ls.type = forced ? 1 : 0;
         notifyObservers(ls);
     }
+
 
     /**
      * When a player is removed to the list players
@@ -240,6 +248,7 @@ public class Match extends Observable implements Serializable {
             notifyObservers(new LobbyServer(names));
         }
     }
+
 
     /**
      * Saving the match in file for server persistence purpose
@@ -269,6 +278,10 @@ public class Match extends Observable implements Serializable {
         }
     }
 
+    /**
+     * Re-connect the player to the match
+     * @param name
+     */
     public void playerReConnection(String name){
         ReConnectionServer rcs = new ReConnectionServer(name);
         rcs.board = new ArrayList<>();

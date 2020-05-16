@@ -11,6 +11,7 @@ public class Board implements Serializable {
      */
     private List<Cell> field;
 
+
     /**
      * The board is initialized with all cells at 0 level
      */
@@ -21,13 +22,16 @@ public class Board implements Serializable {
                 field.add(new Cell(i,j,0));
     }
 
+
     public List<Cell> getField() {
         return field;
     }
 
+
     public void setField(List<Cell> field) {
         this.field = field;
     }
+
 
     /**
      * @param c the cell
@@ -40,6 +44,7 @@ public class Board implements Serializable {
                     return true;
         return false;
     }
+
 
     /**
      * It sets the level of the cell by using params
@@ -55,6 +60,7 @@ public class Board implements Serializable {
             }
         }
     }
+
 
     /**
      * It returns the required cell if exists

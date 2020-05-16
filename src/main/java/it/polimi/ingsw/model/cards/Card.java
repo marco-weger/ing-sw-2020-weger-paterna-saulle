@@ -63,27 +63,27 @@ public class Card extends Observable implements Serializable {
 
     public void initializeTurn(){}
 
+
     /**
      * It checks for the after move win condition
      * @param from cell
      * @param to cell
      * @return true if this move is a win condition
      */
-    public boolean checkWin(Cell from, Cell to)
-    {
+    public boolean checkWin(Cell from, Cell to) {
         if(from != null && to != null){
             return (from.getLevel() == 2 && to.getLevel() == 3);
         }
         return false;
     }
 
+
     /**
      * @param p list of player
      * @param b board
      * @return list of cells where active worker could build
      */
-    public List<Cell> checkBuild(List<Player> p, Board b)
-    {
+    public List<Cell> checkBuild(List<Player> p, Board b) {
         if(p == null || b == null) return new ArrayList<>();
         Worker actived = null;
         for(Player player:p)
@@ -96,6 +96,7 @@ public class Card extends Observable implements Serializable {
                 ret.add(c);
         return ret;
     }
+
 
     /**
      * @param p list of player
@@ -121,6 +122,7 @@ public class Card extends Observable implements Serializable {
         return available;
     }
 
+
     /**
      * If the ability influences opposite turns this method return blocked cells (QUESTION_M for move and QUESTION_B for build).
      * @param w active worker
@@ -130,6 +132,7 @@ public class Card extends Observable implements Serializable {
     protected List<Cell> activeBlock(List<Player> p, Board b, Worker w,  Status current){
         return new ArrayList<>();
     }
+
 
     /**
      * @param p list of player
@@ -157,6 +160,7 @@ public class Card extends Observable implements Serializable {
         return false;
     }
 
+
     /**
      * @param p list of player
      * @param b board
@@ -183,6 +187,7 @@ public class Card extends Observable implements Serializable {
         return false;
     }
 
+
     /**
      * @param current current state of current turn
      * @return next status by considering active abilities
@@ -207,6 +212,7 @@ public class Card extends Observable implements Serializable {
         }
     }
 
+
     /**
      * It creates a message and notify the VIEW for available cells
      * @param p players
@@ -224,6 +230,7 @@ public class Card extends Observable implements Serializable {
         }
         return snap;
     }
+
 
     /**
      * It creates a message and notify the VIEW for available cells
@@ -243,6 +250,7 @@ public class Card extends Observable implements Serializable {
         return snap;
     }
 
+
      /**
      * @param p list of player
      * @param b board
@@ -251,6 +259,7 @@ public class Card extends Observable implements Serializable {
     public boolean activable(List<Player> p, Board b){
         return true;
     }
+
 
     /**
      * @param p list of players

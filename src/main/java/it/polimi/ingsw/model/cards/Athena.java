@@ -15,6 +15,7 @@ public class Athena extends Card {
         super(name, active, opponent, question, status ,vw);
     }
 
+
     /**
      *if Athena is active, return a list of opponent's blocked cell
      *

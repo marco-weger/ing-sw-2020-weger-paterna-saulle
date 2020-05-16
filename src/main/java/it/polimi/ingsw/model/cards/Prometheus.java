@@ -13,6 +13,7 @@ public class Prometheus extends Card {
         super(name, active, opponent, question, status ,vw);
     }
 
+
     /**
      * if Prometheus is Active, the player follows this line
      * start-> chosen-> quesion_b-> built-> question_m-> moved-> question_b-> built-> end
@@ -83,6 +84,7 @@ public class Prometheus extends Card {
 
     }
 
+
     /**
      * If you want to build before moving it checks if the new build could block your next move (you could lose the match) and then remove that possibility
      * PASS (Prometheus Anti Suicide Protocol): Available
@@ -134,11 +136,12 @@ public class Prometheus extends Card {
         return available;
     }
 
+
     /**
-     * It uses the checkMove to checks if there is some build possibilities before building
+     * Check if the Ability of Prometheus can be turn on safely (To avoid player's lose due to a true AnswerAbility Client)
      * @param p list of player
      * @param b board
-     * @return true if you could activate ability in this turn
+     * @return true if active the ability is safely, false otherwise
      */
     @Override
     public boolean activable(List<Player> p, Board b) {

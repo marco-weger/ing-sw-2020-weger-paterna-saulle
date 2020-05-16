@@ -46,6 +46,7 @@ public class Worker implements Serializable {
 
     public void setActive(boolean active){this.active=active;}
 
+
     /**
      * It moves the worker to the chosen cell
      * @param x row
@@ -55,6 +56,7 @@ public class Worker implements Serializable {
         setRow(x);
         setColumn(y);
     }
+
 
     /**
      * @param b the board

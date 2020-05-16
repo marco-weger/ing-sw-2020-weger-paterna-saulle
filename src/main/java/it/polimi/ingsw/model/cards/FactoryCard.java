@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.VirtualView;
 
 public class FactoryCard {
 
+
     /**
      * Factory pattern used to manage safely card generation
      * @param cardName name of the card you want to instance
@@ -36,5 +37,4 @@ public class FactoryCard {
                 return new Card(cardName,false,false,false,Status.START, vv);
         }
     }
-
 }

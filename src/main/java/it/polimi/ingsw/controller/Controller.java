@@ -72,12 +72,12 @@ public class Controller implements Observer, ClientMessageHandler {
 
     }
 
+
     /**
      * Disconnection is handled by removing someone from the list of players
      * if it happens before the start of the game, else it counts as losing.
      * @param message sent when someone disconnects from server
      */
-
     @Override
     public void handleMessage(DisconnectionClient message) {
         if(this.match.getStatus().equals(Status.NAME_CHOICE)){
@@ -93,20 +93,25 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+
     /**
      * Reconnection notifies that the player has returned to the game
      * @param message sent when someone reconnects on server
      */
-
     @Override
     public void handleMessage(ReConnectionClient message) {
         match.playerReConnection(message.name);
     }
 
+
+    /**
+     * An empty message to test the reachability of a Client
+     * @param event
+     */
     @Override
     public void handleMessage(PingClient event) {
-
     }
+
 
     /**
      * send the challenger cards picked from the deck
@@ -126,6 +131,7 @@ public class Controller implements Observer, ClientMessageHandler {
             match.setSelectedCards(tmp);
         }
     }
+
 
     /**
      * send the card chosen by the current player from the picked by he challenger during the initialize phase of the match
@@ -163,6 +169,7 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+
     /**
      * send the start posizion of the current worker chosen by the current player during the initialize state of the match
      * @param message contains the name of the current player and the start position chosen for the current worker
@@ -194,6 +201,7 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+
     /**
      * send the current worker chosen by the current player
      * @param message contains the name of the current player and the current worker chosen
@@ -218,6 +226,7 @@ public class Controller implements Observer, ClientMessageHandler {
         }
     }
 
+
     /**
      * send the answer to the player if the card need it (ability == true)
      * @param message contains the name of the current player, if the ability is passive or not and the current status
@@ -237,6 +246,7 @@ public class Controller implements Observer, ClientMessageHandler {
             match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
         }
     }
+
 
     /**
      * If the player can move into that cell, with this method he can move into it.
@@ -270,6 +280,7 @@ public class Controller implements Observer, ClientMessageHandler {
             }
         }
     }
+
 
     /**
      * If the player Can Build in the cell, build a tower.
@@ -306,6 +317,7 @@ public class Controller implements Observer, ClientMessageHandler {
 
     }
 
+
     /**
      * If the lobby is "not full", add player to the current lobby
      * (the Lobby can't properly be full because the game starts immediately after the quota for the mode
@@ -313,7 +325,6 @@ public class Controller implements Observer, ClientMessageHandler {
      * ex-current Lobby).
      * @param message contains the name of the current player, and the mode that he has chosen
      */
-
     @Override
     public void handleMessage(ModeChoseClient message) {
         //System.out.println(message.forced);
@@ -322,6 +333,7 @@ public class Controller implements Observer, ClientMessageHandler {
         if(match.getPlayers().size() == message.mode)
             startMatch();
     }
+
 
     /**
      * Move all the loser players into the loser list and call the end of the Match
@@ -335,9 +347,14 @@ public class Controller implements Observer, ClientMessageHandler {
         match.setLosers(losers,false);
     }
 
+
+    /**
+     * Set the match status to CARD_CHOICE
+     */
     private void startMatch() {
         match.setStatus(Status.CARD_CHOICE);
     }
+
 
     /**
      *this method handle the turn, if the goOn is true, close the currentplayer turn and set the next player
@@ -366,6 +383,4 @@ public class Controller implements Observer, ClientMessageHandler {
             }
         }
     }
-
-
 }

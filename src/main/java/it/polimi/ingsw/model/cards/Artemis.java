@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Artemis extends Card {
+    /**
+     * Store the first move
+     */
     Cell lastMoved;
 
     public Artemis(CardName name, boolean active, boolean opponent, boolean question, Status status, VirtualView vw) {
@@ -47,6 +50,7 @@ public class Artemis extends Card {
         }
     }
 
+
     /**
      * It checks for second move
      * @param p list of player
@@ -68,6 +72,7 @@ public class Artemis extends Card {
             available.remove(lastMoved);
         return available;
     }
+
 
     /**
      * It moves the current worker
@@ -101,9 +106,14 @@ public class Artemis extends Card {
     }
 
 
+    /**
+     * Check if the Ability of Artemis can be turn on safely (To avoid player's lose due to a true AnswerAbility Client)
+     * @param p list of player
+     * @param b board
+     * @return true if active the ability is safely, false otherwise
+     */
     @Override
-    public boolean activable(List<Player> p, Board b)
-    {
+    public boolean activable(List<Player> p, Board b) {
         List<Cell> available;
         available = super.checkMove(p,b);
 
@@ -113,6 +123,10 @@ public class Artemis extends Card {
         return !available.isEmpty();
     }
 
+
+    /**
+     * Clean the parameter lastMoved
+     */
     @Override
     public void initializeTurn() { lastMoved = null;}
 

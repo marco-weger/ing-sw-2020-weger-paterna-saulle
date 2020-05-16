@@ -15,6 +15,7 @@ public class Atlas extends Card {
         super(name, active, opponent, question, status ,vw);
     }
 
+
     /**
      * It builds normal or a dome by active attribute
      * @param p list of player

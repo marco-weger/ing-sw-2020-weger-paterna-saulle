@@ -15,6 +15,7 @@ public class Apollo extends Card {
         super(name, active, opponent, question, status ,vw);
     }
 
+
     /**
      * It checks if it's possible to force some opponent worker
      * @param p list of player
@@ -60,6 +61,7 @@ public class Apollo extends Card {
         }
         return ret;
     }
+
 
     /**
      * It moves the current worker and actives the ability if necessary

@@ -15,6 +15,7 @@ public class Hephaestus extends Card {
         super(name, active, opponent, question, status ,vw);
     }
 
+
     /**
      * It checks for available cells
      * @param p list of player
@@ -43,6 +44,7 @@ public class Hephaestus extends Card {
         available.removeAll(toRemove);
         return available;
     }
+
 
     /**
      * It checks active attribute and then it builds
@@ -79,6 +81,12 @@ public class Hephaestus extends Card {
     }
 
 
+    /**
+     * Check if the Ability of Hephaestus can be turn on safely (To avoid player's lose due to a true AnswerAbility Client)
+     * @param p list of player
+     * @param b board
+     * @return true if active the ability is safely, false otherwise
+     */
     @Override
     public boolean activable(List<Player> p, Board b) {
         if (p == null || b == null) return true;

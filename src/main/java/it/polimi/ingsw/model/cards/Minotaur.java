@@ -15,6 +15,7 @@ public class Minotaur extends Card {
         super(name, active, opponent, question, status ,vw);
     }
 
+
     /**
      * It checks if it's possible to force some opponent worker
      * @param p list of player
@@ -68,6 +69,7 @@ public class Minotaur extends Card {
         }
         return ret;
     }
+
 
     /**
      * It moves and does the switch if necessary

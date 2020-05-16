@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Demeter extends Card {
+    /**
+     * Store the first build
+     */
     Cell lastBuild;
 
     public Demeter(CardName name, boolean active, boolean opponent, boolean question, Status status, VirtualView vw) {
@@ -48,8 +51,7 @@ public class Demeter extends Card {
      * @return where to build
      */
     @Override
-    public List<Cell> checkBuild(List<Player> p, Board b)
-    {
+    public List<Cell> checkBuild(List<Player> p, Board b) {
         if(p == null || b == null) return new ArrayList<>();
         Worker actived = null;
         for(Player player:p)
@@ -61,6 +63,7 @@ public class Demeter extends Card {
             ret.remove(lastBuild);
         return ret;
     }
+
 
     /**
      * It builds and set the value of lastBuild attribute
@@ -89,17 +92,21 @@ public class Demeter extends Card {
         return false;
     }
 
+
     /**
-     * It uses the checkMove to checks if there is some build possibilities before building
+     * Check if the Ability of Demeter can be turn on safely (To avoid player's lose due to a true AnswerAbility Client)
      * @param p list of player
      * @param b board
-     * @return true if you could activate ability in this turn
+     * @return true if active the ability is safely, false otherwise
      */
     @Override
     public boolean activable(List<Player> p, Board b) {
         return super.checkBuild(p, b).size() >= 2;
     }
 
+    /**
+     * Clean the parameter lastBuild
+     */
     @Override
     public void initializeTurn() { lastBuild = null;}
 }
