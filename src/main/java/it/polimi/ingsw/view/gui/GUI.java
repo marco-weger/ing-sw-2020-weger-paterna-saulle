@@ -4,9 +4,7 @@ import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.servermessages.*;
-import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -115,7 +113,7 @@ public class GUI extends Application implements ViewInterface {
         if(controller instanceof BoardController){
             ((BoardController) controller).setCms(message);
             ((BoardController) controller).banner.setText(((BoardController) controller).moveTA.getText());
-            ((BoardController) controller).showcheckmove(message);
+            ((BoardController) controller).showCheckMove(message);
             ((BoardController) controller).setState(2);
             ((BoardController) controller).refresh();
         }
@@ -130,7 +128,7 @@ public class GUI extends Application implements ViewInterface {
         if(controller instanceof BoardController){
             ((BoardController) controller).setCbs(message);
             ((BoardController) controller).banner.setText(((BoardController) controller).buildTA.getText());
-            ((BoardController) controller).showcheckbuild(message);
+            ((BoardController) controller).showCheckBuild(message);
             ((BoardController) controller).setState(3);
             ((BoardController) controller).refresh();
         }

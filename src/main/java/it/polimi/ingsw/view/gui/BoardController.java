@@ -8,8 +8,6 @@ import it.polimi.ingsw.commons.servermessages.CheckBuildServer;
 import it.polimi.ingsw.commons.servermessages.CheckMoveServer;
 import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
 import it.polimi.ingsw.commons.servermessages.QuestionAbilityServer;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -126,6 +124,9 @@ public class BoardController extends DefaultController {
             square40, square41, square42, square43, square44;
 
 
+    /**
+     * Set the Scene and buttons dimension
+     */
     @FXML
     @Override
     public void initialize() {
@@ -166,6 +167,10 @@ public class BoardController extends DefaultController {
         buttonDescription.setPrefSize(375,200);
     }
 
+
+    /**
+     * Initalize every object on the board
+     */
     @Override
     public void setup(){
         int start = 550;
@@ -285,6 +290,11 @@ public class BoardController extends DefaultController {
         state = 4;
     }
 
+
+    /**
+     * Show the god1 description on the board and highlight his button once clicked
+     * @param actionEvent
+     */
     public void god1OnAction(ActionEvent actionEvent) {
         setDescription(buttonName1.getText().split("\n")[1]);
 
@@ -295,6 +305,12 @@ public class BoardController extends DefaultController {
 
         buttonName1.getStyleClass().add(3,"nameSelected");
     }
+
+
+    /**
+     * Show the god2 description on the board and highlight his button once clicked
+     * @param actionEvent
+     */
     public void god2OnAction(ActionEvent actionEvent) {
         setDescription(buttonName2.getText().split("\n")[1]);
 
@@ -305,6 +321,12 @@ public class BoardController extends DefaultController {
 
         buttonName2.getStyleClass().add(3,"nameSelected");
     }
+
+
+    /**
+     * Show the god3 description on the board and highlight his button once clicked
+     * @param actionEvent
+     */
     public void god3OnAction(ActionEvent actionEvent) {
         setDescription(buttonName3.getText().split("\n")[1]);
 
@@ -316,6 +338,11 @@ public class BoardController extends DefaultController {
         buttonName3.getStyleClass().add(3,"nameSelected");
     }
 
+
+    /**
+     *Setter for the Card Description on the board
+     * @param name the name of the player
+     */
     public void setDescription(String name){
         try{
             String[] splitted = new String[0];
@@ -338,6 +365,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     *Getter for a floor image of a Tower
+     * @param lvl the floor of the tower that you want
+     * @return the image of the equivalent floor
+     */
     public Image getConstruction(int lvl){
         if(lvl == 1)
             return floor1;
@@ -349,6 +382,7 @@ public class BoardController extends DefaultController {
             return dome;
         return null;
     }
+
 
     /**
      * @param x row coordinate
@@ -580,7 +614,12 @@ public class BoardController extends DefaultController {
     }
 
 
-
+    /**
+     * Send a WorkerInitializeClient message if the cell is available
+     * @param x row coordinate
+     * @param y column coordinate
+     * @return true if the cell is available, false if the cell is occupied
+     */
     public boolean WorkerInitialize(int x, int y) {
          for (SnapWorker sw : this.gui.getClient().getWorkers()) {
              if (sw.row == x && sw.column == y) {
@@ -591,6 +630,13 @@ public class BoardController extends DefaultController {
          return true;
     }
 
+
+    /**
+     * Send a WorkerChosenClient message if the cell belongs to the current player
+     * @param x row of the chosen worker coordinate
+     * @param y column of the chosen worker coordinate
+     * @return true if the cell belongs to the current workers, false instead
+     */
     public boolean ChoseWorker(int x, int y) {
         for (SnapWorker sw : this.gui.getClient().getWorkers()) {
             if (sw.row == x && sw.column == y && sw.name.equals(this.gui.getClient().getUsername()) && (Css.worker1 && sw.n == 1 || Css.worker2 && sw.n == 2)) {
@@ -602,12 +648,18 @@ public class BoardController extends DefaultController {
     }
 
 
+    /**
+     * Send a MoveClient message if the cell it's available
+     * @param x row of the chosen cell
+     * @param y column of the chosen cell
+     * @return true if the cell is available, false instead
+     */
     public boolean Move(int x, int y) {
         for (SnapCell cell : Cms.sc) {
             if (cell.row == x && cell.column == y) {
                 this.gui.getClient().sendMessage(new MoveClient(this.gui.getClient().getUsername(), x, y));
                         for (SnapCell cellx : Cms.sc) {
-                            lighitdown(getCell(cellx.row,cellx.column));
+                            lightItDown(getCell(cellx.row,cellx.column));
                         }
                         return true;
             }
@@ -615,12 +667,19 @@ public class BoardController extends DefaultController {
         return false;
     }
 
+
+    /**
+     * Send a BuiltClient message if the cell it's available
+     * @param x row of the chosen cell
+     * @param y column of the chosen cell
+     * @return true if the cell is available, false instead
+     */
     public boolean Build(int x, int y) {
         for (SnapCell cell : Cbs.sc) {
             if (cell.row == x && cell.column == y) {
                 this.gui.getClient().sendMessage(new BuildClient(this.gui.getClient().getUsername(), x, y));
                     for (SnapCell cellx : Cbs.sc) {
-                        lighitdown(getCell(cellx.row,cellx.column));
+                        lightItDown(getCell(cellx.row,cellx.column));
                     }
                     return true;
             }
@@ -628,6 +687,12 @@ public class BoardController extends DefaultController {
         return false;
     }
 
+
+    /**
+     * Get the level from the model of the equivalent block and update the floor image
+     * @param x row of the block coordinate
+     * @param y row of the block coordinate
+     */
     public void setFloor(int x,int y) {
         for (SnapCell cell : this.gui.getClient().getBoard()) {
             if (cell.row == x && cell.column == y) {
@@ -652,7 +717,7 @@ public class BoardController extends DefaultController {
      * Change the Css to set the yellow color of the active cells (buttons) after a getCheckMove or getCheckBuild
      * @param Cell the cell of the button
      */
-    public void lighitup(Button Cell){
+    public void lightItUp(Button Cell){
         Cell.getStyleClass().remove("board");
         Cell.getStyleClass().add("boardL");
     }
@@ -661,7 +726,7 @@ public class BoardController extends DefaultController {
      * Change the Css to remove the yellow color of the active cells (buttons) after a getCheckMove or getCheckBuild
      * @param Cell the cell of the button
      */
-    public void lighitdown(Button Cell){
+    public void lightItDown(Button Cell){
         Cell.getStyleClass().remove("boardL");
         Cell.getStyleClass().add("board");
     }
@@ -703,7 +768,185 @@ public class BoardController extends DefaultController {
     }
 
 
+    /**
+     * Set the yellow color to the available cell get from the CheckMoveServer message
+     * @param sc the current CheckMoveServer message
+     */
+    public void showCheckMove(CheckMoveServer sc) {
+        int x, y;
+        if (Cms.name.equals(this.gui.getClient().getUsername())) {
+            for (SnapCell cell : Cms.sc) {
+                x = cell.row;
+                y = cell.column;
+                    if(x == 0 && y == 0)
+                        lightItUp(cell00);
+                    if(x == 0 && y == 1)
+                        lightItUp(cell01);
+                    if(x == 0 && y == 2)
+                        lightItUp(cell02);
+                    if(x == 0 && y == 3)
+                        lightItUp(cell03);
+                    if(x == 0 && y == 4)
+                        lightItUp(cell04);
+                    if(x == 1 && y == 0)
+                        lightItUp(cell10);
+                    if(x == 1 && y == 1)
+                        lightItUp(cell11);
+                    if(x == 1 && y == 2)
+                        lightItUp(cell12);
+                    if(x == 1 && y == 3)
+                        lightItUp(cell13);
+                    if(x == 1 && y == 4)
+                        lightItUp(cell14);
+                    if(x == 2 && y == 0)
+                        lightItUp(cell20);
+                    if(x == 2 && y == 1)
+                        lightItUp(cell21);
+                    if(x == 2 && y == 2)
+                        lightItUp(cell22);
+                    if(x == 2 && y == 3)
+                        lightItUp(cell23);
+                    if(x == 2 && y == 4)
+                        lightItUp(cell24);
+                    if(x == 3 && y == 0)
+                        lightItUp(cell30);
+                    if(x == 3 && y == 1)
+                        lightItUp(cell31);
+                    if(x == 3 && y == 2)
+                        lightItUp(cell32);
+                    if(x == 3 && y == 3)
+                        lightItUp(cell33);
+                    if(x == 3 && y == 4)
+                        lightItUp(cell34);
+                    if(x == 4 && y == 0)
+                        lightItUp(cell40);
+                    if(x == 4 && y == 1)
+                        lightItUp(cell41);
+                    if(x == 4 && y == 2)
+                        lightItUp(cell42);
+                    if(x == 4 && y == 3)
+                        lightItUp(cell43);
+                    if(x == 4 && y == 4)
+                        lightItUp(cell44);
+                    }
+           }
 
+
+    }
+
+
+    /**
+     * Set the yellow color to the available cell get from the CheckBuildServer message
+     * @param sb the current CheckBuildServer message
+     */
+    public void showCheckBuild(CheckBuildServer sb) {
+        int x, y;
+        if (Cbs.name.equals(this.gui.getClient().getUsername())) {
+            for (SnapCell cell : Cbs.sc) {
+                x = cell.row;
+                y = cell.column;
+                    if(x == 0 && y == 0)
+                        lightItUp(cell00);
+                    if(x == 0 && y == 1)
+                        lightItUp(cell01);
+                    if(x == 0 && y == 2)
+                        lightItUp(cell02);
+                    if(x == 0 && y == 3)
+                        lightItUp(cell03);
+                    if(x == 0 && y == 4)
+                        lightItUp(cell04);
+                    if(x == 1 && y == 0)
+                        lightItUp(cell10);
+                    if(x == 1 && y == 1)
+                        lightItUp(cell11);
+                    if(x == 1 && y == 2)
+                        lightItUp(cell12);
+                    if(x == 1 && y == 3)
+                        lightItUp(cell13);
+                    if(x == 1 && y == 4)
+                        lightItUp(cell14);
+                    if(x == 2 && y == 0)
+                        lightItUp(cell20);
+                    if(x == 2 && y == 1)
+                        lightItUp(cell21);
+                    if(x == 2 && y == 2)
+                        lightItUp(cell22);
+                    if(x == 2 && y == 3)
+                        lightItUp(cell23);
+                    if(x == 2 && y == 4)
+                        lightItUp(cell24);
+                    if(x == 3 && y == 0)
+                        lightItUp(cell30);
+                    if(x == 3 && y == 1)
+                        lightItUp(cell31);
+                    if(x == 3 && y == 2)
+                        lightItUp(cell32);
+                    if(x == 3 && y == 3)
+                        lightItUp(cell33);
+                    if(x == 3 && y == 4)
+                        lightItUp(cell34);
+                    if(x == 4 && y == 0)
+                        lightItUp(cell40);
+                    if(x == 4 && y == 1)
+                        lightItUp(cell41);
+                    if(x == 4 && y == 2)
+                        lightItUp(cell42);
+                    if(x == 4 && y == 3)
+                        lightItUp(cell43);
+                    if(x == 4 && y == 4)
+                        lightItUp(cell44);
+                    }
+            }
+
+    }
+
+
+    /**
+     * Shows the YES and NO buttons and change the banner message
+     */
+    public void question(){
+        yOn(yes);
+        nOn(no);
+        banner.setText(questionTA.getText());
+
+    }
+
+
+    /**
+     * If the button YES is visible, send a true AnswerAbilityClient when it's clicked
+     * and makes the buttons YES and NO invisible and inactive after it
+     * @param actionEvent
+     */
+    public void yes(ActionEvent actionEvent) {
+        if(yes.getStyleClass().toString() == "yes") {
+            this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), true, Qas.status));
+            yOff(yes);
+            nOff(no);
+            refresh();
+        }
+    }
+
+
+    /**
+     * If the button NO is visible, send a false AnswerAbilityClient when it's clicked
+     * and makes the buttons YES and NO invisible and inactive after it
+     * @param actionEvent
+     */
+    public void no(ActionEvent actionEvent) {
+        if(no.getStyleClass().toString() == "no") {
+            this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), false, Qas.status));
+            yOff(yes);
+            nOff(no);
+            refresh();
+        }
+    }
+
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell00(ActionEvent actionEvent) {
        int x = 0;
        int y = 0;
@@ -732,6 +975,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell01(ActionEvent actionEvent) {
         int x = 0;
         int y = 1;
@@ -759,6 +1008,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell02(ActionEvent actionEvent) {
         int x = 0;
         int y = 2;
@@ -785,6 +1040,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell03(ActionEvent actionEvent) {
         int x = 0;
         int y = 3;
@@ -811,6 +1072,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell04(ActionEvent actionEvent) {
         int x = 0;
         int y = 4;
@@ -836,6 +1103,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell10(ActionEvent actionEvent) {
         int x = 1;
         int y = 0;
@@ -863,6 +1136,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell11(ActionEvent actionEvent) {
         int x = 1;
         int y = 1;
@@ -888,6 +1167,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell12(ActionEvent actionEvent) {
         int x = 1;
         int y = 2;
@@ -913,6 +1198,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell13(ActionEvent actionEvent) {
         int x = 1;
         int y = 3;
@@ -938,6 +1229,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell14(ActionEvent actionEvent) {
         int x = 1;
         int y = 4;
@@ -963,6 +1260,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell20(ActionEvent actionEvent) {
         int x = 2;
         int y = 0;
@@ -988,6 +1291,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell21(ActionEvent actionEvent) {
         int x = 2;
         int y = 1;
@@ -1013,6 +1322,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell22(ActionEvent actionEvent) {
         int x = 2;
         int y = 2;
@@ -1038,6 +1353,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell23(ActionEvent actionEvent) {
         int x = 2;
         int y = 3;
@@ -1063,6 +1384,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell24(ActionEvent actionEvent) {
         int x = 2;
         int y = 4;
@@ -1088,6 +1415,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell30(ActionEvent actionEvent) {
         int x = 3;
         int y = 0;
@@ -1113,6 +1446,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell31(ActionEvent actionEvent) {
         int x = 3;
         int y = 1;
@@ -1138,6 +1477,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell32(ActionEvent actionEvent) {
         int x = 3;
         int y = 2;
@@ -1163,6 +1508,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell33(ActionEvent actionEvent) {
         int x = 3;
         int y = 3;
@@ -1188,6 +1539,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell34(ActionEvent actionEvent) {
         int x = 3;
         int y = 4;
@@ -1213,6 +1570,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell40(ActionEvent actionEvent) {
         int x = 4;
         int y = 0;
@@ -1238,6 +1601,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell41(ActionEvent actionEvent) {
         int x = 4;
         int y = 1;
@@ -1263,6 +1632,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell42(ActionEvent actionEvent) {
         int x = 4;
         int y = 2;
@@ -1289,6 +1664,11 @@ public class BoardController extends DefaultController {
     }
 
 
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell43(ActionEvent actionEvent) {
         int x = 4;
         int y = 3;
@@ -1314,6 +1694,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * handler for cell events, change the action of the respective cell
+     * depending on the parameter state
+     * @param actionEvent
+     */
     public void cell44(ActionEvent actionEvent) {
         int x = 4;
         int y = 4;
@@ -1336,158 +1722,6 @@ public class BoardController extends DefaultController {
                 setFloor(x,y);
                 setState(4);
             }
-        }
-    }
-
-
-
-    public void showcheckmove(CheckMoveServer sc) {
-        int x, y;
-        if (Cms.name.equals(this.gui.getClient().getUsername())) {
-            for (SnapCell cell : Cms.sc) {
-                x = cell.row;
-                y = cell.column;
-                    if(x == 0 && y == 0)
-                        lighitup(cell00);
-                    if(x == 0 && y == 1)
-                        lighitup(cell01);
-                    if(x == 0 && y == 2)
-                        lighitup(cell02);
-                    if(x == 0 && y == 3)
-                        lighitup(cell03);
-                    if(x == 0 && y == 4)
-                        lighitup(cell04);
-                    if(x == 1 && y == 0)
-                        lighitup(cell10);
-                    if(x == 1 && y == 1)
-                        lighitup(cell11);
-                    if(x == 1 && y == 2)
-                        lighitup(cell12);
-                    if(x == 1 && y == 3)
-                        lighitup(cell13);
-                    if(x == 1 && y == 4)
-                        lighitup(cell14);
-                    if(x == 2 && y == 0)
-                        lighitup(cell20);
-                    if(x == 2 && y == 1)
-                        lighitup(cell21);
-                    if(x == 2 && y == 2)
-                        lighitup(cell22);
-                    if(x == 2 && y == 3)
-                        lighitup(cell23);
-                    if(x == 2 && y == 4)
-                        lighitup(cell24);
-                    if(x == 3 && y == 0)
-                        lighitup(cell30);
-                    if(x == 3 && y == 1)
-                        lighitup(cell31);
-                    if(x == 3 && y == 2)
-                        lighitup(cell32);
-                    if(x == 3 && y == 3)
-                        lighitup(cell33);
-                    if(x == 3 && y == 4)
-                        lighitup(cell34);
-                    if(x == 4 && y == 0)
-                        lighitup(cell40);
-                    if(x == 4 && y == 1)
-                        lighitup(cell41);
-                    if(x == 4 && y == 2)
-                        lighitup(cell42);
-                    if(x == 4 && y == 3)
-                        lighitup(cell43);
-                    if(x == 4 && y == 4)
-                        lighitup(cell44);
-                    }
-           }
-
-
-    }
-
-
-
-    public void showcheckbuild(CheckBuildServer sb) {
-        int x, y;
-        if (Cbs.name.equals(this.gui.getClient().getUsername())) {
-            for (SnapCell cell : Cbs.sc) {
-                x = cell.row;
-                y = cell.column;
-                    if(x == 0 && y == 0)
-                        lighitup(cell00);
-                    if(x == 0 && y == 1)
-                        lighitup(cell01);
-                    if(x == 0 && y == 2)
-                        lighitup(cell02);
-                    if(x == 0 && y == 3)
-                        lighitup(cell03);
-                    if(x == 0 && y == 4)
-                        lighitup(cell04);
-                    if(x == 1 && y == 0)
-                        lighitup(cell10);
-                    if(x == 1 && y == 1)
-                        lighitup(cell11);
-                    if(x == 1 && y == 2)
-                        lighitup(cell12);
-                    if(x == 1 && y == 3)
-                        lighitup(cell13);
-                    if(x == 1 && y == 4)
-                        lighitup(cell14);
-                    if(x == 2 && y == 0)
-                        lighitup(cell20);
-                    if(x == 2 && y == 1)
-                        lighitup(cell21);
-                    if(x == 2 && y == 2)
-                        lighitup(cell22);
-                    if(x == 2 && y == 3)
-                        lighitup(cell23);
-                    if(x == 2 && y == 4)
-                        lighitup(cell24);
-                    if(x == 3 && y == 0)
-                        lighitup(cell30);
-                    if(x == 3 && y == 1)
-                        lighitup(cell31);
-                    if(x == 3 && y == 2)
-                        lighitup(cell32);
-                    if(x == 3 && y == 3)
-                        lighitup(cell33);
-                    if(x == 3 && y == 4)
-                        lighitup(cell34);
-                    if(x == 4 && y == 0)
-                        lighitup(cell40);
-                    if(x == 4 && y == 1)
-                        lighitup(cell41);
-                    if(x == 4 && y == 2)
-                        lighitup(cell42);
-                    if(x == 4 && y == 3)
-                        lighitup(cell43);
-                    if(x == 4 && y == 4)
-                        lighitup(cell44);
-                    }
-            }
-
-        }
-
-    public void question(){
-        yOn(yes);
-        nOn(no);
-        banner.setText(questionTA.getText());
-
-    }
-
-    public void yes(ActionEvent actionEvent) {
-        if(yes.getStyleClass().toString() == "yes") {
-            this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), true, Qas.status));
-            yOff(yes);
-            nOff(no);
-            refresh();
-        }
-    }
-
-    public void no(ActionEvent actionEvent) {
-        if(no.getStyleClass().toString() == "no") {
-            this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), false, Qas.status));
-            yOff(yes);
-            nOff(no);
-            refresh();
         }
     }
 }
