@@ -8,6 +8,7 @@ import it.polimi.ingsw.commons.servermessages.CheckBuildServer;
 import it.polimi.ingsw.commons.servermessages.CheckMoveServer;
 import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
 import it.polimi.ingsw.commons.servermessages.QuestionAbilityServer;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -356,25 +357,27 @@ public class BoardController extends DefaultController {
      * @param name the name of the player
      */
     public void setDescription(String name){
-        try{
-            String[] splitted = new String[0];
-            for(SnapPlayer p : gui.getClient().getPlayers())
-                if(p.card.toString().equals(name))
-                    splitted = p.card.getDescription().split(" ");
-            String desc = "";
-            int cc = 0;
-            for(int i=0; i<splitted.length; i++){
-                cc += splitted[i].length();
-                desc += splitted[i];
-                if(cc > 30){
-                    cc = 0;
-                    desc += (i+1 == splitted.length ? "" : "\n");
-                } else desc += " ";
+        Platform.runLater(() -> {
+            try{
+                String[] splitted = new String[0];
+                for(SnapPlayer p : gui.getClient().getPlayers())
+                    if(p.card.toString().equals(name))
+                        splitted = p.card.getDescription().split(" ");
+                String desc = "";
+                int cc = 0;
+                for(int i=0; i<splitted.length; i++){
+                    cc += splitted[i].length();
+                    desc += splitted[i];
+                    if(cc > 30){
+                        cc = 0;
+                        desc += (i+1 == splitted.length ? "" : "\n");
+                    } else desc += " ";
+                }
+                buttonDescription.setText(desc);
+            } catch (Exception ex){
+                buttonDescription.setText("");
             }
-            buttonDescription.setText(desc);
-        } catch (Exception ex){
-            buttonDescription.setText("");
-        }
+        });
     }
 
 

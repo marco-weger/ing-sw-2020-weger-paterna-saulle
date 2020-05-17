@@ -29,6 +29,7 @@ import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GUI extends Application implements ViewInterface {
@@ -39,13 +40,15 @@ public class GUI extends Application implements ViewInterface {
     double sceneWidth = 0;
     double sceneHeight = 0;
 
-    Parent root, root2;
+    Parent root;
     DefaultController defaultcontroller;
 
     private TimerTurnClient timer;
 
     private Client client;
     private Stage primaryStage;
+
+    private ScheduledExecutorService timeOut;
 
     public void setAndShow(Scene s){
         this.primaryStage.setScene(s);
@@ -278,9 +281,11 @@ public class GUI extends Application implements ViewInterface {
             }
 
         }
+
+        if(message.status.equals(Status.START) || message.status.equals(Status.WORKER_CHOICE)){
+            startTimer(message.timer);
+        }
     }
-
-
 
     @Override
     public void handleMessage(SomeoneLoseServer message) {
@@ -433,22 +438,7 @@ public class GUI extends Application implements ViewInterface {
     //private String currentPlayer = "";
     @Override
     public void statusHandler(CurrentStatusServer message){
-        if(message.status.equals(Status.START) || message.status.equals(Status.WORKER_CHOICE)){
-            Platform.runLater(() -> {
-                FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-                DefaultController controller = loader.getController();
-                if(controller instanceof BoardController){
-                    try{
-                        timer.cancel(); // Delete last timer if exists
-                    } catch (Exception ignored){}
-                    try{
-                        timer = new TimerTurnClient(this,message.timer);
-                        ScheduledExecutorService timeOut = Executors.newSingleThreadScheduledExecutor();
-                        timeOut.scheduleAtFixedRate(timer, 0, 1000, TimeUnit.MILLISECONDS);
-                    } catch (Exception ignored){}
-                }
-            });
-        }
+
     }
 
     @Override
@@ -497,6 +487,7 @@ public class GUI extends Application implements ViewInterface {
                 FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
                 DefaultController controller = loader.getController();
                 if(controller instanceof BoardController){
+                    //System.out.println(val);
                     ((BoardController) controller).buttonTimer.setVisible(true);
                     ((BoardController) controller).buttonTimer.setText(val+"");
                 }
@@ -513,6 +504,26 @@ public class GUI extends Application implements ViewInterface {
                     ((BoardController) controller).buttonTimer.setVisible(false);
                 }
             } catch (Exception ignored){}
+        });
+    }
+
+    public void startTimer(long second){
+        Platform.runLater(() -> {
+            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+            DefaultController controller = loader.getController();
+            if(controller instanceof BoardController){
+                try{
+                    if(timeOut != null)
+                        timeOut.shutdown();
+                } catch (Exception ignored){}
+                try{
+                    timeOut = Executors.newSingleThreadScheduledExecutor();
+                    timer = new TimerTurnClient(this,timeOut,second);
+                    timeOut.scheduleAtFixedRate(timer, 0, 1000, TimeUnit.MILLISECONDS);
+                } catch (Exception ex){
+                    LOGGER.log( Level.SEVERE, ex.toString(), ex );
+                }
+            }
         });
     }
 

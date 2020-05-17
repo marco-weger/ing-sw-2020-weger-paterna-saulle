@@ -4,22 +4,26 @@ import it.polimi.ingsw.view.gui.GUI;
 import javafx.scene.control.Button;
 
 import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class TimerTurnClient extends TimerTask {
 
     /**
      * The client
      */
-    final GUI gui;
+    private final GUI gui;
 
-    long times;
+    private long times;
 
-    long count;
+    private long count;
 
-    public TimerTurnClient(GUI gui, long times){
+    public ScheduledExecutorService ses;
+
+    public TimerTurnClient(GUI gui, ScheduledExecutorService ses, long times){
         System.out.println("[TIMER]");
         this.gui = gui;
         this.times = times;
+        this.ses = ses;
         this.count = 0;
         gui.setTimerText(times);
     }
@@ -32,6 +36,7 @@ public class TimerTurnClient extends TimerTask {
         gui.setTimerText(times-++count);
         if(times==count){
             gui.unShowTimer();
+            ses.shutdown();
             this.cancel();
         }
     }

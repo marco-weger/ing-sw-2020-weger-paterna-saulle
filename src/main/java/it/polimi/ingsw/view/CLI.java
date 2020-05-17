@@ -50,6 +50,8 @@ public class CLI implements ViewInterface {
      */
     private static final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
+    private String currentPlayer = "";
+
     public CLI(Client client, String symbols){
         this.client = client;
         this.symbols = symbols;
@@ -587,7 +589,6 @@ public class CLI implements ViewInterface {
         System.out.flush();
     }
 
-    private String currentPlayer = "";
     @Override
     public void statusHandler(CurrentStatusServer message){
         if(client.getMyPlayer() != null && !client.getMyPlayer().loser && !message.player.equals(client.getUsername())){
