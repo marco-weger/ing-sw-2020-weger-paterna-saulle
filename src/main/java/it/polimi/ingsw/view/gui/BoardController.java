@@ -201,26 +201,22 @@ public class BoardController extends DefaultController {
 
         if(gui.getClient().getPlayers().size() == 3){
             int offset = 30;
-            if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(0).name)){
-                buttonGod1.getStyleClass().addAll("button",gui.getClient().getPlayers().get(1).card.toString().toLowerCase());
-                buttonName1.setText(gui.getClient().getPlayers().get(1).name + "\n" + gui.getClient().getPlayers().get(1).card.toString());
+                buttonGod1.getStyleClass().addAll("button",gui.getClient().getPlayers().get(0).card.toString().toLowerCase());
+                buttonName1.setText(gui.getClient().getPlayers().get(1).name + "\n" + gui.getClient().getPlayers().get(0).card.toString());
+                buttonGod2.getStyleClass().addAll("button",gui.getClient().getPlayers().get(0).card.toString().toLowerCase());
+                buttonName2.setText(gui.getClient().getPlayers().get(1).name + "\n" + gui.getClient().getPlayers().get(1).card);
                 buttonGod3.getStyleClass().addAll("button",gui.getClient().getPlayers().get(2).card.toString().toLowerCase());
                 buttonName3.setText(gui.getClient().getPlayers().get(2).name + "\n" + gui.getClient().getPlayers().get(2).card.toString());
-            } else if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(1).name)){
-                buttonGod1.getStyleClass().addAll("button",gui.getClient().getPlayers().get(0).card.toString().toLowerCase());
-                buttonName1.setText(gui.getClient().getPlayers().get(0).name + "\n" + gui.getClient().getPlayers().get(0).card.toString());
-                buttonGod3.getStyleClass().addAll("button",gui.getClient().getPlayers().get(2).card.toString().toLowerCase());
-                buttonName3.setText(gui.getClient().getPlayers().get(2).name + "\n" + gui.getClient().getPlayers().get(2).card.toString());
-            } else if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(2).name)){
-                buttonGod1.getStyleClass().addAll("button",gui.getClient().getPlayers().get(0).card.toString().toLowerCase());
-                buttonName1.setText(gui.getClient().getPlayers().get(0).name + "\n" + gui.getClient().getPlayers().get(0).card.toString());
-                buttonGod3.getStyleClass().addAll("button",gui.getClient().getPlayers().get(1).card.toString().toLowerCase());
-                buttonName3.setText(gui.getClient().getPlayers().get(1).name + "\n" + gui.getClient().getPlayers().get(1).card.toString());
-            }
 
-            buttonGod2.getStyleClass().addAll("button",gui.getClient().getMyPlayer().card.toString().toLowerCase());
-            buttonSelected2.getStyleClass().addAll("button","podiumGold");
-            buttonName2.setText(gui.getClient().getMyPlayer().name + "\n" + gui.getClient().getMyPlayer().card);
+                if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(0).name))
+                    buttonSelected1.getStyleClass().addAll("button","podiumGold");
+                if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(1).name))
+                     buttonSelected2.getStyleClass().addAll("button","podiumGold");
+                if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(2).name))
+                    buttonSelected2.getStyleClass().addAll("button","podiumGold");
+
+
+
 
             buttonName1.setLayoutX(start + (gui.sceneWidth-start)/4 - buttonName1.getPrefWidth()/2-offset);
             buttonName2.setLayoutX(start + (gui.sceneWidth-start)/2 - buttonName2.getPrefWidth()/2);
@@ -238,17 +234,17 @@ public class BoardController extends DefaultController {
         } else if(gui.getClient().getPlayers().size() == 2){
             int offset = 30;
 
-            if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(0).name)){
-                buttonGod2.getStyleClass().addAll("button",gui.getClient().getPlayers().get(1).card.toString().toLowerCase());
-                buttonName2.setText(gui.getClient().getPlayers().get(1).name + "\n" + gui.getClient().getPlayers().get(1).card.toString());
-            } else if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(1).name)){
-                buttonGod2.getStyleClass().addAll("button",gui.getClient().getPlayers().get(0).card.toString().toLowerCase());
-                buttonName2.setText(gui.getClient().getPlayers().get(0).name + "\n" + gui.getClient().getPlayers().get(0).card.toString());
-            }
+            buttonGod2.getStyleClass().addAll("button",gui.getClient().getPlayers().get(1).card.toString().toLowerCase());
+            buttonName2.setText(gui.getClient().getPlayers().get(1).name + "\n" + gui.getClient().getPlayers().get(1).card.toString());
 
-            buttonGod1.getStyleClass().addAll("button",gui.getClient().getMyPlayer().card.toString().toLowerCase());
-            buttonSelected1.getStyleClass().addAll("button","podiumGold");
-            buttonName1.setText(gui.getClient().getMyPlayer().name + "\n" + gui.getClient().getMyPlayer().card);
+            buttonGod1.getStyleClass().addAll("button",gui.getClient().getPlayers().get(0).card.toString().toLowerCase());
+            buttonName1.setText(gui.getClient().getPlayers().get(0).name + "\n" + gui.getClient().getPlayers().get(0).card);
+
+
+            if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(0).name))
+                buttonSelected1.getStyleClass().addAll("button","podiumGold");
+            if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(1).name))
+                buttonSelected2.getStyleClass().addAll("button","podiumGold");
 
             buttonName1.setLayoutX(start + (gui.sceneWidth-start)/3 - buttonName1.getPrefWidth()/2-offset);
             buttonName2.setLayoutX(start + 2*(gui.sceneWidth-start)/3 - buttonName2.getPrefWidth()/2+offset);
