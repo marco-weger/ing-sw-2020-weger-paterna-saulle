@@ -37,6 +37,7 @@ public class LoseController extends DefaultController{
 
     public void spectator(ActionEvent actionEvent) {
         this.gui.getLose().close();
+        this.gui.setLoserBar();
     }
 
     public void newgame(ActionEvent actionEvent) {
