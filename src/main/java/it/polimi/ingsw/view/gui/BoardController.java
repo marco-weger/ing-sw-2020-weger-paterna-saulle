@@ -202,7 +202,7 @@ public class BoardController extends DefaultController {
         if(gui.getClient().getPlayers().size() == 3){
             int offset = 30;
                 buttonGod1.getStyleClass().addAll("button",gui.getClient().getPlayers().get(0).card.toString().toLowerCase());
-                buttonName1.setText(gui.getClient().getPlayers().get(1).name + "\n" + gui.getClient().getPlayers().get(0).card.toString());
+                buttonName1.setText(gui.getClient().getPlayers().get(0).name + "\n" + gui.getClient().getPlayers().get(0).card.toString());
                 buttonGod2.getStyleClass().addAll("button",gui.getClient().getPlayers().get(0).card.toString().toLowerCase());
                 buttonName2.setText(gui.getClient().getPlayers().get(1).name + "\n" + gui.getClient().getPlayers().get(1).card);
                 buttonGod3.getStyleClass().addAll("button",gui.getClient().getPlayers().get(2).card.toString().toLowerCase());
