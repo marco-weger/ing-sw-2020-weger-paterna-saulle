@@ -11,8 +11,8 @@ import it.polimi.ingsw.commons.servermessages.QuestionAbilityServer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -93,7 +93,8 @@ public class BoardController extends DefaultController {
     Image floor2 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor2.png", towerSize, towerSize, true, false);
     Image floor3 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor3.png", towerSize, towerSize, true, false);
     Image dome = new Image("/it.polimi.ingsw/view/gui/img/tower/dome.png", towerSize, towerSize, true, false);
-
+    //Image end_win = new Image("/it.polimi.ingsw/view/gui/img/other/win.png");
+   // Image end_lose = new Image("/it.polimi.ingsw/view/gui/img/other/lose.png");
 
     @FXML
     TextField banner;
@@ -204,7 +205,7 @@ public class BoardController extends DefaultController {
             int offset = 30;
                 buttonGod1.getStyleClass().addAll("button",gui.getClient().getPlayers().get(0).card.toString().toLowerCase());
                 buttonName1.setText(gui.getClient().getPlayers().get(0).name + "\n" + gui.getClient().getPlayers().get(0).card.toString());
-                buttonGod2.getStyleClass().addAll("button",gui.getClient().getPlayers().get(0).card.toString().toLowerCase());
+                buttonGod2.getStyleClass().addAll("button",gui.getClient().getPlayers().get(1).card.toString().toLowerCase());
                 buttonName2.setText(gui.getClient().getPlayers().get(1).name + "\n" + gui.getClient().getPlayers().get(1).card);
                 buttonGod3.getStyleClass().addAll("button",gui.getClient().getPlayers().get(2).card.toString().toLowerCase());
                 buttonName3.setText(gui.getClient().getPlayers().get(2).name + "\n" + gui.getClient().getPlayers().get(2).card.toString());
@@ -214,7 +215,7 @@ public class BoardController extends DefaultController {
                 if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(1).name))
                      buttonSelected2.getStyleClass().addAll("button","podiumGold");
                 if(gui.getClient().getMyPlayer().name.equals(gui.getClient().getPlayers().get(2).name))
-                    buttonSelected2.getStyleClass().addAll("button","podiumGold");
+                    buttonSelected3.getStyleClass().addAll("button","podiumGold");
 
 
 

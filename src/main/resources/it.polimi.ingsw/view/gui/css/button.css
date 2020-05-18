@@ -201,3 +201,19 @@
     -fx-font-size: 26px;
     -fx-font-family: Nefelibata-Brush;
 }
+.newgame{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/newgame.png");
+    -fx-background-size: 100% auto
+}
+.newgame:pressed{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/newgame_pressed.png");
+    -fx-background-size: 100% auto
+}
+.spectator{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/spectator.png");
+    -fx-background-size: 100% auto
+}
+.spectator:pressed{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/spectator_pressed.png");
+    -fx-background-size: 100% auto
+}
