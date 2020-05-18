@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 
 public class BoardController extends DefaultController {
@@ -1744,6 +1745,16 @@ public class BoardController extends DefaultController {
                 setFloor(x,y);
                 setState(4);
             }
+        }
+    }
+
+    public void activeQuestionIfPossible(KeyCode code) {
+        if(flag == true) {
+            this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), code == KeyCode.Y, Qas.status));
+            yOff(yes);
+            nOff(no);
+            flag = false;
+            refresh();
         }
     }
 }

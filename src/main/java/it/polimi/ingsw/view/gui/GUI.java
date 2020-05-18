@@ -17,6 +17,7 @@ import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -237,6 +238,11 @@ public class GUI extends Application implements ViewInterface {
                             ((BoardController) xcontroller).banner.setText(((BoardController) xcontroller).workerITA.getText());
                             xcontroller.setup();
                             ((BoardController) xcontroller).setState(0);
+                            s.setOnKeyPressed(e -> {
+                                if (e.getCode() == KeyCode.Y || e.getCode() == KeyCode.N) {
+                                    ((BoardController) xcontroller).activeQuestionIfPossible(e.getCode());
+                                }
+                            });
                         }
 
                         primaryStage.setScene(s);
@@ -258,19 +264,23 @@ public class GUI extends Application implements ViewInterface {
             }
         }
         if(!message.player.equals(client.getUsername()) && !client.getMyPlayer().loser && message.status == Status.WORKER_CHOICE ){
-                    Platform.runLater(() -> {
-                        Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
-                        FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
-                        DefaultController controllerx = loader2.getController();
-                        if(controllerx instanceof BoardController){
-                            ((BoardController) controllerx).banner.setText("WAIT, "+message.player+"'s Turn");
-                            ((BoardController) controllerx).refresh();
+            Platform.runLater(() -> {
+                Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
+                FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
+                DefaultController controllerx = loader2.getController();
+                if(controllerx instanceof BoardController){
+                    ((BoardController) controllerx).banner.setText("WAIT, "+message.player+"'s Turn");
+                    ((BoardController) controllerx).refresh();
+                    sn.setOnKeyPressed(e -> {
+                        if (e.getCode() == KeyCode.Y || e.getCode() == KeyCode.N) {
+                            ((BoardController) controllerx).activeQuestionIfPossible(e.getCode());
                         }
-
-                        primaryStage.setScene(sn);
-                        primaryStage.show();
                     });
+                }
 
+                primaryStage.setScene(sn);
+                primaryStage.show();
+            });
         }
         if(!message.player.equals(client.getUsername()) && !client.getMyPlayer().loser && message.status != Status.WORKER_CHOICE ){
             loader = (FXMLLoader) primaryStage.getScene().getUserData();

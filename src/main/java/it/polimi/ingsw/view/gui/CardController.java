@@ -51,6 +51,9 @@ public class CardController extends DefaultController {
     public List<CardName> cards;
 
     @FXML
+    public Button banner;
+
+    @FXML
     @Override
     public void initialize(){
         super.initialize();
@@ -123,12 +126,21 @@ public class CardController extends DefaultController {
         buttonSend.setMinSize(154,88);
         buttonSend.setMaxSize(154,88);
         buttonSend.setPrefSize(154,88);
+
+        banner.setMinSize(400,60);
+        banner.setMaxSize(400,60);
+        banner.setPrefSize(400,60);
+        banner.setText("Waiting for opponent's choice...");
+        banner.setVisible(false);
     }
 
     @Override
     public void setup(){
         super.setup();
         int y = 25;
+
+        banner.setLayoutY(gui.sceneHeight-top.getPrefHeight()-center.getPrefHeight()-bottom.getPrefHeight()/2-banner.getPrefHeight()/2);
+        banner.setLayoutX((gui.sceneWidth/2)-200);
 
         textFieldName1.setLayoutY(10);
         textFieldName2.setLayoutY(10);
@@ -275,7 +287,9 @@ public class CardController extends DefaultController {
     }
 
     public void sendOnAction(ActionEvent actionEvent) {
-        if(cardName != null)
+        if(cardName != null){
             gui.getClient().sendMessage(new PlayerChoseClient(gui.getClient().getUsername(), cardName));
+            banner.setVisible(true);
+        }
     }
 }

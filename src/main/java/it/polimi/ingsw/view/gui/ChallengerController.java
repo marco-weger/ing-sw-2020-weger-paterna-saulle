@@ -65,6 +65,9 @@ public class ChallengerController extends DefaultController {
 
     public List<CardName> cards;
 
+    @FXML
+    public Button banner;
+
     int count = 0;
 
     List<CardName> selected;
@@ -137,12 +140,21 @@ public class ChallengerController extends DefaultController {
         buttonClear.setMinSize(154,88);
         buttonClear.setMaxSize(154,88);
         buttonClear.setPrefSize(154,88);
+
+        banner.setMinSize(400,60);
+        banner.setMaxSize(400,60);
+        banner.setPrefSize(400,60);
+        banner.setText("Waiting for opponent's choice...");
+        banner.setVisible(false);
     }
 
     @Override
     public void setup(){
         super.setup();
         int y = 25;
+
+        banner.setLayoutY(gui.sceneHeight-top.getPrefHeight()-center.getPrefHeight()-bottom.getPrefHeight()/2-banner.getPrefHeight()/2);
+        banner.setLayoutX((gui.sceneWidth/2)-200);
 
         if(gui.getClient().getPlayers().size() == 3){
             int offset = 45;
@@ -247,6 +259,7 @@ public class ChallengerController extends DefaultController {
     public void sendOnAction(ActionEvent actionEvent){
         if(selected.size() == gui.getClient().getPlayers().size()){
             gui.getClient().sendMessage(new ChallengerChoseClient(gui.getClient().getUsername(), selected));
+            banner.setVisible(true);
         }
     }
 
