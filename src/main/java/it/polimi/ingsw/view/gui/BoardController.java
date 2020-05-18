@@ -9,13 +9,13 @@ import it.polimi.ingsw.commons.servermessages.CheckMoveServer;
 import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
 import it.polimi.ingsw.commons.servermessages.QuestionAbilityServer;
 import javafx.application.Platform;
-//import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 
 public class BoardController extends DefaultController {
@@ -1749,5 +1749,13 @@ public class BoardController extends DefaultController {
         }
     }
 
-
+    public void activeQuestionIfPossible(KeyCode code) {
+        if(flag == true) {
+            this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), code == KeyCode.Y, Qas.status));
+            yOff(yes);
+            nOff(no);
+            flag = false;
+            refresh();
+        }
+    }
 }
