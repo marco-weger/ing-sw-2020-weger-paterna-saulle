@@ -49,12 +49,17 @@ public class GUI extends Application implements ViewInterface {
     private Client client;
     private Stage primaryStage;
     private Stage win;
+    private Stage lose;
 
     private ScheduledExecutorService timeOut;
 
     public void setAndShow(Scene s){
         this.primaryStage.setScene(s);
         this.primaryStage.show();
+    }
+
+    public Stage getLose() {
+        return lose;
     }
 
     public Stage getPrimaryStage(){
@@ -310,6 +315,27 @@ public class GUI extends Application implements ViewInterface {
 
         if(this.client.getUsername().equals(message.player)){
             alert.setText("Time is up... YOU LOSE!");
+            Platform.runLater(() -> {
+                lose = new Stage();
+                try {
+                    //System.out.println(file);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Lose.fxml"));
+                    Parent root3 = loader.load();
+                    defaultcontroller = loader.getController();
+                    defaultcontroller.setGUI(this);
+                    double limitY = 190* sceneWidth /1300;
+
+                    Scene scene = new Scene(Objects.requireNonNull(root3), 421, 450, Color.TRANSPARENT);
+                    scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+                    lose.initStyle(StageStyle.TRANSPARENT);
+                    lose.setAlwaysOnTop(true);
+                    scene.setUserData(loader);
+                    lose.setScene(scene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                lose.showAndWait();
+            });
         }
         else{
 
@@ -350,11 +376,12 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(SomeoneWinServer message) {
-        //TODO provvisorio
         Text end = new Text();
         if(this.client.getUsername().equals(message.player)){
-            win = new Stage();
             Platform.runLater(() -> {
+                win = new Stage();
+                end.setText("YOU WIN!");
+                unShowTimer();
                 try {
                     //System.out.println(file);
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Win.fxml"));
@@ -376,7 +403,29 @@ public class GUI extends Application implements ViewInterface {
             });
         }
         else {
-            end.setText("YOU LOSE!");
+            Platform.runLater(() -> {
+                lose = new Stage();
+                end.setText("YOU LOSE!");
+                unShowTimer();
+                try {
+                    //System.out.println(file);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Lose.fxml"));
+                    Parent root3 = loader.load();
+                    defaultcontroller = loader.getController();
+                    defaultcontroller.setGUI(this);
+                    double limitY = 190* sceneWidth /1300;
+
+                    Scene scene = new Scene(Objects.requireNonNull(root3), 421, 450, Color.TRANSPARENT);
+                    scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+                    lose.initStyle(StageStyle.TRANSPARENT);
+                    lose.setAlwaysOnTop(true);
+                    scene.setUserData(loader);
+                    lose.setScene(scene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                lose.showAndWait();
+            });
         }
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
@@ -385,7 +434,6 @@ public class GUI extends Application implements ViewInterface {
             ((BoardController) controller).refresh();
         }
 
-        unShowTimer();
     }
 
     @Override
