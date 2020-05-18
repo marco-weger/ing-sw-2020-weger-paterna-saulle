@@ -12,6 +12,7 @@ import it.polimi.ingsw.network.TimerTurnServer;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
+//import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
@@ -47,6 +48,7 @@ public class GUI extends Application implements ViewInterface {
 
     private Client client;
     private Stage primaryStage;
+    private Stage win;
 
     private ScheduledExecutorService timeOut;
 
@@ -57,6 +59,10 @@ public class GUI extends Application implements ViewInterface {
 
     public Stage getPrimaryStage(){
         return primaryStage;
+    }
+
+    public Stage getWin() {
+        return win;
     }
 
     @Override
@@ -346,15 +352,35 @@ public class GUI extends Application implements ViewInterface {
     public void handleMessage(SomeoneWinServer message) {
         //TODO provvisorio
         Text end = new Text();
-        if(this.client.getUsername().equals(message.player))
-            end.setText("YOU WIN!");
+        if(this.client.getUsername().equals(message.player)){
+            win = new Stage();
+            Platform.runLater(() -> {
+                try {
+                    //System.out.println(file);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Win.fxml"));
+                    Parent root2 = loader.load();
+                    defaultcontroller = loader.getController();
+                    defaultcontroller.setGUI(this);
+                    double limitY = 190* sceneWidth /1300;
+
+                    Scene scene = new Scene(Objects.requireNonNull(root2), 421, 450, Color.TRANSPARENT);
+                    scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+                    win.initStyle(StageStyle.TRANSPARENT);
+                    win.setAlwaysOnTop(true);
+                    scene.setUserData(loader);
+                    win.setScene(scene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                win.showAndWait();
+            });
+        }
         else {
             end.setText("YOU LOSE!");
         }
-
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
-        if(controller instanceof BoardController){
+        if(controller instanceof BoardController) {
             ((BoardController) controller).banner.setText(end.getText());
             ((BoardController) controller).refresh();
         }
@@ -452,7 +478,7 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void displayFirstWindow() {
-        Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
+       Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
         /*
@@ -483,6 +509,7 @@ public class GUI extends Application implements ViewInterface {
 
             }
         });*/
+
     }
 
     public void setTimerText(long val){
@@ -531,9 +558,9 @@ public class GUI extends Application implements ViewInterface {
         });
     }
 
-    public SnapPlayer getPlayerByName(String name){
-        for(SnapPlayer p : client.getPlayers())
-            if(p.name.equals(name))
+    public SnapPlayer getPlayerByName(String name) {
+        for (SnapPlayer p : client.getPlayers())
+            if (p.name.equals(name))
                 return p;
         return null;
     }

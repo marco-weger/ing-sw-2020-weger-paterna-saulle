@@ -9,10 +9,11 @@ import it.polimi.ingsw.commons.servermessages.CheckMoveServer;
 import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
 import it.polimi.ingsw.commons.servermessages.QuestionAbilityServer;
 import javafx.application.Platform;
+//import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -92,7 +93,8 @@ public class BoardController extends DefaultController {
     Image floor2 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor2.png", towerSize, towerSize, true, false);
     Image floor3 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor3.png", towerSize, towerSize, true, false);
     Image dome = new Image("/it.polimi.ingsw/view/gui/img/tower/dome.png", towerSize, towerSize, true, false);
-
+    //Image end_win = new Image("/it.polimi.ingsw/view/gui/img/other/win.png");
+   // Image end_lose = new Image("/it.polimi.ingsw/view/gui/img/other/lose.png");
 
     @FXML
     TextField banner;
@@ -1746,4 +1748,6 @@ public class BoardController extends DefaultController {
             }
         }
     }
+
+
 }
