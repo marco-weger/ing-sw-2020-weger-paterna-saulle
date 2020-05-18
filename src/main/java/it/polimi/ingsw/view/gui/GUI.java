@@ -316,6 +316,8 @@ public class GUI extends Application implements ViewInterface {
             ((BoardController) controller).banner.setText(alert.getText());
             ((BoardController) controller).refresh();
         }
+
+        unShowTimer();
     }
 
     @Override
@@ -342,7 +344,7 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(SomeoneWinServer message) {
-    //TODO provvisorio
+        //TODO provvisorio
         Text end = new Text();
         if(this.client.getUsername().equals(message.player))
             end.setText("YOU WIN!");
@@ -350,12 +352,14 @@ public class GUI extends Application implements ViewInterface {
             end.setText("YOU LOSE!");
         }
 
-    FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-    DefaultController controller = loader.getController();
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
         if(controller instanceof BoardController){
             ((BoardController) controller).banner.setText(end.getText());
             ((BoardController) controller).refresh();
         }
+
+        unShowTimer();
     }
 
     @Override

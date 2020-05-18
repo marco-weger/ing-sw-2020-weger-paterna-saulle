@@ -134,33 +134,6 @@ public class CardController extends DefaultController {
         textFieldName2.setLayoutY(10);
         textFieldName3.setLayoutY(10);
 
-        if(gui.getClient().getPlayers().size() == 3){
-            int offset = 0;
-            buttonSelected1.setLayoutX(gui.sceneWidth/4 - buttonSelected1.getPrefWidth()/2+offset);
-            buttonSelected2.setLayoutX(gui.sceneWidth/2 - buttonSelected2.getPrefWidth()/2);
-            buttonSelected3.setLayoutX(3*gui.sceneWidth/4 - buttonSelected3.getPrefWidth()/2-offset);
-
-            buttonGod1.setLayoutX(gui.sceneWidth/4 - buttonGod1.getPrefWidth()/2+offset);
-            buttonGod2.setLayoutX(gui.sceneWidth/2 - buttonGod2.getPrefWidth()/2);
-            buttonGod3.setLayoutX(3*gui.sceneWidth/4 - buttonGod3.getPrefWidth()/2-offset);
-
-            textFieldName1.setLayoutX(gui.sceneWidth/4 - textFieldName1.getPrefWidth()/2+offset);
-            textFieldName2.setLayoutX(gui.sceneWidth/2 - textFieldName2.getPrefWidth()/2);
-            textFieldName3.setLayoutX(3*gui.sceneWidth/4 - textFieldName3.getPrefWidth()/2-offset);
-        } else if(gui.getClient().getPlayers().size() == 2){
-            int offset = 0;
-            buttonSelected1.setLayoutX(gui.sceneWidth/3 - buttonSelected1.getPrefWidth()/2+offset);
-            buttonSelected2.setLayoutX(2*gui.sceneWidth/3 - buttonSelected2.getPrefWidth()/2-offset);
-            buttonSelected3.setVisible(false);
-
-            buttonGod1.setLayoutX(gui.sceneWidth/3 - buttonGod1.getPrefWidth()/2+offset);
-            buttonGod2.setLayoutX(2*gui.sceneWidth/3 - buttonGod2.getPrefWidth()/2-offset);
-            buttonGod3.setVisible(false);
-
-            textFieldName1.setLayoutX(gui.sceneWidth/3 - textFieldName1.getPrefWidth()/2+offset);
-            textFieldName2.setLayoutX(2*gui.sceneWidth/3 - textFieldName2.getPrefWidth()/2-offset);
-            textFieldName3.setVisible(false);
-        }
         buttonSelected1.setLayoutY(425-225);
         buttonSelected2.setLayoutY(425-225);
         buttonSelected3.setLayoutY(425-225);
@@ -185,6 +158,35 @@ public class CardController extends DefaultController {
     }
 
     public void setGods(){
+
+        if(cards.size() == 3){
+            int offset = 0;
+            buttonSelected1.setLayoutX(gui.sceneWidth/4 - buttonSelected1.getPrefWidth()/2+offset);
+            buttonSelected2.setLayoutX(gui.sceneWidth/2 - buttonSelected2.getPrefWidth()/2);
+            buttonSelected3.setLayoutX(3*gui.sceneWidth/4 - buttonSelected3.getPrefWidth()/2-offset);
+
+            buttonGod1.setLayoutX(gui.sceneWidth/4 - buttonGod1.getPrefWidth()/2+offset);
+            buttonGod2.setLayoutX(gui.sceneWidth/2 - buttonGod2.getPrefWidth()/2);
+            buttonGod3.setLayoutX(3*gui.sceneWidth/4 - buttonGod3.getPrefWidth()/2-offset);
+
+            textFieldName1.setLayoutX(gui.sceneWidth/4 - textFieldName1.getPrefWidth()/2+offset);
+            textFieldName2.setLayoutX(gui.sceneWidth/2 - textFieldName2.getPrefWidth()/2);
+            textFieldName3.setLayoutX(3*gui.sceneWidth/4 - textFieldName3.getPrefWidth()/2-offset);
+        } else if(cards.size() == 2){
+            int offset = 0;
+            buttonSelected1.setLayoutX(gui.sceneWidth/3 - buttonSelected1.getPrefWidth()/2+offset);
+            buttonSelected2.setLayoutX(2*gui.sceneWidth/3 - buttonSelected2.getPrefWidth()/2-offset);
+            buttonSelected3.setVisible(false);
+
+            buttonGod1.setLayoutX(gui.sceneWidth/3 - buttonGod1.getPrefWidth()/2+offset);
+            buttonGod2.setLayoutX(2*gui.sceneWidth/3 - buttonGod2.getPrefWidth()/2-offset);
+            buttonGod3.setVisible(false);
+
+            textFieldName1.setLayoutX(gui.sceneWidth/3 - textFieldName1.getPrefWidth()/2+offset);
+            textFieldName2.setLayoutX(2*gui.sceneWidth/3 - textFieldName2.getPrefWidth()/2-offset);
+            textFieldName3.setVisible(false);
+        }
+
         buttonGod1.getStyleClass().clear();
         buttonGod2.getStyleClass().clear();
         buttonGod3.getStyleClass().clear();
