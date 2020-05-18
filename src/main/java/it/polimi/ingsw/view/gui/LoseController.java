@@ -9,6 +9,12 @@ import javafx.scene.layout.*;
 
 public class LoseController extends DefaultController{
 
+    public void setSomeonewinflag(boolean someonewinflag) {
+        this.someonewinflag = someonewinflag;
+    }
+
+    private boolean someonewinflag;
+
     @FXML
     public Button Spectator;
 
@@ -33,10 +39,11 @@ public class LoseController extends DefaultController{
         NewGame.setMinSize(x,y);
         NewGame.setMaxSize(x,y);
         NewGame.setPrefSize(x,y);
+        someonewinflag = false;
     }
 
     public void spectator(ActionEvent actionEvent) {
-        if(this.gui.getClient().getPlayers().size() > 1) {
+        if(this.gui.getClient().getPlayers().size() > 1 && !someonewinflag) {
             this.gui.getLose().close();
             this.gui.setLoserBar();
             Spectator.getStyleClass().remove("spectator");

@@ -104,7 +104,7 @@ public class BoardController extends DefaultController {
     Text workerITA2 = new Text("          Choose the position of the second worker");
     Text workerCTA = new Text("                  Choose a Worker");
     Text moveTA = new Text("             Choose the cell where you want to move");
-    Text buildTA = new Text("              Choose the cell where you want to build");
+    Text buildTA = new Text("           Choose the cell where you want to build");
     Text questionTA = new Text("Do you want to use you God ability?");
 
 

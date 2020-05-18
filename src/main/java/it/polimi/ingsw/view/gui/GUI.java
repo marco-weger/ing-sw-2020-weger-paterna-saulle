@@ -357,7 +357,7 @@ public class GUI extends Application implements ViewInterface {
         }
         else{
 
-           alert.setText(message.player.toString() + "has lost!");
+           alert.setText(message.player + "has lost!");
             }
 
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
@@ -440,6 +440,10 @@ public class GUI extends Application implements ViewInterface {
                     scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
                     lose.initStyle(StageStyle.TRANSPARENT);
                     lose.setAlwaysOnTop(true);
+                    if(defaultcontroller instanceof LoseController) {
+                        ((LoseController) defaultcontroller).Spectator.getStyleClass().add("exit");
+                        ((LoseController) defaultcontroller).setSomeonewinflag(true);
+                    }
                     scene.setUserData(loader);
                     lose.setScene(scene);
                 } catch (IOException e) {
@@ -550,8 +554,10 @@ public class GUI extends Application implements ViewInterface {
         Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
-/*
-        SnapPlayer p = new SnapPlayer("asdasd");
+
+        /*
+        SnapPlayer p;
+        p = new SnapPlayer("asdasd");
         p.card = CardName.ARTEMIS;
         client.getPlayers().add(p);
         p = new SnapPlayer("fdggh");
