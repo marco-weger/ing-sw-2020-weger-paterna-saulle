@@ -21,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -406,6 +407,9 @@ public class GUI extends Application implements ViewInterface {
                     win.initStyle(StageStyle.TRANSPARENT);
                     win.setAlwaysOnTop(true);
                     scene.setUserData(loader);
+                    win.initModality(Modality.WINDOW_MODAL);
+                    win.initOwner(primaryStage);
+                    scene.setUserData(loader);
                     win.setScene(scene);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -537,11 +541,11 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void displayFirstWindow() {
-        Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        //Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
+      //  primaryStage.setScene(scene);
+       // primaryStage.show();
 
-      /*  SnapPlayer p = new SnapPlayer("asdasd");
+        SnapPlayer p = new SnapPlayer("asdasd");
         p.card = CardName.ARTEMIS;
         client.getPlayers().add(p);
         p = new SnapPlayer("fdggh");
@@ -582,6 +586,8 @@ public class GUI extends Application implements ViewInterface {
                     scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
                     lose.initStyle(StageStyle.TRANSPARENT);
                     lose.setAlwaysOnTop(true);
+                    lose.initModality(Modality.WINDOW_MODAL);
+                    lose.initOwner(primaryStage);
                     scene.setUserData(loader);
                     lose.setScene(scene);
                 } catch (IOException e) {
@@ -590,7 +596,7 @@ public class GUI extends Application implements ViewInterface {
                 lose.showAndWait();
 
             });
-        });*/
+        });
 
     }
 
