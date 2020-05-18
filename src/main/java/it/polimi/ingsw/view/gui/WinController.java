@@ -1,20 +1,16 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.commons.clientmessages.ModeChoseClient;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class WinController extends DefaultController {
 
     @FXML
-    public Button Spectator;
+    public Button Exit;
 
     @FXML
     public Button NewGame;
@@ -31,16 +27,18 @@ public class WinController extends DefaultController {
 
         int x=125, y=71;
 
-        Spectator.setMinSize(x,y);
-        Spectator.setMaxSize(x,y);
-        Spectator.setPrefSize(x,y);
+        Exit.setMinSize(x,y);
+        Exit.setMaxSize(x,y);
+        Exit.setPrefSize(x,y);
         NewGame.setMinSize(x,y);
         NewGame.setMaxSize(x,y);
         NewGame.setPrefSize(x,y);
     }
 
-    public void spectator(ActionEvent actionEvent) {
+    public void exit(ActionEvent actionEvent) {
         this.gui.getWin().close();
+        Platform.exit();
+        System.exit(0);
     }
 
     public void newgame(ActionEvent actionEvent) {
