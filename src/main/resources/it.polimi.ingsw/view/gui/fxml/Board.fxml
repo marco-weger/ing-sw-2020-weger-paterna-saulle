@@ -14,7 +14,7 @@
    <bottom>
       <AnchorPane fx:id="bottom" prefHeight="138.0" prefWidth="950.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="banner" editable="false" layoutX="140.0" layoutY="26.0" prefHeight="87.0" prefWidth="460.0" styleClass="banner" stylesheets="@../css/text-field.css" />
+            <TextField fx:id="banner" editable="false" layoutX="140.0" layoutY="26.0" prefHeight="87.0" prefWidth="538.0" styleClass="banner" stylesheets="@../css/text-field.css" />
             <Button fx:id="no" layoutX="735.0" layoutY="39.0" mnemonicParsing="false" onAction="#no" prefHeight="61.0" prefWidth="90.0" stylesheets="@../css/button.css" />
             <Button fx:id="yes" layoutX="614.0" layoutY="39.0" mnemonicParsing="false" onAction="#yes" prefHeight="61.0" prefWidth="90.0" stylesheets="@../css/button.css" />
             <Button fx:id="buttonTimer" layoutX="614.0" layoutY="39.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="90.0" styleClass="buttonTimer" stylesheets="@../css/text-field.css" />
@@ -105,7 +105,7 @@
                <Button fx:id="buttonSelected2" layoutX="54.0" layoutY="298.0" mnemonicParsing="false" onAction="#god2OnAction" styleClass="button, podium" stylesheets="@../css/button.css" />
                <Button fx:id="buttonSelected3" layoutX="54.0" layoutY="298.0" mnemonicParsing="false" onAction="#god3OnAction" styleClass="button, podium" stylesheets="@../css/button.css" />
                <Button fx:id="buttonGod1" layoutX="54.0" layoutY="298.0" mnemonicParsing="false" onAction="#god1OnAction" styleClass="button" stylesheets="@../css/button.css" />
-               <Button fx:id="buttonGod2" layoutX="182.0" layoutY="292.0" mnemonicParsing="false" onAction="#god2OnAction" styleClass="button" stylesheets="@../css/button.css"  />
+               <Button fx:id="buttonGod2" layoutX="182.0" layoutY="292.0" mnemonicParsing="false" onAction="#god2OnAction" styleClass="button" stylesheets="@../css/button.css" />
                <Button fx:id="buttonGod3" layoutX="324.0" layoutY="288.0" mnemonicParsing="false" onAction="#god3OnAction" styleClass="button" stylesheets="@../css/button.css" />
                <Button fx:id="buttonName1" layoutX="251.0" layoutY="387.0" onAction="#god1OnAction" styleClass="name, name1" stylesheets="@../css/text-field.css" />
                <Button fx:id="buttonName2" layoutX="251.0" layoutY="387.0" onAction="#god2OnAction" styleClass="name, name2" stylesheets="@../css/text-field.css" />

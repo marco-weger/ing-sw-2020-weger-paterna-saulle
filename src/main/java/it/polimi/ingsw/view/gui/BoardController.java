@@ -98,12 +98,18 @@ public class BoardController extends DefaultController {
 
     @FXML
     TextField banner;
-    Text workerITA = new Text("Choose the position of the first worker");
-    Text workerITA2 = new Text("Choose the position of the second worker");
-    Text workerCTA = new Text("Choose a Worker");
-    Text moveTA = new Text("Choose the cell where you want to move");
-    Text buildTA = new Text("Choose the cell where you want to build");
+    Text workerITA = new Text("            Choose the position of the first worker");
+    Text workerITA2 = new Text("          Choose the position of the second worker");
+    Text workerCTA = new Text("                  Choose a Worker");
+    Text moveTA = new Text("             Choose the cell where you want to move");
+    Text buildTA = new Text("              Choose the cell where you want to build");
     Text questionTA = new Text("Do you want to use you God ability?");
+
+    //("               Choose the position of the first worker");
+    //("              Choose the position of the second worker");
+   //("                                       Choose a Worker");
+   //("                Choose the cell where you want to move");
+    //("               Choose the cell where you want to build");
 
     @FXML
     Button yes,no;
