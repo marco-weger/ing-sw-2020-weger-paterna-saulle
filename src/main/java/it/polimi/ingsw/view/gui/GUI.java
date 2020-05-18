@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -311,7 +312,6 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(SomeoneLoseServer message) {
-        //TODO provvisorio
         Text alert = new Text();
         for(SnapPlayer sp : client.getPlayers())
             if(sp.name.equals(message.player))
@@ -324,8 +324,8 @@ public class GUI extends Application implements ViewInterface {
         client.removeWorkers(toDelete);
 
 
+
         if(this.client.getUsername().equals(message.player)){
-            alert.setText("Time is up... YOU LOSE!");
             Platform.runLater(() -> {
                 lose = new Stage();
                 try {
@@ -334,6 +334,12 @@ public class GUI extends Application implements ViewInterface {
                     Parent root3 = loader.load();
                     defaultcontroller = loader.getController();
                     defaultcontroller.setGUI(this);
+                    if(defaultcontroller instanceof LoseController) {
+                        if (getClient().getPlayers().size() > 1)
+                            ((LoseController) defaultcontroller).Spectator.getStyleClass().add("spectator");
+                        else
+                            ((LoseController) defaultcontroller).Spectator.getStyleClass().add("exit");
+                    }
                     double limitY = 190* sceneWidth /1300;
 
                     Scene scene = new Scene(Objects.requireNonNull(root3), 421, 450, Color.TRANSPARENT);
@@ -541,10 +547,10 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void displayFirstWindow() {
-        //Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
-      //  primaryStage.setScene(scene);
-       // primaryStage.show();
-
+        Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+/*
         SnapPlayer p = new SnapPlayer("asdasd");
         p.card = CardName.ARTEMIS;
         client.getPlayers().add(p);
@@ -557,7 +563,7 @@ public class GUI extends Application implements ViewInterface {
         client.setUsername("fdggh");
 
         Platform.runLater(() -> {
-            Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
+            Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");;
             FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
             DefaultController controllerx = loader2.getController();
 
@@ -596,7 +602,7 @@ public class GUI extends Application implements ViewInterface {
                 lose.showAndWait();
 
             });
-        });
+        });*/
 
     }
 

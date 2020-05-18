@@ -36,8 +36,16 @@ public class LoseController extends DefaultController{
     }
 
     public void spectator(ActionEvent actionEvent) {
-        this.gui.getLose().close();
-        this.gui.setLoserBar();
+        if(this.gui.getClient().getPlayers().size() > 1) {
+            this.gui.getLose().close();
+            this.gui.setLoserBar();
+            Spectator.getStyleClass().remove("spectator");
+        }
+        else{
+            this.gui.getLose().close();
+            Platform.exit();
+            System.exit(0);
+        }
     }
 
     public void newgame(ActionEvent actionEvent) {
