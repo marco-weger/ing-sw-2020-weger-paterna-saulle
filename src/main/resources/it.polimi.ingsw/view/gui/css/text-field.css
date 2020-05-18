@@ -55,12 +55,14 @@
     -fx-text-fill: aliceblue;
     -fx-alignment: center;
 }
+.banner .text{
+    -fx-stroke: black;
+    -fx-stroke-width: 0.2;
+}
 .name {
     -fx-font-family: Nefelibata-Brush;
-    -fx-font-size: 13px;
-    -fx-text-inner-color: black;
-    -fx-focus-color: black;
-    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-text-fill: #ffffff;
     -fx-text-alignment: center;
     -fx-border-radius: 10 10 10 10;
     -fx-background-radius: 10 10 10 10;
@@ -68,20 +70,22 @@
 .name .text{
     -fx-line-spacing: 0px;
     -fx-text-alignment: center;
+    -fx-stroke: black;
+    -fx-stroke-width: 0.2;
 }
 .name1{
-    -fx-background-color: rgba(0,255,0,0.3) !important;
-    -fx-border-color: rgba(0,255,0,1);
+    -fx-background-color: rgba(255, 0, 0, 0.6) !important;
+    -fx-border-color: rgba(250, 4, 4, 0.81);
     -fx-border-width: 0;
 }
 .name2{
-    -fx-background-color: rgba(255,255,0,0.3) !important;
-    -fx-border-color: rgba(255,255,0,1);
+    -fx-background-color: rgba(0, 28, 146, 0.3) !important;
+    -fx-border-color: rgb(0, 2, 234);
     -fx-border-width: 0;
 }
 .name3{
-    -fx-background-color: rgba(255,0,0,0.3) !important;
-    -fx-border-color: rgba(255,0,0,1);
+    -fx-background-color: rgba(158, 146, 0, 0.3) !important;
+    -fx-border-color: rgb(255, 214, 0);
     -fx-border-width: 0;
 }
 .nameSelected, .name1:hover, .name2:hover, .name3:hover{
@@ -89,19 +93,21 @@
 }
 .boardDescription{
     -fx-font-family: Nefelibata-Brush;
-    -fx-focus-color: black;
+    -fx-text-fill: black;
     -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-alignment: center;
     -fx-border-radius: 10 10 10 10;
     -fx-background-radius: 10 10 10 10;
-    -fx-prompt-text-fill: rgba(0,0,0,0.5);
-    -fx-background-color: rgba(255,255,255,0); /* 0.3 */
+    -fx-prompt-text-fill: rgba(31, 31, 31, 0.43);
+    -fx-background-color: rgba(255, 255, 255, 0); /* 0.3 */
     -fx-padding: 0px 0px 0px 0px;
 }
 .boardDescription .text {
     -fx-line-spacing: 0px;
     -fx-text-alignment: center;
+    -fx-stroke: #5e5a5a;
+    -fx-stroke-width: 0.2;
 }
 .buttonTimer{
     -fx-font-family: Nefelibata-Brush;
@@ -110,4 +116,8 @@
     -fx-font-weight: bold;
     -fx-text-alignment: center;
     -fx-background-color: rgba(255,255,255,0); /* 0.3 */
+}
+.buttonTimer .text{
+    -fx-stroke: black;
+    -fx-stroke-width: 0.2;
 }
