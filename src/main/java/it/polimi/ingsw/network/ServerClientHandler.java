@@ -297,10 +297,11 @@ public class ServerClientHandler implements Runnable {
             }
             virtualView.notify(r);
 
-            // FIXHERE
+            // FIXME
             boolean go = true;
-            for(ServerClientHandler player : vv.getConnectedPlayers().values()){
-                if(player != null) go = false;
+            for(String player : vv.getConnectedPlayers().keySet()){
+                System.out.println("AAAAA -> "+player);
+                if(vv.getConnectedPlayers().get(player) == null) go = false;
             }
             if(go){
                 System.out.println("[SEND_LAST]");

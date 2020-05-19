@@ -480,6 +480,7 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(ReConnectionServer message) {
         if(message.player.equals(client.getUsername())){
+            client.setMustPrint(true);
             client.setBoard(message.board);
             client.setWorkers(message.workers);
             client.setPlayersBySnap(message.players);
@@ -605,6 +606,13 @@ public class CLI implements ViewInterface {
             println(COLOR_CPU + "A network problem was encountered, you have been disconnected!" + TextFormatting.RESET);
         else println(COLOR_CPU + "Thank you for playing Santorini!" + TextFormatting.RESET);
         System.exit(0);
+    }
+
+    @Override
+    public void displayBoard() {
+        clear();
+        printTitle();
+        printTable();
     }
 
     public void clearLine(){

@@ -2,10 +2,8 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.*;
 import it.polimi.ingsw.commons.clientmessages.DisconnectionClient;
-import it.polimi.ingsw.commons.servermessages.BuiltServer;
-import it.polimi.ingsw.commons.servermessages.CurrentStatusServer;
-import it.polimi.ingsw.commons.servermessages.MovedServer;
-import it.polimi.ingsw.commons.servermessages.PingServer;
+import it.polimi.ingsw.commons.clientmessages.ReConnectionClient;
+import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.view.CLI;
 import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.commons.SnapPlayer;
@@ -40,6 +38,8 @@ public class Client implements Runnable{
     protected List<SnapCell> board;
     protected List<SnapWorker> workers;
     protected List<SnapPlayer> players;
+
+    private boolean mustPrint = false;
 
     private long pingPeriod;
     private int timeoutSocket;
@@ -79,6 +79,8 @@ public class Client implements Runnable{
     public void setView(ViewInterface view) {
         this.view = view;
     }
+
+    public void setMustPrint(boolean mustPrint){ this.mustPrint=mustPrint; }
 
     public List<SnapCell> getBoard() {
         return board;
@@ -277,6 +279,10 @@ public class Client implements Runnable{
                         view.statusHandler((CurrentStatusServer) msg);
                     }
 
+                    if(mustPrint && !(msg instanceof ReConnectionServer)){
+                        view.displayBoard();
+                        mustPrint = false;
+                    }
 
                     continueReading = false;
                     try {

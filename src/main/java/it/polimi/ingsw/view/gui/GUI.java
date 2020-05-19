@@ -9,6 +9,7 @@ import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.TimerDisconnection;
 import it.polimi.ingsw.network.TimerTurnClient;
 import it.polimi.ingsw.network.TimerTurnServer;
+import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -535,7 +536,22 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(ReConnectionServer message) {
-
+        if(message.player.equals(client.getUsername())){
+            client.setMustPrint(true);
+            client.setBoard(message.board);
+            client.setWorkers(message.workers);
+            client.setPlayersBySnap(message.players);
+            for(int i=0;i<client.getPlayers().size();i++){
+                if(i==0)
+                    client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_RED.toString()+TextFormatting.COLOR_BLACK);
+                else if(i==1)
+                    client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_YELLOW.toString()+TextFormatting.COLOR_BLACK);
+                else if(i==2)
+                    client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_PURPLE.toString()+TextFormatting.COLOR_BLACK);
+            }
+            //this.usernthis.currentPlayer=message.currentPlayer;
+            // FIXME here i must show lobby...
+        } else System.out.println(message.player+" IS BACK!"); // TODO FIXME
     }
 
     //private String currentPlayer = "";
@@ -546,6 +562,11 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void close(boolean isError) {
+
+    }
+
+    @Override
+    public void displayBoard() {
 
     }
 
