@@ -17,10 +17,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -310,7 +312,6 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(SomeoneLoseServer message) {
-        //TODO provvisorio
         Text alert = new Text();
         for(SnapPlayer sp : client.getPlayers())
             if(sp.name.equals(message.player))
@@ -323,8 +324,8 @@ public class GUI extends Application implements ViewInterface {
         client.removeWorkers(toDelete);
 
 
+
         if(this.client.getUsername().equals(message.player)){
-            alert.setText("Time is up... YOU LOSE!");
             Platform.runLater(() -> {
                 lose = new Stage();
                 try {
@@ -333,6 +334,12 @@ public class GUI extends Application implements ViewInterface {
                     Parent root3 = loader.load();
                     defaultcontroller = loader.getController();
                     defaultcontroller.setGUI(this);
+                    if(defaultcontroller instanceof LoseController) {
+                        if (getClient().getPlayers().size() > 1)
+                            ((LoseController) defaultcontroller).Spectator.getStyleClass().add("spectator");
+                        else
+                            ((LoseController) defaultcontroller).Spectator.getStyleClass().add("exit");
+                    }
                     double limitY = 190* sceneWidth /1300;
 
                     Scene scene = new Scene(Objects.requireNonNull(root3), 421, 450, Color.TRANSPARENT);
@@ -345,12 +352,13 @@ public class GUI extends Application implements ViewInterface {
                     e.printStackTrace();
                 }
                 lose.showAndWait();
+
             });
         }
         else{
 
-           alert.setText(message.player.toString() + "has lost!");
-        }
+           alert.setText(message.player + "has lost!");
+            }
 
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
@@ -405,6 +413,9 @@ public class GUI extends Application implements ViewInterface {
                     win.initStyle(StageStyle.TRANSPARENT);
                     win.setAlwaysOnTop(true);
                     scene.setUserData(loader);
+                    win.initModality(Modality.WINDOW_MODAL);
+                    win.initOwner(primaryStage);
+                    scene.setUserData(loader);
                     win.setScene(scene);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -429,6 +440,10 @@ public class GUI extends Application implements ViewInterface {
                     scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
                     lose.initStyle(StageStyle.TRANSPARENT);
                     lose.setAlwaysOnTop(true);
+                    if(defaultcontroller instanceof LoseController) {
+                        ((LoseController) defaultcontroller).Spectator.getStyleClass().add("exit");
+                        ((LoseController) defaultcontroller).setSomeonewinflag(true);
+                    }
                     scene.setUserData(loader);
                     lose.setScene(scene);
                 } catch (IOException e) {
@@ -536,11 +551,13 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void displayFirstWindow() {
-       Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
+        Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
+
         /*
-        SnapPlayer p = new SnapPlayer("asdasd");
+        SnapPlayer p;
+        p = new SnapPlayer("asdasd");
         p.card = CardName.ARTEMIS;
         client.getPlayers().add(p);
         p = new SnapPlayer("fdggh");
@@ -552,7 +569,7 @@ public class GUI extends Application implements ViewInterface {
         client.setUsername("fdggh");
 
         Platform.runLater(() -> {
-            Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
+            Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");;
             FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
             DefaultController controllerx = loader2.getController();
 
@@ -566,6 +583,31 @@ public class GUI extends Application implements ViewInterface {
 
 
             }
+
+            Platform.runLater(() -> {
+                lose = new Stage();
+                try {
+                    //System.out.println(file);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Lose.fxml"));
+                    Parent root3 = loader.load();
+                    defaultcontroller = loader.getController();
+                    defaultcontroller.setGUI(this);
+                    double limitY = 190* sceneWidth /1300;
+
+                    Scene scene = new Scene(Objects.requireNonNull(root3), 421, 450, Color.TRANSPARENT);
+                    scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+                    lose.initStyle(StageStyle.TRANSPARENT);
+                    lose.setAlwaysOnTop(true);
+                    lose.initModality(Modality.WINDOW_MODAL);
+                    lose.initOwner(primaryStage);
+                    scene.setUserData(loader);
+                    lose.setScene(scene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                lose.showAndWait();
+
+            });
         });*/
 
     }
@@ -621,5 +663,15 @@ public class GUI extends Application implements ViewInterface {
             if (p.name.equals(name))
                 return p;
         return null;
+    }
+
+    public void setLoserBar() {
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+        if (controller instanceof BoardController) {
+            ((BoardController) controller).loserbanner();
+            ((BoardController) controller).refresh();
+
+        }
     }
 }

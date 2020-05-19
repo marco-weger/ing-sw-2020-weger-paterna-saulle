@@ -8,7 +8,7 @@
 
 <AnchorPane fx:id="anchorLose" prefHeight="450.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.LoseController">
     <children>
-        <Button fx:id="Spectator" layoutX="268.0" layoutY="326.0" mnemonicParsing="false" onAction="#spectator" styleClass="button, spectator" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="68.0" AnchorPane.rightAnchor="83.0" />
+        <Button fx:id="Spectator" layoutX="268.0" layoutY="326.0" mnemonicParsing="false" onAction="#spectator" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="68.0" AnchorPane.rightAnchor="83.0" />
         <Button fx:id="NewGame" layoutX="77.0" layoutY="326.0" mnemonicParsing="false" onAction="#newgame" styleClass="button, newgame" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="83.0" />
     </children>
 </AnchorPane>

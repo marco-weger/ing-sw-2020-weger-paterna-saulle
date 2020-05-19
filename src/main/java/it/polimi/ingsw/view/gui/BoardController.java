@@ -72,6 +72,8 @@ public class BoardController extends DefaultController {
      * 4 = No Action
      */
     private int state;
+    private boolean questionFlag;
+    private boolean loserFlag;
 
     CurrentStatusServer Css;
     CheckMoveServer Cms;
@@ -102,14 +104,9 @@ public class BoardController extends DefaultController {
     Text workerITA2 = new Text("          Choose the position of the second worker");
     Text workerCTA = new Text("                  Choose a Worker");
     Text moveTA = new Text("             Choose the cell where you want to move");
-    Text buildTA = new Text("              Choose the cell where you want to build");
+    Text buildTA = new Text("           Choose the cell where you want to build");
     Text questionTA = new Text("Do you want to use you God ability?");
 
-    //("               Choose the position of the first worker");
-    //("              Choose the position of the second worker");
-   //("                                       Choose a Worker");
-   //("                Choose the cell where you want to move");
-    //("               Choose the cell where you want to build");
 
     @FXML
     Button yes,no;
@@ -304,7 +301,8 @@ public class BoardController extends DefaultController {
         setUpBanner(banner);
         setDescription(gui.getClient().getMyPlayer().card.name());
         state = 4;
-        flag = false;
+        questionFlag = false;
+        loserFlag = false;
     }
 
 
@@ -788,6 +786,26 @@ public class BoardController extends DefaultController {
 
 
     /**
+     * Change the Css to make visible the NewGame button after an SomeoneLose message
+     * @param Cell the cell of the button
+     */
+    public void newGameBOn(Button Cell){
+        Cell.getStyleClass().remove("empty");
+        Cell.getStyleClass().add("newgame");
+    }
+
+
+    /**
+     * Change the Css to make invisible the NewGame button after an SomeoneLose message
+     * @param Cell the cell of the button
+     */
+    public void newGameBOff(Button Cell){
+        Cell.getStyleClass().remove("newgame");
+        Cell.getStyleClass().add("empty");
+    }
+
+
+    /**
      * Set the yellow color to the available cell get from the CheckMoveServer message
      * @param sc the current CheckMoveServer message
      */
@@ -919,6 +937,15 @@ public class BoardController extends DefaultController {
 
     }
 
+    /**
+     * Shows the NewGame and Exit button in Loser banner
+     */
+    public void loserbanner(){
+        banner.setText("Thanks for playing Santorini");
+        newGameBOn(no);
+        loserFlag = true;
+    }
+
 
     /**
      * Shows the YES and NO buttons and change the banner message
@@ -927,30 +954,38 @@ public class BoardController extends DefaultController {
         yOn(yes);
         nOn(no);
         banner.setText(questionTA.getText());
-        flag = true;
+        questionFlag = true;
 
     }
 
-    public void setFlag(boolean flag) {
-        this.flag = flag;
+    public void setQuestionFlag(boolean questionFlag) {
+        this.questionFlag = questionFlag;
     }
 
-    public boolean isFlag() {
-        return flag;
+    public void setLoserFlag(boolean loserFlag) {
+        this.loserFlag = loserFlag;
     }
 
-    private boolean flag;
+    public boolean isQuestionFlag() {
+        return questionFlag;
+    }
+
+    public boolean isLoserFlag() {
+        return loserFlag;
+    }
+
+
     /**
      * If the button YES is visible, send a true AnswerAbilityClient when it's clicked
      * and makes the buttons YES and NO invisible and inactive after it
      * @param actionEvent
      */
     public void yes(ActionEvent actionEvent) {
-        if(flag == true) {
+        if(questionFlag == true) {
             this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), true, Qas.status));
             yOff(yes);
             nOff(no);
-            flag = false;
+            questionFlag = false;
             refresh();
         }
     }
@@ -962,12 +997,21 @@ public class BoardController extends DefaultController {
      * @param actionEvent
      */
     public void no(ActionEvent actionEvent) {
-        if(flag == true) {
+        if(questionFlag == true) {
             this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), false, Qas.status));
             yOff(yes);
             nOff(no);
-            flag = false;
+            questionFlag = false;
             refresh();
+        }
+        if(loserFlag == true){
+            this.gui.getClient().resetMatch();
+            Platform.runLater(() -> {
+                this.gui.getPrimaryStage().setScene(this.gui.load("/it.polimi.ingsw/view/gui/fxml/Mode.fxml"));
+                this.gui.getPrimaryStage().show();
+            });
+            loserFlag = false;
+            newGameBOff(no);
         }
     }
 
@@ -1756,12 +1800,13 @@ public class BoardController extends DefaultController {
     }
 
     public void activeQuestionIfPossible(KeyCode code) {
-        if(flag == true) {
+        if(questionFlag == true) {
             this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), code == KeyCode.Y, Qas.status));
             yOff(yes);
             nOff(no);
-            flag = false;
+            questionFlag = false;
             refresh();
         }
     }
+
 }

@@ -217,3 +217,11 @@
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/spectator_pressed.png");
     -fx-background-size: 100% auto
 }
+.exit{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/exit.png");
+    -fx-background-size: 100% auto
+}
+.exit:pressed{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/exit_pressed.png");
+    -fx-background-size: 100% auto
+}
