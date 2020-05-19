@@ -173,29 +173,29 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(WorkerChosenServer message) {
-        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-        client.getWorkers().add(new SnapWorker(message.x, message.y, message.player, message.worker));
-        if (message.player.equals(this.client.getUsername())) {
-            if (message.worker == 1) {
-                DefaultController controllerx;
-                controllerx = loader.getController();
-                //second Worker
-                if (controllerx instanceof BoardController) {
-                    ((BoardController) controllerx).refresh();
-                    ((BoardController) controllerx).banner.setText(((BoardController) controllerx).workerITA2.getText());
-                    ((BoardController) controllerx).setState(0);
-                }
-            }
-        }
-        else {
-            for (int i = 0; i < client.getPlayers().size() - 1; i++) {
-                if (client.getPlayers().get(i).name.equals(message.player) && client.getPlayers().get(i + 1).name.equals(client.getUsername()) && message.worker == 2) {
-                   // Platform.runLater(() -> {
-                       // Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
-                      //  FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
-                       // DefaultController controllerx = loader2.getController();
+        try {
+            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+            client.getWorkers().add(new SnapWorker(message.x, message.y, message.player, message.worker));
+            if (message.player.equals(this.client.getUsername())) {
+                if (message.worker == 1) {
                     DefaultController controllerx;
                     controllerx = loader.getController();
+                    //second Worker
+                    if (controllerx instanceof BoardController) {
+                        ((BoardController) controllerx).refresh();
+                        ((BoardController) controllerx).banner.setText(((BoardController) controllerx).workerITA2.getText());
+                        ((BoardController) controllerx).setState(0);
+                    }
+                }
+            } else {
+                for (int i = 0; i < client.getPlayers().size() - 1; i++) {
+                    if (client.getPlayers().get(i).name.equals(message.player) && client.getPlayers().get(i + 1).name.equals(client.getUsername()) && message.worker == 2) {
+                        // Platform.runLater(() -> {
+                        // Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");
+                        //  FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
+                        // DefaultController controllerx = loader2.getController();
+                        DefaultController controllerx;
+                        controllerx = loader.getController();
 
                         if (controllerx instanceof BoardController) {
                             controllerx.setup();
@@ -205,10 +205,14 @@ public class GUI extends Application implements ViewInterface {
                             //primaryStage.setScene(sn);
                             //primaryStage.show();
                         }
-                   // });
+                        // });
+                    }
                 }
-            }
 
+            }
+        }catch (Exception ex){
+            System.out.println("IMPORTANT!!!");
+            LOGGER.log( Level.SEVERE, ex.toString(), ex );
         }
         /*
         boardController.setLevel(boardController.block00, boardController.floor1);
@@ -324,8 +328,6 @@ public class GUI extends Application implements ViewInterface {
                 toDelete.add(sw);
         client.removeWorkers(toDelete);
 
-
-
         if(this.client.getUsername().equals(message.player)){
             Platform.runLater(() -> {
                 lose = new Stage();
@@ -349,11 +351,12 @@ public class GUI extends Application implements ViewInterface {
                     lose.setAlwaysOnTop(true);
                     lose.initModality(Modality.WINDOW_MODAL);
                     lose.initOwner(primaryStage);
-                    lose.setX(primaryStage.getX()*1.55);
-                    lose.setY(primaryStage.getY()/0.45);
                     scene.setUserData(loader);
 
                     lose.setScene(scene);
+
+                    lose.setX((primaryStage.getX()+sceneWidth/2-421/2));
+                    lose.setY((primaryStage.getY()+sceneHeight/2-450/2));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -412,8 +415,6 @@ public class GUI extends Application implements ViewInterface {
                     Parent root2 = loader.load();
                     defaultcontroller = loader.getController();
                     defaultcontroller.setGUI(this);
-                    double limitY = 190* sceneWidth /1300;
-
                     Scene scene = new Scene(Objects.requireNonNull(root2), 421, 450, Color.TRANSPARENT);
                     scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
                     win.initStyle(StageStyle.TRANSPARENT);
@@ -421,10 +422,11 @@ public class GUI extends Application implements ViewInterface {
                     scene.setUserData(loader);
                     win.initModality(Modality.WINDOW_MODAL);
                     win.initOwner(primaryStage);
-                    win.setX(primaryStage.getX()*1.55);
-                    win.setY(primaryStage.getY()/0.45);
                     scene.setUserData(loader);
                     win.setScene(scene);
+
+                    win.setX((primaryStage.getX()+sceneWidth/2-421/2));
+                    win.setY((primaryStage.getY()+sceneHeight/2-450/2));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -442,22 +444,22 @@ public class GUI extends Application implements ViewInterface {
                     Parent root3 = loader.load();
                     defaultcontroller = loader.getController();
                     defaultcontroller.setGUI(this);
-                    double limitY = 190* sceneWidth /1300;
-
                     Scene scene = new Scene(Objects.requireNonNull(root3), 421, 450, Color.TRANSPARENT);
                     scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
                     lose.initStyle(StageStyle.TRANSPARENT);
                     lose.setAlwaysOnTop(true);
                     lose.initModality(Modality.WINDOW_MODAL);
-                    lose.setX(primaryStage.getX()*1.55);
-                    lose.setY(primaryStage.getY()/0.45);
                     lose.initOwner(primaryStage);
                     if(defaultcontroller instanceof LoseController) {
                         ((LoseController) defaultcontroller).Spectator.getStyleClass().add("exit");
                         ((LoseController) defaultcontroller).setSomeonewinflag(true);
+                        //((LoseController) defaultcontroller).setPosition(((primaryStage.getX()+sceneWidth)/2),((primaryStage.getY()+sceneHeight)/2));
                     }
                     scene.setUserData(loader);
                     lose.setScene(scene);
+
+                    lose.setX((primaryStage.getX()+sceneWidth/2-421/2));
+                    lose.setY((primaryStage.getY()+sceneHeight/2-450/2));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -587,7 +589,7 @@ public class GUI extends Application implements ViewInterface {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-/*
+        /*
         SnapPlayer p;
         p = new SnapPlayer("asdasd");
         p.card = CardName.ARTEMIS;
@@ -617,32 +619,33 @@ public class GUI extends Application implements ViewInterface {
             }
 
             Platform.runLater(() -> {
-                lose = new Stage();
+                win = new Stage();
+                //end.setText("YOU WIN!");
+                unShowTimer();
                 try {
                     //System.out.println(file);
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Lose.fxml"));
-                    Parent root3 = loader.load();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Win.fxml"));
+                    Parent root2 = loader.load();
                     defaultcontroller = loader.getController();
                     defaultcontroller.setGUI(this);
-                    double limitY = 190* sceneWidth /1300;
-                    Scene scene = new Scene(Objects.requireNonNull(root3), 421, 450, Color.TRANSPARENT);
+                    Scene scene = new Scene(Objects.requireNonNull(root2), 421, 450, Color.TRANSPARENT);
                     scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
-                    lose.setX(primaryStage.getX()*1.55);
-                    lose.setY(primaryStage.getY()/0.45);
-                    lose.initStyle(StageStyle.TRANSPARENT);
-                    lose.setAlwaysOnTop(true);
-                    lose.initModality(Modality.WINDOW_MODAL);
-                    lose.initOwner(primaryStage);
+                    win.initStyle(StageStyle.TRANSPARENT);
+                    win.setAlwaysOnTop(true);
                     scene.setUserData(loader);
-                    lose.setScene(scene);
+                    win.initModality(Modality.WINDOW_MODAL);
+                    win.initOwner(primaryStage);
+                    scene.setUserData(loader);
+                    win.setScene(scene);
+                    win.setX((primaryStage.getX()+sceneWidth/2-421/2));
+                    win.setY((primaryStage.getY()+sceneHeight/2-450/2));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                lose.showAndWait();
-
+                win.showAndWait();
             });
-        });*/
-
+        });
+        */
     }
 
     public void setTimerText(long val){
