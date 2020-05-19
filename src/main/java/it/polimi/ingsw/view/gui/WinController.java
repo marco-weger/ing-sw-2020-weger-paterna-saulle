@@ -36,7 +36,7 @@ public class WinController extends DefaultController {
         NewGame.setMaxSize(x,y);
         NewGame.setPrefSize(x,y);
 
-        anchorWin.setStyle("-fx-border-color: green; -fx-border-width: 1px 1px 1px 1px");
+        //anchorWin.setStyle("-fx-border-color: green; -fx-border-width: 1px 1px 1px 1px");
     }
 
     public void exit(ActionEvent actionEvent) {

@@ -41,7 +41,7 @@ public class LoseController extends DefaultController{
         NewGame.setPrefSize(x,y);
         someonewinflag = false;
 
-        anchorLose.setStyle("-fx-border-color: green; -fx-border-width: 1px 1px 1px 1px");
+        //
     }
 
     public void spectator(ActionEvent actionEvent) {
