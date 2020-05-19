@@ -290,6 +290,7 @@ public class CardController extends DefaultController {
         if(cardName != null){
             gui.getClient().sendMessage(new PlayerChoseClient(gui.getClient().getUsername(), cardName));
             banner.setVisible(true);
+            buttonSend.setDisable(true);
         }
     }
 }

@@ -42,6 +42,7 @@ public class Controller implements Observer, ClientMessageHandler {
     public Controller(VirtualView virtualView, Match match) {
         this.virtualView = virtualView;
         this.match = match;
+        this.match.addObserver(virtualView);
     }
 
     public VirtualView getVirtualView() {
@@ -100,7 +101,7 @@ public class Controller implements Observer, ClientMessageHandler {
      */
     @Override
     public void handleMessage(ReConnectionClient message) {
-        match.playerReConnection(message.name);
+        match.playerReConnection(message.name,message.type);
     }
 
 

@@ -424,7 +424,7 @@ public class CLI implements ViewInterface {
                 else if(i==2)
                     client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_PURPLE.toString()+TextFormatting.COLOR_BLACK);
             }
-            printLobby(message.type);
+            printLobby(0);
         }catch (Exception e){
             println(e.getMessage());
         }
@@ -495,7 +495,7 @@ public class CLI implements ViewInterface {
             this.currentPlayer=message.currentPlayer;
             clear();
             printTitle();
-            printTable();
+            printLobby(message.type);
         } else System.out.println(COLOR_CPU + message.player+" IS BACK!" + TextFormatting.RESET);
     }
 

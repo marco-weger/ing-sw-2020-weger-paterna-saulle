@@ -31,7 +31,7 @@ public class VirtualView extends Observable implements Observer {
     /**
      * All players in this game
      */
-    private final HashMap<String, ServerClientHandler> connectedPlayers;
+    private HashMap<String, ServerClientHandler> connectedPlayers;
 
     /**
      * Current status of the game, start from NAME_CHOICE
@@ -53,10 +53,6 @@ public class VirtualView extends Observable implements Observer {
      */
     private Timer turn;
 
-    // It is used to run some tests about VirtualView and Controller communication
-    //@Deprecated
-    //public Controller c;
-
     /**
      * Constructor used for a new game
      * @param server the SERVER
@@ -67,8 +63,6 @@ public class VirtualView extends Observable implements Observer {
         this.connectedPlayers = new HashMap<>();
         this.currentStatus = Status.NAME_CHOICE;
         this.lastMessage = null;
-        //c = new Controller(this);
-        //addObserver(c);
         addObserver(new Controller(this));
         this.losers = new ArrayList<>();
     }
@@ -79,6 +73,7 @@ public class VirtualView extends Observable implements Observer {
      * @param match the MATCH
      */
     public VirtualView(Server server, Match match, ServerMessage lastMessage){
+        System.out.println(lastMessage.toString());
         this.server = server;
         this.ended = match.isEnded();
         this.connectedPlayers = new HashMap<>();
@@ -166,21 +161,19 @@ public class VirtualView extends Observable implements Observer {
                     losers.add(name);
         }
 
-        if(!(sm instanceof ReConnectionServer))
-            lastMessage = sm;
         if(server != null && currentStatus != Status.END){
+            if(!(sm instanceof ReConnectionServer))
+                lastMessage = sm;
+
             if(sm.name.equals(""))
                 server.sendAll(sm,this);
             else
                 server.send(sm,this);
         }
-        if(sm instanceof ReConnectionServer){
-            sendLast();
-            System.out.println("\t" + sm.name);
-        }
     }
 
     protected void sendLast(){
+        System.out.println(lastMessage.toString());
         if(server != null && currentStatus != Status.END){
             if(lastMessage.name.equals(""))
                 server.sendAll(lastMessage,this);

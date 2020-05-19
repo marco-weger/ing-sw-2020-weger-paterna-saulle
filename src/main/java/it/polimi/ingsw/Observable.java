@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.commons.servermessages.ReConnectionServer;
 import it.polimi.ingsw.model.Match;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class Observable {
     public void notifyObservers(Object obj){
         for(Observer i : observers)
             i.update(obj);
-        if(this instanceof Match && obj instanceof ServerMessage && !((Match) this).getStatus().equals(Status.NAME_CHOICE))
+        if(this instanceof Match && obj instanceof ServerMessage && !((Match) this).getStatus().equals(Status.NAME_CHOICE) && !(obj instanceof ReConnectionServer))
             ((Match) this).saveToFile((ServerMessage) obj);
     }
 
