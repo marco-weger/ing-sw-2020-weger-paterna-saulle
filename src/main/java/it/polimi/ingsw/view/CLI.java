@@ -498,6 +498,21 @@ public class CLI implements ViewInterface {
             printTitle();
             printLobby(message.type);
         } else System.out.println(COLOR_CPU + message.player+" IS BACK!" + TextFormatting.RESET);
+
+        //lobby refused
+        boolean go = true;
+        while(go && client.getContinueReading()){
+            go = false;
+            print(COLOR_CPU + "Type [2/3] if you want to refuse saved lobby and start a new game " + TextFormatting.input());
+            String text = read();
+            if(text.equalsIgnoreCase("2") || text.equalsIgnoreCase("3")){
+                client.setMustPrint(false);
+                client.resetMatch();
+                ModeChoseClient mcc = new ModeChoseClient(client.getUsername(),Integer.parseInt(text));
+                mcc.refused = true;
+                client.sendMessage(mcc);
+            } else go = true;
+        }
     }
 
     public void endMatch(){

@@ -6,6 +6,7 @@ import it.polimi.ingsw.commons.servermessages.ReConnectionServer;
 import it.polimi.ingsw.model.Match;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Observable {
 
@@ -17,10 +18,14 @@ public class Observable {
         observers.add(o);
     }
 
+    public void clearObserver(){
+        observers.clear();
+    }
+
     public void notifyObservers(Object obj){
         for(Observer i : observers)
             i.update(obj);
-        if(this instanceof Match && obj instanceof ServerMessage && !((Match) this).getStatus().equals(Status.NAME_CHOICE) && !(obj instanceof ReConnectionServer))
+        if(this instanceof Match && obj instanceof ServerMessage && !Arrays.asList(Status.NAME_CHOICE,Status.WORKER_CHOICE,Status.CARD_CHOICE).contains(((Match) this).getStatus()) && !(obj instanceof ReConnectionServer))
             ((Match) this).saveToFile((ServerMessage) obj);
     }
 

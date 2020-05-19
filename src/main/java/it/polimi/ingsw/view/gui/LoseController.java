@@ -40,8 +40,6 @@ public class LoseController extends DefaultController{
         NewGame.setMaxSize(x,y);
         NewGame.setPrefSize(x,y);
         someonewinflag = false;
-
-        //
     }
 
     public void spectator(ActionEvent actionEvent) {

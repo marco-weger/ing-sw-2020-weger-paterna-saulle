@@ -13,6 +13,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -296,7 +297,7 @@ public class Server {
         try {
             if(new File("resources"+File.separator+"saved-match").exists()){
                 for (final File fileEntry : Objects.requireNonNull(new File("resources"+File.separator+"saved-match").listFiles())) {
-                    if (!fileEntry.isDirectory()) {
+                    if (!fileEntry.isDirectory() && getExtensionByStringHandling(fileEntry.getName()).get().equals("santorini")) {
                         objIn = new ObjectInputStream(new FileInputStream(fileEntry.getAbsolutePath()));
                         Object obj = objIn.readObject();
                         if(obj instanceof Match) {
@@ -323,6 +324,17 @@ public class Server {
             System.out.println("[2 PLAYERS MATCH] - "+(virtualViews2.size()-1)+" match loaded");
             System.out.println("[3 PLAYERS MATCH] - "+(virtualViews3.size()-1)+" match loaded");
         }
+    }
+
+    /**
+     * Ref. https://www.baeldung.com/java-file-extension
+     * @param filename the file
+     * @return file extension, if exists
+     */
+    public Optional<String> getExtensionByStringHandling(String filename) {
+        return Optional.ofNullable(filename)
+                .filter(f -> f.contains("."))
+                .map(f -> f.substring(filename.lastIndexOf(".") + 1));
     }
 
 }
