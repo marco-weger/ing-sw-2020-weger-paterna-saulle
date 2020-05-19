@@ -25,4 +25,10 @@ public class ModeChoseClient extends ClientMessage {
         forced = false;
         refused = false;
     }
+        public ModeChoseClient(String name, int mode, boolean refused){
+        super(name);
+        this.mode=mode;
+        forced = false;
+        this.refused = refused;
+    }
 }

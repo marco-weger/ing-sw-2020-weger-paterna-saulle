@@ -8,6 +8,12 @@ import javafx.scene.image.Image;
 
 public class ModeController extends DefaultController{
 
+    public void setReconnection(boolean reconnection) {
+        this.reconnection = reconnection;
+    }
+
+    private boolean reconnection;
+
     @FXML
     public Button button2;
 
@@ -26,6 +32,7 @@ public class ModeController extends DefaultController{
         button3.setMinSize(200,114);
         button3.setMaxSize(200,114);
         button3.setPrefSize(200,114);
+        reconnection = false;
     }
 
     @Override
@@ -38,10 +45,18 @@ public class ModeController extends DefaultController{
     }
 
     public void button2OnAction(ActionEvent actionEvent) {
+        if(reconnection) {
+            this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(), 2, true));
+            reconnection = false;
+        }
         this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(),2));
     }
 
     public void button3OnAction(ActionEvent actionEvent) {
+        if (reconnection) {
+            this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(),3,true));
+            reconnection = false;
+        }
         this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(),3));
     }
 }

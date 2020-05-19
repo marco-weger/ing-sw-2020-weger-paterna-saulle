@@ -1,8 +1,10 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.clientmessages.ModeChoseClient;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -59,8 +61,14 @@ public class LobbyController extends DefaultController {
 
     public void newgame(ActionEvent actionEvent) {
         if (reconnection == true){
+            gui.getClient().resetMatch();
         Platform.runLater(() -> {
                 this.gui.getPrimaryStage().setScene(this.gui.load("/it.polimi.ingsw/view/gui/fxml/Mode.fxml"));
+                FXMLLoader loader = (FXMLLoader) mainstage.getScene().getUserData();
+                DefaultController controller = loader.getController();
+                if (controller instanceof ModeController) {
+                     ((ModeController) controller).setReconnection(true);
+                 }
                 newGame.getStyleClass().remove("newgame");
                 newGame.getStyleClass().add("empty");
         });
