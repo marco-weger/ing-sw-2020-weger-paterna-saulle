@@ -107,7 +107,7 @@ public class HephaestusTest {
     }
 
     @Test
-    public void checkAndBuild_activeFailed() {
+    public void checkActivable() {
         initialize();
         p.get(0).setWorker1(new Worker(2,2));
         p.get(0).setWorker2(new Worker(1,1));
@@ -121,9 +121,9 @@ public class HephaestusTest {
         assertNotNull(b);
         for (Cell c : b.getField()) {
             if (c.getRow() == 3 && c.getColumn() == 1)
-                c.setLevel(0);
+                c.setLevel(2);
             else if (c.getRow() == 3 && c.getColumn() == 2)
-                c.setLevel(1);
+                c.setLevel(2);
             else if (c.getRow() == 3 && c.getColumn() == 3)
                 c.setLevel(2);
             else if (c.getRow() == 2 && c.getColumn() == 1)
@@ -132,23 +132,8 @@ public class HephaestusTest {
                 c.setLevel(4);
         }
 
-        //p.get(0).getCard().setActive(true);
-
-        List<Cell> building = p.get(0).getCard().checkBuild(p, b);
-
-        assertEquals(4,building.size());
-        for (Cell c : building)
-            assertTrue(c.getRow() == 2 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2 || c.getRow() == 3 && c.getColumn() == 3);
-
-        p.get(0).getCard().build(p, b, b.getCell(3, 2));
-        assertEquals(2, b.getCell(3,2).getLevel());
-
-        /*
-        building = p.get(0).getCard().checkBuild(p, b);
-        assertEquals(building.size(), 3);
-        for (Cell c : building)
-            assertTrue(c.getRow() == 3 && c.getColumn() == 1 || c.getRow() == 3 && c.getColumn() == 2||c.getRow() == 3 && c.getColumn() == 3);
-         */
+;
+         assertFalse(p.get(0).getCard().activable(p,b));
     }
 
     //build

@@ -100,7 +100,7 @@ public class Hephaestus extends Card {
             return true;
         }
         current.getCard().setActive(true);
-        if(current.getCard().checkMove(p,b).isEmpty()){
+        if(current.getCard().checkBuild(p,b).isEmpty()){
             current.getCard().setActive(false);
             return false;
         }
