@@ -347,7 +347,12 @@ public class GUI extends Application implements ViewInterface {
                     scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
                     lose.initStyle(StageStyle.TRANSPARENT);
                     lose.setAlwaysOnTop(true);
+                    lose.initModality(Modality.WINDOW_MODAL);
+                    lose.initOwner(primaryStage);
+                    lose.setX(primaryStage.getX()*1.55);
+                    lose.setY(primaryStage.getY()/0.45);
                     scene.setUserData(loader);
+
                     lose.setScene(scene);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -416,6 +421,8 @@ public class GUI extends Application implements ViewInterface {
                     scene.setUserData(loader);
                     win.initModality(Modality.WINDOW_MODAL);
                     win.initOwner(primaryStage);
+                    win.setX(primaryStage.getX()*1.55);
+                    win.setY(primaryStage.getY()/0.45);
                     scene.setUserData(loader);
                     win.setScene(scene);
                 } catch (IOException e) {
@@ -441,6 +448,10 @@ public class GUI extends Application implements ViewInterface {
                     scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
                     lose.initStyle(StageStyle.TRANSPARENT);
                     lose.setAlwaysOnTop(true);
+                    lose.initModality(Modality.WINDOW_MODAL);
+                    lose.setX(primaryStage.getX()*1.55);
+                    lose.setY(primaryStage.getY()/0.45);
+                    lose.initOwner(primaryStage);
                     if(defaultcontroller instanceof LoseController) {
                         ((LoseController) defaultcontroller).Spectator.getStyleClass().add("exit");
                         ((LoseController) defaultcontroller).setSomeonewinflag(true);
@@ -576,7 +587,7 @@ public class GUI extends Application implements ViewInterface {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        /*
+/*
         SnapPlayer p;
         p = new SnapPlayer("asdasd");
         p.card = CardName.ARTEMIS;
@@ -614,9 +625,10 @@ public class GUI extends Application implements ViewInterface {
                     defaultcontroller = loader.getController();
                     defaultcontroller.setGUI(this);
                     double limitY = 190* sceneWidth /1300;
-
                     Scene scene = new Scene(Objects.requireNonNull(root3), 421, 450, Color.TRANSPARENT);
                     scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+                    lose.setX(primaryStage.getX()*1.55);
+                    lose.setY(primaryStage.getY()/0.45);
                     lose.initStyle(StageStyle.TRANSPARENT);
                     lose.setAlwaysOnTop(true);
                     lose.initModality(Modality.WINDOW_MODAL);
