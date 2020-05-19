@@ -155,9 +155,7 @@ public class ServerClientHandler implements Runnable {
 
             // the "if" manage name setup, it's a singular part of the game because it's necessary to guarantee unique names
             if(socket.isConnected()){
-                if(go == 1)
-                    go = loadGame();
-                else if(go == 0)
+                if(go == 0)
                     go = questionMode();
 
                 if(go == -1)
@@ -250,10 +248,18 @@ public class ServerClientHandler implements Runnable {
                             ret = -1;
                         else {
                             for (VirtualView vv : server.getVirtualViews2()){
-                                checkVirtualView(vv,cc);
+                                if(checkVirtualView(vv,cc)){
+                                    ret = 1;
+                                    break;
+                                }
                             }
-                            for (VirtualView vv : server.getVirtualViews3()){
-                                checkVirtualView(vv,cc);
+                            if(ret == 0){
+                                for (VirtualView vv : server.getVirtualViews3()){
+                                    if(checkVirtualView(vv,cc)){
+                                        ret = 1;
+                                        break;
+                                    }
+                                }
                             }
                         }
                     } else ret = -1;
@@ -263,7 +269,6 @@ public class ServerClientHandler implements Runnable {
 
         this.name = ((ConnectionClient) object).name;
         if(ret==0) server.getPendingPlayers().add(this.name);
-        System.out.println("---reconnection--->"+ret);
         return ret;
     }
 
@@ -273,29 +278,38 @@ public class ServerClientHandler implements Runnable {
      * @param cc ClientMessage received
      * @return 1 if you need to load the lobby, 0 username is ok, -1 if duplicate
      */
-    private int checkVirtualView(VirtualView vv, ClientMessage cc) {
-        if(vv.getConnectedPlayers().containsKey(cc.name)){
+    private boolean checkVirtualView(VirtualView vv, ClientMessage cc) {
+        if(vv.getConnectedPlayers().containsKey(cc.name) && !vv.getLosers().contains(cc.name) && !vv.isEnded()){
             ServerClientHandler sch = vv.getConnectedPlayers().get(cc.name);
-            if(!sch.timerDisconnection.alive){
-                return -1;
-            } else if(!vv.getLosers().contains(cc.name) && !vv.isEnded()){
-                this.name = cc.name;
-                System.out.println("[RECONNECTION USER] - " + this.getName());
-                this.virtualView = vv;
-                vv.getConnectedPlayers().put(cc.name, this);
-                ArrayList<String> p = new ArrayList<>(vv.getConnectedPlayers().keySet());
-                sch.setStillConnected(true);
-                this.startPing();
+            ReConnectionClient r;
+            this.name = cc.name;
+            this.virtualView = vv;
+            vv.getConnectedPlayers().put(cc.name, this);
+            this.startPing();
+            if(sch != null && sch.timerDisconnection.alive){
+                System.out.println("[RECONNECTION ALIVE] - " + this.getName());
                 sch.timerDisconnection.ses.shutdown();
-                System.out.println("[0]");
-                LobbyServer ls = new LobbyServer(p);
-                ls.type = 2;
-                this.notify(ls);
-                virtualView.notify(new ReConnectionClient(this.name));
-                return 1;
+                sch.setStillConnected(true);
+                r = new ReConnectionClient(this.name, 1);
+            } else {
+                System.out.println("[RECONNECTION USER] - " + this.getName());
+                r = new ReConnectionClient(this.name, 2);
             }
+            virtualView.notify(r);
+
+            // FIXHERE
+            boolean go = true;
+            for(ServerClientHandler player : vv.getConnectedPlayers().values()){
+                if(player != null) go = false;
+            }
+            if(go){
+                System.out.println("[SEND_LAST]");
+                vv.sendLast();
+            }
+
+            return true;
         }
-        return 0;
+        return false;
     }
 
     /**
@@ -342,11 +356,13 @@ public class ServerClientHandler implements Runnable {
         else return  -1;
     }
 
-    /**
-     * It loads a game if necessary
-     * @return 1 if ok
-     */
+    /*
+    * It loads a game if necessary
+    * @return 1 if ok
+    */
+    /*
     public int loadGame(){
+        System.out.println("WE MUST LOAD THE GAME...");
         //ClientMessage object = new ReConnectionClient(this.name,this);
         //ArrayList<String> names = new ArrayList<>();
         //for(String name : virtualView.getConnectedPlayers().keySet())
@@ -361,6 +377,7 @@ public class ServerClientHandler implements Runnable {
         //this.notify(ls);
         return 1;
     }
+    */
 
     /**
      * It starts when this client disconnect
@@ -369,9 +386,15 @@ public class ServerClientHandler implements Runnable {
         if(ping != null)
             ping.cancel();
         stillConnected = false;
-        virtualView.getConnectedPlayers().put(this.name,null);
-        virtualView.notify(new DisconnectionClient(this.name,true));
-        server.getPendingPlayers().remove(this.name);
+        try {
+            virtualView.getConnectedPlayers().put(this.name, null);
+        }catch (Exception ignored){}
+        try {
+            virtualView.notify(new DisconnectionClient(this.name,true));
+        }catch (Exception ignored){}
+        try {
+            server.getPendingPlayers().remove(this.name);
+        }catch (Exception ignored){}
         try{
             if(socket != null && !socket.isClosed())
             {

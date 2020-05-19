@@ -17,9 +17,11 @@ public class ReConnectionServer extends ServerMessage {
     public List<SnapWorker> workers;
     public String player;
     public String currentPlayer;
+    public int type;
 
-    public ReConnectionServer(String player) {
+    public ReConnectionServer(String player, int type) {
         super("");
         this.player=player;
+        this.type=type;
     }
 }

@@ -184,8 +184,7 @@ public class Server {
             }
         }while (go && count++ < 100);
 
-        // TODO use this function
-        // loadMatch();
+        loadMatch();
 
         this.virtualViews2.add(currentVirtualView2); // add the first VirtualView
         this.virtualViews3.add(currentVirtualView3); // add the first VirtualView
@@ -294,8 +293,6 @@ public class Server {
      */
     public void loadMatch(){
         ObjectInputStream objIn;
-        //ArrayList<String> toDelete = new ArrayList<>();
-        // TODO check for not load ended match
         try {
             if(new File("resources"+File.separator+"saved-match").exists()){
                 for (final File fileEntry : Objects.requireNonNull(new File("resources"+File.separator+"saved-match").listFiles())) {
@@ -304,6 +301,7 @@ public class Server {
                         Object obj = objIn.readObject();
                         if(obj instanceof Match) {
                             if (!((Match) obj).getStatus().equals(Status.NAME_CHOICE) && !((Match) obj).getStatus().equals(Status.END)){
+                                //System.out.println(fileEntry.toString());
                                 if (((Match) obj).getPlayers().size() + ((Match) obj).getLosers().size() == 2) {
                                     Object sm = objIn.readObject();
                                     if(sm instanceof ServerMessage)
@@ -313,25 +311,18 @@ public class Server {
                                     if(sm instanceof ServerMessage)
                                         virtualViews3.add(new VirtualView(this, (Match) obj, (ServerMessage) sm));
                                 }
-                            } //else if(((Match) obj).getStatus().equals(Status.NAME_CHOICE)) {
-                                //toDelete.add(fileEntry.getAbsolutePath());
-                            //}
+                            }
                         }
                         objIn.close();
                     }
                 }
             }
-            //System.out.println("[SAVED DIR] - "+"saved-match/");
-            System.out.println("[2 PLAYERS] - "+virtualViews2.size()+" loaded");
-            System.out.println("[3 PLAYERS] - "+virtualViews3.size()+" loaded");
+            System.out.println("[2 PLAYERS] - "+(virtualViews2.size()-1)+" loaded");
+            System.out.println("[3 PLAYERS] - "+(virtualViews3.size()-1)+" loaded");
         } catch (IOException | ClassNotFoundException e) {
-            //System.out.println("[SAVED DIR] - "+"saved-match");
-            System.out.println("[2 PLAYERS MATCH] - "+virtualViews2.size()+" match loaded");
-            System.out.println("[3 PLAYERS MATCH] - "+virtualViews3.size()+" match loaded");
+            System.out.println("[2 PLAYERS MATCH] - "+(virtualViews2.size()-1)+" match loaded");
+            System.out.println("[3 PLAYERS MATCH] - "+(virtualViews3.size()-1)+" match loaded");
         }
-        // I think we should omit this part... Method who save the match jumps yet not started
-        //for(String file : toDelete)
-        //    new File(file).delete();
     }
 
 }

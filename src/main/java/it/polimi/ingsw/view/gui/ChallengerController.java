@@ -260,6 +260,8 @@ public class ChallengerController extends DefaultController {
         if(selected.size() == gui.getClient().getPlayers().size()){
             gui.getClient().sendMessage(new ChallengerChoseClient(gui.getClient().getUsername(), selected));
             banner.setVisible(true);
+            buttonSend.setDisable(true);
+            buttonClear.setDisable(true);
         }
     }
 

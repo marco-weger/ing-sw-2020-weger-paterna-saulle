@@ -227,7 +227,7 @@ public class Match extends Observable implements Serializable {
         for(Player player:players)
             names.add(player.getName());
         LobbyServer ls = new LobbyServer(names);
-        ls.type = forced ? 1 : 0;
+        ls.forced = forced;
         notifyObservers(ls);
     }
 
@@ -282,8 +282,8 @@ public class Match extends Observable implements Serializable {
      * Re-connect the player to the match
      * @param name
      */
-    public void playerReConnection(String name){
-        ReConnectionServer rcs = new ReConnectionServer(name);
+    public void playerReConnection(String name, int type){
+        ReConnectionServer rcs = new ReConnectionServer(name, type);
         rcs.board = new ArrayList<>();
         for(Cell c : getBoard().getField())
             rcs.board.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));
