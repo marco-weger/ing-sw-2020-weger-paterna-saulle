@@ -66,7 +66,9 @@ public class Worker implements Serializable {
         if (b != null) {
         for(Cell c:b.getField())
             if(c.getRow() == this.row && c.getColumn() == this.column)
-                return c.getLevel();}
-        return -1;
+                return c.getLevel();
+        }
+        //FIXME ho cambiato da return -1 a return 0
+        return 0;
     }
 }

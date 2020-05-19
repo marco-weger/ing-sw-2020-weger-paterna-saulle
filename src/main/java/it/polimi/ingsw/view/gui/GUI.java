@@ -556,14 +556,21 @@ public class GUI extends Application implements ViewInterface {
             client.setPlayersBySnap(message.players);
             for(int i=0;i<client.getPlayers().size();i++){
                 if(i==0)
-                    client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_RED.toString()+TextFormatting.COLOR_BLACK);
-                else if(i==1)
-                    client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_YELLOW.toString()+TextFormatting.COLOR_BLACK);
-                else if(i==2)
-                    client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_PURPLE.toString()+TextFormatting.COLOR_BLACK);
+                        client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png";
+                    else if(i==1)
+                        client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png";
+                    else if(i==2)
+                        client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png";
             }
             //this.usernthis.currentPlayer=message.currentPlayer;
-            // FIXME here i must show lobby...
+            Platform.runLater(() -> {
+              primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/Lobby.fxml"));
+              FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+              DefaultController controller = loader.getController();
+              if (controller instanceof LobbyController) {
+                  ((LobbyController) controller).rec();
+              }
+          } );
         } else System.out.println(message.player+" IS BACK!"); // TODO FIXME
     }
 
@@ -580,7 +587,14 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void displayBoard() {
-
+          Platform.runLater(() -> {
+              primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/Board.fxml"));
+              FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+              DefaultController controller = loader.getController();
+              if (controller instanceof BoardController) {
+                  ((BoardController) controller).refresh();
+              }
+          } );
     }
 
     @Override

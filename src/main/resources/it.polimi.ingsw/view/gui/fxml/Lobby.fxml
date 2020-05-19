@@ -19,6 +19,7 @@
          <children>
             <Button fx:id="buttonLobby" layoutX="278.0" layoutY="162.0" prefHeight="200.0" prefWidth="450.0" styleClass="lobby" stylesheets="@../css/text-field.css" />
             <ImageView fx:id="imageLobby" fitHeight="112.0" fitWidth="537.0" layoutX="207.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+            <Button fx:id="newGame" layoutX="443.0" layoutY="454.0" mnemonicParsing="false" onAction="#newgame" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="44.0" />
          </children>
       </AnchorPane>
    </center>
