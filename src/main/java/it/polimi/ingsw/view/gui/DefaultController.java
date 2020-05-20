@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui;
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -108,7 +107,8 @@ public class DefaultController{
         alert.setContentText("Marco riceve un biscotto per ogni partita in piu!");
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                Platform.exit();
+                gui.getClient().disconnectionHandler();
+                gui.close(false);
                 System.exit(0);
             }
         });

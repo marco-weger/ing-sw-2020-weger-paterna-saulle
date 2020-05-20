@@ -3,22 +3,17 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.commons.clientmessages.DisconnectionClient;
 import it.polimi.ingsw.commons.servermessages.*;
-import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.network.TimerDisconnection;
 import it.polimi.ingsw.network.TimerTurnClient;
-import it.polimi.ingsw.network.TimerTurnServer;
-import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
-//import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -30,12 +25,13 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+//import javafx.embed.swing.JFXPanel;
 
 public class GUI extends Application implements ViewInterface {
 
@@ -123,6 +119,7 @@ public class GUI extends Application implements ViewInterface {
 
             Scene scene = new Scene(Objects.requireNonNull(root), sceneWidth, sceneHeight, Color.TRANSPARENT);
             scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+            //ImageCursor.getBestSize(30,30).getWidth(),ImageCursor.getBestSize(30,30).getHeight())
             scene.setUserData(loader);
             defaultcontroller.mainstage = primaryStage;
             defaultcontroller.setup();
@@ -582,7 +579,8 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void close(boolean isError) {
-
+        client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
+        System.exit(-1);
     }
 
     @Override

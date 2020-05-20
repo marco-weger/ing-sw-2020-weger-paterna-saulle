@@ -40,7 +40,8 @@ public class WinController extends DefaultController {
     }
 
     public void exit(ActionEvent actionEvent) {
-        Platform.exit();
+        gui.getClient().disconnectionHandler();
+        gui.close(false);
         System.exit(0);
     }
 
