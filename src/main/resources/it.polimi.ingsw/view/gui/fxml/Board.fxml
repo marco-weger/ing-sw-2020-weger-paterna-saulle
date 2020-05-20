@@ -12,13 +12,22 @@
       </AnchorPane>
    </top>
    <bottom>
-      <AnchorPane fx:id="bottom" prefHeight="138.0" prefWidth="950.0" BorderPane.alignment="CENTER">
+      <StackPane BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="banner" editable="false" layoutX="140.0" layoutY="26.0" prefHeight="87.0" prefWidth="538.0" styleClass="banner" stylesheets="@../css/text-field.css" />
-            <Button fx:id="no" layoutX="735.0" layoutY="39.0" mnemonicParsing="false" onAction="#no" prefHeight="61.0" prefWidth="90.0" stylesheets="@../css/button.css" />
-            <Button fx:id="yes" layoutX="614.0" layoutY="39.0" mnemonicParsing="false" onAction="#yes" prefHeight="61.0" prefWidth="90.0" stylesheets="@../css/button.css" />
-            <Button fx:id="buttonTimer" layoutX="614.0" layoutY="39.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="90.0" styleClass="buttonTimer" stylesheets="@../css/text-field.css" />
-         </children></AnchorPane>
+            <AnchorPane fx:id="bottom" prefHeight="138.0" prefWidth="950.0">
+               <children>
+                  <StackPane layoutX="140.0" layoutY="26.0">
+                     <children>
+                        <TextField fx:id="banner" editable="false" prefHeight="87.0" prefWidth="538.0" styleClass="banner" stylesheets="@../css/text-field.css" />
+                     </children>
+                  </StackPane>
+                  <Button fx:id="no" layoutX="735.0" layoutY="39.0" mnemonicParsing="false" onAction="#no" prefHeight="61.0" prefWidth="90.0" stylesheets="@../css/button.css" />
+                  <Button fx:id="yes" layoutX="614.0" layoutY="39.0" mnemonicParsing="false" onAction="#yes" prefHeight="61.0" prefWidth="90.0" stylesheets="@../css/button.css" />
+                  <Button fx:id="buttonTimer" layoutX="614.0" layoutY="39.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="90.0" styleClass="buttonTimer" stylesheets="@../css/text-field.css" />
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
    </bottom>
    <center>
       <StackPane BorderPane.alignment="CENTER">
