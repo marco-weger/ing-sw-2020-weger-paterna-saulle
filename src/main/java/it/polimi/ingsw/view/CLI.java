@@ -526,6 +526,7 @@ public class CLI implements ViewInterface {
                 client.resetMatch();
                 client.sendMessage(new ModeChoseClient(client.getUsername(),Integer.parseInt(text)));
             } else if(text.equalsIgnoreCase("QUIT")){
+                client.disconnectionHandler();
                 close(false);
             } else go = true;
         }

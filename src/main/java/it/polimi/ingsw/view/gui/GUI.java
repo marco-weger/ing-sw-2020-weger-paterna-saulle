@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.commons.clientmessages.DisconnectionClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
@@ -582,7 +583,8 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void close(boolean isError) {
-
+        client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
+        System.exit(-1);
     }
 
     @Override

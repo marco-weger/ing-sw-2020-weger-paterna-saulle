@@ -2,16 +2,15 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.commons.*;
 import it.polimi.ingsw.commons.clientmessages.DisconnectionClient;
-import it.polimi.ingsw.commons.clientmessages.ReConnectionClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.view.CLI;
-import it.polimi.ingsw.view.gui.GUI;
-import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.view.ViewInterface;
+import it.polimi.ingsw.view.gui.GUI;
 import javafx.application.Application;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -157,50 +156,35 @@ public class Client implements Runnable{
     }
 
     public static void main(String[] args) {
-
-        LOGGER.log( Level.FINE, "processing {0} entries in loop", "START" );
-
-        String version;
+        String version = "GUI";
         boolean go;
 
-        do{
-            if(args.length == 1){
-                version = args[0];
-                args = new String[0];
-            } else {
-                System.out.print("Choose the version [CLI/GUI] > ");
-                System.out.flush();
+        if(args.length == 1){
+            version = args[0];
+            args = new String[0];
+        }
 
-                try {
-                    version = read.readLine();
-                } catch (IOException ex) {
-                    LOGGER.log( Level.SEVERE, ex.toString(), ex );
-                    version = "err";
-                }
-            }
-            go = false;
+        // take the menu bar off the jframe
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
+        // set the name of the application menu item
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Santorini");
+        // set the look and feel
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+            LOGGER.log( Level.INFO, ex.toString(), ex );
+        }
 
-            /*
-            TODO
-            Uunico jar che, in assenza di parametri su linea di comando apra la GUI, se lanciato con un parametro
-            (es. java -jar Client.jar -cli) lancia la cli, senza "strane" richieste all'utente che non avrebbero molto senso in un contesto di interfaccia grafica.
-            Se lancio il jar con un doppio click da interfaccia grafica non voglio veder apparire una shell con la richiesta se aprire cli o gui, ma voglio direttamente la gui.
-            Se voglio la cli apro la shell e metto il parametro "-cli" su linea di comando.
-             */
-
-            if(version.equalsIgnoreCase("CLI")){
-                System.out.print("Connection to the server...");
-                Client client = new Client();
-                readParams(client);
-                client.setView(new CLI(client,getRandomSymbol()));
-                client.getView().displayFirstWindow();
-            }
-            else if(version.equalsIgnoreCase("GUI")){
-                System.out.println("RUN GUI...");
-                Application.launch(GUI.class, args);
-            }
-            else go = true;
-        }while(go);
+        if(version.equalsIgnoreCase("CLI")){
+            System.out.print("Connection to the server...");
+            Client client = new Client();
+            readParams(client);
+            client.setView(new CLI(client,getRandomSymbol()));
+            client.getView().displayFirstWindow();
+        }
+        else if(version.equalsIgnoreCase("GUI")){
+            Application.launch(GUI.class, args);
+        } else System.exit(-1);
     }
 
     public void startPing(){
@@ -247,7 +231,7 @@ public class Client implements Runnable{
             executor.submit(this);
             return true;
         } catch (IOException ex) {
-            LOGGER.log( Level.SEVERE, ex.toString(), ex );
+            LOGGER.log( Level.CONFIG, "Default address not valid (port:ip)", ex );
             return false;
         }
     }
@@ -259,7 +243,7 @@ public class Client implements Runnable{
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
 
-                System.out.println(msg.toString());
+                //System.out.println(msg.toString());
 
                 if(msg != null){
                     if(msg instanceof MovedServer){
@@ -297,7 +281,7 @@ public class Client implements Runnable{
         }
         catch (Exception ex){
             LOGGER.log( Level.SEVERE, ex.toString(), ex );
-            System.exit(0);
+            System.exit(-1);
         }
     }
 

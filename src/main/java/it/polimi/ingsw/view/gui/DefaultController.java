@@ -108,6 +108,8 @@ public class DefaultController{
         alert.setContentText("Marco riceve un biscotto per ogni partita in piu!");
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
+                gui.getClient().disconnectionHandler();
+                gui.close(false);
                 Platform.exit();
                 System.exit(0);
             }
