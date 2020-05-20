@@ -11,8 +11,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -164,17 +166,6 @@ public class Client implements Runnable{
             args = new String[0];
         }
 
-        // take the menu bar off the jframe
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
-        // set the name of the application menu item
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Santorini");
-        // set the look and feel
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {
-            LOGGER.log( Level.INFO, ex.toString(), ex );
-        }
-
         if(version.equalsIgnoreCase("CLI")){
             System.out.print("Connection to the server...");
             Client client = new Client();
@@ -286,18 +277,19 @@ public class Client implements Runnable{
     }
 
     public void sendMessage(ClientMessage msg){
-        try {
-            //out.reset();
-            out.writeObject(msg);
-            out.flush();
-            if(msg instanceof DisconnectionClient){
-                in.close();
-                out.close();
-                socket.close();
+        if(out != null){
+            try {
+                out.writeObject(msg);
+                out.flush();
+                if(msg instanceof DisconnectionClient){
+                    in.close();
+                    out.close();
+                    socket.close();
+                }
+            } catch (Exception ex) {
+                LOGGER.log(Level.WARNING, "Can't send " + msg.toString(), ex);
+                System.exit(-1);
             }
-        } catch (IOException ex) {
-            LOGGER.log( Level.SEVERE, ex.toString(), ex );
-            System.exit(0);
         }
     }
 

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui;
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -110,7 +109,6 @@ public class DefaultController{
             if (response == ButtonType.OK) {
                 gui.getClient().disconnectionHandler();
                 gui.close(false);
-                Platform.exit();
                 System.exit(0);
             }
         });

@@ -51,7 +51,6 @@ public class LoseController extends DefaultController{
         else{
             gui.getClient().disconnectionHandler();
             gui.close(false);
-            Platform.exit();
             System.exit(0);
         }
     }
