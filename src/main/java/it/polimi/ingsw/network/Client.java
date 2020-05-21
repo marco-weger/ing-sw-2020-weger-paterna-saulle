@@ -10,8 +10,6 @@ import javafx.application.Application;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.URL;
