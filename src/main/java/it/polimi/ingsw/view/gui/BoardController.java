@@ -12,7 +12,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -95,8 +94,6 @@ public class BoardController extends DefaultController {
     Image floor2 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor2.png", towerSize, towerSize, true, false);
     Image floor3 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor3.png", towerSize, towerSize, true, false);
     Image dome = new Image("/it.polimi.ingsw/view/gui/img/tower/dome.png", towerSize, towerSize, true, false);
-    //Image end_win = new Image("/it.polimi.ingsw/view/gui/img/other/win.png");
-   // Image end_lose = new Image("/it.polimi.ingsw/view/gui/img/other/lose.png");
 
     @FXML
     TextField banner;
@@ -105,7 +102,7 @@ public class BoardController extends DefaultController {
     Text workerCTA = new Text("                  Choose a Worker");
     Text moveTA = new Text("             Choose the cell where you want to move");
     Text buildTA = new Text("           Choose the cell where you want to build");
-    Text questionTA = new Text("Do you want to use you God ability?");
+    Text questionTA = new Text("       Do you want to use you God ability?");
 
 
     @FXML
@@ -596,7 +593,7 @@ public class BoardController extends DefaultController {
         //get new workers position
         for(SnapPlayer p : this.gui.getClient().getPlayers())
             for (SnapWorker w : this.gui.getClient().getWorkers()){
-                if(w.name == p.name) {
+                if(w.name != null && w.name.equals(p.name)) {
                     Image p2 = new Image(p.color, pawnSize, pawnSize, false, false);
                     getSquare(w.row,w.column).setImage(p2);
                 }
@@ -981,7 +978,7 @@ public class BoardController extends DefaultController {
      * @param actionEvent
      */
     public void yes(ActionEvent actionEvent) {
-        if(questionFlag == true) {
+        if(questionFlag) {
             this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), true, Qas.status));
             yOff(yes);
             nOff(no);
@@ -997,14 +994,14 @@ public class BoardController extends DefaultController {
      * @param actionEvent
      */
     public void no(ActionEvent actionEvent) {
-        if(questionFlag == true) {
+        if(questionFlag) {
             this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), false, Qas.status));
             yOff(yes);
             nOff(no);
             questionFlag = false;
             refresh();
         }
-        if(loserFlag == true){
+        if(loserFlag){
             this.gui.getClient().resetMatch();
             Platform.runLater(() -> {
                 this.gui.getPrimaryStage().setScene(this.gui.load("/it.polimi.ingsw/view/gui/fxml/Mode.fxml"));
@@ -1800,7 +1797,7 @@ public class BoardController extends DefaultController {
     }
 
     public void activeQuestionIfPossible(KeyCode code) {
-        if(questionFlag == true) {
+        if(questionFlag) {
             this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), code == KeyCode.Y, Qas.status));
             yOff(yes);
             nOff(no);
