@@ -576,6 +576,12 @@ public class GUI extends Application implements ViewInterface {
     @Override
     public void close(boolean isError) {
         client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+                    if(controller instanceof BoardController){
+                        ((BoardController) controller).banner.setText("A network problem was encountered, LOGOUT");
+                        ((BoardController) controller).refresh();
+                    }
         System.exit(-1);
     }
 
