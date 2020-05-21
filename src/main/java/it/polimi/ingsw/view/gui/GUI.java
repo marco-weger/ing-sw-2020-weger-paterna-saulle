@@ -6,6 +6,7 @@ import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.clientmessages.DisconnectionClient;
 import it.polimi.ingsw.commons.clientmessages.ModeChoseClient;
 import it.polimi.ingsw.commons.servermessages.*;
+import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.TimerTurnClient;
 import it.polimi.ingsw.view.TextFormatting;
@@ -16,6 +17,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -576,13 +579,18 @@ public class GUI extends Application implements ViewInterface {
     @Override
     public void close(boolean isError) {
         client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
-        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-        DefaultController controller = loader.getController();
-                    if(controller instanceof BoardController){
-                        ((BoardController) controller).banner.setText("A network problem was encountered, LOGOUT");
-                        ((BoardController) controller).refresh();
-                    }
-        System.exit(-1);
+        Platform.runLater(() -> {
+            Alert ohNo = new Alert(Alert.AlertType.ERROR);
+            ohNo.setTitle("Network problem");
+            ohNo.setHeaderText("A network problem was encountered, you have been disconnected!");
+            ohNo.setContentText("please, try to reconnect later");
+            ohNo.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    System.exit(-1);
+
+                }
+            });
+        });
     }
 
     @Override
@@ -620,7 +628,7 @@ public class GUI extends Application implements ViewInterface {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        /*
+/*
         SnapPlayer p;
         p = new SnapPlayer("asdasd");
         p.card = CardName.ARTEMIS;
@@ -673,10 +681,11 @@ public class GUI extends Application implements ViewInterface {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                win.showAndWait();
+                //win.showAndWait();
+                close(true);
             });
-        });
-        */
+        });*/
+
     }
 
     public void setTimerText(long val){

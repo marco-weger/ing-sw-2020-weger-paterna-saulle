@@ -264,13 +264,15 @@ public class PrometheusTest {
 
         assertEquals(3, ret.size());
     }
-        @Test
+    @Test
     public void bugOfDeath() {
         initialize();
         p.get(0).setWorker1(new Worker(2, 3));
         p.get(0).setWorker2(new Worker(0, 0));
         p.get(1).setWorker1(new Worker(1, 2));
         p.get(1).setWorker2(new Worker(3, 2));
+        p.get(2).setWorker1(new Worker(4, 0));
+        p.get(2).setWorker2(new Worker(4, 1));
         p.get(0).setCurrentWorker(1);
         Board b = new Board();
         for (Cell cell : b.getField()) {
@@ -290,5 +292,43 @@ public class PrometheusTest {
         assertNotNull(p);
         assertNotNull(b);
         assertFalse(p.get(0).getCard().activable(p, b));
+        assertEquals(2, p.get(0).getCard().checkMove(p,b).size());
+    }
+
+    @Test
+    public void bugOfDeathExtreme() {
+        initialize();
+        p.get(0).setWorker1(new Worker(1, 1));
+        p.get(0).setWorker2(new Worker(0, 4));
+        p.get(1).setWorker1(new Worker(4, 4));
+        p.get(1).setWorker2(new Worker(3, 4));
+        p.get(2).setWorker1(new Worker(4, 0));
+        p.get(2).setWorker2(new Worker(4, 1));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
+        for (Cell cell : b.getField()) {
+            if (cell.getRow() == 0 && cell.getColumn() == 0)
+                cell.setLevel(1);
+            else if (cell.getRow() == 0 && cell.getColumn() == 1)
+                cell.setLevel(4);
+            else if (cell.getRow() == 0 && cell.getColumn() == 2)
+                cell.setLevel(1);
+            else if (cell.getRow() == 1 && cell.getColumn() == 0)
+                cell.setLevel(4);
+            else if (cell.getRow() == 1 && cell.getColumn() == 1)
+                cell.setLevel(0);
+            else if (cell.getRow() == 1 && cell.getColumn() == 2)
+                cell.setLevel(4);
+            else if (cell.getRow() == 2 && cell.getColumn() == 0)
+                cell.setLevel(1);
+            else if (cell.getRow() == 2 && cell.getColumn() == 1)
+                cell.setLevel(4);
+            else if (cell.getRow() == 2 && cell.getColumn() == 2)
+                cell.setLevel(1);
+        }
+        assertNotNull(p);
+        assertNotNull(b);
+        assertFalse(p.get(0).getCard().activable(p, b));
+        assertEquals(4, p.get(0).getCard().checkMove(p,b).size());
     }
 }

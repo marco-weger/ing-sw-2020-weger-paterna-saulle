@@ -220,10 +220,8 @@ public class Prometheus extends Card {
             // here i check for opponent's turn ability (DELETED FOR NOW)
         }
 
-        //standard checkbuild
-        ckbd = current.getCard().checkBuild(p,b);
         //se ho a disposizione un solo movimento, sullo stesso livello, non farmi usare il potere
-        if(available.size() < 2 && availablelow.isEmpty() && ckbd.size() < 2 && availableup.size() == 0 || available.size() == 0) {
+        if(available.size() == 0 || (available.size() < 2 && availablelow.isEmpty() && super.checkBuild(p,b).size() < 2 && availableup.size() == 0)) {
             current.getCard().setActive(false);
             return false;
         }
