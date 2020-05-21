@@ -12,7 +12,6 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -157,6 +156,7 @@ public class Client implements Runnable{
 
     public static void main(String[] args) {
         String version = "GUI";
+        //String version = "CLI";
         boolean go;
 
         if(args.length == 1){
@@ -232,7 +232,7 @@ public class Client implements Runnable{
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
 
-                //System.out.println(msg.toString());
+                System.out.println(msg.toString());
 
                 if(msg != null){
                     if(msg instanceof MovedServer){
