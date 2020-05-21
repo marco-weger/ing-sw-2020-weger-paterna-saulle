@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
+import it.polimi.ingsw.commons.servermessages.MovedServer;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.VirtualView;
 
@@ -38,7 +40,6 @@ public class Prometheus extends Card {
                 case QUESTION_B:
                     return Status.QUESTION_M;
                 case MOVED:
-                    super.setActive(false);
                     return Status.QUESTION_B;
                 default:
                     return super.getNextStatus(current);
@@ -84,6 +85,34 @@ public class Prometheus extends Card {
 
     }
 
+    /**
+     *@param p list of player
+     *@param b board
+     *@param to where to move
+     */
+    public boolean move(List<Player> p, Board b, Cell to){
+        if (!(p == null || b == null || to == null)) {
+            Player current = null;
+            for (Player player : p)
+                if (player.getCard().getName().compareTo(this.getName()) == 0)
+                    current = player;
+            if (current != null && current.getCurrentWorker() != null) {
+                List<Cell> available = checkMove(p, b);
+                for (Player player : p)
+                    if (player.getCard().isOpponent() && player.getCard().isActive())
+                        available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_M));
+                    if (available.contains(to)) {
+                        current.getCurrentWorker().move(to.getRow(), to.getColumn());
+                        if(current.getCard().isActive()){
+                            current.getCard().setActive(false);
+                        }
+                        notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * If you want to build before moving it checks if the new build could block your next move (you could lose the match) and then remove that possibility
