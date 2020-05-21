@@ -49,8 +49,8 @@ public class LoseController extends DefaultController{
             Spectator.getStyleClass().remove("spectator");
         }
         else{
-            this.gui.getLose().close();
-            Platform.exit();
+            gui.getClient().disconnectionHandler();
+            gui.close(false);
             System.exit(0);
         }
     }

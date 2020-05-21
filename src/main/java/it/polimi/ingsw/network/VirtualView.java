@@ -123,7 +123,7 @@ public class VirtualView extends Observable implements Observer {
 
         if (!ended) {
             notifyObservers(message);
-        }
+        } else System.out.println("MATCH ENDED!");
     }
 
     /**

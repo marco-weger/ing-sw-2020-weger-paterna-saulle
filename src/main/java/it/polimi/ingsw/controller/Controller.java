@@ -9,6 +9,9 @@ import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.VirtualView;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 public class Controller implements Observer, ClientMessageHandler {
@@ -42,7 +45,14 @@ public class Controller implements Observer, ClientMessageHandler {
     public Controller(VirtualView virtualView, Match match) {
         this.virtualView = virtualView;
         this.match = match;
+        this.match.clearObserver();
         this.match.addObserver(virtualView);
+        for(Player p : this.match.getPlayers()){
+            p.clearObserver();
+            p.addObserver(virtualView);
+            p.getCard().clearObserver();
+            p.getCard().addObserver(virtualView);
+        }
     }
 
     public VirtualView getVirtualView() {
@@ -328,11 +338,21 @@ public class Controller implements Observer, ClientMessageHandler {
      */
     @Override
     public void handleMessage(ModeChoseClient message) {
-        //System.out.println(message.forced);
-        if(match.getPlayers().size() < message.mode)
-            match.addPlayer(new Player(message.name,virtualView),message.forced);
-        if(match.getPlayers().size() == message.mode)
-            startMatch();
+        if(message.refused){
+            String path = System.getProperty("user.dir")+File.separatorChar+"resources" +File.separatorChar+"saved-match" + File.separatorChar + String.format("%07d" , this.match.getId())+".santorini";
+            File f = new File(path);
+            if(f.exists())
+                f.delete();
+            this.match.setEnded(true);
+        } else {
+            if(match.getPlayers().size() < message.mode) {
+                match.addPlayer(new Player(message.name,virtualView),message.forced);
+            }
+
+            if(match.getPlayers().size() == message.mode) {
+                startMatch();
+            }
+        }
     }
 
 

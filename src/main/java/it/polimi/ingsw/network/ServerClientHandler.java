@@ -110,7 +110,7 @@ public class ServerClientHandler implements Runnable {
 
     public boolean isStillConnected() {return stillConnected;}
 
-    public void setTurnTimesUp(boolean turnTimesUp){ this.turnTimesUp = turnTimesUp; }
+    //public void setTurnTimesUp(boolean turnTimesUp){ this.turnTimesUp = turnTimesUp; }
 
     public ObjectInputStream getIn(){ return in;}
 
@@ -173,9 +173,29 @@ public class ServerClientHandler implements Runnable {
                                     object.toString().lastIndexOf('@')) + " - " + (object.name.equals("") ? "ALL" : object.name));
 
                             if(object instanceof ModeChoseClient){
-                                System.out.println("XXXX -> "+virtualView.isEnded());
-                                System.out.println("XXXX -> "+virtualView.getLosers().contains(this.getName()));
-                                if(virtualView.isEnded() || virtualView.getLosers().contains(this.getName())){
+                                if(((ModeChoseClient) object).refused){
+                                    virtualView.notify(object);
+                                    server.getVirtualViews2().remove(virtualView);
+                                    server.getVirtualViews3().remove(virtualView);
+
+                                    ((ModeChoseClient) object).refused = false;
+                                    ((ModeChoseClient) object).sch = this;
+                                    if(((ModeChoseClient) object).mode == 2){
+                                        if(!server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE)){
+                                            server.newCurrentVirtualView2();
+                                        }
+                                        System.out.println("[2]");
+                                        virtualView = server.getCurrentVirtualView2();
+                                        virtualView.notify(object);
+                                    }
+                                    else if(((ModeChoseClient) object).mode == 3){
+                                        if(!server.getCurrentVirtualView3().getCurrentStatus().equals(Status.NAME_CHOICE)){
+                                            server.newCurrentVirtualView3();
+                                        }
+                                        virtualView = server.getCurrentVirtualView3();
+                                        virtualView.notify(object);
+                                    }
+                                } else if(virtualView.isEnded() || virtualView.getLosers().contains(this.getName())){
                                     ((ModeChoseClient) object).sch = this;
                                     if(((ModeChoseClient) object).mode == 2){
                                         this.turnTimesUp = false;
@@ -199,6 +219,7 @@ public class ServerClientHandler implements Runnable {
                             }
                             else if(virtualView != null)
                                 virtualView.notify(object);
+                            else System.out.println("ERROR VIRTUAL VIEW");
                         }
                     } catch (Exception e) {
                         if(virtualView != null && !virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
@@ -297,11 +318,10 @@ public class ServerClientHandler implements Runnable {
             }
             virtualView.notify(r);
 
-            // FIXHERE
+            // FIXME
             boolean go = true;
-            for(ServerClientHandler player : vv.getConnectedPlayers().values()){
-                if(player != null) go = false;
-            }
+            for(String player : vv.getConnectedPlayers().keySet())
+                if(vv.getConnectedPlayers().get(player) == null) go = false;
             if(go){
                 System.out.println("[SEND_LAST]");
                 vv.sendLast();
@@ -347,9 +367,11 @@ public class ServerClientHandler implements Runnable {
                         virtualView = server.getCurrentVirtualView3();
                         server.getPendingPlayers().remove(this.name);
                     }
+                    ((ModeChoseClient) object).refused = false;
                 }
             }
         }while(!(object instanceof ModeChoseClient) && !turnTimesUp);
+        System.out.println(object.toString());
         virtualView.notify((ClientMessage) object);
         if(object != null)
             return 1;

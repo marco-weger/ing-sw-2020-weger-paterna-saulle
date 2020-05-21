@@ -480,6 +480,7 @@ public class CLI implements ViewInterface {
     @Override
     public void handleMessage(ReConnectionServer message) {
         if(message.player.equals(client.getUsername())){
+            client.setMustPrint(true);
             client.setBoard(message.board);
             client.setWorkers(message.workers);
             client.setPlayersBySnap(message.players);
@@ -497,6 +498,21 @@ public class CLI implements ViewInterface {
             printTitle();
             printLobby(message.type);
         } else System.out.println(COLOR_CPU + message.player+" IS BACK!" + TextFormatting.RESET);
+
+        //lobby refused
+        boolean go = true;
+        while(go && client.getContinueReading()){
+            go = false;
+            print(COLOR_CPU + "Type [2/3] if you want to refuse saved lobby and start a new game " + TextFormatting.input());
+            String text = read();
+            if(text.equalsIgnoreCase("2") || text.equalsIgnoreCase("3")){
+                client.setMustPrint(false);
+                client.resetMatch();
+                ModeChoseClient mcc = new ModeChoseClient(client.getUsername(),Integer.parseInt(text));
+                mcc.refused = true;
+                client.sendMessage(mcc);
+            } else go = true;
+        }
     }
 
     public void endMatch(){
@@ -510,6 +526,7 @@ public class CLI implements ViewInterface {
                 client.resetMatch();
                 client.sendMessage(new ModeChoseClient(client.getUsername(),Integer.parseInt(text)));
             } else if(text.equalsIgnoreCase("QUIT")){
+                client.disconnectionHandler();
                 close(false);
             } else go = true;
         }
@@ -605,6 +622,13 @@ public class CLI implements ViewInterface {
             println(COLOR_CPU + "A network problem was encountered, you have been disconnected!" + TextFormatting.RESET);
         else println(COLOR_CPU + "Thank you for playing Santorini!" + TextFormatting.RESET);
         System.exit(0);
+    }
+
+    @Override
+    public void displayBoard() {
+        clear();
+        printTitle();
+        printTable();
     }
 
     public void clearLine(){

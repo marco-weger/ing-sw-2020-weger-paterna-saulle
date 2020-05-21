@@ -3,7 +3,9 @@ package it.polimi.ingsw.view.gui;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
@@ -33,11 +35,13 @@ public class WinController extends DefaultController {
         NewGame.setMinSize(x,y);
         NewGame.setMaxSize(x,y);
         NewGame.setPrefSize(x,y);
+
+        //anchorWin.setStyle("-fx-border-color: green; -fx-border-width: 1px 1px 1px 1px");
     }
 
     public void exit(ActionEvent actionEvent) {
-        this.gui.getWin().close();
-        Platform.exit();
+        gui.getClient().disconnectionHandler();
+        gui.close(false);
         System.exit(0);
     }
 

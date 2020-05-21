@@ -3,7 +3,7 @@
   "port": "4321",
   "pingPeriod": "2",
   "timeoutSocket": "5",
-  "disconnectTimer": "15",
+  "disconnectTimer": "180",
   "turnTimer": "180"
 }
 
