@@ -90,6 +90,7 @@ public class Prometheus extends Card {
      *@param b board
      *@param to where to move
      */
+    @Override
     public boolean move(List<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {
             Player current = null;
@@ -143,20 +144,24 @@ public class Prometheus extends Card {
 
         if(super.isActive()){
             for (Cell c : b.getField()) {
+                //available cm (checkmove), cells with level lower or same than mine
                 if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() <= actived.getLevel(b) && !c.isOccupied(p)) {
                     availablecm.add(c);
                 }
+                //available low, cells with level lower or same than mine
                 if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() < actived.getLevel(b) && !c.isOccupied(p)) {
                     availablelow.add(c);
                 }
+                //available eq, only cells with level same as mine
                 if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() == actived.getLevel(b) && !c.isOccupied(p)) {
                     availableeq.add(c);
                 }
+
             }
 
             //PASP Prometheus Anti Suicide Protocol
             //If you have only one move, on the same level, but you have at least 2 checkbuild allowed, YOU CAN'T BUILD ON THE checkmove marked cell.
-            if(availablecm.size() < 2 && availablelow.isEmpty() && available.size() > 1 &&isActive()) {
+            if(availablecm.size() < 2 && availablelow.isEmpty() && available.size() > 1 &&isActive() && !availableeq.isEmpty()) {
                 available.remove(availableeq.get(0));
             }
 
@@ -186,29 +191,39 @@ public class Prometheus extends Card {
         if (actived == null) return true;
         ArrayList<Cell> available;
         ArrayList<Cell> availablelow;
+        ArrayList<Cell> availableup;
+
+
         List<Cell> ckbd;
 
         available= new ArrayList<>();
         availablelow = new ArrayList<>();
+        availableup = new ArrayList<>();  //check build only on higher level
+
 
         current.getCard().setActive(true);
 
-        if(super.isActive()){
+        if(current.getCard().isActive()){
             for (Cell c : b.getField()) {
+                //available, cells with level lower or same than mine
                 if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() <= actived.getLevel(b) && !c.isOccupied(p)) {
                     available.add(c);
                 }
+                //available low, Only cells with level lower than mine
                 if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() < actived.getLevel(b) && !c.isOccupied(p)) {
                     availablelow.add(c);
+                }
+                if (Math.abs(c.getRow() - actived.getRow()) <= 1 && Math.abs(c.getColumn() - actived.getColumn()) <= 1 && c.getLevel() < 4 && c.getLevel() > actived.getLevel(b) && !c.isOccupied(p)) {
+                    availableup.add(c);
                 }
             }
             // here i check for opponent's turn ability (DELETED FOR NOW)
         }
 
-
-        ckbd = super.checkBuild(p,b);
+        //standard checkbuild
+        ckbd = current.getCard().checkBuild(p,b);
         //se ho a disposizione un solo movimento, sullo stesso livello, non farmi usare il potere
-        if(available.size() < 2 && availablelow.isEmpty() && ckbd.size() < 2) {
+        if(available.size() < 2 && availablelow.isEmpty() && ckbd.size() < 2 && availableup.size() == 0 || available.size() == 0) {
             current.getCard().setActive(false);
             return false;
         }

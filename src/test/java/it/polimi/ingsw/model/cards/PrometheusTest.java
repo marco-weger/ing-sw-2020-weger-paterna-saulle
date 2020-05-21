@@ -174,8 +174,6 @@ public class PrometheusTest {
         assertNotNull(b);
         List<Cell> ret = p.get(0).getCard().checkBuild(p, b);
         assertEquals(2, ret.size());
-        //for(Cell c:ret)
-        //  assertEquals(c.getRow()+c.getColumn(),1);
     }
 
     @Test
@@ -265,5 +263,32 @@ public class PrometheusTest {
         List<Cell> ret = p.get(0).getCard().checkBuild(p, b);
 
         assertEquals(3, ret.size());
+    }
+        @Test
+    public void bugOfDeath() {
+        initialize();
+        p.get(0).setWorker1(new Worker(2, 3));
+        p.get(0).setWorker2(new Worker(0, 0));
+        p.get(1).setWorker1(new Worker(1, 2));
+        p.get(1).setWorker2(new Worker(3, 2));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
+        for (Cell cell : b.getField()) {
+            if (cell.getRow() == 1 && cell.getColumn() == 3)
+                cell.setLevel(4);
+            else if (cell.getRow() == 2 && cell.getColumn() == 2)
+                cell.setLevel(4);
+            else if (cell.getRow() == 2 && cell.getColumn() == 4)
+                cell.setLevel(4);
+            else if (cell.getRow() == 3 && cell.getColumn() == 3)
+                cell.setLevel(4);
+            else if (cell.getRow() == 1 && cell.getColumn() == 4)
+                cell.setLevel(1);
+            else if (cell.getRow() == 3 && cell.getColumn() == 4)
+                cell.setLevel(1);
+        }
+        assertNotNull(p);
+        assertNotNull(b);
+        assertFalse(p.get(0).getCard().activable(p, b));
     }
 }
