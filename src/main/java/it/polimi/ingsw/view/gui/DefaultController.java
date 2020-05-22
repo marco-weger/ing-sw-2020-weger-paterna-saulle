@@ -32,6 +32,8 @@ public class DefaultController{
     protected static final Logger LOGGER = Logger.getLogger(DefaultController.class.getName());
 
     Font f = Font.loadFont(getClass().getResourceAsStream("/it.polimi.ingsw/view/gui/font/Nefelibata-Brush.ttf"),13);
+    private static final String CURSOR = "/it.polimi.ingsw/view/gui/img/pointer.png";
+
 
     //protected Client client;
     protected GUI gui;
@@ -139,7 +141,7 @@ public class DefaultController{
             rules.setMaxHeight(Screen.getPrimary().getBounds().getHeight()-100);
             rules.initStyle(StageStyle.TRANSPARENT);
             rules.getIcons().add(new Image("/it.polimi.ingsw/view/gui/img/icon.png"));
-            rules.getScene().setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+            rules.getScene().setCursor(new ImageCursor(new Image(CURSOR),36,45));
 
             rules.show();
         }
@@ -149,7 +151,7 @@ public class DefaultController{
     }
 
     public void setUpTextField(TextField tf){
-        tf.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+        tf.setCursor(new ImageCursor(new Image(CURSOR),36,45));
         tf.setFont(f);
         tf.focusedProperty().addListener(new ChangeListener<Boolean>()
         {
@@ -162,7 +164,7 @@ public class DefaultController{
     }
 
     public void setUpBanner(TextField tf){
-        tf.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+        tf.setCursor(new ImageCursor(new Image(CURSOR),36,45));
         tf.setFont(f);
         tf.focusedProperty().addListener(new ChangeListener<Boolean>()
         {

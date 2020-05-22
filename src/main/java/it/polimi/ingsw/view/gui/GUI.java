@@ -126,7 +126,7 @@ public class GUI extends Application implements ViewInterface {
             defaultcontroller.buttonHelper.setLayoutX(sceneWidth-120);
 
             Scene scene = new Scene(Objects.requireNonNull(root), sceneWidth, sceneHeight, Color.TRANSPARENT);
-            scene.setCursor(new ImageCursor(new Image(CURSOR)));
+            scene.setCursor(new ImageCursor(new Image(CURSOR),36,45));
             //ImageCursor.getBestSize(30,30).getWidth(),ImageCursor.getBestSize(30,30).getHeight())
             scene.setUserData(loader);
             defaultcontroller.mainstage = primaryStage;
@@ -349,7 +349,7 @@ public class GUI extends Application implements ViewInterface {
                     }
 
                     Scene scene = new Scene(Objects.requireNonNull(root3), POPUPX, POPUPY, Color.TRANSPARENT);
-                    scene.setCursor(new ImageCursor(new Image(CURSOR)));
+                    scene.setCursor(new ImageCursor(new Image(CURSOR),36,45));
                     lose.initStyle(StageStyle.TRANSPARENT);
                     lose.setAlwaysOnTop(true);
                     lose.initModality(Modality.WINDOW_MODAL);
@@ -418,7 +418,7 @@ public class GUI extends Application implements ViewInterface {
                     defaultcontroller = loader.getController();
                     defaultcontroller.setGUI(this);
                     Scene scene = new Scene(Objects.requireNonNull(root2), POPUPX, POPUPY, Color.TRANSPARENT);
-                    scene.setCursor(new ImageCursor(new Image(CURSOR)));
+                    scene.setCursor(new ImageCursor(new Image(CURSOR),36,45));
                     win.initStyle(StageStyle.TRANSPARENT);
                     win.setAlwaysOnTop(true);
                     scene.setUserData(loader);
@@ -446,7 +446,7 @@ public class GUI extends Application implements ViewInterface {
                     defaultcontroller = loader.getController();
                     defaultcontroller.setGUI(this);
                     Scene scene = new Scene(Objects.requireNonNull(root3), POPUPX, POPUPY, Color.TRANSPARENT);
-                    scene.setCursor(new ImageCursor(new Image(CURSOR)));
+                    scene.setCursor(new ImageCursor(new Image(CURSOR),36,45));
                     lose.initStyle(StageStyle.TRANSPARENT);
                     lose.setAlwaysOnTop(true);
                     lose.initModality(Modality.WINDOW_MODAL);
