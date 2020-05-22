@@ -43,6 +43,7 @@ public class GUI extends Application implements ViewInterface {
 
     double sceneWidth = 0;
     double sceneHeight = 0;
+    int currentP = 0;   //FRANCESCO COUNTER
 
     Parent root;
     DefaultController defaultcontroller;
@@ -177,6 +178,8 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(WorkerChosenServer message) {
+        currentP++; //FRANCESCO COUNTER
+        boolean flag = false;
         try {
             FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
             client.getWorkers().add(new SnapWorker(message.x, message.y, message.player, message.worker));
@@ -189,6 +192,7 @@ public class GUI extends Application implements ViewInterface {
                         ((BoardController) controllerx).refresh();
                         ((BoardController) controllerx).banner.setText(((BoardController) controllerx).workerITA2.getText());
                         ((BoardController) controllerx).setState(0);
+                        flag = true;
                     }
                 }
             } else {
@@ -202,6 +206,7 @@ public class GUI extends Application implements ViewInterface {
                             ((BoardController) controllerx).banner.setText(((BoardController) controllerx).workerITA.getText());
                             ((BoardController) controllerx).setState(0);
                             ((BoardController) controllerx).refresh();
+                            flag = true;
                         }
                     }
                 }
@@ -211,6 +216,17 @@ public class GUI extends Application implements ViewInterface {
             System.err.println("IMPORTANT!!!");
             LOGGER.log( Level.SEVERE, ex.toString(), ex );
         }
+        if(!flag){   //FRANCESCO COUNTER  ---------------------------------------------------------------------------------------------------------
+            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+            DefaultController controllerx;
+            controllerx = loader.getController();
+            if (controllerx instanceof BoardController) {
+                controllerx.setup();
+                ((BoardController) controllerx).banner.setText("                  WAIT, "+client.getPlayers().get(currentP/2).name+"'s Turn");
+                ((BoardController) controllerx).refresh();
+            }
+
+        } //FRANCESCO COUNTER  --------------------------------------------------------------------------------------------------------------------
     }
 
     @Override
