@@ -4,12 +4,9 @@ import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.commons.clientmessages.DisconnectionClient;
-import it.polimi.ingsw.commons.clientmessages.ModeChoseClient;
 import it.polimi.ingsw.commons.servermessages.*;
-import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.TimerTurnClient;
-import it.polimi.ingsw.view.TextFormatting;
 import it.polimi.ingsw.view.ViewInterface;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -126,7 +123,7 @@ public class GUI extends Application implements ViewInterface {
             defaultcontroller.buttonHelper.setLayoutX(sceneWidth-120);
 
             Scene scene = new Scene(Objects.requireNonNull(root), sceneWidth, sceneHeight, Color.TRANSPARENT);
-            scene.setCursor(new ImageCursor(new Image(CURSOR),36,45));
+            scene.setCursor(new ImageCursor(new Image(CURSOR)));
             //ImageCursor.getBestSize(30,30).getWidth(),ImageCursor.getBestSize(30,30).getHeight())
             scene.setUserData(loader);
             defaultcontroller.mainstage = primaryStage;
