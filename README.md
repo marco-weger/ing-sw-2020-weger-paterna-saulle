@@ -3,12 +3,14 @@
 # Final project of Software Engineering - 2020
 
 This project was made between March and July 2020 as our final thesis project at Politecnico di Milano. <br>
-<!-- TODO: add final score -->
+ **Marco Weger** ([@marco-weger](https://github.com/marco-weger)) <br>
+ **Francesco Paterna** ([@FrancescoPaterna](https://github.com/FrancescoPaterna)) <br>
+ **Giulio Saulle** ([@aGiulioSaulle](https://github.com/GiulioSaulle))
 
 
-## INDEX
+## Quick Index
 * [prerequirements](#Prerequirements)
-* [get JARs files](#HowtostartJARs)
+* [get JARs files](#How to start JARs)
 * [start Client](#Client.jar)
 * [start Server](#Server.jar)
 * [json config](#Configuration)
@@ -16,11 +18,6 @@ This project was made between March and July 2020 as our final thesis project at
 * [server status](#SantoriniOfficialServer)
 * [who we are](#TheCG13Team)
 
-
-## The CG13 Team
-- ####       Marco Weger ([@marco-weger](https://github.com/marco-weger))
-- ####       Francesco Paterna ([@FrancescoPaterna](https://github.com/FrancescoPaterna))
-- ####       Giulio Saulle ([@aGiulioSaulle](https://github.com/GiulioSaulle))
 
 ## How to start JARs
 
