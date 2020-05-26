@@ -8,6 +8,13 @@ This project was made between March and July 2020 as our final thesis project at
 
 ## INDEX
 * [prerequirements](#Prerequirements)
+* [get JARs files](#HowtostartJARs)
+* [start Client](#Client.jar)
+* [start Server](#Server.jar)
+* [json config](#Configuration)
+* [specification covered](#WorkProgress)
+* [server status](#SantoriniOfficialServer)
+* [who we are](#TheCG13Team)
 
 
 ## The CG13 Team
