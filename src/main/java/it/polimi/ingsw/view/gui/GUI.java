@@ -559,11 +559,13 @@ public class GUI extends Application implements ViewInterface {
               if (controller instanceof LobbyController) {
                   ((LobbyController) controller).rec();
               }
-              */Scene s = load("/it.polimi.ingsw/view/gui/fxml/Lobby.fxml");
+              */
+                Scene s = load("/it.polimi.ingsw/view/gui/fxml/Lobby.fxml");
 
                 FXMLLoader loader = (FXMLLoader) s.getUserData();
                 DefaultController controller = loader.getController();
                 if(controller instanceof LobbyController){
+                    ((LobbyController) controller).rec();
                     for(int i=0; i<message.players.size(); i++){
                         ((LobbyController) controller).buttonLobby.setText(((LobbyController) controller).buttonLobby.getText()+message.players.get(i).name
                                 +(i+1 == message.players.size() ? "" : "\n"));
