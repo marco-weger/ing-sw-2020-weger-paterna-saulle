@@ -23,7 +23,7 @@ This project was made between March and July 2020 as our final thesis project at
 You need **JavaSE 14** or higher version to run this game.    
 https://www.oracle.com/java/technologies/javase-downloads.html
 
-If you use **Windows** and want to run the game in **CLI mode**, we suggest you to use the Bash to a better expirience
+If you use **Windows** and want to run the game in **CLI mode**, we suggest you to use the Bash on [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) to a better expirience
 https://docs.microsoft.com/en-us/windows/wsl/install-win10
 
 
