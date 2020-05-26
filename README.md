@@ -5,6 +5,11 @@
 This project was made between March and July 2020 as our final thesis project at Politecnico di Milano. <br>
 <!-- TODO: add final score -->
 
+
+## INDEX
+* [prerequirements](#Prerequirements)
+
+
 ## The CG13 Team
 - ####       Marco Weger ([@marco-weger](https://github.com/marco-weger))
 - ####       Francesco Paterna ([@FrancescoPaterna](https://github.com/FrancescoPaterna))
