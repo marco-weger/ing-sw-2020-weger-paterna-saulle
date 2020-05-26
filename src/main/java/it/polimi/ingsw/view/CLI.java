@@ -215,16 +215,18 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(QuestionAbilityServer message) { // TODO test
-        do {
-            clearLine();
-            println(COLOR_CPU +"Type if you want to use the Ability of your God [YES/Y] or not [NO/N] " + TextFormatting.input());
-            String answer;
-            answer = read();
-            if (answer.equalsIgnoreCase("YES") || answer.equalsIgnoreCase("Y") || answer.equalsIgnoreCase("NO") || answer.equalsIgnoreCase("N")) {
-                client.sendMessage(new AnswerAbilityClient(client.getUsername(), answer.equalsIgnoreCase("YES") || answer.equalsIgnoreCase("Y"), message.status));
-                break;
-            }
-        }while(client.getContinueReading());
+        if(client.getUsername().equals(client.getCurrentPlayer())){
+            do {
+                clearLine();
+                println(COLOR_CPU +"Type if you want to use the Ability of your God [YES/Y] or not [NO/N] " + TextFormatting.input());
+                String answer;
+                answer = read();
+                if (answer.equalsIgnoreCase("YES") || answer.equalsIgnoreCase("Y") || answer.equalsIgnoreCase("NO") || answer.equalsIgnoreCase("N")) {
+                    client.sendMessage(new AnswerAbilityClient(client.getUsername(), answer.equalsIgnoreCase("YES") || answer.equalsIgnoreCase("Y"), message.status));
+                    break;
+                }
+            }while(client.getContinueReading());
+        }
     }
 
     @Override

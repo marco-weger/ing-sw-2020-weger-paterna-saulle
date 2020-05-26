@@ -18,7 +18,6 @@ public class CheckMoveServer extends ServerMessage {
      */
 
     public CheckMoveServer(List<SnapCell> sc){
-        //super("");
         super();
         this.sc=sc;
     }

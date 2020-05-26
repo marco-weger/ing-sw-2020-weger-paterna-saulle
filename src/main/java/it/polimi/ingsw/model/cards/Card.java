@@ -225,8 +225,7 @@ public class Card extends Observable implements Serializable {
             snap.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));
         for(Player player:p){
             if(player.getCard().name.compareTo(this.name) == 0){
-                System.out.println("SDFSD checkmove"); // player.getName(),
-                //notifyObservers(new CheckMoveServer(snap));
+                notifyObservers(new CheckMoveServer(snap));
             }
         }
         return snap;
@@ -245,7 +244,6 @@ public class Card extends Observable implements Serializable {
             snap.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));
         for(Player player:p){
             if(player.getCard().name.compareTo(this.name) == 0){
-                System.out.println("sfsdf"); // player.getName(),
                 notifyObservers(new CheckBuildServer(snap));
             }
         }

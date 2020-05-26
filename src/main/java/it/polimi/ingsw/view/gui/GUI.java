@@ -139,14 +139,16 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(CheckMoveServer message) {
-        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-        DefaultController controller = loader.getController();
-        if(controller instanceof BoardController){
-            ((BoardController) controller).setCms(message);
-            ((BoardController) controller).banner.setText(((BoardController) controller).moveTA.getText());
-            ((BoardController) controller).showCheckMove(message);
-            ((BoardController) controller).setState(2);
-            ((BoardController) controller).refresh();
+        if(client.getUsername().equals(client.getCurrentPlayer())){
+            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+            DefaultController controller = loader.getController();
+            if(controller instanceof BoardController){
+                ((BoardController) controller).setCms(message);
+                ((BoardController) controller).banner.setText(((BoardController) controller).moveTA.getText());
+                ((BoardController) controller).showCheckMove(message);
+                ((BoardController) controller).setState(2);
+                ((BoardController) controller).refresh();
+            }
         }
     }
 
@@ -231,12 +233,14 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(QuestionAbilityServer message) {
-        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-        DefaultController controller = loader.getController();
-        if(controller instanceof BoardController){
-            ((BoardController) controller).setQas(message);
-            ((BoardController) controller).question();
-            ((BoardController) controller).refresh();
+        if(client.getUsername().equals(client.getCurrentPlayer())){
+            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+            DefaultController controller = loader.getController();
+            if(controller instanceof BoardController){
+                ((BoardController) controller).setQas(message);
+                ((BoardController) controller).question();
+                ((BoardController) controller).refresh();
+            }
         }
     }
 

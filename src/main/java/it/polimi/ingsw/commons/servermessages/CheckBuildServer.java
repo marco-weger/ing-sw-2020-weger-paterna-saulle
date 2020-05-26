@@ -18,7 +18,6 @@ public class CheckBuildServer extends ServerMessage {
      */
 
     public CheckBuildServer(List<SnapCell> sc){
-        //super(name);
         super();
         this.sc=sc;
     }

@@ -135,6 +135,9 @@ public class VirtualView extends Observable implements Observer {
         if( ! (arg instanceof ServerMessage))
             throw new RuntimeException("This must be a ServerMessage object");
 
+        if(arg instanceof CheckBuildServer)
+            System.out.println("sdfsdfds");
+
         ServerMessage sm = (ServerMessage) arg;
         if(sm instanceof CurrentStatusServer){
             currentStatus = ((CurrentStatusServer) sm).status;

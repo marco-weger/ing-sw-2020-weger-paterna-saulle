@@ -521,7 +521,7 @@ public class BoardController extends DefaultController {
      * @param y column coordinate
      * @return the sqaure (StackPane With Tower's ImageView) with coordinate(x,y)
      */
-        public ImageView getBLock(int x, int y){
+     public ImageView getBLock(int x, int y){
         if(x == 0 && y == 0)
             return block00;
         if(x == 0 && y == 1)
