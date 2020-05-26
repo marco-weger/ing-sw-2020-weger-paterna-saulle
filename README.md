@@ -14,6 +14,19 @@ This project was made between March and July 2020 as our final thesis project at
 
 You can find them under *deliverables/jars*
 
+##### Generate JARs with Maven (OPTIONAL)
+
+If you prefer, you can generate yourself the JARS files 
+###### Generate Client
+```bash
+mvn clean compile assembly:single -PClient
+```
+###### Generate Server
+```bash
+mvn clean compile assembly:single -PServer
+```
+
+
 ### Prerequirements
 
 You need **JavaSE 14** or higher version to run this game.    
@@ -50,7 +63,7 @@ or
 ```bash
 java -jar Client.jar [CLI/GUI]
 ```
-If you decide to run it withouth the arg, you will be asked by the console.
+If you decide to run it withouth the arg, you will play in GUI mode.
 ### Server.jar
 ```bash
 java -jar Server.jar
