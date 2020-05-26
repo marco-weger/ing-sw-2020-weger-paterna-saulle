@@ -172,7 +172,7 @@ public class VirtualView extends Observable implements Observer {
     }
 
     protected void sendLast(){
-        System.out.println(lastMessage.toString());
+        System.out.println("[SENT] - " + lastMessage.toString().substring(lastMessage.toString().lastIndexOf('.')+1,lastMessage.toString().lastIndexOf('@')) + "");
         if(server != null && currentStatus != Status.END){
             server.sendAll(lastMessage,this);
         }

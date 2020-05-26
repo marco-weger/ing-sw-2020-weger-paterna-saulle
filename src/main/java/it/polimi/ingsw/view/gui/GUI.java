@@ -339,6 +339,7 @@ public class GUI extends Application implements ViewInterface {
 
         if(this.client.getUsername().equals(message.player)){
             Platform.runLater(() -> {
+                unShowTimer();
                 lose = new Stage();
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Lose.fxml"));
@@ -371,10 +372,7 @@ public class GUI extends Application implements ViewInterface {
 
             });
         }
-        else{
-
-           alert.setText(message.player + "has lost!");
-            }
+        else alert.setText(message.player + "has lost!");
 
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
@@ -382,8 +380,6 @@ public class GUI extends Application implements ViewInterface {
             ((BoardController) controller).banner.setText(alert.getText());
             ((BoardController) controller).refresh();
         }
-
-        unShowTimer();
     }
 
     @Override
@@ -412,6 +408,7 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(SomeoneWinServer message) {
+        unShowTimer();
         Text end = new Text();
         if(this.client.getUsername().equals(message.player)){
             Platform.runLater(() -> {
@@ -571,49 +568,72 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(TimeOutServer message) {
-
+        Platform.runLater(() -> {
+            FXMLLoader l = (FXMLLoader) primaryStage.getScene().getUserData();
+            DefaultController c = l.getController();
+            if(c instanceof BoardController){
+                if(((BoardController) c).getQuestionFlag()){
+                    ((BoardController) c).yOff(((BoardController) c).yes);
+                    ((BoardController) c).nOff(((BoardController) c).no);
+                    ((BoardController) c).setQuestionFlag(false);
+                    ((BoardController) c).refresh();
+                }
+                ((BoardController) c).unShowTimer();
+                //((BoardController) c).banner.setText(message.player + "'s network issue... Reconnecting " + (message.n+1) + "/" + (message.of+1));
+                ((BoardController) c).banner.setText("Network issue... Reconnecting " + (message.n+1) + "/" + (message.of+1));
+                ((BoardController) c).setState(4);
+            } else System.out.println("FATAL ERROR!");
+        });
     }
 
     @Override
     public void handleMessage(ReConnectionServer message) {
         if(message.player.equals(client.getUsername())){
-            client.setMustPrint(true);
             client.setBoard(message.board);
             client.setWorkers(message.workers);
             client.setPlayersBySnap(message.players);
-            // LOBBY
+            client.setCurrentPlayer(message.currentPlayer);
+            client.setMustPrint(true);
+            for(int i=0;i<client.getPlayers().size();i++){
+                if(i==0)
+                    client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png";
+                else if(i==1)
+                    client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png";
+                else if(i==2)
+                    client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png";
+            }
+
+            if(message.type == 2){
+                // LOBBY
+                Platform.runLater(() -> {
+                    Scene s = load("/it.polimi.ingsw/view/gui/fxml/Lobby.fxml");
+
+                    FXMLLoader loader = (FXMLLoader) s.getUserData();
+                    DefaultController controller = loader.getController();
+                    if(controller instanceof LobbyController){
+                        ((LobbyController) controller).rec();
+                        for(int i=0; i<message.players.size(); i++){
+                            ((LobbyController) controller).buttonLobby.setText(((LobbyController) controller).buttonLobby.getText()+message.players.get(i).name
+                                    +(i+1 == message.players.size() ? "" : "\n"));
+                        }
+                    }
+                    primaryStage.setScene(s);
+                    primaryStage.show();
+                });
+            }
+        } else {
             Platform.runLater(() -> {
-              /*primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/Lobby.fxml"));
-              FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-              DefaultController controller = loader.getController();
-              if (controller instanceof LobbyController) {
-                  ((LobbyController) controller).rec();
-              }
-              */
-                Scene s = load("/it.polimi.ingsw/view/gui/fxml/Lobby.fxml");
-
-                FXMLLoader loader = (FXMLLoader) s.getUserData();
-                DefaultController controller = loader.getController();
-                if(controller instanceof LobbyController){
-                    ((LobbyController) controller).rec();
-                    for(int i=0; i<message.players.size(); i++){
-                        ((LobbyController) controller).buttonLobby.setText(((LobbyController) controller).buttonLobby.getText()+message.players.get(i).name
-                                +(i+1 == message.players.size() ? "" : "\n"));
-                    }
-
-                    for(int i=0;i<client.getPlayers().size();i++){
-                        if(i==0)
-                            client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png";
-                        else if(i==1)
-                            client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png";
-                        else if(i==2)
-                            client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png";
-                    }
+                FXMLLoader l = (FXMLLoader) primaryStage.getScene().getUserData();
+                DefaultController c = l.getController();
+                if(c instanceof BoardController){
+                    ((BoardController) c).showTimer();
+                    String txt = "";
+                    for(int i=0; i<message.player.length()/2; i++)
+                        txt += "";
+                    ((BoardController) c).banner.setText(txt+"                        "+message.player+" IS BACK!");
                 }
-                primaryStage.setScene(s);
-                primaryStage.show();
             });
-        } else System.out.println(message.player+" IS BACK!"); // TODO FIXME
+        }
     }
 
     @Override
@@ -640,14 +660,6 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void displayBoard() {
-         /* Platform.runLater(() -> {
-              primaryStage.setScene(load(BOARD));
-              FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-              DefaultController controller = loader.getController();
-              if (controller instanceof BoardController) {
-                  ((BoardController) controller).refresh();
-              }
-          } ); */
         Platform.runLater(() -> {
             Scene s = load(BOARD);
             FXMLLoader xloader = (FXMLLoader) s.getUserData();
@@ -739,9 +751,10 @@ public class GUI extends Application implements ViewInterface {
                 FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
                 DefaultController controller = loader.getController();
                 if(controller instanceof BoardController){
-                    //System.out.println(val);
-                    ((BoardController) controller).buttonTimer.setVisible(true);
-                    ((BoardController) controller).buttonTimer.setText(val+"");
+                    if(((BoardController) controller).getShowTimer()){
+                        ((BoardController) controller).buttonTimer.setVisible(true);
+                        ((BoardController) controller).buttonTimer.setText(val+"");
+                    }
                 }
             } catch (Exception ignored){}
         });
@@ -753,9 +766,11 @@ public class GUI extends Application implements ViewInterface {
                 FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
                 DefaultController controller = loader.getController();
                 if(controller instanceof BoardController){
-                    ((BoardController) controller).buttonTimer.setVisible(false);
-                }
-            } catch (Exception ignored){}
+                    ((BoardController) controller).unShowTimer(); //.setVisible(false);
+                } else LOGGER.log( Level.SEVERE, "UNSHOWTIMER");
+            } catch (Exception ex){
+                LOGGER.log( Level.SEVERE, ex.toString(), ex );
+            }
         });
     }
 

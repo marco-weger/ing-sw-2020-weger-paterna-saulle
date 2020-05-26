@@ -114,6 +114,8 @@ public class Client implements Runnable{
 
     public String getCurrentPlayer(){ return currentPlayer; }
 
+    public void setCurrentPlayer(String currentPlayer){ this.currentPlayer=currentPlayer; }
+
     public SnapPlayer getMyPlayer(){
         for(SnapPlayer sp : getPlayers())
             if(sp.name.equals(getUsername()))
@@ -256,8 +258,6 @@ public class Client implements Runnable{
                         if(((CurrentStatusServer) msg).status.equals(Status.START))
                             currentPlayer = ((CurrentStatusServer) msg).player;
                         view.statusHandler((CurrentStatusServer) msg);
-
-                        System.out.println("CURRENT PLAYER IS: " + currentPlayer);
                     }
 
                     if(mustPrint && !(msg instanceof ReConnectionServer)){

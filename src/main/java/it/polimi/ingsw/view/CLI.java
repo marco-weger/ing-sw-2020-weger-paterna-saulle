@@ -487,6 +487,7 @@ public class CLI implements ViewInterface {
             client.setBoard(message.board);
             client.setWorkers(message.workers);
             client.setPlayersBySnap(message.players);
+            client.setCurrentPlayer(message.currentPlayer);
             for(int i=0;i<client.getPlayers().size();i++){
                 client.getPlayers().get(i).symbol = symbols.charAt(i)+"";
                 if(i==0)
@@ -497,9 +498,11 @@ public class CLI implements ViewInterface {
                     client.getPlayers().get(i).color = (TextFormatting.BACKGROUND_BRIGHT_PURPLE.toString()+TextFormatting.COLOR_BLACK);
             }
             this.currentPlayer=message.currentPlayer;
-            clear();
-            printTitle();
-            printLobby(message.type);
+            if(message.type == 2){
+                clear();
+                printTitle();
+                printLobby(message.type);
+            }
         } else System.out.println(COLOR_CPU + message.player+" IS BACK!" + TextFormatting.RESET);
 
         //lobby refused

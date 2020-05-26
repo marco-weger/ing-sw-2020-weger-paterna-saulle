@@ -13,6 +13,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -325,7 +326,6 @@ public class ServerClientHandler implements Runnable {
             for(String player : vv.getConnectedPlayers().keySet())
                 if(vv.getConnectedPlayers().get(player) == null) go = false;
             if(go){
-                System.out.println("[SEND_LAST]");
                 vv.sendLast();
             }
 
@@ -390,7 +390,9 @@ public class ServerClientHandler implements Runnable {
             ping.cancel();
         stillConnected = false;
         try {
-            virtualView.getConnectedPlayers().put(this.name, null);
+            if(Arrays.asList(Status.CARD_CHOICE,Status.NAME_CHOICE,Status.WORKER_CHOICE).contains(virtualView.getCurrentStatus()))
+                virtualView.getConnectedPlayers().remove(this.name);
+            else virtualView.getConnectedPlayers().put(this.name, null);
         }catch (Exception ignored){}
         try {
             virtualView.notify(new DisconnectionClient(this.name,true));
