@@ -14,14 +14,12 @@ This project was made between March and July 2020 as our final thesis project at
 
 You can find them under *deliverables/jars*
 
-##### Generate JARs with Maven (OPTIONAL)
-
-If you prefer, you can generate yourself the JARS files 
-###### Generate Client
+###### Generate JARs with Maven (OPTIONAL)
+###### Client
 ```bash
 mvn clean compile assembly:single -PClient
 ```
-###### Generate Server
+###### Server
 ```bash
 mvn clean compile assembly:single -PServer
 ```
