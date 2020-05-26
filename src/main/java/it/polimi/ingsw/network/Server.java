@@ -233,7 +233,7 @@ public class Server {
             if(sch != null)
                 if(((ServerClientHandler) sch).isStillConnected())
                     ((ServerClientHandler) sch).notify(sm);
-        System.out.println("[SENT] - " + sm.toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + " - ALL");
+        System.out.println("[SENT] - " + sm.toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + "");
     }
 
     /**

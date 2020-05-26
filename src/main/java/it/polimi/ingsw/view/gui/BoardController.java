@@ -62,6 +62,8 @@ public class BoardController extends DefaultController {
      */
     int pawnSize = 40;
 
+    private boolean showTimer;
+
     /**
      * state of the buttons to change the ClientMessage generated once clicked
      * 0 = Worker Initialize
@@ -177,6 +179,8 @@ public class BoardController extends DefaultController {
         buttonTimer.setMinSize(w,h);
         buttonTimer.setMaxSize(w,h);
         buttonTimer.setPrefSize(w,h);
+
+        showTimer = true;
     }
 
 
@@ -302,6 +306,7 @@ public class BoardController extends DefaultController {
         loserFlag = false;
     }
 
+    public boolean getShowTimer(){ return showTimer; }
 
     /**
      * Show the god1 description on the board and highlight his button once clicked
@@ -957,6 +962,10 @@ public class BoardController extends DefaultController {
 
     public void setQuestionFlag(boolean questionFlag) {
         this.questionFlag = questionFlag;
+    }
+
+    public boolean getQuestionFlag() {
+        return questionFlag;
     }
 
     public void setLoserFlag(boolean loserFlag) {
@@ -1806,4 +1815,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+    public void unShowTimer() {
+        showTimer = false;
+    }
+
+    public void showTimer() {
+        showTimer = true;
+        buttonTimer.setVisible(true);
+    }
 }

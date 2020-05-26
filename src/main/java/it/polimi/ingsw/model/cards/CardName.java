@@ -11,8 +11,8 @@ public enum CardName {
     HEPHAESTUS("Your Worker may build one additional block (not dome) on top of your first block."),
     MINOTAUR("Your Worker may move into an opponent Worker's space, if their Worker can be forced one space straight backwards to an unoccupied space at any level."),
     PAN("You also win if your Worker moves down two or more levels."),
-    PROMETHEUS("If your worker does not move up, it may build both before and after moving."),
-    NOGOD1(""),NOGOD2(""); //used only for testing
+    PROMETHEUS("If your worker does not move up, it may build both before and after moving.");
+    // NOGOD1(""),NOGOD2(""); //used only for testing
 
     private final String description;
 

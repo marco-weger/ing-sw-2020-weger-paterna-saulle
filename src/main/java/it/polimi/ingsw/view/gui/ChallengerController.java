@@ -141,9 +141,9 @@ public class ChallengerController extends DefaultController {
         buttonClear.setMaxSize(154,88);
         buttonClear.setPrefSize(154,88);
 
-        banner.setMinSize(400,60);
-        banner.setMaxSize(400,60);
-        banner.setPrefSize(400,60);
+        banner.setMinSize(800,60);
+        banner.setMaxSize(800,60);
+        banner.setPrefSize(800,60);
         banner.setText("Waiting for opponent's choice...");
         banner.setVisible(false);
     }
@@ -153,8 +153,8 @@ public class ChallengerController extends DefaultController {
         super.setup();
         int y = 25;
 
-        banner.setLayoutY(gui.sceneHeight-top.getPrefHeight()-center.getPrefHeight()-bottom.getPrefHeight()/2-banner.getPrefHeight()/2);
-        banner.setLayoutX((gui.sceneWidth/2)-200);
+        banner.setLayoutY(bottom.getPrefHeight()/2-banner.getPrefHeight()/2);
+        banner.setLayoutX((gui.sceneWidth/2)-400);
 
         if(gui.getClient().getPlayers().size() == 3){
             int offset = 45;

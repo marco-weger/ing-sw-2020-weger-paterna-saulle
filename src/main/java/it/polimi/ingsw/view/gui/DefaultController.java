@@ -151,7 +151,7 @@ public class DefaultController{
     }
 
     public void setUpTextField(TextField tf){
-        tf.setCursor(new ImageCursor(new Image(CURSOR),36,45));
+        tf.setCursor(new ImageCursor(new Image(CURSOR)));
         tf.setFont(f);
         tf.focusedProperty().addListener(new ChangeListener<Boolean>()
         {
@@ -164,7 +164,7 @@ public class DefaultController{
     }
 
     public void setUpBanner(TextField tf){
-        tf.setCursor(new ImageCursor(new Image(CURSOR),36,45));
+        tf.setCursor(new ImageCursor(new Image(CURSOR)));
         tf.setFont(f);
         tf.focusedProperty().addListener(new ChangeListener<Boolean>()
         {
