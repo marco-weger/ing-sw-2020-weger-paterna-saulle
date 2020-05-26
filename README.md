@@ -24,7 +24,7 @@ This project was made between March and July 2020 as our final thesis project at
 
 ## How to start JARs
 
-You can find them under *deliverables/jars*
+You can find them [here](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/deliverables/jars) or you can generete them yourself by Maven
 
 ###### Generate JARs with Maven (OPTIONAL)
 ###### Client
