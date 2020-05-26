@@ -18,7 +18,7 @@ This project was made between March and July 2020 as our final thesis project at
 * [server status](#Santorini-Official-Server)
 
 
-### Prerequirements
+## Prerequirements
 
 You need **JavaSE 14** or higher version to run this game.    
 https://www.oracle.com/java/technologies/javase-downloads.html
@@ -27,7 +27,7 @@ If you use **Windows** and want to run the game in **CLI mode**, we suggest you 
 https://docs.microsoft.com/en-us/windows/wsl/install-win10
 
 
-### Get JARs
+## Get JARs
 
 You can find them [here](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/deliverables/jars) or you can generate them yourself with Maven
 
@@ -42,7 +42,7 @@ mvn clean compile assembly:single -PServer
 ```
 
 
-### Configuration (Optional)
+## Configuration (Optional)
 <!-- Talk about JSON and saved-match -->
 An optional [JSON file](resources/config.json) could be saved in *./resources/config.json*; if the software can't find the file it will use default value, written in square brackets.
 <br>
@@ -57,10 +57,10 @@ Allowed params:
 ## Start Game
 Enjoy Santorini in GUI mode or try the 90s Experience with CLI mode.<br>
 All you need is to run your **client.jar** file and **put in the same folder** the directory [resources](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/deliverables/jars) with the json file, and you will play in our Official Server (Check [here](#Santorini-Official-Server) if our Server is available) <br>
-You can also play Santorini without any internet connection, just run **Server.jar** on your pc, and set your ip on JSON file. (if you prefer, **you can avoid to use JSON file**,just don't put the directory resources in client.jar's folder, the game will ask you the ip and the port that you want to use).
+You can also play Santorini in your own Server, just run **Server.jar** on your pc, and set your ip on JSON file. (if you prefer, **you can avoid to use JSON file**,just don't put the directory resources in client.jar's folder, the game will ask you the ip and the port that you want to use).
 
 
-### Start Client
+#### Start Client
 ```bash
 java -jar Client.jar
 ```
@@ -69,7 +69,7 @@ or
 java -jar Client.jar [CLI/GUI]
 ```
 If you decide to run it withouth the arg, you will play in GUI mode.
-### Start Server
+#### Start Server
 ```bash
 java -jar Server.jar
 ```
@@ -78,7 +78,7 @@ java -jar Server.jar
 
 PATHTOJAVAFX is the path to JavaFX 12 (the lib folder!!) and changes depending on where you saved your JavaFX on your PC.
 
-### Testing persistence and reconnection
+#### Testing persistence and reconnection
 When reconnecting, remember to vote for the same map the game was being played on before disconnection!
 -->
 
