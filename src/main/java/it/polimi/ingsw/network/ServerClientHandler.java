@@ -185,7 +185,6 @@ public class ServerClientHandler implements Runnable {
                                         if(!server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE)){
                                             server.newCurrentVirtualView2();
                                         }
-                                        System.out.println("[2]");
                                         virtualView = server.getCurrentVirtualView2();
                                         virtualView.notify(object);
                                     }
@@ -226,12 +225,9 @@ public class ServerClientHandler implements Runnable {
                         if(virtualView != null && !virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
                         {
                             timeOut();
-                            // DEFAULT: start timer and wait for reconnection
-                            // TODO: start the timer and notify all the client with the start... timers will run asynch, the main one is server
                         }
                     }
                 }while(stillConnected && !turnTimesUp);
-                //System.out.println("ORA HO VERAMENTE PERSO!");
             }
             while(timerDisconnection.alive) timerDisconnection.alive = false;
         }
@@ -286,7 +282,8 @@ public class ServerClientHandler implements Runnable {
                         }
                     } else ret = -1;
                 } else if (object instanceof DisconnectionClient){
-                    System.out.println("RIMUOVO DA VV");
+                    virtualView.getConnectedPlayers().remove(this.name);
+                    server.getPendingPlayers().remove(this.name);
                 }else ret = -1;
             }
         }while(ret == -1); // loop until the name is invalid
@@ -371,11 +368,11 @@ public class ServerClientHandler implements Runnable {
                     }
                     ((ModeChoseClient) object).refused = false;
                 } else if (object instanceof DisconnectionClient){
-                    System.out.println("RIMUOVO DA VV");
+                    virtualView.getConnectedPlayers().remove(this.name);
+                    server.getPendingPlayers().remove(this.name);
                 }
             }
         }while(!(object instanceof ModeChoseClient) && !turnTimesUp);
-        System.out.println(object.toString());
         virtualView.notify((ClientMessage) object);
         if(object != null)
             return 1;
@@ -428,11 +425,9 @@ public class ServerClientHandler implements Runnable {
 
         try{
             if(stillConnected && isConnected()){
-                //out.reset();
                 out.writeObject(message);
                 out.flush();
             }
-            //else System.err.println("ERRORE GRAVE ... "+message.toString());
         } catch (Exception ex) {
             //LOGGER.log( Level.SEVERE, ex.toString(), ex );
             timeOut();
@@ -469,7 +464,7 @@ public class ServerClientHandler implements Runnable {
         }
 
         if(turnTimesUp){
-            System.out.println(this.name+"'S TURN TIME'S UP!");
+            //System.out.println(this.name+"'S TURN TIME'S UP!");
             return null;
         } else return obj;
     }
@@ -503,7 +498,6 @@ public class ServerClientHandler implements Runnable {
     }
 
     public void timesUp(){
-        System.out.println("Arrivo al metodo times up");
         virtualView.notify(new DisconnectionClient(this.name,true));
     }
 
