@@ -44,6 +44,7 @@ public class LobbyController extends DefaultController {
         imageLobby.setPreserveRatio(true);
         imageLobby.setFitWidth(406);
         reconnection = false;
+        newGame.getStyleClass().add("empty");
     }
 
     @Override
@@ -56,7 +57,6 @@ public class LobbyController extends DefaultController {
         buttonLobby.setLayoutX(950/2-225);
         buttonLobby.setLayoutY(95);
         buttonLobby.setFont(f);
-        newGame.getStyleClass().add("empty");
     }
 
     public void newgame(ActionEvent actionEvent) {
