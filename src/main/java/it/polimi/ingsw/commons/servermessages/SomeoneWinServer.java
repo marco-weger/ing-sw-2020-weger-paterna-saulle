@@ -16,7 +16,8 @@ public class SomeoneWinServer extends ServerMessage {
      * @param player name of the winner
      */
     public SomeoneWinServer(String player, boolean isTimesUp){
-        super("");
+        //super("");
+        super();
         this.player=player;
         this.isTimesUp=isTimesUp;
     }

@@ -284,7 +284,9 @@ public class ServerClientHandler implements Runnable {
                             }
                         }
                     } else ret = -1;
-                } else ret = -1;
+                } else if (object instanceof DisconnectionClient){
+                    System.out.println("RIMUOVO DA VV");
+                }else ret = -1;
             }
         }while(ret == -1); // loop until the name is invalid
 
@@ -368,6 +370,8 @@ public class ServerClientHandler implements Runnable {
                         server.getPendingPlayers().remove(this.name);
                     }
                     ((ModeChoseClient) object).refused = false;
+                } else if (object instanceof DisconnectionClient){
+                    System.out.println("RIMUOVO DA VV");
                 }
             }
         }while(!(object instanceof ModeChoseClient) && !turnTimesUp);
@@ -377,29 +381,6 @@ public class ServerClientHandler implements Runnable {
             return 1;
         else return  -1;
     }
-
-    /*
-    * It loads a game if necessary
-    * @return 1 if ok
-    */
-    /*
-    public int loadGame(){
-        System.out.println("WE MUST LOAD THE GAME...");
-        //ClientMessage object = new ReConnectionClient(this.name,this);
-        //ArrayList<String> names = new ArrayList<>();
-        //for(String name : virtualView.getConnectedPlayers().keySet())
-        //    names.add(name);
-        //virtualView.getConnectedPlayers().keySet().addAll(Collections.singleton(name));
-        //LobbyServer ls = new LobbyServer(names);
-        //ls.loaded = true;
-        //System.out.println("DID IT!");
-        //if(isConnected())
-        //    this.notify(ls);
-        //virtualView.notify(object);
-        //this.notify(ls);
-        return 1;
-    }
-    */
 
     /**
      * It starts when this client disconnect
@@ -472,7 +453,7 @@ public class ServerClientHandler implements Runnable {
     protected Object readFromClient() throws IOException, ClassNotFoundException {
         Object obj = null;
         do{
-            if(in.available() == 0){
+            if(!socket.isClosed() && in.available() == 0){
                 try{
                     obj = in.readObject();
                 } catch (SocketTimeoutException ex){

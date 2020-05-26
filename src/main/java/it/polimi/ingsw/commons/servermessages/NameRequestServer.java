@@ -17,7 +17,8 @@ public class NameRequestServer extends ServerMessage {
      */
 
     public NameRequestServer(boolean isFirstTime){
-        super("");
+        //super("");
+        super();
         this.isFirstTime = isFirstTime;
     }
 }

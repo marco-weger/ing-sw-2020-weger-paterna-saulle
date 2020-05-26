@@ -244,10 +244,11 @@ public class Server {
     public void send(ServerMessage sm, VirtualView vv){
         if(sm!=null && vv != null)
             for(ServerClientHandler sch : vv.getConnectedPlayers().values())
-                if(sch.getName().equals(sm.name) && sch.isStillConnected())
-                    sch.notify(sm);
+                if(sm instanceof PingServer)
+                    if(sch.getName().equals(((PingServer) sm).name) && sch.isStillConnected())
+                        sch.notify(sm);
         if(!(sm instanceof PingServer))
-            System.out.println("[SENT] - " + Objects.requireNonNull(sm).toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')) + " - " + sm.name);
+            System.out.println("[SENT --- ERRORE] - " + Objects.requireNonNull(sm).toString().substring(sm.toString().lastIndexOf('.')+1,sm.toString().lastIndexOf('@')));
     }
 
     /**

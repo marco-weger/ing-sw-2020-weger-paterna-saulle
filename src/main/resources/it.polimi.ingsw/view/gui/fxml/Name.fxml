@@ -11,7 +11,11 @@
       </AnchorPane>
    </top>
    <bottom>
-      <AnchorPane fx:id="bottom" prefHeight="138.0" prefWidth="950.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="bottom" prefHeight="138.0" prefWidth="950.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="banner" layoutX="248.0" layoutY="56.0" prefHeight="27.0" prefWidth="409.0" styleClass="banner" stylesheets="@../css/button.css" />
+         </children>
+      </AnchorPane>
    </bottom>
    <center>
       <AnchorPane fx:id="center" prefHeight="500.0" prefWidth="950.0" BorderPane.alignment="CENTER">

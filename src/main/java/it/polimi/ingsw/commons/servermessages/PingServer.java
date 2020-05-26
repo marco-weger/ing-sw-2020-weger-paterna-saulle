@@ -7,7 +7,9 @@ public class PingServer extends ServerMessage {
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
+    public String name;
+
     public PingServer(String name){
-        super(name);
+        this.name=name;
     }
 }

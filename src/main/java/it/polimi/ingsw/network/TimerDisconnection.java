@@ -73,7 +73,7 @@ public class TimerDisconnection implements Runnable {
                     sch.startPing();
                     ses.shutdown(); // stop timer
                 } else { // send the try to all clients
-                    sch.getServer().sendAll(new TimeOutServer("", sch.getName(), count, numberOfTry), sch.getVirtualView());
+                    sch.getServer().sendAll(new TimeOutServer(sch.getName(), count, numberOfTry), sch.getVirtualView());
                 }
             } catch (Exception e) {
                 System.out.println("[TO] - " + e.getMessage());

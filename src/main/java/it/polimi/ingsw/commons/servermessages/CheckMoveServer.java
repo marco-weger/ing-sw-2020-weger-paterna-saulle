@@ -17,8 +17,9 @@ public class CheckMoveServer extends ServerMessage {
      * @param sc list of cells in board (snapshot of the board)
      */
 
-    public CheckMoveServer(String name, List<SnapCell> sc){
-        super(name);
+    public CheckMoveServer(List<SnapCell> sc){
+        //super("");
+        super();
         this.sc=sc;
     }
 }

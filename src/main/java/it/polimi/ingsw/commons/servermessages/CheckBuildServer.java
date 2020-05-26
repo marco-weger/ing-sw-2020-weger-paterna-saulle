@@ -17,8 +17,9 @@ public class CheckBuildServer extends ServerMessage {
      * @param sc list of cells in board (snapshot of the board)
      */
 
-    public CheckBuildServer(String name, List<SnapCell> sc){
-        super(name);
+    public CheckBuildServer(List<SnapCell> sc){
+        //super(name);
+        super();
         this.sc=sc;
     }
 }

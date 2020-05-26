@@ -150,7 +150,8 @@ public class VirtualView extends Observable implements Observer {
             }
         }
         else if(sm instanceof AvailableCardServer || sm instanceof WorkerChosenServer){
-            timerHandler(sm.name); // start timer
+            System.out.println("MUST HANDLE THE TIMER... START TIMER");
+            // timerHandler(sm.name); // start timer
         }else if(sm instanceof SomeoneWinServer){
             for(String name : connectedPlayers.keySet())
                 if(!name.equals(((SomeoneWinServer) sm).player))
@@ -165,20 +166,16 @@ public class VirtualView extends Observable implements Observer {
             if(!(sm instanceof ReConnectionServer))
                 lastMessage = sm;
 
-            if(sm.name.equals(""))
-                server.sendAll(sm,this);
-            else
+            if(sm instanceof PingServer)
                 server.send(sm,this);
+            else server.sendAll(sm,this);
         }
     }
 
     protected void sendLast(){
         System.out.println(lastMessage.toString());
         if(server != null && currentStatus != Status.END){
-            if(lastMessage.name.equals(""))
-                server.sendAll(lastMessage,this);
-            else
-                server.send(lastMessage,this);
+            server.sendAll(lastMessage,this);
         }
     }
 

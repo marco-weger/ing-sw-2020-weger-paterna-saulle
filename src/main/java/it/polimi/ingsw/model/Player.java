@@ -135,6 +135,8 @@ public class Player extends Observable implements Serializable {
      * When called notify the view that it's the moment to make the quest to user
      */
     public void doQuestion(){
-        notifyObservers(new QuestionAbilityServer(name, card.getStatus()));
+        System.out.println("SDFSD DO QUESTION");
+        //name
+        notifyObservers(new QuestionAbilityServer(card.getStatus()));
     }
 }

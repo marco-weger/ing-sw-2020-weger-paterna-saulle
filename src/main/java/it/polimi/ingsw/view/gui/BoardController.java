@@ -808,7 +808,7 @@ public class BoardController extends DefaultController {
      */
     public void showCheckMove(CheckMoveServer sc) {
         int x, y;
-        if (Cms.name.equals(this.gui.getClient().getUsername())) {
+        if (this.gui.getClient().getUsername().equals(this.gui.getClient().getCurrentPlayer())) {
             for (SnapCell cell : Cms.sc) {
                 x = cell.row;
                 y = cell.column;
@@ -875,7 +875,7 @@ public class BoardController extends DefaultController {
      */
     public void showCheckBuild(CheckBuildServer sb) {
         int x, y;
-        if (Cbs.name.equals(this.gui.getClient().getUsername())) {
+        if (this.gui.getClient().getUsername().equals(this.gui.getClient().getCurrentPlayer())) {
             for (SnapCell cell : Cbs.sc) {
                 x = cell.row;
                 y = cell.column;

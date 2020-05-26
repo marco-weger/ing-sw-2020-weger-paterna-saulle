@@ -73,7 +73,7 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(CheckMoveServer message) { // tested
-        if(message.name.equals(client.getUsername())){
+        if(this.client.getUsername().equals(client.getCurrentPlayer())){
             print(TextFormatting.RESET+"Cell Available: ");
             for(SnapCell cell : message.sc) {
                 print(TextFormatting.COLOR_RED +
@@ -114,7 +114,7 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(CheckBuildServer message) { // tested
-        if(message.name.equals(client.getUsername())){
+        if(this.client.getUsername().equals(client.getCurrentPlayer())){
             print(TextFormatting.RESET+"Cell Available: ");
             for(SnapCell cell : message.sc) {
                 print(TextFormatting.COLOR_RED +

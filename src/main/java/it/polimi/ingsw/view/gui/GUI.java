@@ -59,10 +59,12 @@ public class GUI extends Application implements ViewInterface {
 
     private ScheduledExecutorService timeOut;
 
+    /*
     public void setAndShow(Scene s){
         this.primaryStage.setScene(s);
         this.primaryStage.show();
     }
+    */
 
     public Stage getLose() {
         return lose;
@@ -219,7 +221,8 @@ public class GUI extends Application implements ViewInterface {
             controllerx = loader.getController();
             if (controllerx instanceof BoardController) {
                 controllerx.setup();
-                ((BoardController) controllerx).banner.setText("                  WAIT, "+client.getPlayers().get(currentP/2).name+"'s Turn");
+                //((BoardController) controllerx).banner.setText("                  WAIT, "+client.getPlayers().get(currentP/2).name+"'s Turn");
+                ((BoardController) controllerx).banner.setText("                  WAIT, "+message.player+"'s Turn");
                 ((BoardController) controllerx).refresh();
             }
 
@@ -276,7 +279,7 @@ public class GUI extends Application implements ViewInterface {
                             ((BoardController) c).banner.setText(((BoardController) c).workerCTA.getText());
                             ((BoardController) c).refresh();
                             ((BoardController) c).setState(1);
-                        } else System.out.println("ERRORISSIMO!");
+                        } else System.out.println("FATAL ERROR!");
                     });
                     break;
                 default:
@@ -474,38 +477,59 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(NameRequestServer message) {
-        Platform.runLater(() -> {
-            primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/Name.fxml"));
-            primaryStage.show();
-        });
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+        if(controller instanceof NameController){
+            ((NameController) controller).showBanner();
+        } else {
+            Platform.runLater(() -> {
+                primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/Name.fxml"));
+                primaryStage.show();
+            });
+        }
     }
 
     @Override
     public void handleMessage(LobbyServer message) {
         client.setPlayersByString(message.players);
-        Platform.runLater(() -> {
-            Scene s = load("/it.polimi.ingsw/view/gui/fxml/Lobby.fxml");
 
-            FXMLLoader loader = (FXMLLoader) s.getUserData();
-            DefaultController controller = loader.getController();
-            if(controller instanceof LobbyController){
+        for(int i=0;i<client.getPlayers().size();i++){
+            if(i==0)
+                client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png";
+            else if(i==1)
+                client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png";
+            else if(i==2)
+                client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png";
+        }
+
+        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+        DefaultController controller = loader.getController();
+
+        if(controller instanceof LobbyController){
+            Platform.runLater(() -> {
+                ((LobbyController) controller).buttonLobby.setText("");
                 for(int i=0; i<message.players.size(); i++){
                     ((LobbyController) controller).buttonLobby.setText(((LobbyController) controller).buttonLobby.getText()+message.players.get(i)
                             +(i+1 == message.players.size() ? "" : "\n"));
                 }
+            });
+        } else {
+            Platform.runLater(() -> {
+                Scene s = load("/it.polimi.ingsw/view/gui/fxml/Lobby.fxml");
 
-                for(int i=0;i<client.getPlayers().size();i++){
-                    if(i==0)
-                        client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png";
-                    else if(i==1)
-                        client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png";
-                    else if(i==2)
-                        client.getPlayers().get(i).color = "/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png";
+                FXMLLoader newLoader = (FXMLLoader) s.getUserData();
+                DefaultController newController = newLoader.getController();
+                if(newController instanceof LobbyController){
+                    for(int i=0; i<message.players.size(); i++){
+                        ((LobbyController) newController).buttonLobby.setText(((LobbyController) newController).buttonLobby.getText()+message.players.get(i)
+                                +(i+1 == message.players.size() ? "" : "\n"));
+                    }
                 }
-            }
-            primaryStage.setScene(s);
-            primaryStage.show();
-        });
+
+                primaryStage.setScene(s);
+                primaryStage.show();
+            });
+        }
     }
 
     @Override

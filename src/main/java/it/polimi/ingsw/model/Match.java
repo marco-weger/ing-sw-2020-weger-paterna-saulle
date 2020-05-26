@@ -129,8 +129,11 @@ public class Match extends Observable implements Serializable {
         else
             notifyObservers(new CurrentStatusServer("",status));
 
-        if(status.equals(Status.CARD_CHOICE))
-            notifyObservers(new AvailableCardServer(this.players.get(0).getName(),new ArrayList<>()));
+        if(status.equals(Status.CARD_CHOICE)){
+            System.out.println("POSSSIBIBISL");
+            //notifyObservers(new AvailableCardServer(this.players.get(0).getName(),new ArrayList<>()));
+            notifyObservers(new AvailableCardServer(new ArrayList<>()));
+        }
 
     }
 
@@ -165,7 +168,8 @@ public class Match extends Observable implements Serializable {
         this.selectedCard = new ArrayList<>();
         this.selectedCard.addAll(selectedCard);
         int i = this.getSelectedCard().size()-1;
-        notifyObservers(new AvailableCardServer(this.getPlayers().get(i).getName(),selectedCard));
+        System.out.println(" sdasdadasdasdasd"); // this.getPlayers().get(i).getName(),
+        notifyObservers(new AvailableCardServer(selectedCard));
     }
 
 

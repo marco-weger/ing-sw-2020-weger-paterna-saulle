@@ -15,11 +15,12 @@ public class QuestionAbilityServer extends ServerMessage {
      * needs him to decide to use the ability in a certain status
      * (only made if the card needs it).
      * @param status current status of the player
-     * @param name player name
      */
 
-    public QuestionAbilityServer(String name, Status status){
-        super(name);
+    public QuestionAbilityServer(Status status){
+        //super(name);
+        super();
+        //super(name);
         this.status= status;
     }
 }

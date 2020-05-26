@@ -19,7 +19,8 @@ public class LobbyServer extends ServerMessage {
      */
 
     public LobbyServer(List<String> players){
-        super("");
+        //super("");
+        super();
         this.players=players;
     }
 }

@@ -44,6 +44,8 @@ public class Client implements Runnable{
     private Timer ping;
     private boolean continueReading = true;
 
+    private String currentPlayer;
+
     private static final BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 
     String ip;
@@ -109,6 +111,8 @@ public class Client implements Runnable{
     public void setWorkers(List<SnapWorker> workers){
         this.workers = workers;
     }
+
+    public String getCurrentPlayer(){ return currentPlayer; }
 
     public SnapPlayer getMyPlayer(){
         for(SnapPlayer sp : getPlayers())
@@ -249,6 +253,8 @@ public class Client implements Runnable{
                             }
                         }
                     }else if(msg instanceof CurrentStatusServer){
+                        if(((CurrentStatusServer) msg).status.equals(Status.START))
+                            currentPlayer = ((CurrentStatusServer) msg).player;
                         view.statusHandler((CurrentStatusServer) msg);
                     }
 
@@ -285,8 +291,8 @@ public class Client implements Runnable{
                     socket.close();
                 }
             } catch (Exception ex) {
-                LOGGER.log(Level.WARNING, "Can't send " + msg.toString(), ex);
-                System.exit(-1);
+                // LOGGER.log(Level.WARNING, "Can't send " + msg.toString(), ex);
+                view.close(true);
             }
         }
     }
@@ -297,7 +303,7 @@ public class Client implements Runnable{
             try{
                 obj = in.readObject();
             } catch (Exception ex){
-                LOGGER.log( Level.SEVERE, ex.toString(), ex );
+                // LOGGER.log(Level.WARNING, "Can't read ServerMessage", ex);
                 view.close(true);
             }
         }while (obj instanceof PingServer || !(obj instanceof ServerMessage));

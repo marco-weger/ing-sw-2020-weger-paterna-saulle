@@ -23,7 +23,8 @@ public class WorkerChosenServer extends ServerMessage {
      */
 
     public WorkerChosenServer(String player, int worker, int x, int y){
-        super("");
+        //super("");
+        super();
         this.worker=worker;
         this.player=player;
         this.x=x;

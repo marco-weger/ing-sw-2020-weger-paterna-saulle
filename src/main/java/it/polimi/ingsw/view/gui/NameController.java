@@ -8,8 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 
-
-
 public class NameController extends DefaultController {
 
     @FXML
@@ -17,6 +15,9 @@ public class NameController extends DefaultController {
 
     @FXML
     public TextField name;
+
+    @FXML
+    public Button banner;
 
     @FXML
     @Override
@@ -30,11 +31,20 @@ public class NameController extends DefaultController {
         name.setMinSize(400,50);
         name.setMaxSize(400,50);
         name.setPrefSize(400,50);
+
+        banner.setMinSize(800,60);
+        banner.setMaxSize(800,60);
+        banner.setPrefSize(800,60);
+        banner.setText("The chosen one is not allowed, type new username (max 12 characters)");
+        banner.setVisible(false);
     }
 
     @Override
     public void setup(){
         super.setup();
+        banner.setLayoutY(bottom.getPrefHeight()/2-banner.getPrefHeight()/2);
+        banner.setLayoutX((gui.sceneWidth/2)-400);
+
         buttonLogin.setLayoutX(gui.sceneWidth/2-100);
         name.setLayoutX(gui.sceneWidth/2-200);
         setUpTextField(name);
@@ -53,11 +63,11 @@ public class NameController extends DefaultController {
         if(!(this.gui.getClient().getUsername().isEmpty() || this.gui.getClient().getUsername().length() > 12 || this.gui.getClient().getUsername().matches("^\\s*$")))
             this.gui.getClient().sendMessage(new ConnectionClient(this.gui.getClient().getUsername()));
         else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error Name");
-            alert.setHeaderText("The chosen one is not allowed");
-            alert.setContentText("type new username (max 12 characters)");
-            alert.showAndWait();
+            showBanner();
         }
+    }
+
+    public void showBanner() {
+        banner.setVisible(true);
     }
 }

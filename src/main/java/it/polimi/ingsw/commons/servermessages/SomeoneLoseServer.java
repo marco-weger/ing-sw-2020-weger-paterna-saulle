@@ -17,7 +17,8 @@ public class SomeoneLoseServer extends ServerMessage {
      */
 
     public SomeoneLoseServer(String player, boolean isTimesUp){
-        super("");
+        //super("");
+        super();
         this.player=player;
         this.isTimesUp=isTimesUp;
     }

@@ -34,7 +34,8 @@ public class CurrentStatusServer extends ServerMessage {
      */
 
     public CurrentStatusServer(String player, Status status){
-        super("");
+        //super("");
+        super();
         this.status=status;
         this.player=player;
     }

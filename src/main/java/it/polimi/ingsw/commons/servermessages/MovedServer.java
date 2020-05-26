@@ -16,7 +16,8 @@ public class MovedServer extends ServerMessage {
      */
 
     public MovedServer(SnapWorker sw){
-        super("");
+        //super("");
+        super();
         this.sw = sw;
     }
 }
