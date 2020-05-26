@@ -299,7 +299,6 @@ public class Client implements Runnable{
             } catch (Exception ex){
                 LOGGER.log( Level.SEVERE, ex.toString(), ex );
                 view.close(true);
-                System.exit(-1);
             }
         }while (obj instanceof PingServer || !(obj instanceof ServerMessage));
         return obj;
