@@ -10,7 +10,7 @@ This project was made between March and July 2020 as our final thesis project at
 
 ## Quick Index
 * [prerequirements](#Prerequirements)
-* [get JARs files](#How to start JARs)
+* [get JARs files](#howtostartjars)
 * [start Client](#Client.jar)
 * [start Server](#Server.jar)
 * [json config](#Configuration)
