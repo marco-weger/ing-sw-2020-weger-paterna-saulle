@@ -4,6 +4,7 @@ import it.polimi.ingsw.commons.ServerMessage;
 import it.polimi.ingsw.view.ViewInterface;
 
 public class WorkerChosenServer extends ServerMessage {
+
     @Override
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
@@ -21,9 +22,7 @@ public class WorkerChosenServer extends ServerMessage {
      * @param x row selected
      * @param y column selected
      */
-
     public WorkerChosenServer(String player, int worker, int x, int y){
-        //super("");
         super();
         this.worker=worker;
         this.player=player;

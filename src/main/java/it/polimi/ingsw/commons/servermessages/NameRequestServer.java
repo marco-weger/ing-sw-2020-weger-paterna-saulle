@@ -15,7 +15,6 @@ public class NameRequestServer extends ServerMessage {
      * (this is for permanence and connection handling purpose)
      * @param isFirstTime if the player has already made a connection
      */
-
     public NameRequestServer(boolean isFirstTime){
         //super("");
         super();

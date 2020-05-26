@@ -20,7 +20,6 @@ public class ReConnectionServer extends ServerMessage {
     public int type;
 
     public ReConnectionServer(String player, int type) {
-        //super("");
         super();
         this.player=player;
         this.type=type;

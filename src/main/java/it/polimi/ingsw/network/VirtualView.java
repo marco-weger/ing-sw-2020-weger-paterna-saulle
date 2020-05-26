@@ -135,9 +135,6 @@ public class VirtualView extends Observable implements Observer {
         if( ! (arg instanceof ServerMessage))
             throw new RuntimeException("This must be a ServerMessage object");
 
-        if(arg instanceof CheckBuildServer)
-            System.out.println("sdfsdfds");
-
         ServerMessage sm = (ServerMessage) arg;
         if(sm instanceof CurrentStatusServer){
             currentStatus = ((CurrentStatusServer) sm).status;
@@ -152,9 +149,8 @@ public class VirtualView extends Observable implements Observer {
                 } catch (Exception ignored){}
             }
         }
-        else if(sm instanceof AvailableCardServer || sm instanceof WorkerChosenServer){
-            System.out.println("MUST HANDLE THE TIMER... START TIMER");
-            // timerHandler(sm.name); // start timer
+        else if(sm instanceof AvailableCardServer) {
+            timerHandler(((AvailableCardServer) sm).player);
         }else if(sm instanceof SomeoneWinServer){
             for(String name : connectedPlayers.keySet())
                 if(!name.equals(((SomeoneWinServer) sm).player))

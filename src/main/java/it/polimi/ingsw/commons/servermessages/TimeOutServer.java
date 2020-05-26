@@ -12,8 +12,6 @@ public class TimeOutServer extends ServerMessage {
     public final String player;
 
     public TimeOutServer(String player, int n, long of){
-        //super(name);
-        //super("");
         super();
         this.player=player;
         this.n=n;

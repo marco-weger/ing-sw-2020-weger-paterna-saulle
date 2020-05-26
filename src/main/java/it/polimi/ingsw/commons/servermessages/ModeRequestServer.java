@@ -8,7 +8,6 @@ public class ModeRequestServer extends ServerMessage {
     public void accept(ViewInterface vi) {vi.handleMessage(this);}
 
     public ModeRequestServer(){
-        //super("");
         super();
     }
 }

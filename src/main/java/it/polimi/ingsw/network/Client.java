@@ -159,8 +159,8 @@ public class Client implements Runnable{
     }
 
     public static void main(String[] args) {
-        //String version = "GUI";
-        String version = "CLI";
+        String version = "GUI";
+        //String version = "CLI";
         boolean go;
 
         if(args.length == 1){

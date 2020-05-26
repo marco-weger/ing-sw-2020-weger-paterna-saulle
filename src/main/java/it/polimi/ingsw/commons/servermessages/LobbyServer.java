@@ -17,9 +17,7 @@ public class LobbyServer extends ServerMessage {
      * they want to play.
      * @param players list of players in current Lobby
      */
-
     public LobbyServer(List<String> players){
-        //super("");
         super();
         this.players=players;
     }

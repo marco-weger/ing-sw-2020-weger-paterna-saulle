@@ -16,7 +16,6 @@ public class BuiltServer extends ServerMessage {
      */
 
     public BuiltServer(SnapCell sc){
-        //super("");
         super();
         this.sc = sc;
     }

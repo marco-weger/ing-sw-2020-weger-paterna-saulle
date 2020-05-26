@@ -16,11 +16,8 @@ public class QuestionAbilityServer extends ServerMessage {
      * (only made if the card needs it).
      * @param status current status of the player
      */
-
     public QuestionAbilityServer(Status status){
-        //super(name);
         super();
-        //super(name);
         this.status= status;
     }
 }

@@ -18,7 +18,7 @@ public class WorkerTest {
     @Test
     public void getLevel_boardNull()
     {
-        assertEquals(new Worker(0,0).getLevel(null),-1);
+        assertEquals(new Worker(0,0).getLevel(null),0);
     }
     @Test
     public void getLevel()
