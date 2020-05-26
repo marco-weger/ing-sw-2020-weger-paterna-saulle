@@ -190,7 +190,7 @@ public class BoardController extends DefaultController {
         NEWbanner.setMinSize(800,60);
         NEWbanner.setMaxSize(800,60);
         NEWbanner.setPrefSize(800,60);
-        NEWbanner.setText("XXXXXXXXXXXXXXX");
+        NEWbanner.setText("");
     }
 
 
@@ -606,7 +606,6 @@ public class BoardController extends DefaultController {
         //clean old workers position
         for (SnapCell cell : this.gui.getClient().getBoard()) {
                 getSquare(cell.row, cell.column).setImage(null);
-
         }
         //get new workers position
         for(SnapPlayer p : this.gui.getClient().getPlayers())
@@ -690,10 +689,10 @@ public class BoardController extends DefaultController {
         for (SnapCell cell : Cms.sc) {
             if (cell.row == x && cell.column == y) {
                 this.gui.getClient().sendMessage(new MoveClient(this.gui.getClient().getUsername(), x, y));
-                        for (SnapCell cellx : Cms.sc) {
-                            lightItDown(getCell(cellx.row,cellx.column));
-                        }
-                        return true;
+                    for (SnapCell cellx : Cms.sc) {
+                        lightItDown(getCell(cellx.row,cellx.column));
+                    }
+                    return true;
             }
         }
         return false;

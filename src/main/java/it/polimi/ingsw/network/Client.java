@@ -261,6 +261,7 @@ public class Client implements Runnable{
                     }
 
                     if(mustPrint && !(msg instanceof ReConnectionServer)){
+                        System.out.println("CURRENT USER IS " + currentPlayer);
                         view.displayBoard();
                         mustPrint = false;
                     }
@@ -271,8 +272,12 @@ public class Client implements Runnable{
                             handler.join();
                     } catch (Exception ignored){}
                     continueReading = true;
-                    handler = new Thread(() -> msg.accept(view));
-                    handler.start();
+                    if(msg instanceof ReConnectionServer){
+                        msg.accept(view);
+                    } else {
+                        handler = new Thread(() -> msg.accept(view));
+                        handler.start();
+                    }
                 }
             }
         }

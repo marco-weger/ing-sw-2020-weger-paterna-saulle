@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
@@ -150,7 +151,7 @@ public class GUI extends Application implements ViewInterface {
                     ((BoardController) controller).setState(2);
                     ((BoardController) controller).refresh();
                 });
-            }
+            } else System.out.println("FATAL ERROR");
         }
     }
 
@@ -168,7 +169,7 @@ public class GUI extends Application implements ViewInterface {
                 ((BoardController) controller).setState(3);
                 ((BoardController) controller).refresh();
             });
-        }
+        } else System.out.println("FATAL ERROR");
     }
 
     @Override
@@ -248,7 +249,7 @@ public class GUI extends Application implements ViewInterface {
                 ((BoardController) controller).setQas(message);
                 ((BoardController) controller).question();
                 ((BoardController) controller).refresh();
-            }
+            } else System.out.println("FATAL ERROR");
         }
     }
 
@@ -331,7 +332,7 @@ public class GUI extends Application implements ViewInterface {
                     ((BoardController) controller).NEWbanner.setText("WAIT, " + message.player + "'s Turn");
                     ((BoardController) controller).refresh();
                 });
-            }
+            } else System.out.println("FATAL ERROR");
 
         }
 
@@ -397,7 +398,7 @@ public class GUI extends Application implements ViewInterface {
                 ((BoardController) controller).NEWbanner.setText(alert.getText());
                 ((BoardController) controller).refresh();
             });
-        }
+        } else System.out.println("FATAL ERROR");
     }
 
     @Override
@@ -569,7 +570,7 @@ public class GUI extends Application implements ViewInterface {
         DefaultController controller = loader.getController();
         if(controller instanceof BoardController){
             ((BoardController) controller).refresh();
-        }
+        } else System.out.println("FATAL ERROR");
     }
 
     @Override
@@ -578,7 +579,7 @@ public class GUI extends Application implements ViewInterface {
         DefaultController controller = loader.getController();
         if(controller instanceof BoardController){
             ((BoardController) controller).refresh();
-        }
+        } else System.out.println("FATAL ERROR");
     }
 
     @Override
@@ -599,8 +600,12 @@ public class GUI extends Application implements ViewInterface {
                         ((BoardController) c).setQuestionFlag(false);
                         ((BoardController) c).refresh();
                     }
+                    if(message.n == 0)
+                        for (SnapCell cellx : ((BoardController) c).Cms.sc)
+                            ((BoardController) c).lightItDown(((BoardController) c).getCell(cellx.row,cellx.column));
                     ((BoardController) c).unShowTimer();
-                    ((BoardController) c).NEWbanner.setText("Network issue... Reconnecting " + (message.n+1) + "/" + (message.of+1));
+                    ((BoardController) c).NEWbanner.setLayoutX((this.sceneWidth/2)-400);
+                    ((BoardController) c).NEWbanner.setText(message.player+" has a network issue... Reconnecting " + (message.n+1) + "/" + (message.of+1));
                     ((BoardController) c).setState(4);
                 });
             } else System.out.println("FATAL ERROR!");
@@ -649,6 +654,7 @@ public class GUI extends Application implements ViewInterface {
                 if(c instanceof BoardController){
                     ((BoardController) c).showTimer();
                     ((BoardController) c).NEWbanner.setText(message.player+" IS BACK!");
+                    ((BoardController) c).refresh();
                 }
             });
         }
@@ -773,7 +779,7 @@ public class GUI extends Application implements ViewInterface {
                         ((BoardController) controller).buttonTimer.setVisible(true);
                         ((BoardController) controller).buttonTimer.setText(val+"");
                     }
-                }
+                } else System.out.println("FATAL ERROR");
             } catch (Exception ignored){}
         });
     }
