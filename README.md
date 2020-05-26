@@ -10,13 +10,12 @@ This project was made between March and July 2020 as our final thesis project at
 
 ## Quick Index
 * [prerequirements](#Prerequirements)
-* [get JARs files](#howtostartjars)
-* [start Client](#Client.jar)
-* [start Server](#Server.jar)
+* [get JARs files](#95)
+* [start Client](#client)
+* [start Server](#server)
 * [json config](#Configuration)
-* [specification covered](#WorkProgress)
-* [server status](#SantoriniOfficialServer)
-* [who we are](#TheCG13Team)
+* [specification covered](#Functionality)
+* [server status](#santorini&nbsp;official&nsbp;server)
 
 
 ## How to start JARs
@@ -43,13 +42,6 @@ If you use **Windows** and want to run the game in **CLI mode**, we suggest you 
 https://docs.microsoft.com/en-us/windows/wsl/install-win10
 
 
-<!--
-### GUI.jar
-Just download it and use
-
-java --module-path PATHTOJAVAFX --add-modules=javafx.controls,javafx.fxml,javafx.graphics -jar GUI.jar YOURIP
--->
-
 ### Configuration
 <!-- Talk about JSON and saved-match -->
 An optional [JSON file](resources/config.json) could be saved in *./resources/config.json*; if the software can't find the file it will use default value, written in square brackets.
@@ -62,7 +54,7 @@ Allowed params:
 * disconnectTimer (used by server) [60] - timer used to handle a diconnection during a match
 * turnTimer (used by server) [180] - timer for a singel turn
 
-### Client.jar
+### Client
 ```bash
 java -jar Client.jar
 ```
@@ -71,7 +63,7 @@ or
 java -jar Client.jar [CLI/GUI]
 ```
 If you decide to run it withouth the arg, you will play in GUI mode.
-### Server.jar
+### Server
 ```bash
 java -jar Server.jar
 ```
@@ -84,7 +76,7 @@ PATHTOJAVAFX is the path to JavaFX 12 (the lib folder!!) and changes depending o
 When reconnecting, remember to vote for the same map the game was being played on before disconnection!
 -->
 
-## Work progress
+## Functionality
 | Functionality | State |
 |:-----------------------|:------------------------------------:|
 | Basic rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
