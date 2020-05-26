@@ -6,7 +6,7 @@
 
   <groupId>it.polimi.ingsw</groupId>
   <artifactId>GC13</artifactId>
-  <version>1.0</version>
+  <version>1.0-SNAPSHOT</version>
 
   <name>GC13</name>
   <url>https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle</url>
@@ -54,7 +54,7 @@
   </dependencies>
 
     <profiles>
-                    <!--                                 GENERATE JAR CLIENT    -->
+        <!--   *************************** GENERATE JAR CLIENT ***************************-->
 
         <profile>
             <id>Client</id>
@@ -142,7 +142,10 @@
           </plugin>
       </plugins>
   </build>
-            <!--                                 GENERATE JAR SERVER    -->
+
+
+            <!--   *************************** GENERATE JAR SERVER ***************************-->
+
         </profile>
         <profile>
             <id>Server</id>
@@ -231,6 +234,10 @@
           </plugin>
       </plugins>
   </build>
+
+
         </profile>
     </profiles>
+
+
 </project>
