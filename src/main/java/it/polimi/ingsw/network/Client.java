@@ -256,6 +256,8 @@ public class Client implements Runnable{
                         if(((CurrentStatusServer) msg).status.equals(Status.START))
                             currentPlayer = ((CurrentStatusServer) msg).player;
                         view.statusHandler((CurrentStatusServer) msg);
+
+                        System.out.println("CURRENT PLAYER IS: " + currentPlayer);
                     }
 
                     if(mustPrint && !(msg instanceof ReConnectionServer)){

@@ -300,70 +300,71 @@ public class CLI implements ViewInterface {
 
     @Override
     public void handleMessage(AvailableCardServer message) { // tested
-        if(message.cardName.isEmpty()){
-            // im the challenger
-            ArrayList<CardName> chosen = new ArrayList<>();
+        if(message.player.equals(this.client.getUsername())){
+            if(message.cardName.isEmpty()){
+                // im the challenger
+                ArrayList<CardName> chosen = new ArrayList<>();
 
-            println(COLOR_CPU +"You are the challenger! Choose "+client.getPlayers().size()+" card from:");
-            printCard(new ArrayList<>(Arrays.asList(CardName.values())));
+                println(COLOR_CPU +"You are the challenger! Choose "+client.getPlayers().size()+" card from:");
+                printCard(new ArrayList<>(Arrays.asList(CardName.values())));
 
-            // first
-            CardName read;
+                // first
+                CardName read;
 
-            read = null;
-            while(read == null && client.getContinueReading()){
-                clearLine();
-                print(COLOR_CPU +"Type the first card [name] " + TextFormatting.input());
-
-                read = getCardName();
-            }
-            chosen.add(read);
-
-            // second
-            read = null;
-            while((read == null || chosen.contains(read)) && client.getContinueReading()){
-                clearLine();
-                print(COLOR_CPU +"Type the second card [name] " + TextFormatting.input());
-                read = getCardName();
-            }
-            chosen.add(read);
-
-            // third
-            if(client.getPlayers().size()==3){
                 read = null;
-                while((read == null || chosen.contains(read)) && client.getContinueReading()){
+                while(read == null && client.getContinueReading()){
                     clearLine();
-                    print(COLOR_CPU +"Type the third card [name] " + TextFormatting.input());
+                    print(COLOR_CPU +"Type the first card [name] " + TextFormatting.input());
+
                     read = getCardName();
                 }
                 chosen.add(read);
-            }
 
-            if(client.getContinueReading())
-                client.sendMessage(new ChallengerChoseClient(client.getUsername(), chosen));
-        }
-        else {
-            println(COLOR_CPU +"The challenger has chosen! Select your card:");
-            printCard(message.cardName);
-            // first
-            CardName read;
-            do{
-                clearLine();
-                print(COLOR_CPU +"Type the chosen one [name] " + TextFormatting.input());
-                String name;
-                name = read();
-                startEasterEgg(name);
-                try{
-                    read=Enum.valueOf(CardName.class,name.toUpperCase());
-                    if(!message.cardName.contains(read))
-                        read = null;
+                // second
+                read = null;
+                while((read == null || chosen.contains(read)) && client.getContinueReading()){
+                    clearLine();
+                    print(COLOR_CPU +"Type the second card [name] " + TextFormatting.input());
+                    read = getCardName();
                 }
-                catch(Exception ex){read = null;}
-            }while(read == null && client.getContinueReading());
-            if(client.getContinueReading())
-                client.sendMessage(new PlayerChoseClient(client.getUsername(), read));
-        }
-        print(COLOR_CPU +"Waiting for opponent's choice...");
+                chosen.add(read);
+
+                // third
+                if(client.getPlayers().size()==3){
+                    read = null;
+                    while((read == null || chosen.contains(read)) && client.getContinueReading()){
+                        clearLine();
+                        print(COLOR_CPU +"Type the third card [name] " + TextFormatting.input());
+                        read = getCardName();
+                    }
+                    chosen.add(read);
+                }
+
+                if(client.getContinueReading())
+                    client.sendMessage(new ChallengerChoseClient(client.getUsername(), chosen));
+            }
+            else {
+                println(COLOR_CPU +"The challenger has chosen! Select your card:");
+                printCard(message.cardName);
+                // first
+                CardName read;
+                do{
+                    clearLine();
+                    print(COLOR_CPU +"Type the chosen one [name] " + TextFormatting.input());
+                    String name;
+                    name = read();
+                    startEasterEgg(name);
+                    try{
+                        read=Enum.valueOf(CardName.class,name.toUpperCase());
+                        if(!message.cardName.contains(read))
+                            read = null;
+                    }
+                    catch(Exception ex){read = null;}
+                }while(read == null && client.getContinueReading());
+                if(client.getContinueReading())
+                    client.sendMessage(new PlayerChoseClient(client.getUsername(), read));
+            }
+        } else print(COLOR_CPU +"Waiting for opponent's choice...");
     }
 
     private CardName getCardName() {

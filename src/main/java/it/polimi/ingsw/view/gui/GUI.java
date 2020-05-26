@@ -384,24 +384,26 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(AvailableCardServer message) {
-        Platform.runLater(() -> {
-            if(message.cardName.isEmpty()){
-                primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/Challenger.fxml"));
-            }
-            else{
-                Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Card.fxml");
-
-                FXMLLoader loader = (FXMLLoader) scene.getUserData();
-                DefaultController controller = loader.getController();
-                if(controller instanceof CardController){
-                    ((CardController) controller).cards = message.cardName;
-                    ((CardController) controller).setGods();
+        if(message.player.equals(this.getClient().getUsername())){
+            Platform.runLater(() -> {
+                if(message.cardName.isEmpty()){
+                    primaryStage.setScene(load("/it.polimi.ingsw/view/gui/fxml/Challenger.fxml"));
                 }
+                else{
+                    Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Card.fxml");
 
-                primaryStage.setScene(scene);
-            }
-            primaryStage.show();
-        });
+                    FXMLLoader loader = (FXMLLoader) scene.getUserData();
+                    DefaultController controller = loader.getController();
+                    if(controller instanceof CardController){
+                        ((CardController) controller).cards = message.cardName;
+                        ((CardController) controller).setGods();
+                    }
+
+                    primaryStage.setScene(scene);
+                }
+                primaryStage.show();
+            });
+        } else System.out.println("MOSTRA BANNER SCELTA AVVERSARIO");
     }
 
     @Override
