@@ -238,7 +238,7 @@ public class Client implements Runnable{
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
 
-                System.out.println(msg.toString());
+                //System.out.println(msg.toString());
 
                 if(msg != null){
                     if(msg instanceof MovedServer){
