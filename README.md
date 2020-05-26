@@ -10,17 +10,26 @@ This project was made between March and July 2020 as our final thesis project at
 
 ## Quick Index
 * [prerequirements](#Prerequirements)
-* [get JARs files](#95)
-* [start Client](#client)
-* [start Server](#server)
+* [get JARs files](#Get-JARs)
+* [start Client](#Start-Client.jar)
+* [start Server](#Start-Server.jar)
 * [json config](#Configuration)
-* [specification covered](#Functionality)
-* [server status](#santorini&nbsp;official&nsbp;server)
+* [specification covered](#Specification-Covered)
+* [server status](#Santorini-Official-Server)
 
 
-## How to start JARs
+### Prerequirements
 
-You can find them [here](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/deliverables/jars) or you can generete them yourself by Maven
+You need **JavaSE 14** or higher version to run this game.    
+https://www.oracle.com/java/technologies/javase-downloads.html
+
+If you use **Windows** and want to run the game in **CLI mode**, we suggest you to use the Bash to a better expirience
+https://docs.microsoft.com/en-us/windows/wsl/install-win10
+
+
+## Get JARs
+
+You can find them [here](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/deliverables/jars) or you can generate them yourself with Maven
 
 ###### Generate JARs with Maven (OPTIONAL)
 ###### Client
@@ -31,15 +40,6 @@ mvn clean compile assembly:single -PClient
 ```bash
 mvn clean compile assembly:single -PServer
 ```
-
-
-### Prerequirements
-
-You need **JavaSE 14** or higher version to run this game.    
-https://www.oracle.com/java/technologies/javase-downloads.html
-
-If you use **Windows** and want to run the game in **CLI mode**, we suggest you to use the Bash to a better expirience
-https://docs.microsoft.com/en-us/windows/wsl/install-win10
 
 
 ### Configuration
@@ -54,7 +54,7 @@ Allowed params:
 * disconnectTimer (used by server) [60] - timer used to handle a diconnection during a match
 * turnTimer (used by server) [180] - timer for a singel turn
 
-### Client
+### Start Client.jar
 ```bash
 java -jar Client.jar
 ```
@@ -63,7 +63,7 @@ or
 java -jar Client.jar [CLI/GUI]
 ```
 If you decide to run it withouth the arg, you will play in GUI mode.
-### Server
+### Start Server.jar
 ```bash
 java -jar Server.jar
 ```
@@ -76,7 +76,7 @@ PATHTOJAVAFX is the path to JavaFX 12 (the lib folder!!) and changes depending o
 When reconnecting, remember to vote for the same map the game was being played on before disconnection!
 -->
 
-## Functionality
+## Specification Covered
 | Functionality | State |
 |:-----------------------|:------------------------------------:|
 | Basic rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
