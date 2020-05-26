@@ -238,7 +238,7 @@ public class Client implements Runnable{
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
 
-                //System.out.println(msg.toString());
+                System.out.println(msg.toString());
 
                 if(msg != null){
                     if(msg instanceof MovedServer){
@@ -261,6 +261,7 @@ public class Client implements Runnable{
                     }
 
                     if(mustPrint && !(msg instanceof ReConnectionServer)){
+                        System.out.println("CURRENT USER IS " + currentPlayer);
                         view.displayBoard();
                         mustPrint = false;
                     }
@@ -271,8 +272,12 @@ public class Client implements Runnable{
                             handler.join();
                     } catch (Exception ignored){}
                     continueReading = true;
-                    handler = new Thread(() -> msg.accept(view));
-                    handler.start();
+                    if(msg instanceof ReConnectionServer){
+                        msg.accept(view);
+                    } else {
+                        handler = new Thread(() -> msg.accept(view));
+                        handler.start();
+                    }
                 }
             }
         }

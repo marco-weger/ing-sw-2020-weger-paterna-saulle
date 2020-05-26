@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
@@ -143,12 +144,14 @@ public class GUI extends Application implements ViewInterface {
             FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
             DefaultController controller = loader.getController();
             if(controller instanceof BoardController){
-                ((BoardController) controller).setCms(message);
-                ((BoardController) controller).banner.setText(((BoardController) controller).moveTA.getText());
-                ((BoardController) controller).showCheckMove(message);
-                ((BoardController) controller).setState(2);
-                ((BoardController) controller).refresh();
-            }
+                Platform.runLater(() -> {
+                    ((BoardController) controller).setCms(message);
+                    ((BoardController) controller).NEWbanner.setText("Choose the cell where you want to move");
+                    ((BoardController) controller).showCheckMove(message);
+                    ((BoardController) controller).setState(2);
+                    ((BoardController) controller).refresh();
+                });
+            } else System.out.println("FATAL ERROR");
         }
     }
 
@@ -159,12 +162,14 @@ public class GUI extends Application implements ViewInterface {
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
         if(controller instanceof BoardController){
-            ((BoardController) controller).setCbs(message);
-            ((BoardController) controller).banner.setText(((BoardController) controller).buildTA.getText());
-            ((BoardController) controller).showCheckBuild(message);
-            ((BoardController) controller).setState(3);
-            ((BoardController) controller).refresh();
-        }
+            Platform.runLater(() -> {
+                ((BoardController) controller).setCbs(message);
+                ((BoardController) controller).NEWbanner.setText("Choose the cell where you want to build");
+                ((BoardController) controller).showCheckBuild(message);
+                ((BoardController) controller).setState(3);
+                ((BoardController) controller).refresh();
+            });
+        } else System.out.println("FATAL ERROR");
     }
 
     @Override
@@ -190,9 +195,10 @@ public class GUI extends Application implements ViewInterface {
                     controllerx = loader.getController();
                     //second Worker
                     if (controllerx instanceof BoardController) {
-                        ((BoardController) controllerx).refresh();
-                        ((BoardController) controllerx).banner.setText(((BoardController) controllerx).workerITA2.getText());
-                        ((BoardController) controllerx).setState(0);
+                        Platform.runLater(() -> {
+                            ((BoardController) controllerx).NEWbanner.setText("Choose the position of the second worker");
+                            ((BoardController) controllerx).setState(0);
+                        });
                         flag = true;
                     }
                 }
@@ -203,10 +209,12 @@ public class GUI extends Application implements ViewInterface {
                         controllerx = loader.getController();
 
                         if (controllerx instanceof BoardController) {
-                            controllerx.setup();
-                            ((BoardController) controllerx).banner.setText(((BoardController) controllerx).workerITA.getText());
-                            ((BoardController) controllerx).setState(0);
-                            ((BoardController) controllerx).refresh();
+                            Platform.runLater(() -> {
+                                controllerx.setup();
+                                ((BoardController) controllerx).NEWbanner.setText("Choose the position of the first worker");
+                                ((BoardController) controllerx).setState(0);
+                                ((BoardController) controllerx).refresh();
+                            });
                             flag = true;
                         }
                     }
@@ -222,10 +230,11 @@ public class GUI extends Application implements ViewInterface {
             DefaultController controllerx;
             controllerx = loader.getController();
             if (controllerx instanceof BoardController) {
-                controllerx.setup();
-                //((BoardController) controllerx).banner.setText("                  WAIT, "+client.getPlayers().get(currentP/2).name+"'s Turn");
-                ((BoardController) controllerx).banner.setText("                  WAIT, "+message.player+"'s Turn");
-                ((BoardController) controllerx).refresh();
+                Platform.runLater(() -> {
+                    controllerx.setup();
+                    ((BoardController) controllerx).NEWbanner.setText("WAIT, " + message.player + "'s Turn");
+                    ((BoardController) controllerx).refresh();
+                });
             }
 
         } //FRANCESCO COUNTER  --------------------------------------------------------------------------------------------------------------------
@@ -240,7 +249,7 @@ public class GUI extends Application implements ViewInterface {
                 ((BoardController) controller).setQas(message);
                 ((BoardController) controller).question();
                 ((BoardController) controller).refresh();
-            }
+            } else System.out.println("FATAL ERROR");
         }
     }
 
@@ -259,14 +268,16 @@ public class GUI extends Application implements ViewInterface {
                         DefaultController xcontroller = xloader.getController();
                         //player1, initalize first worker
                         if(xcontroller instanceof BoardController){
-                            ((BoardController) xcontroller).refresh();
-                            ((BoardController) xcontroller).banner.setText(((BoardController) xcontroller).workerITA.getText());
-                            xcontroller.setup();
-                            ((BoardController) xcontroller).setState(0);
-                            s.setOnKeyPressed(e -> {
-                                if (e.getCode() == KeyCode.Y || e.getCode() == KeyCode.N) {
-                                    ((BoardController) xcontroller).activeQuestionIfPossible(e.getCode());
-                                }
+                            Platform.runLater(() -> {
+                                ((BoardController) xcontroller).refresh();
+                                ((BoardController) xcontroller).NEWbanner.setText("Choose the position of the first worker");
+                                xcontroller.setup();
+                                ((BoardController) xcontroller).setState(0);
+                                s.setOnKeyPressed(e -> {
+                                    if (e.getCode() == KeyCode.Y || e.getCode() == KeyCode.N) {
+                                        ((BoardController) xcontroller).activeQuestionIfPossible(e.getCode());
+                                    }
+                                });
                             });
                         }
 
@@ -279,10 +290,12 @@ public class GUI extends Application implements ViewInterface {
                         FXMLLoader l = (FXMLLoader) primaryStage.getScene().getUserData();
                         DefaultController c = l.getController();
                         if(c instanceof BoardController){
-                            ((BoardController) c).setCss(message);
-                            ((BoardController) c).banner.setText(((BoardController) c).workerCTA.getText());
-                            ((BoardController) c).refresh();
-                            ((BoardController) c).setState(1);
+                            Platform.runLater(() -> {
+                                ((BoardController) c).setCss(message);
+                                ((BoardController) c).NEWbanner.setText("Choose a Worker");
+                                ((BoardController) c).refresh();
+                                ((BoardController) c).setState(1);
+                            });
                         } else System.out.println("FATAL ERROR!");
                     });
                     break;
@@ -296,12 +309,14 @@ public class GUI extends Application implements ViewInterface {
                 FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
                 DefaultController controllerx = loader2.getController();
                 if(controllerx instanceof BoardController){
-                    ((BoardController) controllerx).banner.setText("                  WAIT, "+message.player+"'s Turn");
-                    ((BoardController) controllerx).refresh();
-                    sn.setOnKeyPressed(e -> {
-                        if (e.getCode() == KeyCode.Y || e.getCode() == KeyCode.N) {
-                            ((BoardController) controllerx).activeQuestionIfPossible(e.getCode());
-                        }
+                    Platform.runLater(() -> {
+                        ((BoardController) controllerx).NEWbanner.setText("WAIT, "+message.player+"'s Turn");
+                        ((BoardController) controllerx).refresh();
+                        sn.setOnKeyPressed(e -> {
+                            if (e.getCode() == KeyCode.Y || e.getCode() == KeyCode.N) {
+                                ((BoardController) controllerx).activeQuestionIfPossible(e.getCode());
+                            }
+                        });
                     });
                 }
 
@@ -313,9 +328,11 @@ public class GUI extends Application implements ViewInterface {
             loader = (FXMLLoader) primaryStage.getScene().getUserData();
             controller = loader.getController();
             if(controller instanceof BoardController){
-                ((BoardController) controller).banner.setText("                  WAIT, "+message.player+"'s Turn");
-                ((BoardController) controller).refresh();
-            }
+                Platform.runLater(() -> {
+                    ((BoardController) controller).NEWbanner.setText("WAIT, " + message.player + "'s Turn");
+                    ((BoardController) controller).refresh();
+                });
+            } else System.out.println("FATAL ERROR");
 
         }
 
@@ -377,9 +394,11 @@ public class GUI extends Application implements ViewInterface {
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
         if(controller instanceof BoardController){
-            ((BoardController) controller).banner.setText(alert.getText());
-            ((BoardController) controller).refresh();
-        }
+            Platform.runLater(() -> {
+                ((BoardController) controller).NEWbanner.setText(alert.getText());
+                ((BoardController) controller).refresh();
+            });
+        } else System.out.println("FATAL ERROR");
     }
 
     @Override
@@ -472,8 +491,10 @@ public class GUI extends Application implements ViewInterface {
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
         if(controller instanceof BoardController) {
-            ((BoardController) controller).banner.setText(end.getText());
-            ((BoardController) controller).refresh();
+            Platform.runLater(() -> {
+                ((BoardController) controller).NEWbanner.setText(end.getText());
+                ((BoardController) controller).refresh();
+            });
         }
 
     }
@@ -549,7 +570,7 @@ public class GUI extends Application implements ViewInterface {
         DefaultController controller = loader.getController();
         if(controller instanceof BoardController){
             ((BoardController) controller).refresh();
-        }
+        } else System.out.println("FATAL ERROR");
     }
 
     @Override
@@ -558,7 +579,7 @@ public class GUI extends Application implements ViewInterface {
         DefaultController controller = loader.getController();
         if(controller instanceof BoardController){
             ((BoardController) controller).refresh();
-        }
+        } else System.out.println("FATAL ERROR");
     }
 
     @Override
@@ -572,16 +593,21 @@ public class GUI extends Application implements ViewInterface {
             FXMLLoader l = (FXMLLoader) primaryStage.getScene().getUserData();
             DefaultController c = l.getController();
             if(c instanceof BoardController){
-                if(((BoardController) c).getQuestionFlag()){
-                    ((BoardController) c).yOff(((BoardController) c).yes);
-                    ((BoardController) c).nOff(((BoardController) c).no);
-                    ((BoardController) c).setQuestionFlag(false);
-                    ((BoardController) c).refresh();
-                }
-                ((BoardController) c).unShowTimer();
-                //((BoardController) c).banner.setText(message.player + "'s network issue... Reconnecting " + (message.n+1) + "/" + (message.of+1));
-                ((BoardController) c).banner.setText("Network issue... Reconnecting " + (message.n+1) + "/" + (message.of+1));
-                ((BoardController) c).setState(4);
+                Platform.runLater(() -> {
+                    if(((BoardController) c).getQuestionFlag()){
+                        ((BoardController) c).yOff(((BoardController) c).yes);
+                        ((BoardController) c).nOff(((BoardController) c).no);
+                        ((BoardController) c).setQuestionFlag(false);
+                        ((BoardController) c).refresh();
+                    }
+                    if(message.n == 0)
+                        for (SnapCell cellx : ((BoardController) c).Cms.sc)
+                            ((BoardController) c).lightItDown(((BoardController) c).getCell(cellx.row,cellx.column));
+                    ((BoardController) c).unShowTimer();
+                    ((BoardController) c).NEWbanner.setLayoutX((this.sceneWidth/2)-400);
+                    ((BoardController) c).NEWbanner.setText(message.player+" has a network issue... Reconnecting " + (message.n+1) + "/" + (message.of+1));
+                    ((BoardController) c).setState(4);
+                });
             } else System.out.println("FATAL ERROR!");
         });
     }
@@ -627,10 +653,8 @@ public class GUI extends Application implements ViewInterface {
                 DefaultController c = l.getController();
                 if(c instanceof BoardController){
                     ((BoardController) c).showTimer();
-                    String txt = "";
-                    for(int i=0; i<message.player.length()/2; i++)
-                        txt += "";
-                    ((BoardController) c).banner.setText(txt+"                        "+message.player+" IS BACK!");
+                    ((BoardController) c).NEWbanner.setText(message.player+" IS BACK!");
+                    ((BoardController) c).refresh();
                 }
             });
         }
@@ -755,7 +779,7 @@ public class GUI extends Application implements ViewInterface {
                         ((BoardController) controller).buttonTimer.setVisible(true);
                         ((BoardController) controller).buttonTimer.setText(val+"");
                     }
-                }
+                } else System.out.println("FATAL ERROR");
             } catch (Exception ignored){}
         });
     }

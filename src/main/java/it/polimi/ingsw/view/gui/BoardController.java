@@ -52,6 +52,9 @@ public class BoardController extends DefaultController {
     @FXML
     public Button buttonTimer;
 
+    @FXML
+    public Button NEWbanner;
+
     /**
      * Choose size of the Image for Towers Floors
      */
@@ -97,14 +100,16 @@ public class BoardController extends DefaultController {
     Image floor3 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor3.png", towerSize, towerSize, true, false);
     Image dome = new Image("/it.polimi.ingsw/view/gui/img/tower/dome.png", towerSize, towerSize, true, false);
 
-    @FXML
-    TextField banner;
+    //@FXML
+    //TextField banner;
+    /*
     Text workerITA = new Text("            Choose the position of the first worker");
     Text workerITA2 = new Text("          Choose the position of the second worker");
     Text workerCTA = new Text("                  Choose a Worker");
     Text moveTA = new Text("             Choose the cell where you want to move");
     Text buildTA = new Text("           Choose the cell where you want to build");
     Text questionTA = new Text("       Do you want to use you God ability?");
+    */
 
 
     @FXML
@@ -181,6 +186,11 @@ public class BoardController extends DefaultController {
         buttonTimer.setPrefSize(w,h);
 
         showTimer = true;
+
+        NEWbanner.setMinSize(800,60);
+        NEWbanner.setMaxSize(800,60);
+        NEWbanner.setPrefSize(800,60);
+        NEWbanner.setText("");
     }
 
 
@@ -189,6 +199,9 @@ public class BoardController extends DefaultController {
      */
     @Override
     public void setup(){
+        NEWbanner.setLayoutY(bottom.getPrefHeight()/2-NEWbanner.getPrefHeight()/2);
+        NEWbanner.setLayoutX((gui.sceneWidth/2)-400);
+
         int start = 550;
         buttonGod1.getStyleClass().clear();
         buttonGod2.getStyleClass().clear();
@@ -299,7 +312,7 @@ public class BoardController extends DefaultController {
         cell44.getStyleClass().add("board");
         yes.getStyleClass().add("cl");
         no.getStyleClass().add("cl");
-        setUpBanner(banner);
+        //(banner);
         setDescription(gui.getClient().getMyPlayer().card.name());
         state = 4;
         questionFlag = false;
@@ -593,7 +606,6 @@ public class BoardController extends DefaultController {
         //clean old workers position
         for (SnapCell cell : this.gui.getClient().getBoard()) {
                 getSquare(cell.row, cell.column).setImage(null);
-
         }
         //get new workers position
         for(SnapPlayer p : this.gui.getClient().getPlayers())
@@ -677,10 +689,10 @@ public class BoardController extends DefaultController {
         for (SnapCell cell : Cms.sc) {
             if (cell.row == x && cell.column == y) {
                 this.gui.getClient().sendMessage(new MoveClient(this.gui.getClient().getUsername(), x, y));
-                        for (SnapCell cellx : Cms.sc) {
-                            lightItDown(getCell(cellx.row,cellx.column));
-                        }
-                        return true;
+                    for (SnapCell cellx : Cms.sc) {
+                        lightItDown(getCell(cellx.row,cellx.column));
+                    }
+                    return true;
             }
         }
         return false;
@@ -943,7 +955,8 @@ public class BoardController extends DefaultController {
      * Shows the NewGame and Exit button in Loser banner
      */
     public void loserbanner(){
-        banner.setText("Thanks for playing Santorini");
+        //banner.setText("Thanks for playing Santorini");
+        NEWbanner.setText("Thanks for playing Santorini");
         newGameBOn(no);
         loserFlag = true;
     }
@@ -955,9 +968,12 @@ public class BoardController extends DefaultController {
     public void question(){
         yOn(yes);
         nOn(no);
-        banner.setText(questionTA.getText());
+        Platform.runLater(() -> {
+            //400
+            NEWbanner.setLayoutX((buttonTimer.getLayoutX()+buttonTimer.getPrefWidth()+yes.getLayoutX())/2-400);
+            NEWbanner.setText("Do you want to use you God ability?");
+        });
         questionFlag = true;
-
     }
 
     public void setQuestionFlag(boolean questionFlag) {
@@ -992,6 +1008,7 @@ public class BoardController extends DefaultController {
             yOff(yes);
             nOff(no);
             questionFlag = false;
+            NEWbanner.setLayoutX((gui.sceneWidth/2)-400);
             refresh();
         }
     }
@@ -1008,6 +1025,7 @@ public class BoardController extends DefaultController {
             yOff(yes);
             nOff(no);
             questionFlag = false;
+            NEWbanner.setLayoutX((gui.sceneWidth/2)-400);
             refresh();
         }
         if(loserFlag){
