@@ -20,7 +20,7 @@ public class TimerTurnClient extends TimerTask {
     public ScheduledExecutorService ses;
 
     public TimerTurnClient(GUI gui, ScheduledExecutorService ses, long times){
-        System.out.println("[TIMER]");
+        //System.out.println("[TIMER]");
         this.gui = gui;
         this.times = times;
         this.ses = ses;
