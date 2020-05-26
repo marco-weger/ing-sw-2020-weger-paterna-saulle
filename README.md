@@ -11,8 +11,8 @@ This project was made between March and July 2020 as our final thesis project at
 ## Quick Index
 * [prerequirements](#Prerequirements)
 * [get JARs files](#Get-JARs)
-* [start Client](#Start-Client.jar)
-* [start Server](#Start-Server.jar)
+* [start Client](#Start-Client)
+* [start Server](#Start-Server)
 * [json config](#Configuration)
 * [specification covered](#Specification-Covered)
 * [server status](#Santorini-Official-Server)
@@ -27,7 +27,7 @@ If you use **Windows** and want to run the game in **CLI mode**, we suggest you 
 https://docs.microsoft.com/en-us/windows/wsl/install-win10
 
 
-## Get JARs
+### Get JARs
 
 You can find them [here](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/deliverables/jars) or you can generate them yourself with Maven
 
@@ -54,7 +54,7 @@ Allowed params:
 * disconnectTimer (used by server) [60] - timer used to handle a diconnection during a match
 * turnTimer (used by server) [180] - timer for a singel turn
 
-### Start Client.jar
+### Start Client
 ```bash
 java -jar Client.jar
 ```
@@ -63,7 +63,7 @@ or
 java -jar Client.jar [CLI/GUI]
 ```
 If you decide to run it withouth the arg, you will play in GUI mode.
-### Start Server.jar
+### Start Server
 ```bash
 java -jar Server.jar
 ```
