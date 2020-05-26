@@ -77,6 +77,8 @@
         <descriptorRefs>
           <descriptorRef>jar-with-dependencies</descriptorRef>
         </descriptorRefs>
+          <finalName>Client</finalName>
+          <appendAssemblyId>false</appendAssemblyId>
       </configuration>
     </plugin>
 
@@ -163,6 +165,8 @@
         <descriptorRefs>
           <descriptorRef>jar-with-dependencies</descriptorRef>
         </descriptorRefs>
+          <finalName>Server</finalName>
+          <appendAssemblyId>false</appendAssemblyId>
       </configuration>
     </plugin>
 
@@ -183,6 +187,7 @@
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
           <configuration>
+              <finalName>Server</finalName>
             <archive>
               <manifest>
                 <mainClass>it.polimi.ingsw.network.Server</mainClass>
