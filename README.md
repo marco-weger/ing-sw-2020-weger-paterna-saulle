@@ -44,15 +44,15 @@ mvn clean compile assembly:single -PServer
 
 ## Configuration (Optional)
 <!-- Talk about JSON and saved-match -->
-An optional [JSON file](resources/config.json) could be saved in *./resources/config.json*; if the software can't find the file it will use default value, written in square brackets.
+An optional [JSON file](resources/config.json) could be saved in *./resources/config.json*; if the software can't find the file it will use default value,<br> written in square brackets.
 <br>
 Allowed params:
 * ip (used by client) [127.0.0.1] - addres of server
 * port (used by cliend and server) [1234] - socket port
-* pingPeriod (used by cliend and server) [2] - useed to keep safeily alive the connection
-* timeoutSocket (used by cliend and server) [5] - useed to keep safeily alive the connection
+* pingPeriod (used by cliend and server) [2] - used to keep safeily alive the connection
+* timeoutSocket (used by cliend and server) [5] - used to keep safeily alive the connection
 * disconnectTimer (used by server) [60] - timer used to handle a diconnection during a match
-* turnTimer (used by server) [180] - timer for a singel turn
+* turnTimer (used by server) [180] - timer for a single turn
 
 ## Start Game
 Enjoy Santorini in GUI mode or try the 90s Experience with CLI mode.<br>
