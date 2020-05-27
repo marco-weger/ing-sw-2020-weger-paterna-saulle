@@ -331,4 +331,43 @@ public class PrometheusTest {
         assertFalse(p.get(0).getCard().activable(p, b));
         assertEquals(4, p.get(0).getCard().checkMove(p,b).size());
     }
+
+    @Test
+    public void Prometheus_moveUp(){
+        initialize();
+        p.get(0).setWorker1(new Worker(2,3));
+        p.get(0).setWorker2(new Worker(0,0));
+        p.get(1).setWorker1(new Worker(4,4));
+        p.get(1).setWorker2(new Worker(0,1));
+        p.get(2).setWorker1(new Worker(1,0));
+        p.get(2).setWorker2(new Worker(0,2));
+        p.get(0).setCurrent(true);
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
+        List<Cell> ret;
+        for (Cell c : b.getField()) {
+            if (c.getRow() == 4 && c.getColumn() == 4)
+                c.setLevel(2);
+            else if (c.getRow() == 4 && c.getColumn() == 3)
+                c.setLevel(3);
+            else if (c.getRow() == 3 && c.getColumn() == 4)
+                c.setLevel(3);
+            else if (c.getRow() == 3 && c.getColumn() == 3)
+                c.setLevel(1);
+
+        }
+
+        p.get(0).getCard().move(p, b, b.getCell(3,3));
+        assertEquals(3,p.get(0).getWorker1().getRow());
+        assertEquals(3,p.get(0).getWorker1().getColumn());
+        p.get(0).getCard().move(p, b, b.getCell(0,0));
+        assertEquals(3,p.get(0).getWorker1().getRow());
+        assertEquals(3,p.get(0).getWorker1().getColumn());
+    }
+
+    @Test
+    public void Description(){
+        assertNotNull(CardName.PROMETHEUS.getDescription());
+    }
+
 }

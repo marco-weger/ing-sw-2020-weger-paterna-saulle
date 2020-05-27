@@ -148,6 +148,24 @@ public class MatchTest {
         m.setLosers(new ArrayList<>(Collections.singletonList(p.get(1))),false);
         assertTrue(m.checkCurrentPlayerWin());
     }
+
+    @Test
+    public void removeAndAddPlayer(){
+        initialize();
+        Match m = new Match(0,null);
+        m.setPlayers(p);
+        m.setNextPlayer(); //0
+        m.setNextPlayer(); //1
+        m.setNextPlayer(); //2
+        m.setStatus(Status.NAME_CHOICE);
+        assertEquals(Status.NAME_CHOICE,m.getStatus());
+        assertEquals(3,m.getPlayers().size());
+        m.removePlayer("player1");
+        assertEquals(2,m.getPlayers().size());
+        Player p = new Player("Marco",null);
+        m.addPlayer(p,false);
+        assertEquals(3,m.getPlayers().size());
+    }
 /*
     @Test
     public void testCheckCurrentPlayerLoseFalse() {
