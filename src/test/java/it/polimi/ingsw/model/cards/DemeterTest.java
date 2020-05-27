@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.cards;
 
+import it.polimi.ingsw.commons.Status;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Player;
@@ -158,6 +159,7 @@ public class DemeterTest {
         Board b = new Board();
         for(Cell cell:b.getField()){
             if(cell.getRow() == 3 & cell.getColumn() == 4){
+                assertTrue(p.get(0).getCard().activable(p,b));
                 p.get(0).getCard().setActive(true);
                 assertEquals(0,cell.getLevel());
                 p.get(0).getCard().build(p,b,cell);
@@ -167,5 +169,30 @@ public class DemeterTest {
                 assertEquals(1,cell.getLevel());
             }
         }
+    }
+
+    @Test
+    public void setNextStatus() {
+        initialize();
+        p.get(0).setWorker1(new Worker(0, 0));
+        p.get(0).setWorker2(new Worker(4, 1));
+        p.get(0).getCard().setActive(true);
+        assertEquals(Status.QUESTION_B, p.get(0).getCard().getNextStatus(Status.QUESTION_B));
+        assertFalse(p.get(0).getCard().isActive());
+        assertEquals(Status.BUILT, p.get(0).getCard().getNextStatus(Status.QUESTION_B));
+        assertFalse(p.get(0).getCard().isActive());
+    }
+
+    @Test
+    public void initalize() {
+        initialize();
+        p.get(0).setWorker1(new Worker(0, 0));
+        p.get(0).setWorker2(new Worker(4, 1));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
+        assertTrue(p.get(0).getCard().build(p,b,b.getCell(1,1)));
+        assertFalse(p.get(0).getCard().build(p,b,b.getCell(1,1)));
+        p.get(0).getCard().initializeTurn();
+        assertTrue(p.get(0).getCard().build(p,b,b.getCell(1,1)));
     }
 }
