@@ -238,6 +238,7 @@ public class Client implements Runnable{
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
                 if(msg != null){
+                    // TODO REMOVE
                     System.out.println(msg.toString());
                     if(msg instanceof MovedServer){
                         for(SnapWorker worker : getWorkers()){
@@ -259,7 +260,6 @@ public class Client implements Runnable{
                     }
 
                     if(mustPrint && !(msg instanceof ReConnectionServer)){
-                        System.out.println("CURRENT USER IS " + currentPlayer);
                         view.displayBoard();
                         mustPrint = false;
                     }
