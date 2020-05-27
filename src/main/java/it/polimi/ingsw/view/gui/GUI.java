@@ -678,34 +678,38 @@ public class GUI extends Application implements ViewInterface {
 
     }
 
+    int i = 0;
     @Override
     public void close(boolean isError) {
         // if(!isError)
         //  client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
-        Platform.runLater(() -> {
-            error = new Stage();
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Error.fxml"));
-                Parent root2 = loader.load();
-                defaultcontroller = loader.getController();
-                defaultcontroller.setGUI(this);
-                Scene scene = new Scene(Objects.requireNonNull(root2), POPUPX, POPUPY, Color.TRANSPARENT);
-                scene.setCursor(new ImageCursor(new Image(CURSOR), 36, 45));
-                error.initStyle(StageStyle.TRANSPARENT);
-                error.setAlwaysOnTop(true);
-                scene.setUserData(loader);
-                error.initModality(Modality.WINDOW_MODAL);
-                error.initOwner(getPrimaryStage());
-                scene.setUserData(loader);
-                error.setScene(scene);
+        if(i == 0) {
+            i++;
+            Platform.runLater(() -> {
+                error = new Stage();
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Error.fxml"));
+                    Parent root2 = loader.load();
+                    defaultcontroller = loader.getController();
+                    defaultcontroller.setGUI(this);
+                    Scene scene = new Scene(Objects.requireNonNull(root2), POPUPX, POPUPY, Color.TRANSPARENT);
+                    scene.setCursor(new ImageCursor(new Image(CURSOR), 36, 45));
+                    error.initStyle(StageStyle.TRANSPARENT);
+                    error.setAlwaysOnTop(true);
+                    scene.setUserData(loader);
+                    error.initModality(Modality.WINDOW_MODAL);
+                    error.initOwner(getPrimaryStage());
+                    scene.setUserData(loader);
+                    error.setScene(scene);
 
-                error.setX((getPrimaryStage().getX() + sceneWidth / 2 - POPUPX / 2));
-                error.setY((getPrimaryStage().getY() + sceneHeight / 2 - POPUPY / 2));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            error.showAndWait();
-        });
+                    error.setX((getPrimaryStage().getX() + sceneWidth / 2 - POPUPX / 2));
+                    error.setY((getPrimaryStage().getY() + sceneHeight / 2 - POPUPY / 2));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                error.showAndWait();
+            });
+        }
     }
 
     @Override
