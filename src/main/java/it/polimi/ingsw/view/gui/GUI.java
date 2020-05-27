@@ -684,7 +684,7 @@ public class GUI extends Application implements ViewInterface {
           //  client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
            error = new Stage();
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Exit.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Error.fxml"));
                 Parent root = loader.load();
                 defaultcontroller = loader.getController();
                 defaultcontroller.setGUI(this);
