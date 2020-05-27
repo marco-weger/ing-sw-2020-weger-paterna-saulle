@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -15,12 +16,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,6 +60,12 @@ public class DefaultController{
     int initialX = 0;
     int initialY = 0;
     Stage mainstage;
+
+    public Stage getExit() {
+        return exit;
+    }
+
+    Stage exit;
 
     @FXML
     public void initialize(){
@@ -103,17 +113,30 @@ public class DefaultController{
     }
 
     public void quitOnAction(ActionEvent actionEvent) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Santorini Exit");
-        alert.setHeaderText("Sei sicuro?");
-        alert.setContentText("Marco riceve un biscotto per ogni partita in piu!");
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                gui.getClient().disconnectionHandler();
-                gui.close(false);
-                System.exit(0);
+      //  Platform.runLater(() -> {
+           exit = new Stage();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Exit.fxml"));
+                Parent root = loader.load();
+                this.gui.defaultcontroller = loader.getController();
+                this.gui.defaultcontroller.setGUI(this.gui);
+                Scene scene = new Scene(Objects.requireNonNull(root), 421, 450, Color.TRANSPARENT);
+                scene.setCursor(new ImageCursor(new Image(CURSOR), 36, 45));
+                exit.initStyle(StageStyle.TRANSPARENT);
+                exit.setAlwaysOnTop(true);
+                scene.setUserData(loader);
+                exit.initModality(Modality.WINDOW_MODAL);
+                exit.initOwner(this.gui.getPrimaryStage());
+                scene.setUserData(loader);
+                exit.setScene(scene);
+
+                exit.setX((this.gui.getPrimaryStage().getX() + this.gui.sceneWidth / 2 - 421 / 2));
+                exit.setY((this.gui.getPrimaryStage().getY() + this.gui.sceneHeight / 2 - 450 / 2));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+            exit.show();
+      //  });
     }
 
     public void helperOnAction(ActionEvent actionEvent) {

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="anchorExit" prefHeight="450.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.ExitController">
+   <children>
+      <Button fx:id="No" layoutX="268.0" layoutY="326.0" mnemonicParsing="false" onAction="#no" styleClass="button, no" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="68.0" AnchorPane.rightAnchor="83.0" />
+      <Button fx:id="Yes" layoutX="77.0" layoutY="326.0" mnemonicParsing="false" onAction="#yes" styleClass="button, yes" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="83.0" />
+   </children>
+</AnchorPane>
