@@ -22,7 +22,6 @@ public class ErrorController extends  DefaultController{
         setBackground(new Image("/it.polimi.ingsw/view/gui/img/scene/error.png"));
 
         int x=125, y=71;
-
         Quit.setMinSize(x,y);
         Quit.setMaxSize(x,y);
         Quit.setPrefSize(x,y);

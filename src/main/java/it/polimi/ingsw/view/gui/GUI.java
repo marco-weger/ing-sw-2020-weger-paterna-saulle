@@ -683,7 +683,6 @@ public class GUI extends Application implements ViewInterface {
         // if(!isError)
         //  client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
         Platform.runLater(() -> {
-            unShowTimer();
             error = new Stage();
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Error.fxml"));
