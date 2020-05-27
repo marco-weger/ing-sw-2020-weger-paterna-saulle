@@ -680,15 +680,17 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void close(boolean isError) {
-       // if(!isError)
-          //  client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
-           error = new Stage();
+        // if(!isError)
+        //  client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
+        Platform.runLater(() -> {
+            unShowTimer();
+            error = new Stage();
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Error.fxml"));
-                Parent root = loader.load();
+                Parent root2 = loader.load();
                 defaultcontroller = loader.getController();
                 defaultcontroller.setGUI(this);
-                Scene scene = new Scene(Objects.requireNonNull(root), POPUPX, POPUPY, Color.TRANSPARENT);
+                Scene scene = new Scene(Objects.requireNonNull(root2), POPUPX, POPUPY, Color.TRANSPARENT);
                 scene.setCursor(new ImageCursor(new Image(CURSOR), 36, 45));
                 error.initStyle(StageStyle.TRANSPARENT);
                 error.setAlwaysOnTop(true);
@@ -703,7 +705,8 @@ public class GUI extends Application implements ViewInterface {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            error.show();
+            error.showAndWait();
+        });
     }
 
     @Override
