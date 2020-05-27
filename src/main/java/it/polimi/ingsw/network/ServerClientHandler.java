@@ -318,7 +318,6 @@ public class ServerClientHandler implements Runnable {
             }
             virtualView.notify(r);
 
-            // FIXME
             boolean go = true;
             for(String player : vv.getConnectedPlayers().keySet())
                 if(vv.getConnectedPlayers().get(player) == null) go = false;

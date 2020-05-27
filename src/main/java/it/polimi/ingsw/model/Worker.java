@@ -68,7 +68,6 @@ public class Worker implements Serializable {
             if(c.getRow() == this.row && c.getColumn() == this.column)
                 return c.getLevel();
         }
-        //FIXME ho cambiato da return -1 a return 0
         return 0;
     }
 }

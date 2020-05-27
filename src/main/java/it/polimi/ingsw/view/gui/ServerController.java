@@ -130,7 +130,7 @@ public class ServerController extends DefaultController {
     public void tryConnect(){
         this.gui.getClient().setIp(ip1.getText()+'.'+ip2.getText()+'.'+ip3.getText()+'.'+ip4.getText());
         this.gui.getClient().setPort(Integer.parseInt(port.getText()));
-        if(!this.gui.getClient().connect()){ // TODO show wait image round
+        if(!this.gui.getClient().connect()){
             banner.setVisible(true);
         }
     }

@@ -192,6 +192,4 @@ public class HephaestusTest {
             assertEquals(3,b.getCell(c.getRow(),c.getColumn()).getLevel());
         }
     }
-
-    //TODO: test on the handler of exceptions
 }

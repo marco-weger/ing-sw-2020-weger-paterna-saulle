@@ -185,7 +185,6 @@ public class Controller implements Observer, ClientMessageHandler {
      * send the start posizion of the current worker chosen by the current player during the initialize state of the match
      * @param message contains the name of the current player and the start position chosen for the current worker
      */
-    //FIXME impedire di mettere due worker nella stessa posizone durante la fase iniziale
     @Override
     public void handleMessage(WorkerInitializeClient message) {
         Player selected = null;

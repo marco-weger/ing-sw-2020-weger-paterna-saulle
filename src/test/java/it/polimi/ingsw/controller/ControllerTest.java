@@ -192,24 +192,18 @@ public class ControllerTest {
     public void disconnectionClient() {
         initialize();
         challengerChoseClient();
-        // TODO: this message will be implemented
-        //controller.handleMessage(new DisconnectionClient());
     }
 
     @Test
     public void reConnectionClient() {
         initialize();
         challengerChoseClient();
-        // TODO: this message will be implemented
-        // controller.handleMessage(new ReConnectionClient());
     }
 
     @Test
     public void pingclient() {
         initialize();
         challengerChoseClient();
-        // TODO: this message will be implemented
-        //controller.handleMessage(new PingClient());
     }
 
     //Marco=PAN

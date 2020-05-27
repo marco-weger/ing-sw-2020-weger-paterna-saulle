@@ -16,7 +16,6 @@ public class ServerTest {
 
     @Test
     public void addPlayerTest(){
-        // FIXME
         //VirtualView vv = new VirtualView(CG13);
         //CG13.setCurrentVirtualView(vv);
         //CG13.addPlayer(new ConnectionClient("Giorgio"));
