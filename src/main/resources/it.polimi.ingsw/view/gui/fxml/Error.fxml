@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="anchorError" prefHeight="450.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.ErrorController">
+   <children>
+      <Button fx:id="Quit" layoutX="173.0" layoutY="326.0" mnemonicParsing="false" onAction="#quit" styleClass="button, quit" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="68.0" AnchorPane.leftAnchor="83.0" />
+   </children>
+</AnchorPane>
