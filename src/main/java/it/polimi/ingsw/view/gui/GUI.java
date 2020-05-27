@@ -160,17 +160,19 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(CheckBuildServer message) {
-        Platform.runLater(() -> {
-            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-            DefaultController controller = loader.getController();
-            if(controller instanceof BoardController){
-                ((BoardController) controller).setCbs(message);
-                ((BoardController) controller).NEWbanner.setText("Choose the cell where you want to build");
-                ((BoardController) controller).showCheckBuild(message);
-                ((BoardController) controller).setState(3);
-                ((BoardController) controller).refresh();
-            } else System.out.println("FATAL ERROR");
-        });
+        if(client.getUsername().equals(client.getCurrentPlayer())) {
+            Platform.runLater(() -> {
+                FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+                DefaultController controller = loader.getController();
+                if (controller instanceof BoardController) {
+                    ((BoardController) controller).setCbs(message);
+                    ((BoardController) controller).NEWbanner.setText("Choose the cell where you want to build");
+                    ((BoardController) controller).showCheckBuild(message);
+                    ((BoardController) controller).setState(3);
+                    ((BoardController) controller).refresh();
+                } else System.out.println("FATAL ERROR");
+            });
+        }
     }
 
     @Override
@@ -233,7 +235,7 @@ public class GUI extends Application implements ViewInterface {
             if (controllerx instanceof BoardController) {
                 Platform.runLater(() -> {
                     controllerx.setup();
-                    ((BoardController) controllerx).NEWbanner.setText("WAIT, " + message.player + "'s Turn");
+                    ((BoardController) controllerx).NEWbanner.setText("WAIT, " + client.getPlayers().get(currentP/2).name+ "'s Turn");
                     ((BoardController) controllerx).refresh();
                 });
             }
