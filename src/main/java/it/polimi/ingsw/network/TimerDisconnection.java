@@ -48,8 +48,9 @@ public class TimerDisconnection implements Runnable {
         if(sch.getPing() != null)
             sch.getPing().cancel();
 
-        //sch.setStillConnected(false);
-        sch.getVirtualView().getTurn().cancel();
+        try{
+            sch.getVirtualView().getTurn().cancel();
+        }catch (Exception ignored){}
     }
 
     /**

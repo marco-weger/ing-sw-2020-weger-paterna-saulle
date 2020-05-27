@@ -225,3 +225,19 @@
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/exit_pressed.png");
     -fx-background-size: 100% auto
 }
+.players2-mini{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/2players.png");
+    -fx-background-size: auto 100%
+}
+.players3-mini {
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/3players.png");
+    -fx-background-size: auto 100%
+}
+.players2-mini:pressed {
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/2players_pressed.png");
+    -fx-background-size: auto 100%
+}
+.players3-mini:pressed{
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/3players_pressed.png");
+    -fx-background-size: auto 100%
+}

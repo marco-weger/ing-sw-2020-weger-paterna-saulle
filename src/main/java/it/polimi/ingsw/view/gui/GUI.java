@@ -141,17 +141,17 @@ public class GUI extends Application implements ViewInterface {
     @Override
     public void handleMessage(CheckMoveServer message) {
         if(client.getUsername().equals(client.getCurrentPlayer())){
-            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-            DefaultController controller = loader.getController();
-            if(controller instanceof BoardController){
-                Platform.runLater(() -> {
+            Platform.runLater(() -> {
+                FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+                DefaultController controller = loader.getController();
+                if(controller instanceof BoardController){
                     ((BoardController) controller).setCms(message);
                     ((BoardController) controller).NEWbanner.setText("Choose the cell where you want to move");
                     ((BoardController) controller).showCheckMove(message);
                     ((BoardController) controller).setState(2);
                     ((BoardController) controller).refresh();
-                });
-            } else System.out.println("FATAL ERROR");
+                } else System.out.println("FATAL ERROR");
+            });
         }
     }
 
@@ -159,17 +159,17 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(CheckBuildServer message) {
-        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-        DefaultController controller = loader.getController();
-        if(controller instanceof BoardController){
-            Platform.runLater(() -> {
+        Platform.runLater(() -> {
+            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+            DefaultController controller = loader.getController();
+            if(controller instanceof BoardController){
                 ((BoardController) controller).setCbs(message);
                 ((BoardController) controller).NEWbanner.setText("Choose the cell where you want to build");
                 ((BoardController) controller).showCheckBuild(message);
                 ((BoardController) controller).setState(3);
                 ((BoardController) controller).refresh();
-            });
-        } else System.out.println("FATAL ERROR");
+            } else System.out.println("FATAL ERROR");
+        });
     }
 
     @Override
@@ -243,13 +243,15 @@ public class GUI extends Application implements ViewInterface {
     @Override
     public void handleMessage(QuestionAbilityServer message) {
         if(client.getUsername().equals(client.getCurrentPlayer())){
-            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-            DefaultController controller = loader.getController();
-            if(controller instanceof BoardController){
-                ((BoardController) controller).setQas(message);
-                ((BoardController) controller).question();
-                ((BoardController) controller).refresh();
-            } else System.out.println("FATAL ERROR");
+            Platform.runLater(() -> {
+                FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+                DefaultController controller = loader.getController();
+                if(controller instanceof BoardController){
+                    ((BoardController) controller).setQas(message);
+                    ((BoardController) controller).question();
+                    ((BoardController) controller).refresh();
+                } else System.out.println("FATAL ERROR");
+            });
         }
     }
 
@@ -325,15 +327,14 @@ public class GUI extends Application implements ViewInterface {
             });
         }
         if(!message.player.equals(client.getUsername()) && !client.getMyPlayer().loser && message.status != Status.WORKER_CHOICE ){
-            loader = (FXMLLoader) primaryStage.getScene().getUserData();
-            controller = loader.getController();
-            if(controller instanceof BoardController){
-                Platform.runLater(() -> {
-                    ((BoardController) controller).NEWbanner.setText("WAIT, " + message.player + "'s Turn");
-                    ((BoardController) controller).refresh();
-                });
-            } else System.out.println("FATAL ERROR");
-
+            Platform.runLater(() -> {
+                FXMLLoader loaderx = (FXMLLoader) primaryStage.getScene().getUserData();
+                DefaultController controllerx = loaderx.getController();
+                if (controllerx instanceof BoardController) {
+                    ((BoardController) controllerx).NEWbanner.setText("WAIT, " + message.player + "'s Turn");
+                    ((BoardController) controllerx).refresh();
+                } else System.out.println("FATAL ERROR");
+            });
         }
 
         if(message.status.equals(Status.START) || message.status.equals(Status.WORKER_CHOICE)){
@@ -391,14 +392,14 @@ public class GUI extends Application implements ViewInterface {
         }
         else alert.setText(message.player + "has lost!");
 
-        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-        DefaultController controller = loader.getController();
-        if(controller instanceof BoardController){
-            Platform.runLater(() -> {
+        Platform.runLater(() -> {
+            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+            DefaultController controller = loader.getController();
+            if(controller instanceof BoardController){
                 ((BoardController) controller).NEWbanner.setText(alert.getText());
                 ((BoardController) controller).refresh();
-            });
-        } else System.out.println("FATAL ERROR");
+            } else System.out.println("FATAL ERROR");
+        });
     }
 
     @Override
@@ -531,6 +532,10 @@ public class GUI extends Application implements ViewInterface {
 
         if(controller instanceof LobbyController){
             Platform.runLater(() -> {
+                ((LobbyController) controller).setReconnection(false);
+                ((LobbyController) controller).new2.setVisible(false);
+                ((LobbyController) controller).new3.setVisible(false);
+                ((LobbyController) controller).banner.setVisible(false);
                 ((LobbyController) controller).buttonLobby.setText("");
                 for(int i=0; i<message.players.size(); i++){
                     ((LobbyController) controller).buttonLobby.setText(((LobbyController) controller).buttonLobby.getText()+message.players.get(i)
@@ -566,20 +571,24 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(BuiltServer message) {
-        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-        DefaultController controller = loader.getController();
-        if(controller instanceof BoardController){
-            ((BoardController) controller).refresh();
-        } else System.out.println("FATAL ERROR");
+        Platform.runLater(() -> {
+            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+            DefaultController controller = loader.getController();
+            if(controller instanceof BoardController){
+                ((BoardController) controller).refresh();
+            } else System.out.println("FATAL ERROR");
+        });
     }
 
     @Override
     public void handleMessage(MovedServer message) {
-        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-        DefaultController controller = loader.getController();
-        if(controller instanceof BoardController){
-            ((BoardController) controller).refresh();
-        } else System.out.println("FATAL ERROR");
+        Platform.runLater(() -> {
+            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+            DefaultController controller = loader.getController();
+            if(controller instanceof BoardController){
+                ((BoardController) controller).refresh();
+            } else System.out.println("FATAL ERROR");
+        });
     }
 
     @Override
@@ -600,7 +609,7 @@ public class GUI extends Application implements ViewInterface {
                         ((BoardController) c).setQuestionFlag(false);
                         ((BoardController) c).refresh();
                     }
-                    if(message.n == 0)
+                    if(message.n == 0 && ((BoardController) c).Cms != null && ((BoardController) c).Cms.sc != null)
                         for (SnapCell cellx : ((BoardController) c).Cms.sc)
                             ((BoardController) c).lightItDown(((BoardController) c).getCell(cellx.row,cellx.column));
                     ((BoardController) c).unShowTimer();
@@ -637,7 +646,10 @@ public class GUI extends Application implements ViewInterface {
                     FXMLLoader loader = (FXMLLoader) s.getUserData();
                     DefaultController controller = loader.getController();
                     if(controller instanceof LobbyController){
-                        ((LobbyController) controller).rec();
+                        ((LobbyController) controller).setReconnection(true);
+                        ((LobbyController) controller).new2.setVisible(true);
+                        ((LobbyController) controller).new3.setVisible(true);
+                        ((LobbyController) controller).banner.setVisible(true);
                         for(int i=0; i<message.players.size(); i++){
                             ((LobbyController) controller).buttonLobby.setText(((LobbyController) controller).buttonLobby.getText()+message.players.get(i).name
                                     +(i+1 == message.players.size() ? "" : "\n"));
@@ -667,19 +679,10 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void close(boolean isError) {
-        client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
-        Platform.runLater(() -> {
-            Alert ohNo = new Alert(Alert.AlertType.ERROR);
-            ohNo.setTitle("Network problem");
-            ohNo.setHeaderText("A network problem was encountered, you have been disconnected!");
-            ohNo.setContentText("please, try to reconnect later");
-            ohNo.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    System.exit(-1);
-
-                }
-            });
-        });
+        if(!isError)
+            client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
+        //FIXME alert...
+        System.exit(-1);
     }
 
     @Override

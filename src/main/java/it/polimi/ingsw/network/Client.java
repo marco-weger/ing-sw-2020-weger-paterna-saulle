@@ -237,10 +237,8 @@ public class Client implements Runnable{
             Thread handler = null;
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
-
-                System.out.println(msg.toString());
-
                 if(msg != null){
+                    System.out.println(msg.toString());
                     if(msg instanceof MovedServer){
                         for(SnapWorker worker : getWorkers()){
                             if(worker.name.equals(((MovedServer) msg).sw.name) && worker.n == ((MovedServer) msg).sw.n){
@@ -298,7 +296,7 @@ public class Client implements Runnable{
                     socket.close();
                 }
             } catch (Exception ex) {
-                // LOGGER.log(Level.WARNING, "Can't send " + msg.toString(), ex);
+                //LOGGER.log(Level.WARNING, "Can't send " + msg.toString(), ex);
                 view.close(true);
             }
         }
@@ -310,10 +308,11 @@ public class Client implements Runnable{
             try{
                 obj = in.readObject();
             } catch (Exception ex){
-                // LOGGER.log(Level.WARNING, "Can't read ServerMessage", ex);
+                //LOGGER.log(Level.WARNING, "Can't read ServerMessage", ex);
+                obj = null;
                 view.close(true);
             }
-        }while (obj instanceof PingServer || !(obj instanceof ServerMessage));
+        }while (obj != null && (obj instanceof PingServer || !(obj instanceof ServerMessage)));
         return obj;
     }
 

@@ -12,17 +12,22 @@ import javafx.scene.image.ImageView;
 
 public class LobbyController extends DefaultController {
 
-    public void setReconnection(boolean reconnection) {
-        this.reconnection = reconnection;
-    }
+    @FXML
+    public Button new2;
+
+    @FXML
+    public Button new3;
+
+    @FXML
+    public Button banner;
 
     private boolean reconnection;
 
     @FXML
     public Button buttonLobby;
     
-    @FXML
-    public Button newGame;
+    //@FXML
+    //public Button newGame;
 
     @FXML
     public ImageView imageLobby;
@@ -35,16 +40,26 @@ public class LobbyController extends DefaultController {
         buttonLobby.setMinSize(450,240);
         buttonLobby.setMaxSize(450,240);
         buttonLobby.setPrefSize(450,240); //240
-        newGame.setMinSize(200,114);
-        newGame.setMaxSize(200,114);
-        newGame.setPrefSize(200,114);
-
 
         imageLobby.setImage(new Image("/it.polimi.ingsw/view/gui/img/other/lobby.png"));
         imageLobby.setPreserveRatio(true);
         imageLobby.setFitWidth(406);
         reconnection = false;
-        newGame.getStyleClass().add("empty");
+
+        int y = 50;
+        int x = 50*250/143;
+        new2.setMinSize(x,y);
+        new2.setMaxSize(x,y);
+        new2.setPrefSize(x,y);
+        new3.setMinSize(x,y);
+        new3.setMaxSize(x,y);
+        new3.setPrefSize(x,y);
+
+        banner.setText("Match resumed... Click if you want to refuse!");
+        banner.setVisible(false);
+
+        new2.setVisible(false);
+        new3.setVisible(false);
     }
 
     @Override
@@ -53,32 +68,43 @@ public class LobbyController extends DefaultController {
         buttonLobby.setPadding(new Insets(30, 0, 0, 0));
         imageLobby.setLayoutX(gui.sceneWidth/2-203);
         imageLobby.setLayoutY(65);
-        newGame.setLayoutX(950/2 -103);
         buttonLobby.setLayoutX(950/2-225);
         buttonLobby.setLayoutY(95);
         buttonLobby.setFont(f);
+
+        new3.setLayoutY(bottom.getPrefHeight()/2-new3.getPrefHeight()/2);
+        new3.setLayoutX(gui.sceneWidth-200);
+
+        new2.setLayoutY(bottom.getPrefHeight()/2-new2.getPrefHeight()/2);
+        new2.setLayoutX(new3.getLayoutX()-new2.getPrefWidth()-15);
+
+        banner.setMinSize(new2.getLayoutX(),60);
+        banner.setMaxSize(new2.getLayoutX(),60);
+        banner.setPrefSize(new2.getLayoutX(),60);
+
+        banner.setLayoutY(bottom.getPrefHeight()/2-banner.getPrefHeight()/2);
+        banner.setLayoutX(0);
     }
 
-    public void newgame(ActionEvent actionEvent) {
-        if (reconnection == true){
-            gui.getClient().resetMatch();
-        Platform.runLater(() -> {
-                this.gui.getPrimaryStage().setScene(this.gui.load("/it.polimi.ingsw/view/gui/fxml/Mode.fxml"));
-                FXMLLoader loader = (FXMLLoader) mainstage.getScene().getUserData();
-                DefaultController controller = loader.getController();
-                if (controller instanceof ModeController) {
-                     ((ModeController) controller).setReconnection(true);
-                 }
-                newGame.getStyleClass().remove("newgame");
-                newGame.getStyleClass().add("empty");
-        });
-        this.setReconnection(false);
+    public void setReconnection(boolean reconnection) {
+        this.reconnection = reconnection;
+    }
+
+    public void newgame2(ActionEvent actionEvent) {
+        if(reconnection) {
+            this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(), 2, true));
+            reconnection = false;
         }
+        this.gui.getClient().setMustPrint(false);
+        this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(),2));
     }
 
-    public void rec(){
-        this.setReconnection(true);
-        newGame.getStyleClass().remove("empty");
-        newGame.getStyleClass().add("newgame");
+    public void newgame3(ActionEvent actionEvent) {
+        if (reconnection) {
+            this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(),3,true));
+            reconnection = false;
+        }
+        this.gui.getClient().setMustPrint(false);
+        this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(),3));
     }
 }
