@@ -695,7 +695,7 @@ public class GUI extends Application implements ViewInterface {
                     });
                     for (Object entry : values) {
                         ((EasterEggController) newController).buttonLobby.setText(
-                                ((EasterEggController) newController).buttonLobby.getText()+(go ? "" : "\n")+((Map.Entry) entry).getKey() + "\t" + ((Map.Entry) entry).getValue());
+                                ((EasterEggController) newController).buttonLobby.getText()+(go ? "" : "\n")+((Map.Entry) entry).getKey() + "   " + ((Map.Entry) entry).getValue());
                         go = false;
                     }
                 }
