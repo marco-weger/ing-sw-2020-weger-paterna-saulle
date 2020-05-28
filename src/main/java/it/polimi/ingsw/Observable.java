@@ -10,18 +10,32 @@ import java.util.Arrays;
 
 public class Observable {
 
+    /**
+     * The list of observes
+     */
     final ArrayList<Observer> observers = new ArrayList<>();
 
+    /**
+     * It adds an observer
+     * @param o
+     */
     public void addObserver(Observer o){
         if(observers.contains(o))
             throw new RuntimeException("This observer is already registered");
         observers.add(o);
     }
 
+    /**
+     * It clears the list of observers
+     */
     public void clearObserver(){
         observers.clear();
     }
 
+    /**
+     * It notifies all observers
+     * @param obj
+     */
     public void notifyObservers(Object obj){
         for(Observer i : observers)
             i.update(obj);

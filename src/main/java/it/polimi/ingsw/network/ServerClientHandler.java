@@ -12,7 +12,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.concurrent.Executors;
@@ -81,7 +80,7 @@ public class ServerClientHandler implements Runnable {
     /**
      * The timer of disconnection handler
      */
-    TimerDisconnection timerDisconnection;
+    private TimerDisconnection timerDisconnection;
 
     /**
      * @param socket connection
@@ -101,31 +100,63 @@ public class ServerClientHandler implements Runnable {
         }
     }
 
+    /**
+     * It checks if connection is alive
+     * @return
+     */
     private boolean isConnected(){
         try{
             return socket.isConnected();
         } catch (Exception ignored){ return false; }
     }
 
+    /**
+     * The username getter
+     * @return
+     */
     public String getName() {return name;}
 
+    /**
+     * The flag is used during live disconnection, during wait time
+     * @return
+     */
     public boolean isStillConnected() {return stillConnected;}
 
-    //public void setTurnTimesUp(boolean turnTimesUp){ this.turnTimesUp = turnTimesUp; }
-
+    /**
+     * The input stream getter
+     * @return
+     */
     public ObjectInputStream getIn(){ return in;}
 
+    /**
+     * The stillConnected flag setter
+     * @param stillConnected
+     */
     public void setStillConnected(boolean stillConnected){ this.stillConnected = stillConnected; }
 
+    /**
+     * The instance of Server
+     * @return
+     */
     public Server getServer(){ return server; }
 
+    /**
+     * The VirtualView of current match
+     * @return
+     */
     public VirtualView getVirtualView(){ return virtualView; }
 
+    /**
+     * The ping task
+     * @return
+     */
     public Timer getPing(){ return ping; }
 
+    /*
     public ObjectInputStream getInputStream(){ return in; }
 
     public ObjectOutputStream getOutputStream(){ return out; }
+     */
 
     /**
      * When an object implementing interface <code>Runnable</code> is used
@@ -468,6 +499,9 @@ public class ServerClientHandler implements Runnable {
         } else return obj;
     }
 
+    /**
+     * It manages a real time disconnection: start the timeout task if necessary or close the connection
+     */
     public void timeOut(){
         if(virtualView == null){
             disconnectionHandler();
@@ -496,10 +530,16 @@ public class ServerClientHandler implements Runnable {
         }
     }
 
+    /**
+     * It try to notify the client for disconnection
+     */
     public void timesUp(){
         virtualView.notify(new DisconnectionClient(this.name,true));
     }
 
+    /**
+     * It kills all threads and tasks
+     */
     public void close(){
         if(ping != null)
             ping.cancel();
@@ -511,6 +551,10 @@ public class ServerClientHandler implements Runnable {
         }
     }
 
+    /**
+     * It resets the VirtualView and the Server
+     * @param numberOfPlayer
+     */
     public void reset(int numberOfPlayer){
         ModeChoseClient object = new ModeChoseClient(name,numberOfPlayer);
         object.forced = true;
