@@ -50,6 +50,8 @@ public class Match extends Observable implements Serializable {
      */
     private ArrayList<CardName> selectedCard;
 
+    private static final long serialVersionUID = 432457896345L;
+
     /**
      * The match is initialized with these;
      * - BOARD: 5x5 cell board with all cells at 0 level
