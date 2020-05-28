@@ -9,6 +9,11 @@ public class PingServer extends ServerMessage {
 
     public String name;
 
+
+    /**
+     * a simple ping message
+     * @param name //FIXME
+     */
     public PingServer(String name){
         this.name=name;
     }

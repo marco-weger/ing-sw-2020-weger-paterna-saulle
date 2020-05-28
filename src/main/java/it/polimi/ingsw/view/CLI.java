@@ -271,6 +271,14 @@ public class CLI implements ViewInterface {
         }
     }
 
+
+    /**
+     *Handle the First WorkerInitialize, and the WorkerChose
+     *in both case update print the respective question to the Client
+     * In case of WORKER_CHOSE, enable the current player to send WorkerInitalizeClient message and take his input
+     * In case of START, enable the current player to send WorkerChoseClient message and take his input
+     * @param message a CurrentStatusServer message
+     */
     @Override
     public void handleMessage(CurrentStatusServer message) {
         if(!client.getMyPlayer().loser && message.player.equals(client.getUsername())){
@@ -317,6 +325,13 @@ public class CLI implements ViewInterface {
         }
     }
 
+
+    /**
+     * Removes the loser to the Players Arraylist
+     * Shows to the Loser the Lose Screen
+     * Tells to the others player the lost of the Current Player with a print
+     * @param message a SomeoneLoseServer message
+     */
     @Override
     public void handleMessage(SomeoneLoseServer message) { // TODO test
         for(SnapPlayer sp : client.getPlayers())
@@ -342,6 +357,12 @@ public class CLI implements ViewInterface {
         }
     }
 
+
+    /**
+     * If is the first message, shows to the Challenger the Challenger Table and read his choice
+     * Otherwise shows th Cards Table to the Current PLayer and reads this chiuce
+     * @param message an AbailableCardServer
+     */
     @Override
     public void handleMessage(AvailableCardServer message) { // tested
         if(message.player.equals(this.client.getUsername())){
@@ -402,6 +423,11 @@ public class CLI implements ViewInterface {
         } else print(COLOR_CPU +"Waiting for opponent's choice...");
     }
 
+
+    /**
+     * Take the input of the current player
+     * @return if the card is available, return the god
+     */
     private CardName getCardName() {
         CardName read;
         String name;
@@ -413,6 +439,12 @@ public class CLI implements ViewInterface {
         return read;
     }
 
+
+    /**
+     * Print the win scene to the winner
+     * shows the lose scene to the loser
+     * @param message
+     */
     @Override
     public void handleMessage(SomeoneWinServer message) { // TODO test
         clear();
@@ -424,6 +456,13 @@ public class CLI implements ViewInterface {
         }
     }
 
+
+    /**
+     * Ask the Client to insert a New Name
+     * read the input
+     * if it's available and it's correct send a Connectionclient with the selected username
+     * @param message
+     */
     @Override
     public void handleMessage(NameRequestServer message) { // tested
         clear();

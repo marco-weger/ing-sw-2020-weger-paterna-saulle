@@ -19,6 +19,12 @@ public class ReConnectionServer extends ServerMessage {
     public String currentPlayer;
     public int type;
 
+
+    /**
+     *
+     * @param player
+     * @param type
+     */
     public ReConnectionServer(String player, int type) {
         super();
         this.player=player;

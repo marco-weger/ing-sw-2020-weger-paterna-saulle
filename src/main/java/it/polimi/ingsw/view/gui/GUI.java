@@ -290,8 +290,8 @@ public class GUI extends Application implements ViewInterface {
     /**
      * Handle the First WorkerInitialize, and the WorkerChose
      * in both case update the banner message
-     * In case of WORKER_CHOSE, enable the currentPlayer to send WorkerInitalizeClient message
-     * IN case of START, enable the currentPlayer to send WorkerChoseClient message
+     * In case of WORKER_CHOSE, enable the current player to send WorkerInitalizeClient message
+     * IN case of START, enable the current player to send WorkerChoseClient message
      * @param message a CurrentStatusServer message
      */
     @Override
@@ -449,7 +449,7 @@ public class GUI extends Application implements ViewInterface {
 
     /**
      * If is the first message, shows to the Challenger the Challenger Scene
-     * Otherwise shows th Card Scene to the CurrentPLayer
+     * Otherwise shows th Card Scene to the Current PLayer
      * @param message an AbailableCardServer
      */
     @Override
