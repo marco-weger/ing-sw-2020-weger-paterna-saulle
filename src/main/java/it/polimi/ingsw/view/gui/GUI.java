@@ -154,7 +154,7 @@ public class GUI extends Application implements ViewInterface {
                 DefaultController controller = loader.getController();
                 if(controller instanceof BoardController){
                     ((BoardController) controller).setCms(message);
-                    ((BoardController) controller).NEWbanner.setText("Choose the cell where you want to move");
+                    ((BoardController) controller).banner.setText("Choose the cell where you want to move");
                     ((BoardController) controller).showCheckMove(message);
                     ((BoardController) controller).setState(2);
                     ((BoardController) controller).refresh();
@@ -178,7 +178,7 @@ public class GUI extends Application implements ViewInterface {
                 DefaultController controller = loader.getController();
                 if (controller instanceof BoardController) {
                     ((BoardController) controller).setCbs(message);
-                    ((BoardController) controller).NEWbanner.setText("Choose the cell where you want to build");
+                    ((BoardController) controller).banner.setText("Choose the cell where you want to build");
                     ((BoardController) controller).showCheckBuild(message);
                     ((BoardController) controller).setState(3);
                     ((BoardController) controller).refresh();
@@ -220,7 +220,7 @@ public class GUI extends Application implements ViewInterface {
                     //second Worker
                     if (controllerx instanceof BoardController) {
                         Platform.runLater(() -> {
-                            ((BoardController) controllerx).NEWbanner.setText("Choose the position of the second worker");
+                            ((BoardController) controllerx).banner.setText("Choose the position of the second worker");
                             ((BoardController) controllerx).setState(0);
                         });
                         flag = true;
@@ -235,7 +235,7 @@ public class GUI extends Application implements ViewInterface {
                         if (controllerx instanceof BoardController) {
                             Platform.runLater(() -> {
                                 controllerx.setup();
-                                ((BoardController) controllerx).NEWbanner.setText("Choose the position of the first worker");
+                                ((BoardController) controllerx).banner.setText("Choose the position of the first worker");
                                 ((BoardController) controllerx).setState(0);
                                 ((BoardController) controllerx).refresh();
                             });
@@ -256,7 +256,7 @@ public class GUI extends Application implements ViewInterface {
             if (controllerx instanceof BoardController) {
                 Platform.runLater(() -> {
                     controllerx.setup();
-                    ((BoardController) controllerx).NEWbanner.setText("WAIT, " + client.getPlayers().get(currentP/2).name+ "'s Turn");
+                    ((BoardController) controllerx).banner.setText("WAIT, " + client.getPlayers().get(currentP/2).name+ "'s Turn");
                     ((BoardController) controllerx).refresh();
                 });
             }
@@ -309,7 +309,7 @@ public class GUI extends Application implements ViewInterface {
                         if(xcontroller instanceof BoardController){
                             Platform.runLater(() -> {
                                 ((BoardController) xcontroller).refresh();
-                                ((BoardController) xcontroller).NEWbanner.setText("Choose the position of the first worker");
+                                ((BoardController) xcontroller).banner.setText("Choose the position of the first worker");
                                 xcontroller.setup();
                                 ((BoardController) xcontroller).setState(0);
                                 s.setOnKeyPressed(e -> {
@@ -331,7 +331,7 @@ public class GUI extends Application implements ViewInterface {
                         if(c instanceof BoardController){
                             Platform.runLater(() -> {
                                 ((BoardController) c).setCss(message);
-                                ((BoardController) c).NEWbanner.setText("Choose a Worker");
+                                ((BoardController) c).banner.setText("Choose a Worker");
                                 ((BoardController) c).refresh();
                                 ((BoardController) c).setState(1);
                             });
@@ -349,7 +349,7 @@ public class GUI extends Application implements ViewInterface {
                 DefaultController controllerx = loader2.getController();
                 if(controllerx instanceof BoardController){
                     Platform.runLater(() -> {
-                        ((BoardController) controllerx).NEWbanner.setText("WAIT, "+message.player+"'s Turn");
+                        ((BoardController) controllerx).banner.setText("WAIT, "+message.player+"'s Turn");
                         ((BoardController) controllerx).refresh();
                         sn.setOnKeyPressed(e -> {
                             if (e.getCode() == KeyCode.Y || e.getCode() == KeyCode.N) {
@@ -368,7 +368,7 @@ public class GUI extends Application implements ViewInterface {
                 FXMLLoader loaderx = (FXMLLoader) primaryStage.getScene().getUserData();
                 DefaultController controllerx = loaderx.getController();
                 if (controllerx instanceof BoardController) {
-                    ((BoardController) controllerx).NEWbanner.setText("WAIT, " + message.player + "'s Turn");
+                    ((BoardController) controllerx).banner.setText("WAIT, " + message.player + "'s Turn");
                     ((BoardController) controllerx).refresh();
                 }
             });
@@ -440,7 +440,7 @@ public class GUI extends Application implements ViewInterface {
             FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
             DefaultController controller = loader.getController();
             if(controller instanceof BoardController){
-                ((BoardController) controller).NEWbanner.setText(alert.getText());
+                ((BoardController) controller).banner.setText(alert.getText());
                 ((BoardController) controller).refresh();
             } else System.out.println("FATAL ERROR SOMEONELOSE SERVER MESSAGE");
         });
@@ -550,7 +550,8 @@ public class GUI extends Application implements ViewInterface {
         DefaultController controller = loader.getController();
         if(controller instanceof BoardController) {
             Platform.runLater(() -> {
-                ((BoardController) controller).NEWbanner.setText(end.getText());
+                ((BoardController) controller).banner.setLayoutX((sceneWidth/2)-400);
+                ((BoardController) controller).banner.setText(end.getText());
                 ((BoardController) controller).refresh();
             });
         }
@@ -702,8 +703,8 @@ public class GUI extends Application implements ViewInterface {
                         for (SnapCell cellx : ((BoardController) c).Cms.sc)
                             ((BoardController) c).lightItDown(((BoardController) c).getCell(cellx.row,cellx.column));
                     ((BoardController) c).unShowTimer();
-                    ((BoardController) c).NEWbanner.setLayoutX((this.sceneWidth/2)-400);
-                    ((BoardController) c).NEWbanner.setText(message.player+" has a network issue... Reconnecting " + (message.n+1) + "/" + (message.of+1));
+                    ((BoardController) c).banner.setLayoutX((this.sceneWidth/2)-400);
+                    ((BoardController) c).banner.setText(message.player+" has a network issue... Reconnecting " + (message.n+1) + "/" + (message.of+1));
                     ((BoardController) c).setState(4);
                 });
             } else System.out.println("FATAL ERROR TIMEROUT SERVER MESSAGE!");
@@ -762,7 +763,7 @@ public class GUI extends Application implements ViewInterface {
                 DefaultController c = l.getController();
                 if(c instanceof BoardController){
                     ((BoardController) c).showTimer();
-                    ((BoardController) c).NEWbanner.setText(message.player+" IS BACK!");
+                    ((BoardController) c).banner.setText(message.player+" IS BACK!");
                     ((BoardController) c).refresh();
                 }
             });

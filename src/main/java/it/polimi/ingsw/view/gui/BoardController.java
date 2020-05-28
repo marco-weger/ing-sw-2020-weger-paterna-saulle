@@ -11,11 +11,10 @@ import it.polimi.ingsw.commons.servermessages.QuestionAbilityServer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.text.Text;
 
 public class BoardController extends DefaultController {
 
@@ -53,7 +52,7 @@ public class BoardController extends DefaultController {
     public Button buttonTimer;
 
     @FXML
-    public Button NEWbanner;
+    public Button banner;
 
     /**
      * Choose size of the Image for Towers Floors
@@ -187,10 +186,10 @@ public class BoardController extends DefaultController {
 
         showTimer = true;
 
-        NEWbanner.setMinSize(800,60);
-        NEWbanner.setMaxSize(800,60);
-        NEWbanner.setPrefSize(800,60);
-        NEWbanner.setText("");
+        banner.setMinSize(800,60);
+        banner.setMaxSize(800,60);
+        banner.setPrefSize(800,60);
+        banner.setText("");
     }
 
 
@@ -199,8 +198,8 @@ public class BoardController extends DefaultController {
      */
     @Override
     public void setup(){
-        NEWbanner.setLayoutY(bottom.getPrefHeight()/2-NEWbanner.getPrefHeight()/2);
-        NEWbanner.setLayoutX((gui.sceneWidth/2)-400);
+        banner.setLayoutY(bottom.getPrefHeight()/2-banner.getPrefHeight()/2);
+        banner.setLayoutX((gui.sceneWidth/2)-400);
 
         int start = 550;
         buttonGod1.getStyleClass().clear();
@@ -955,8 +954,7 @@ public class BoardController extends DefaultController {
      * Shows the NewGame and Exit button in Loser banner
      */
     public void loserbanner(){
-        //banner.setText("Thanks for playing Santorini");
-        NEWbanner.setText("Thanks for playing Santorini");
+        banner.setText("Thanks for playing Santorini");
         newGameBOn(no);
         loserFlag = true;
     }
@@ -970,8 +968,8 @@ public class BoardController extends DefaultController {
         nOn(no);
         Platform.runLater(() -> {
             //400
-            NEWbanner.setLayoutX((buttonTimer.getLayoutX()+buttonTimer.getPrefWidth()+yes.getLayoutX())/2-400);
-            NEWbanner.setText("Do you want to use you God ability?");
+            banner.setLayoutX((buttonTimer.getLayoutX()+buttonTimer.getPrefWidth()+yes.getLayoutX())/2-400);
+            banner.setText("Do you want to use you God ability?");
         });
         questionFlag = true;
     }
@@ -1008,7 +1006,7 @@ public class BoardController extends DefaultController {
             yOff(yes);
             nOff(no);
             questionFlag = false;
-            NEWbanner.setLayoutX((gui.sceneWidth/2)-400);
+            banner.setLayoutX((gui.sceneWidth/2)-400);
         }
     }
 
@@ -1024,7 +1022,7 @@ public class BoardController extends DefaultController {
             yOff(yes);
             nOff(no);
             questionFlag = false;
-            NEWbanner.setLayoutX((gui.sceneWidth/2)-400);
+            banner.setLayoutX((gui.sceneWidth/2)-400);
         }
         if(loserFlag){
             this.gui.getClient().resetMatch();
