@@ -57,6 +57,12 @@ public class CardController extends DefaultController {
     @FXML
     public Button banner;
 
+
+    /**
+     * set the background image
+     * set the image in the frame
+     * set size of the button
+     */
     @FXML
     @Override
     public void initialize(){
@@ -140,6 +146,10 @@ public class CardController extends DefaultController {
         eeCounter=0;
     }
 
+
+    /**
+     * set the position of the button
+     */
     @Override
     public void setup(){
         super.setup();
@@ -177,6 +187,10 @@ public class CardController extends DefaultController {
         eeCounter=0;
     }
 
+
+    /**
+     * set the position of the gods zone in case of 2 or 3 gods
+     */
     public void setGods(){
         if(cards.size() == 3){
             int offset = 0;
@@ -231,6 +245,13 @@ public class CardController extends DefaultController {
         eeCounter=0;
     }
 
+
+    /**
+     * set the god podium to the chosen god
+     * @param b the button chosen
+     * @param newValue a flag
+     * @param j #FIXME
+     */
     public void setPodium(Button b, boolean newValue, int j){
         String[] splitted;
         if (newValue) {
@@ -266,6 +287,11 @@ public class CardController extends DefaultController {
         eeCounter=0;
     }
 
+
+    /**
+     * Load the god on the God Chosen Zone #1
+     * @param actionEvent
+     */
     public void setGod1(ActionEvent actionEvent) {
         cardName = cards.get(0);
         buttonSend.setVisible(true);
@@ -278,6 +304,11 @@ public class CardController extends DefaultController {
         eeCounter=0;
     }
 
+
+    /**
+     * Load the god on the God Chosen Zone #2
+     * @param actionEvent
+     */
     public void setGod2(ActionEvent actionEvent) {
         cardName = cards.get(1);
         buttonSend.setVisible(true);
@@ -290,6 +321,11 @@ public class CardController extends DefaultController {
         eeCounter=0;
     }
 
+
+    /**
+     * Load the god on the God Chosen Zone #3
+     * @param actionEvent
+     */
     public void setGod3(ActionEvent actionEvent) {
         cardName = cards.get(2);
         buttonSend.setVisible(true);
@@ -302,6 +338,11 @@ public class CardController extends DefaultController {
         eeCounter=0;
     }
 
+
+    /**
+     * Send your choice to the opponent's
+     * @param actionEvent send button clicked
+     */
     public void sendOnAction(ActionEvent actionEvent) {
         if(cardName != null){
             gui.getClient().sendMessage(new PlayerChoseClient(gui.getClient().getUsername(), cardName));
@@ -311,29 +352,55 @@ public class CardController extends DefaultController {
         eeCounter=0;
     }
 
+
+    /**
+     * NO SPOILER
+     * @param actionEvent just click 5 times something
+     */
     public void easterEgg(ActionEvent actionEvent) {
         if(++eeCounter==5)
             gui.getClient().sendMessage(new EasterEggClient(gui.getClient().getUsername()));
     }
 
+
+    /**
+     * shows the rules
+     * reset the easter egg counter
+     */
     @Override
     public void showHelper(){
         super.showHelper();
         eeCounter = 0;
     }
 
+
+    /**
+     * shows the exit popUp
+     * reset the easter egg counter
+     * @param actionEvent exit button clicked
+     */
     @Override
     public void quitOnAction(ActionEvent actionEvent) {
         super.quitOnAction(actionEvent);
         eeCounter = 0;
     }
 
+
+    /**
+     * //FIXME
+     * @param mouseEvent
+     */
     @Override
     public void topPressed(MouseEvent mouseEvent) {
         super.topPressed(mouseEvent);
         eeCounter = 0;
     }
 
+
+    /**
+     * //FIXME
+     * @param mouseEvent
+     */
     @Override
     public void topDragged(MouseEvent mouseEvent) {
         super.topDragged(mouseEvent);

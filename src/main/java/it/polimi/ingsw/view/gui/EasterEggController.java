@@ -27,6 +27,11 @@ public class EasterEggController extends DefaultController{
 
     private AvailableCardServer last;
 
+
+    /**
+     * set the background image
+     * set size of the button
+     */
     @FXML
     @Override
     public void initialize(){

@@ -100,17 +100,6 @@ public class BoardController extends DefaultController {
     Image floor3 = new Image("/it.polimi.ingsw/view/gui/img/tower/floor3.png", towerSize, towerSize, true, false);
     Image dome = new Image("/it.polimi.ingsw/view/gui/img/tower/dome.png", towerSize, towerSize, true, false);
 
-    //@FXML
-    //TextField banner;
-    /*
-    Text workerITA = new Text("            Choose the position of the first worker");
-    Text workerITA2 = new Text("          Choose the position of the second worker");
-    Text workerCTA = new Text("                  Choose a Worker");
-    Text moveTA = new Text("             Choose the cell where you want to move");
-    Text buildTA = new Text("           Choose the cell where you want to build");
-    Text questionTA = new Text("       Do you want to use you God ability?");
-    */
-
 
     @FXML
     Button yes,no;
@@ -1821,6 +1810,12 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * Make possible to answer a request of an QuestionAbilityServer by Keyboard
+     * Y to YES, n to NO
+     * @param code
+     */
     public void activeQuestionIfPossible(KeyCode code) {
         if(questionFlag) {
             this.gui.getClient().sendMessage(new AnswerAbilityClient(this.gui.getClient().getUsername(), code == KeyCode.Y, Qas.status));
@@ -1830,10 +1825,18 @@ public class BoardController extends DefaultController {
         }
     }
 
+
+    /**
+     * Unshows the timer
+     */
     public void unShowTimer() {
         showTimer = false;
     }
 
+
+    /**
+     * Shows the Timer
+     */
     public void showTimer() {
         showTimer = true;
         buttonTimer.setVisible(true);

@@ -14,6 +14,11 @@ public class ErrorController extends  DefaultController{
     @FXML
     public AnchorPane anchorError;
 
+
+    /**
+     * set the background image
+     * set size of the button
+     */
     @FXML
     @Override
     public void initialize() {
@@ -27,12 +32,23 @@ public class ErrorController extends  DefaultController{
         Quit.setPrefSize(x,y);
     }
 
+
+    /**
+     * close the error PopUp
+     * close the game
+     * @param actionEvent quit button clicked
+     */
     public void quit(ActionEvent actionEvent) {
         //gui.getClient().disconnectionHandler();
         gui.close(true);
         System.exit(0);
     }
 
+
+    /**
+     * Set the background of the current Scene
+     * @param image the background image
+     */
     @Override
     public void setBackground(Image image){
         anchorError.setBackground(new Background(new BackgroundImage(image,

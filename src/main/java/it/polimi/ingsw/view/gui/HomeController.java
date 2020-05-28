@@ -15,6 +15,10 @@ public class HomeController extends DefaultController{
     public Button buttonHelp;
 
 
+    /**
+     * set the background image
+     * set size of the button
+     */
     @FXML
     @Override
     public void initialize(){
@@ -32,11 +36,21 @@ public class HomeController extends DefaultController{
         buttonHelper.setVisible(false);
     }
 
+    /**
+     * Show the helper
+     * @param actionEvent help button clicked
+     */
     public void handleHelpButton(javafx.event.ActionEvent actionEvent) {
         showHelper();
     }
 
 
+    /**
+     * Try a connection to the main Server
+     * if true -> load Name Scene
+     * else -> load Server Scene
+     * @param actionEvent
+     */
     public void handlePlayButton(javafx.event.ActionEvent actionEvent) {
         boolean go = this.gui.getClient().connect();
         Platform.runLater(() -> {

@@ -76,6 +76,12 @@ public class ChallengerController extends DefaultController {
 
     private int eeCounter;
 
+
+    /**
+     * set the background image
+     * set the image in the frame
+     * set size of the button
+     */
     @FXML
     @Override
     public void initialize(){
@@ -154,6 +160,11 @@ public class ChallengerController extends DefaultController {
         eeCounter = 0;
     }
 
+
+    /**
+     * set the button position
+     * set the Textfield position
+     */
     @Override
     public void setup(){
         super.setup();
@@ -220,18 +231,32 @@ public class ChallengerController extends DefaultController {
         eeCounter = 0;
     }
 
+
+    /**
+     * Change the card in the frame
+     * @param actionEvent right button clicked
+     */
     public void rightCard(ActionEvent actionEvent) {
         eeCounter = 0;
         if(++count == cards.size()) count = 0;
         setCard();
     }
 
+
+    /**
+     * Change the card in the frame
+     * @param actionEvent left button clicked
+     */
     public void leftCard(ActionEvent actionEvent) {
         eeCounter = 0;
         if(--count == -1) count = cards.size()-1;
         setCard();
     }
 
+
+    /**
+     * set the current card image, and write him description in the banner
+     */
     public void setCard(){
         eeCounter = 0;
         try{
@@ -256,6 +281,11 @@ public class ChallengerController extends DefaultController {
         }
     }
 
+
+    /**
+     * Choice the current card
+     * @param actionEvent accept button clicked
+     */
     public void acceptOnAction(ActionEvent actionEvent) {
         eeCounter = 0;
         if(!selected.contains(cards.get(count))){
@@ -268,6 +298,11 @@ public class ChallengerController extends DefaultController {
         }
     }
 
+
+    /**
+     * Send the chosen cards to the opponents
+     * @param actionEvent send button clicked
+     */
     public void sendOnAction(ActionEvent actionEvent){
         eeCounter = 0;
         if(selected.size() == gui.getClient().getPlayers().size()){
@@ -278,6 +313,13 @@ public class ChallengerController extends DefaultController {
         }
     }
 
+
+    /**
+     * remove the chosen god
+     * remove the send button
+     * reload the old chosen god
+     * @param actionEvent clear button clicked
+     */
     public void clearOnAction(ActionEvent actionEvent) {
         eeCounter = 0;
         selected.clear();
@@ -286,6 +328,10 @@ public class ChallengerController extends DefaultController {
         showSelected();
     }
 
+
+    /**
+     * show the selected gods in the Gods Chosen Zone
+     */
     public void showSelected(){
         eeCounter = 0;
         buttonGod1.getStyleClass().clear();
@@ -308,29 +354,55 @@ public class ChallengerController extends DefaultController {
         }
     }
 
+
+    /**
+     * EASTER EGG, NO SPOILER
+     * @param actionEvent 5 click on Something in this page
+     */
     public void easterEgg(ActionEvent actionEvent) {
         if(++eeCounter==5)
             gui.getClient().sendMessage(new EasterEggClient(gui.getClient().getUsername()));
     }
 
+
+    /**
+     * shows helper
+     * reset the easter egg counter
+     */
     @Override
     public void showHelper(){
         super.showHelper();
         eeCounter = 0;
     }
 
+
+    /**
+     * shows the exit popUp
+     * reset the easter egg counter
+     * @param actionEvent exit button clicked
+     */
     @Override
     public void quitOnAction(ActionEvent actionEvent) {
         super.quitOnAction(actionEvent);
         eeCounter = 0;
     }
 
+
+    /**
+     * //FIXME
+     * @param mouseEvent
+     */
     @Override
     public void topPressed(MouseEvent mouseEvent) {
         super.topPressed(mouseEvent);
         eeCounter = 0;
     }
 
+
+    /**
+     * //FIXME
+     * @param mouseEvent
+     */
     @Override
     public void topDragged(MouseEvent mouseEvent) {
         super.topDragged(mouseEvent);

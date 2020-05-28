@@ -67,6 +67,11 @@ public class DefaultController{
 
     Stage exit;
 
+
+    /**
+     * set the background image
+     * set size of the button
+     */
     @FXML
     public void initialize(){
 
@@ -94,6 +99,11 @@ public class DefaultController{
 
     public void setGUI(GUI gui){ this.gui=gui; }
 
+
+    /**
+     * Set the background of the current Scene
+     * @param image the background image
+     */
     public void setBackground(Image image){
         center.setBackground(new Background(new BackgroundImage(image,
                 BackgroundRepeat.NO_REPEAT,
@@ -102,16 +112,24 @@ public class DefaultController{
                 new BackgroundSize(100, BackgroundSize.AUTO, true, false, true, true))));
     }
 
+
+    //FIXME
     public void topPressed(MouseEvent mouseEvent) {
         initialX = (int) (mainstage.getX() - mouseEvent.getScreenX());
         initialY = (int) (mainstage.getY() - mouseEvent.getScreenY());
     }
 
+    //FIXME
     public void topDragged(MouseEvent mouseEvent) {
         mainstage.setX(mouseEvent.getScreenX() + initialX);
         mainstage.setY(mouseEvent.getScreenY() + initialY);
     }
 
+
+    /**
+     * When clicked load the EXIT PopUp
+     * @param actionEvent exit button clicked
+     */
     public void quitOnAction(ActionEvent actionEvent) {
       //  Platform.runLater(() -> {
            exit = new Stage();
@@ -139,10 +157,19 @@ public class DefaultController{
       //  });
     }
 
+
+    /**
+     * Shows the Rules file
+     * @param actionEvent help button click
+     */
     public void helperOnAction(ActionEvent actionEvent) {
         showHelper();
     }
 
+
+    /**
+     * Load the Rules fxml
+     */
     public void showHelper(){
         Parent root;
         try{
@@ -173,6 +200,11 @@ public class DefaultController{
         }
     }
 
+    /**
+     * load the font and the cursor image on the Textfield
+     * avoid changes when it's clicked
+     * @param tf the font chosen
+     */
     public void setUpTextField(TextField tf){
         tf.setCursor(new ImageCursor(new Image(CURSOR)));
         tf.setFont(f);
@@ -185,20 +217,5 @@ public class DefaultController{
             }
         });
     }
-
-    /*
-    public void setUpBanner(TextField tf){
-        tf.setCursor(new ImageCursor(new Image(CURSOR)));
-        tf.setFont(f);
-        tf.focusedProperty().addListener(new ChangeListener<Boolean>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-            {
-                tf.setFont(f);
-            }
-        });
-    }
-    */
 }
 

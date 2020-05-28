@@ -20,6 +20,11 @@ public class ExitController extends  DefaultController{
     @FXML
     public AnchorPane anchorExit;
 
+
+    /**
+     * set the background image
+     * set size of the button
+     */
     @FXML
     @Override
     public void initialize() {
@@ -38,19 +43,31 @@ public class ExitController extends  DefaultController{
 
         //anchorWin.setStyle("-fx-border-color: green; -fx-border-width: 1px 1px 1px 1px");
     }
+
+    /**
+     * Send a disconnection message, close the game.
+     * @param actionEvent yes button clicked
+     */
     public void yes(ActionEvent actionEvent) {
         gui.getClient().disconnectionHandler();
         this.gui.getClient().sendMessage(new DisconnectionClient(this.gui.getClient().getUsername(),false));
         System.exit(0);
     }
 
+    /**
+     * Remove the Exit PopUp
+     * @param actionEvent no button clicked
+     */
     public void no(ActionEvent actionEvent) {
         Stage stage = (Stage) No.getScene().getWindow();
         stage.close();
     }
 
 
-
+    /**
+     * Set the background of the current Scene
+     * @param image the background image
+     */
     @Override
     public void setBackground(Image image){
         anchorExit.setBackground(new Background(new BackgroundImage(image,
