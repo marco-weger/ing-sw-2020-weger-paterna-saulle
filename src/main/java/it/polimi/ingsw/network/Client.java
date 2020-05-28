@@ -404,6 +404,8 @@ public class Client implements Runnable{
                         if(((CurrentStatusServer) msg).status.equals(Status.START))
                             currentPlayer = ((CurrentStatusServer) msg).player;
                         view.statusHandler((CurrentStatusServer) msg);
+                    }else if(msg instanceof LobbyServer){
+                        resetMatch();
                     }
 
                     if(mustPrint && !(msg instanceof ReConnectionServer)){

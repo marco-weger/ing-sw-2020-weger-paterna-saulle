@@ -158,7 +158,7 @@ public class GUI extends Application implements ViewInterface {
                     ((BoardController) controller).showCheckMove(message);
                     ((BoardController) controller).setState(2);
                     ((BoardController) controller).refresh();
-                } else System.out.println("FATAL ERROR CHECKMOVESERVER MESSAGE");
+                } else System.out.println("FATAL ERROR - CHECKMOVESERVER MESSAGE");
             });
         }
     }
@@ -182,7 +182,7 @@ public class GUI extends Application implements ViewInterface {
                     ((BoardController) controller).showCheckBuild(message);
                     ((BoardController) controller).setState(3);
                     ((BoardController) controller).refresh();
-                } else System.out.println("FATAL ERROR CHECKBUILDSERVER MESSAGE");
+                } else System.out.println("FATAL ERROR - CHECKBUILDSERVER MESSAGE");
             });
         }
     }
@@ -281,7 +281,7 @@ public class GUI extends Application implements ViewInterface {
                     ((BoardController) controller).setQas(message);
                     ((BoardController) controller).question();
                     ((BoardController) controller).refresh();
-                } else System.out.println("FATAL ERROR QUESTIONABILITYSERVER MESSAGE");
+                } else System.out.println("FATAL ERROR - QUESTIONABILITYSERVER MESSAGE");
             });
         }
     }
@@ -335,7 +335,7 @@ public class GUI extends Application implements ViewInterface {
                                 ((BoardController) c).refresh();
                                 ((BoardController) c).setState(1);
                             });
-                        } else System.out.println("FATAL ERROR CURRENTSTATUSSERVER [START] MESSAGE!");
+                        } else System.out.println("FATAL ERROR - CURRENTSTATUSSERVER [START] MESSAGE!");
                     });
                     break;
                 default:
@@ -442,7 +442,7 @@ public class GUI extends Application implements ViewInterface {
             if(controller instanceof BoardController){
                 ((BoardController) controller).banner.setText(alert.getText());
                 ((BoardController) controller).refresh();
-            } else System.out.println("FATAL ERROR SOMEONELOSE SERVER MESSAGE");
+            } else System.out.println("FATAL ERROR - SOMEONELOSE SERVER MESSAGE");
         });
     }
 
@@ -656,7 +656,7 @@ public class GUI extends Application implements ViewInterface {
             DefaultController controller = loader.getController();
             if(controller instanceof BoardController){
                 ((BoardController) controller).refresh();
-            } else System.out.println("FATAL ERROR BUILTSERVER MESSAGE");
+            } else System.out.println("FATAL ERROR - BUILTSERVER MESSAGE");
         });
     }
 
@@ -672,7 +672,7 @@ public class GUI extends Application implements ViewInterface {
             DefaultController controller = loader.getController();
             if(controller instanceof BoardController){
                 ((BoardController) controller).refresh();
-            } else System.out.println("FATAL ERROR MOVEDSERVER MESSAGE");
+            } else System.out.println("FATAL ERROR - MOVEDSERVER MESSAGE");
         });
     }
 
@@ -707,7 +707,7 @@ public class GUI extends Application implements ViewInterface {
                     ((BoardController) c).banner.setText(message.player+" has a network issue... Reconnecting " + (message.n+1) + "/" + (message.of+1));
                     ((BoardController) c).setState(4);
                 });
-            } else System.out.println("FATAL ERROR TIMEROUT SERVER MESSAGE!");
+            } else System.out.println("FATAL ERROR - TIMEROUT SERVER MESSAGE!");
         });
     }
 
@@ -970,7 +970,7 @@ public class GUI extends Application implements ViewInterface {
                         ((BoardController) controller).buttonTimer.setVisible(true);
                         ((BoardController) controller).buttonTimer.setText(val+"");
                     }
-                } else System.out.println("FATAL ERROR SETTIMERTEXT");
+                }
             } catch (Exception ignored){}
         });
     }

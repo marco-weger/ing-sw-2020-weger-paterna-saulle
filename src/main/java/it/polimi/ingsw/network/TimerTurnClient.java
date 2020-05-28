@@ -13,12 +13,27 @@ public class TimerTurnClient extends TimerTask {
      */
     private final GUI gui;
 
+    /**
+     * The number of try
+     */
     private long times;
 
+    /**
+     * The times counter
+     */
     private long count;
 
+    /**
+     * The task
+     */
     public ScheduledExecutorService ses;
 
+    /**
+     * It sets the task
+     * @param gui
+     * @param ses
+     * @param times
+     */
     public TimerTurnClient(GUI gui, ScheduledExecutorService ses, long times){
         //System.out.println("[TIMER]");
         this.gui = gui;
