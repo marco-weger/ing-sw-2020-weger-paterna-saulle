@@ -370,7 +370,7 @@ public class GUI extends Application implements ViewInterface {
                 if (controllerx instanceof BoardController) {
                     ((BoardController) controllerx).NEWbanner.setText("WAIT, " + message.player + "'s Turn");
                     ((BoardController) controllerx).refresh();
-                } else System.out.println("FATAL ERROR CURRENTSTATUSSERVER [OPPONENT'S TURN] MESSAGE");
+                }
             });
         }
 
@@ -473,7 +473,7 @@ public class GUI extends Application implements ViewInterface {
                 }
                 primaryStage.show();
             });
-        } else System.out.println("MOSTRA BANNER SCELTA AVVERSARIO");
+        }
     }
 
 
