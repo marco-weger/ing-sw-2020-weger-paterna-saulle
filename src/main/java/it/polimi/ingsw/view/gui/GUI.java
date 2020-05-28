@@ -159,17 +159,19 @@ public class GUI extends Application implements ViewInterface {
 
     @Override
     public void handleMessage(CheckBuildServer message) {
-        Platform.runLater(() -> {
-            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-            DefaultController controller = loader.getController();
-            if(controller instanceof BoardController){
-                ((BoardController) controller).setCbs(message);
-                ((BoardController) controller).NEWbanner.setText("Choose the cell where you want to build");
-                ((BoardController) controller).showCheckBuild(message);
-                ((BoardController) controller).setState(3);
-                ((BoardController) controller).refresh();
-            } else System.out.println("FATAL ERROR");
-        });
+        if(client.getUsername().equals(client.getCurrentPlayer())) {
+            Platform.runLater(() -> {
+                FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
+                DefaultController controller = loader.getController();
+                if (controller instanceof BoardController) {
+                    ((BoardController) controller).setCbs(message);
+                    ((BoardController) controller).NEWbanner.setText("Choose the cell where you want to build");
+                    ((BoardController) controller).showCheckBuild(message);
+                    ((BoardController) controller).setState(3);
+                    ((BoardController) controller).refresh();
+                } else System.out.println("FATAL ERROR");
+            });
+        }
     }
 
     @Override
@@ -232,7 +234,7 @@ public class GUI extends Application implements ViewInterface {
             if (controllerx instanceof BoardController) {
                 Platform.runLater(() -> {
                     controllerx.setup();
-                    ((BoardController) controllerx).NEWbanner.setText("WAIT, " + message.player + "'s Turn");
+                    ((BoardController) controllerx).NEWbanner.setText("WAIT, " + client.getPlayers().get(currentP/2).name+ "'s Turn");
                     ((BoardController) controllerx).refresh();
                 });
             }
@@ -709,34 +711,38 @@ public class GUI extends Application implements ViewInterface {
 
     }
 
+    int i = 0;
     @Override
     public void close(boolean isError) {
-        if(!isError)
-          client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
-        Platform.runLater(() -> {
-            error = new Stage();
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Error.fxml"));
-                Parent root2 = loader.load();
-                defaultcontroller = loader.getController();
-                defaultcontroller.setGUI(this);
-                Scene scene = new Scene(Objects.requireNonNull(root2), POPUPX, POPUPY, Color.TRANSPARENT);
-                scene.setCursor(new ImageCursor(new Image(CURSOR), 36, 45));
-                error.initStyle(StageStyle.TRANSPARENT);
-                error.setAlwaysOnTop(true);
-                scene.setUserData(loader);
-                error.initModality(Modality.WINDOW_MODAL);
-                error.initOwner(getPrimaryStage());
-                scene.setUserData(loader);
-                error.setScene(scene);
+        // if(!isError)
+        //  client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
+        if(i == 0) {
+            i++;
+            Platform.runLater(() -> {
+                error = new Stage();
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Error.fxml"));
+                    Parent root2 = loader.load();
+                    defaultcontroller = loader.getController();
+                    defaultcontroller.setGUI(this);
+                    Scene scene = new Scene(Objects.requireNonNull(root2), POPUPX, POPUPY, Color.TRANSPARENT);
+                    scene.setCursor(new ImageCursor(new Image(CURSOR), 36, 45));
+                    error.initStyle(StageStyle.TRANSPARENT);
+                    error.setAlwaysOnTop(true);
+                    scene.setUserData(loader);
+                    error.initModality(Modality.WINDOW_MODAL);
+                    error.initOwner(getPrimaryStage());
+                    scene.setUserData(loader);
+                    error.setScene(scene);
 
-                error.setX((getPrimaryStage().getX() + sceneWidth / 2 - POPUPX / 2));
-                error.setY((getPrimaryStage().getY() + sceneHeight / 2 - POPUPY / 2));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            error.showAndWait();
-        });
+                    error.setX((getPrimaryStage().getX() + sceneWidth / 2 - POPUPX / 2));
+                    error.setY((getPrimaryStage().getY() + sceneHeight / 2 - POPUPY / 2));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                error.showAndWait();
+            });
+        }
     }
 
     @Override
@@ -765,6 +771,65 @@ public class GUI extends Application implements ViewInterface {
         Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+/*
+        SnapPlayer p;
+        p = new SnapPlayer("asdasd");
+        p.card = CardName.ARTEMIS;
+        client.getPlayers().add(p);
+        p = new SnapPlayer("fdggh");
+        p.card = CardName.MINOTAUR;
+        client.getPlayers().add(p);
+        p = new SnapPlayer("dfgds");
+        p.card = CardName.DEMETER;
+        client.getPlayers().add(p);
+        client.setUsername("fdggh");
+
+        Platform.runLater(() -> {
+            Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");;
+            FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
+            DefaultController controllerx = loader2.getController();
+
+            if (controllerx instanceof BoardController) {
+                controllerx.setup();
+                ((BoardController) controllerx).banner.setText(((BoardController) controllerx).workerITA.getText());
+                ((BoardController) controllerx).setState(0);
+                ((BoardController) controllerx).refresh();
+                primaryStage.setScene(sn);
+                primaryStage.show();
+
+
+            }
+
+            Platform.runLater(() -> {
+                win = new Stage();
+                //end.setText("YOU WIN!");
+                unShowTimer();
+                try {
+                    //System.out.println(file);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Win.fxml"));
+                    Parent root2 = loader.load();
+                    defaultcontroller = loader.getController();
+                    defaultcontroller.setGUI(this);
+                    Scene scene = new Scene(Objects.requireNonNull(root2), 421, 450, Color.TRANSPARENT);
+                    scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
+                    win.initStyle(StageStyle.TRANSPARENT);
+                    win.setAlwaysOnTop(true);
+                    scene.setUserData(loader);
+                    win.initModality(Modality.WINDOW_MODAL);
+                    win.initOwner(primaryStage);
+                    scene.setUserData(loader);
+                    win.setScene(scene);
+                    win.setX((primaryStage.getX()+sceneWidth/2-421/2));
+                    win.setY((primaryStage.getY()+sceneHeight/2-450/2));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //win.showAndWait();
+                close(true);
+            });
+        });*/
+
     }
 
     public void setTimerText(long val){
