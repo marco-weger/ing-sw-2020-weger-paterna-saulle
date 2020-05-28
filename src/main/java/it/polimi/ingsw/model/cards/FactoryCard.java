@@ -12,7 +12,6 @@ public class FactoryCard {
      * @return istance of the card
      */
     public static Card getCard(CardName cardName, VirtualView vv){
-        // TODO: add JavaDoc to describe every card
         switch (cardName)
         {
             case APOLLO:
