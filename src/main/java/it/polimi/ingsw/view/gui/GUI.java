@@ -1,5 +1,4 @@
 package it.polimi.ingsw.view.gui;
-
 import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
@@ -21,7 +20,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -34,21 +32,22 @@ import java.util.logging.Logger;
 public class GUI extends Application implements ViewInterface {
 
     private static final Logger LOGGER = Logger.getLogger(HomeController.class.getName());
-
     double sceneWidth = 0;
     double sceneHeight = 0;
-    int currentP = 0;   //FRANCESCO COUNTER
+    int currentP = 0; /* a parameter to Save CurrentPlayer during the CARD_CHOSE Status*/
+    int NetworkErrorFlag = 0; /*a flag to avoid mutliple netork error freeze*/
+
 
     Parent root;
     DefaultController defaultcontroller;
+
     private static final String CURSOR = "/it.polimi.ingsw/view/gui/img/pointer.png";
     private static final String BOARD = "/it.polimi.ingsw/view/gui/fxml/Board.fxml";
+
     private static final double POPUPX = 421;
     private static final double POPUPY = 450;
 
-
     private TimerTurnClient timer;
-
     private Client client;
     private Stage primaryStage;
     private Stage win;
@@ -56,13 +55,6 @@ public class GUI extends Application implements ViewInterface {
     private Stage error;
 
     private ScheduledExecutorService timeOut;
-
-    /*
-    public void setAndShow(Scene s){
-        this.primaryStage.setScene(s);
-        this.primaryStage.show();
-    }
-    */
 
     public Stage getLose() {
         return lose;
@@ -76,6 +68,12 @@ public class GUI extends Application implements ViewInterface {
         return win;
     }
 
+
+    /**
+     * Main JavaFX function, set size,cursor and Style of Santorini
+     * Creates a new Client
+     * @param primaryStage the mainstage of the GUI
+     */
     @Override
     public void start(Stage primaryStage) {
         sceneWidth = 950;
@@ -92,6 +90,12 @@ public class GUI extends Application implements ViewInterface {
 
     public Client getClient(){ return client; }
 
+
+    /**
+     * Load safely an FXML file to the primaryStage
+     * @param file path to an FXML file
+     *
+     */
     public Scene load(String file){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(file));
@@ -135,6 +139,13 @@ public class GUI extends Application implements ViewInterface {
         }
     }
 
+
+    /**
+     * Shows on board the cells available included in the CheckMoveServer message
+     * updates the banner message
+     * Enables the currentPlayer to send MovedClient message
+     * @param message a CheckMoveServer message
+     */
     @Override
     public void handleMessage(CheckMoveServer message) {
         if(client.getUsername().equals(client.getCurrentPlayer())){
@@ -153,7 +164,12 @@ public class GUI extends Application implements ViewInterface {
     }
 
 
-
+    /**
+     * Shows on board the cells available included in the CheckBuildServer message
+     * updates the banner message
+     * Enables the currentPlayer to send BuildClient message
+     * @param message a CheckBuildServer message
+     */
     @Override
     public void handleMessage(CheckBuildServer message) {
         if(client.getUsername().equals(client.getCurrentPlayer())) {
@@ -171,6 +187,8 @@ public class GUI extends Application implements ViewInterface {
         }
     }
 
+
+    //FIXME probably useless message
     @Override
     public void handleMessage(CardChosenServer message) {
         getPlayerByName(message.player).card = message.cardName;
@@ -181,6 +199,12 @@ public class GUI extends Application implements ViewInterface {
         }
     }
 
+
+    /**
+     *Updates the banner message
+     * Enables the currentPlayer to send WorkerInitialize message
+     * @param message a WorkerChosenServer message
+     */
     @Override
     public void handleMessage(WorkerChosenServer message) {
         currentP++; //FRANCESCO COUNTER
@@ -224,7 +248,7 @@ public class GUI extends Application implements ViewInterface {
             System.err.println("IMPORTANT!!!");
             LOGGER.log( Level.SEVERE, ex.toString(), ex );
         }
-        if(!flag){   //FRANCESCO COUNTER  ---------------------------------------------------------------------------------------------------------
+        if(!flag){
             FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
             DefaultController controllerx;
             controllerx = loader.getController();
@@ -236,9 +260,16 @@ public class GUI extends Application implements ViewInterface {
                 });
             }
 
-        } //FRANCESCO COUNTER  --------------------------------------------------------------------------------------------------------------------
+        }
     }
 
+
+    /**
+     * Updates the banner message
+     * Shows Yes and No button on the Banner
+     * Enables the Client to send AnswerAbilityClient message
+     * @param message a QuestionAbilityMessage message
+     */
     @Override
     public void handleMessage(QuestionAbilityServer message) {
         if(client.getUsername().equals(client.getCurrentPlayer())){
@@ -255,7 +286,13 @@ public class GUI extends Application implements ViewInterface {
     }
 
 
-
+    /**
+     * Handle the First WorkerInitialize, and the WorkerChose
+     * in both case update the banner message
+     * In case of WORKER_CHOSE, enable the currentPlayer to send WorkerInitalizeClient message
+     * IN case of START, enable the currentPlayer to send WorkerChoseClient message
+     * @param message a CurrentStatusServer message
+     */
     @Override
     public void handleMessage(CurrentStatusServer message) {
         DefaultController controller;
@@ -341,6 +378,13 @@ public class GUI extends Application implements ViewInterface {
         }
     }
 
+
+    /**
+     * Removes the loser to the Players Arraylist
+     * Shows to the Loser the Lose PopUp
+     * Updates the banner message
+     * @param message a SomeoneLoseServer message
+     */
     @Override
     public void handleMessage(SomeoneLoseServer message) {
         Text alert = new Text();
@@ -401,6 +445,12 @@ public class GUI extends Application implements ViewInterface {
         });
     }
 
+
+    /**
+     * If is the first message, shows to the Challenger the Challenger Scene
+     * Otherwise shows th Card Scene to the CurrentPLayer
+     * @param message an AbailableCardServer
+     */
     @Override
     public void handleMessage(AvailableCardServer message) {
         if(message.player.equals(this.getClient().getUsername())){
@@ -425,6 +475,13 @@ public class GUI extends Application implements ViewInterface {
         } else System.out.println("MOSTRA BANNER SCELTA AVVERSARIO");
     }
 
+
+    /**
+     * Updates the banner
+     * Shows to the winner the Win PopUp
+     * Shows to the Losers the Lose PopUp
+     * @param message a SomeoneWinServer message
+     */
     @Override
     public void handleMessage(SomeoneWinServer message) {
         unShowTimer();
@@ -499,6 +556,11 @@ public class GUI extends Application implements ViewInterface {
 
     }
 
+
+    /**
+     * Shows the Name Scene to the Client
+     * @param message a NameRequestServer message
+     */
     @Override
     public void handleMessage(NameRequestServer message) {
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
@@ -513,6 +575,12 @@ public class GUI extends Application implements ViewInterface {
         }
     }
 
+
+    /**
+     * Shows the Lobby Scene to the players
+     * Assigns colors to the Players
+     * @param message a LobbyServer message
+     */
     @Override
     public void handleMessage(LobbyServer message) {
         client.setPlayersByString(message.players);
@@ -560,6 +628,12 @@ public class GUI extends Application implements ViewInterface {
         }
     }
 
+
+    /**
+     * Shows the Mode Scene to the Client
+     * Enables the Client to send ModeChoseClient message
+     * @param message
+     */
     @Override
     public void handleMessage(ModeRequestServer message) {
         Platform.runLater(() -> {
@@ -568,6 +642,11 @@ public class GUI extends Application implements ViewInterface {
         });
     }
 
+
+    /**
+     * refresh the board due to a costruction
+     * @param message a BuiltServer message
+     */
     @Override
     public void handleMessage(BuiltServer message) {
         Platform.runLater(() -> {
@@ -579,6 +658,11 @@ public class GUI extends Application implements ViewInterface {
         });
     }
 
+
+    /**
+     * refresh the board due to a move of a Pawn
+     * @param message a MovedServer message
+     */
     @Override
     public void handleMessage(MovedServer message) {
         Platform.runLater(() -> {
@@ -590,6 +674,11 @@ public class GUI extends Application implements ViewInterface {
         });
     }
 
+
+    /**
+     * Just a ping message to check the reachability client/server
+     * @param message
+     */
     @Override
     public void handleMessage(PingServer message) {
 
@@ -620,6 +709,14 @@ public class GUI extends Application implements ViewInterface {
         });
     }
 
+
+    /**
+     * PERSISTENCE (Case Server Crash)
+     * Resend to the Client all the state of the previous match
+     * Resend to the Client them pawns color
+     * Reload the Lobby Scene to every Client
+     * @param message
+     */
     @Override
     public void handleMessage(ReConnectionServer message) {
         if(message.player.equals(client.getUsername())){
@@ -671,6 +768,12 @@ public class GUI extends Application implements ViewInterface {
         }
     }
 
+
+    /**
+     * EasterEgg Secret
+     * NO SPOILERS
+     * @param easterEggServer
+     */
     @Override
     public void handleMessage(EasterEggServer easterEggServer) {
         if(easterEggServer.player.equals(client.getUsername())){
@@ -703,16 +806,28 @@ public class GUI extends Application implements ViewInterface {
         }
     }
 
+
+    /**
+     * Used in the CLI the handle the opponent's banner message
+     * Not used in GUI mode
+     * @param message a CurrentStatusServer message
+     */
     @Override
     public void statusHandler(CurrentStatusServer message){
 
     }
 
-    int i = 0;
+
+    /**
+     * In CLI mode, handle the close of the match due to an error or a quit request
+     * In GUI mode, handle the clos of the march ONLY due to an error.
+     * Shows the error PopUp.
+     * @param isError Useless in GUI mode
+     */
     @Override
     public void close(boolean isError) {
-        if(i == 0) {
-            i++;
+        if(NetworkErrorFlag == 0) {
+            NetworkErrorFlag++;
             Platform.runLater(() -> {
                 error = new Stage();
                 try {
@@ -740,6 +855,11 @@ public class GUI extends Application implements ViewInterface {
         }
     }
 
+
+    /**
+     * PERSISTENCE (Client Crash)
+     * Just reload the old Match if the Client is returned in time
+     */
     @Override
     public void displayBoard() {
         Platform.runLater(() -> {
@@ -761,12 +881,18 @@ public class GUI extends Application implements ViewInterface {
         });
     }
 
+
+    /**
+     * load the Home Scene
+     * Shows the PrimaryStage
+     */
     @Override
     public void displayFirstWindow() {
         Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        /* TEST BENCH */
 /*
         SnapPlayer p;
         p = new SnapPlayer("asdasd");
@@ -827,6 +953,11 @@ public class GUI extends Application implements ViewInterface {
 
     }
 
+
+    /**
+     * Shows the timer on the board
+     * @param val ask to Marco
+     */
     public void setTimerText(long val){
         Platform.runLater(() -> {
             try{
@@ -842,6 +973,10 @@ public class GUI extends Application implements ViewInterface {
         });
     }
 
+
+    /**
+     * Remove the timer on the banner
+     */
     public void unShowTimer(){
         Platform.runLater(() -> {
             try{
@@ -856,6 +991,11 @@ public class GUI extends Application implements ViewInterface {
         });
     }
 
+
+    /**
+     * Start the timer on the banner
+     * @param second the current second
+     */
     public void startTimer(long second){
         Platform.runLater(() -> {
             FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
@@ -876,6 +1016,11 @@ public class GUI extends Application implements ViewInterface {
         });
     }
 
+
+    /**
+     * @param name the name of a Player
+     * @return the Player Pointer on the Arraylist of SnapPlayers
+     */
     public SnapPlayer getPlayerByName(String name) {
         for (SnapPlayer p : client.getPlayers())
             if (p.name.equals(name))
@@ -883,6 +1028,11 @@ public class GUI extends Application implements ViewInterface {
         return null;
     }
 
+
+    /**
+     * Set the loserBanner message
+     * Refresh the board
+     */
     public void setLoserBar() {
         FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
         DefaultController controller = loader.getController();
