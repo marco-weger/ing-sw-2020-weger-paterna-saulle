@@ -4,7 +4,6 @@ import it.polimi.ingsw.commons.SnapCell;
 import it.polimi.ingsw.commons.SnapPlayer;
 import it.polimi.ingsw.commons.SnapWorker;
 import it.polimi.ingsw.commons.Status;
-import it.polimi.ingsw.commons.clientmessages.DisconnectionClient;
 import it.polimi.ingsw.commons.servermessages.*;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.TimerTurnClient;
@@ -15,8 +14,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -714,8 +711,6 @@ public class GUI extends Application implements ViewInterface {
     int i = 0;
     @Override
     public void close(boolean isError) {
-        // if(!isError)
-        //  client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
         if(i == 0) {
             i++;
             Platform.runLater(() -> {
