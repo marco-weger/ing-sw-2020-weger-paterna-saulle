@@ -113,13 +113,19 @@ public class DefaultController{
     }
 
 
-    //FIXME
+    /**
+     * Store the initial position of the windows before been moved
+     * @param mouseEvent mouse click
+     */
     public void topPressed(MouseEvent mouseEvent) {
         initialX = (int) (mainstage.getX() - mouseEvent.getScreenX());
         initialY = (int) (mainstage.getY() - mouseEvent.getScreenY());
     }
 
-    //FIXME
+    /**
+     * store the position of the Stage when the windows's moved
+     * @param mouseEvent mouse drag
+     */
     public void topDragged(MouseEvent mouseEvent) {
         mainstage.setX(mouseEvent.getScreenX() + initialX);
         mainstage.setY(mouseEvent.getScreenY() + initialY);

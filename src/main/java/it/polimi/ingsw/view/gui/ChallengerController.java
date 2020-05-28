@@ -389,8 +389,8 @@ public class ChallengerController extends DefaultController {
 
 
     /**
-     * //FIXME
-     * @param mouseEvent
+     * Store the initial position of the windows before been moved
+     * @param mouseEvent mouse click
      */
     @Override
     public void topPressed(MouseEvent mouseEvent) {
@@ -399,9 +399,9 @@ public class ChallengerController extends DefaultController {
     }
 
 
-    /**
-     * //FIXME
-     * @param mouseEvent
+     /**
+     * store the position of the Stage when the windows's moved
+     * @param mouseEvent mouse drag
      */
     @Override
     public void topDragged(MouseEvent mouseEvent) {
