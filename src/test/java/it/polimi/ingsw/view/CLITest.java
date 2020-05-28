@@ -11,8 +11,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 */
 
+import it.polimi.ingsw.commons.SnapCell;
+import it.polimi.ingsw.commons.SnapPlayer;
+import it.polimi.ingsw.commons.SnapWorker;
+import it.polimi.ingsw.commons.servermessages.EasterEggServer;
 import it.polimi.ingsw.network.Client;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
 
 public class CLITest {
     /*
@@ -95,4 +101,32 @@ public class CLITest {
         view.printLose(false);
     }
      */
+
+    /*
+    @Test
+    public void testEasterEgg(){
+        Client c = new Client();
+        c.setUsername("MARCO");
+        for(SnapCell sc : c.getBoard())
+            sc.level = sc.row;
+        c.getWorkers().add(new SnapWorker(0,0,"MARCO",1));
+        c.getWorkers().add(new SnapWorker(0,2,"MARCO",2));
+        c.getWorkers().add(new SnapWorker(1,4,"GIULIO",1));
+        c.getWorkers().add(new SnapWorker(3,4,"GIULIO",2));
+        c.getWorkers().add(new SnapWorker(2,0,"FRA",1));
+        c.getWorkers().add(new SnapWorker(0,1,"FRA",2));
+        CLI view = new CLI(c,Client.getRandomSymbol());
+        c.getPlayers().add(new SnapPlayer("MARCO"));
+        c.getPlayers().add(new SnapPlayer("GIULIO"));
+        c.getPlayers().add(new SnapPlayer("FRA"));
+        view.clear();
+        view.printTitle();
+        view.printLobby(0);
+        HashMap<String, Integer> win = new HashMap<>();
+        win.put("ASD",2);
+        win.put("xcv",4);
+        win.put("AtertSD",6);
+        view.handleMessage(new EasterEggServer("MARCO",win));
+    }
+    */
 }

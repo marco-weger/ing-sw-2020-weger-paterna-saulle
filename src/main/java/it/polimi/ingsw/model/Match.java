@@ -11,8 +11,7 @@ import it.polimi.ingsw.network.VirtualView;
 import it.polimi.ingsw.commons.SnapPlayer;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Match extends Observable implements Serializable {
 
@@ -301,6 +300,45 @@ public class Match extends Observable implements Serializable {
         }
         rcs.currentPlayer = getCurrentPlayer().getName();
         this.notifyObservers(rcs);
+    }
+
+    public void activeEasterEgg(String name){
+        HashMap<String, Integer> win = new HashMap<>();
+        ObjectInputStream objIn;
+        try {
+            if(new File("resources"+File.separator+"saved-match").exists()){
+                for (final File fileEntry : Objects.requireNonNull(new File("resources"+File.separator+"saved-match").listFiles())) {
+                    if (!fileEntry.isDirectory() && getExtensionByStringHandling(fileEntry.getName()).get().equals("santorini")) {
+                        objIn = new ObjectInputStream(new FileInputStream(fileEntry.getAbsolutePath()));
+                        Object obj = objIn.readObject();
+                        if(obj instanceof Match) {
+                            if (((Match) obj).getStatus().equals(Status.END)){
+                                ((Match) obj).getPlayers().removeAll(((Match) obj).getLosers());
+                                if(((Match) obj).getPlayers().size()==1)
+                                    if(win.containsKey(((Match) obj).getPlayers().get(0).getName()))
+                                        win.put(((Match) obj).getPlayers().get(0).getName(),win.get(((Match) obj).getPlayers().get(0).getName())+1);
+                                    else win.put(((Match) obj).getPlayers().get(0).getName(),1);
+                            }
+                        }
+                        objIn.close();
+                    }
+                }
+            }
+            this.notifyObservers(new EasterEggServer(name,win));
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    /**
+     * Ref. https://www.baeldung.com/java-file-extension
+     * @param filename the file
+     * @return file extension, if exists
+     */
+    public static Optional<String> getExtensionByStringHandling(String filename) {
+        return Optional.ofNullable(filename)
+                .filter(f -> f.contains("."))
+                .map(f -> f.substring(filename.lastIndexOf(".") + 1));
     }
 }
 

@@ -20,6 +20,7 @@ public interface ViewInterface {
     void handleMessage(PingServer message);
     void handleMessage(TimeOutServer message);
     void handleMessage(ReConnectionServer message);
+    void handleMessage(EasterEggServer easterEggServer);
 
     void displayFirstWindow();
     void statusHandler(CurrentStatusServer message);

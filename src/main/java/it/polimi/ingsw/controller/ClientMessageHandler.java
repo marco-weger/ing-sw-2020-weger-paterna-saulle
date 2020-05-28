@@ -15,4 +15,5 @@ public interface ClientMessageHandler {
     void handleMessage(MoveClient message);
     void handleMessage(BuildClient message);
     void handleMessage(ModeChoseClient message);
+    void handleMessage(EasterEggClient easterEggClient);
 }

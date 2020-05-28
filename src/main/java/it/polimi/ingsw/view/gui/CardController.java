@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.clientmessages.EasterEggClient;
 import it.polimi.ingsw.commons.clientmessages.PlayerChoseClient;
 import it.polimi.ingsw.model.cards.CardName;
 import javafx.beans.value.ChangeListener;
@@ -9,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 
 import java.util.List;
 
@@ -49,6 +51,8 @@ public class CardController extends DefaultController {
     public CardName cardName;
 
     public List<CardName> cards;
+
+    private int eeCounter;
 
     @FXML
     public Button banner;
@@ -132,6 +136,8 @@ public class CardController extends DefaultController {
         banner.setPrefSize(800,60);
         banner.setText("Waiting for opponent's choice...");
         banner.setVisible(false);
+
+        eeCounter=0;
     }
 
     @Override
@@ -167,6 +173,8 @@ public class CardController extends DefaultController {
 
         buttonSend.setLayoutY(425);
         buttonSend.setLayoutX(gui.sceneWidth/2-buttonSend.getPrefWidth()/2);
+
+        eeCounter=0;
     }
 
     public void setGods(){
@@ -219,6 +227,8 @@ public class CardController extends DefaultController {
                     break;
             }
         }
+
+        eeCounter=0;
     }
 
     public void setPodium(Button b, boolean newValue, int j){
@@ -252,6 +262,8 @@ public class CardController extends DefaultController {
             } else desc += " ";
         }
         buttonDescription.setText(desc);
+
+        eeCounter=0;
     }
 
     public void setGod1(ActionEvent actionEvent) {
@@ -262,6 +274,8 @@ public class CardController extends DefaultController {
         buttonSelected2.getStyleClass().addAll("button","podium");
         buttonSelected3.getStyleClass().clear();
         buttonSelected3.getStyleClass().addAll("button","podium");
+
+        eeCounter=0;
     }
 
     public void setGod2(ActionEvent actionEvent) {
@@ -272,6 +286,8 @@ public class CardController extends DefaultController {
         buttonSelected3.getStyleClass().addAll("button","podium");
         buttonSelected1.getStyleClass().clear();
         buttonSelected1.getStyleClass().addAll("button","podium");
+
+        eeCounter=0;
     }
 
     public void setGod3(ActionEvent actionEvent) {
@@ -283,6 +299,7 @@ public class CardController extends DefaultController {
         buttonSelected1.getStyleClass().clear();
         buttonSelected1.getStyleClass().addAll("button","podium");
 
+        eeCounter=0;
     }
 
     public void sendOnAction(ActionEvent actionEvent) {
@@ -291,5 +308,35 @@ public class CardController extends DefaultController {
             banner.setVisible(true);
             buttonSend.setDisable(true);
         }
+        eeCounter=0;
+    }
+
+    public void easterEgg(ActionEvent actionEvent) {
+        if(++eeCounter==5)
+            gui.getClient().sendMessage(new EasterEggClient(gui.getClient().getUsername()));
+    }
+
+    @Override
+    public void showHelper(){
+        super.showHelper();
+        eeCounter = 0;
+    }
+
+    @Override
+    public void quitOnAction(ActionEvent actionEvent) {
+        super.quitOnAction(actionEvent);
+        eeCounter = 0;
+    }
+
+    @Override
+    public void topPressed(MouseEvent mouseEvent) {
+        super.topPressed(mouseEvent);
+        eeCounter = 0;
+    }
+
+    @Override
+    public void topDragged(MouseEvent mouseEvent) {
+        super.topDragged(mouseEvent);
+        eeCounter = 0;
     }
 }

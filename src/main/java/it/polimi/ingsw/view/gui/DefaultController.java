@@ -186,6 +186,7 @@ public class DefaultController{
         });
     }
 
+    /*
     public void setUpBanner(TextField tf){
         tf.setCursor(new ImageCursor(new Image(CURSOR)));
         tf.setFont(f);
@@ -198,5 +199,6 @@ public class DefaultController{
             }
         });
     }
+    */
 }
 

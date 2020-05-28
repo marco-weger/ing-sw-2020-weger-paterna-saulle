@@ -8,10 +8,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cards.CardName;
 import it.polimi.ingsw.network.VirtualView;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.*;
 
 public class Controller implements Observer, ClientMessageHandler {
@@ -352,6 +349,11 @@ public class Controller implements Observer, ClientMessageHandler {
                 startMatch();
             }
         }
+    }
+
+    @Override
+    public void handleMessage(EasterEggClient easterEggClient) {
+        match.activeEasterEgg(easterEggClient.name);
     }
 
 

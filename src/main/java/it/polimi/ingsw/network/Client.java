@@ -46,6 +46,8 @@ public class Client implements Runnable{
 
     private String currentPlayer;
 
+    Thread handler = null;
+
     private static final BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 
     String ip;
@@ -234,7 +236,6 @@ public class Client implements Runnable{
     @Override
     public void run() {
         try {
-            Thread handler = null;
             while (socket.isConnected() && in != null) {
                 ServerMessage msg = (ServerMessage) readFromServer();
                 if(msg != null){
@@ -270,7 +271,7 @@ public class Client implements Runnable{
                             handler.join();
                     } catch (Exception ignored){}
                     continueReading = true;
-                    if(msg instanceof ReConnectionServer){
+                    if(msg instanceof ReConnectionServer || msg instanceof EasterEggServer){
                         msg.accept(view);
                     } else {
                         handler = new Thread(() -> msg.accept(view));
@@ -283,6 +284,17 @@ public class Client implements Runnable{
             LOGGER.log( Level.SEVERE, ex.toString(), ex );
             System.exit(-1);
         }
+    }
+
+    public void runAfterEasterEgg(AvailableCardServer acs){
+        continueReading = false;
+        try {
+            if (handler != null)
+                handler.join();
+        } catch (Exception ignored){}
+        continueReading = true;
+        handler = new Thread(() -> acs.accept(view));
+        handler.start();
     }
 
     public void sendMessage(ClientMessage msg){

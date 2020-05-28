@@ -241,3 +241,11 @@
     -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/3players_pressed.png");
     -fx-background-size: auto 100%
 }
+.continue-mini {
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/close.png");
+    -fx-background-size: auto 100%
+}
+.continue-mini:pressed {
+    -fx-background-image: url("/it.polimi.ingsw/view/gui/img/button/close_pressed.png");
+    -fx-background-size: auto 100%
+}

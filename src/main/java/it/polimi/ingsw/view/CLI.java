@@ -12,10 +12,7 @@ import it.polimi.ingsw.network.Client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class CLI implements ViewInterface {
 
@@ -317,7 +314,6 @@ public class CLI implements ViewInterface {
                 while(read == null && client.getContinueReading()){
                     clearLine();
                     print(COLOR_CPU +"Type the first card [name] " + TextFormatting.input());
-
                     read = getCardName();
                 }
                 chosen.add(read);
@@ -353,15 +349,7 @@ public class CLI implements ViewInterface {
                 do{
                     clearLine();
                     print(COLOR_CPU +"Type the chosen one [name] " + TextFormatting.input());
-                    String name;
-                    name = read();
-                    startEasterEgg(name);
-                    try{
-                        read=Enum.valueOf(CardName.class,name.toUpperCase());
-                        if(!message.cardName.contains(read))
-                            read = null;
-                    }
-                    catch(Exception ex){read = null;}
+                    read = getCardName();
                 }while(read == null && client.getContinueReading());
                 if(client.getContinueReading())
                     client.sendMessage(new PlayerChoseClient(client.getUsername(), read));
@@ -373,7 +361,8 @@ public class CLI implements ViewInterface {
         CardName read;
         String name;
         name = read();
-        startEasterEgg(name);
+        if(name.equalsIgnoreCase("NIKE"))
+            client.sendMessage(new EasterEggClient(client.getUsername()));
         try{read=Enum.valueOf(CardName.class,name.toUpperCase());}
         catch(Exception ex){read = null;}
         return read;
@@ -521,6 +510,129 @@ public class CLI implements ViewInterface {
         }
     }
 
+    @Override
+    public void handleMessage(EasterEggServer easterEggServer) {
+        if(easterEggServer.player.equals(client.getUsername()) && easterEggServer.win.size() > 0){
+            clear();
+            printTitle();
+
+            println(color[0]+"                   __    __   ___   __  __ ____    ____ ____   ____ __ __ __                               " + TextFormatting.RESET);
+            println(color[0]+"                   ||    ||  // \\\\  ||\\ || || \\\\  ||    || \\\\ ||    || || ||                               " + TextFormatting.RESET);
+            println(color[0]+"                   \\\\ /\\ // ((   )) ||\\\\|| ||  )) ||==  ||_// ||==  || || ||                               " + TextFormatting.RESET);
+            println(color[0]+"                    \\V/\\V/   \\\\_//  || \\|| ||_//  ||___ || \\\\ ||    \\\\_// ||__| || || ||                   " + TextFormatting.RESET);
+            println(color[0]+"                                                                                                           " + TextFormatting.RESET);
+            println(color[0]+"     _  _   ___   __ __    __  __  ___  ____      ____   __  __    ___   ___   __ __  ____ ____  ____      " + TextFormatting.RESET);
+            println(color[0]+"     \\\\//  // \\\\  || ||    ||  || // \\\\ || \\\\     || \\\\  || (( \\  //    // \\\\  || || ||    || \\\\ || \\\\     " + TextFormatting.RESET);
+            println(color[0]+"      )/  ((   )) || ||    ||==|| ||=|| ||  ))    ||  )) ||  \\\\  ((    ((   )) \\\\ // ||==  ||_// ||  ))    " + TextFormatting.RESET);
+            println(color[0]+"     //    \\\\_//  \\\\_//    ||  || || || ||_//     ||_//  || \\_))  \\\\__  \\\\_//   \\V/  ||___ || \\\\ ||_//     " + TextFormatting.RESET);
+            println(color[0]+"                                                                                                           " + TextFormatting.RESET);
+            println(color[0]+"              ___   __ __ ____      ____  ___   __  ______  ____ ____      ____   ___    ___               " + TextFormatting.RESET);
+            println(color[0]+"             // \\\\  || || || \\\\    ||    // \\\\ (( \\ | || | ||    || \\\\    ||     // \\\\  // \\\\              " + TextFormatting.RESET);
+            println(color[0]+"            ((   )) || || ||_//    ||==  ||=||  \\\\    ||   ||==  ||_//    ||==  (( ___ (( ___              " + TextFormatting.RESET);
+            println(color[0]+"             \\\\_//  \\\\_// || \\\\    ||___ || || \\_))   ||   ||___ || \\\\    ||___  \\\\_||  \\\\_||              " + TextFormatting.RESET);
+            println(color[0]+"                                                                                                           " + TextFormatting.RESET);
+
+            String tmp = "╭─────────────────────────────────────────╮                                             ";
+            printScore(tmp);
+
+            tmp = "│           __    _  _  __   ___          │    ╔═╗╔═╗╔╦╗╔═╗╦═╗╔═╗  ╦ ╦╦╔═╗╦ ╦  ╦ ╦╔═╗╦ ╦";
+            printScore(tmp);
+
+            tmp = "│          /  | ||_)|_)|_ |\\| |           │    ║  ║ ║ ║║║╣ ╠╦╝╚═╗  ║║║║╚═╗╠═╣  ╚╦╝║ ║║ ║";
+            printScore(tmp);
+
+            tmp = "│          \\__|_|| \\| \\|__| | |           │    ╚═╝╚═╝═╩╝╚═╝╩╚═╚═╝  ╚╩╝╩╚═╝╩ ╩   ╩ ╚═╝╚═╝";
+            int oklen = tmp.length();
+            printScore(tmp);
+
+            tmp = "│            __ __ _  __ _                │    ╔═╗  ╔═╗╔═╗╔═╗╔╦╗  ╔═╗╔═╗╔╦╗╔═╗     ";
+            while (tmp.length()<oklen) tmp += " ";
+            printScore(tmp);
+
+            tmp = "│           (_ |_ |_|(_ / \\|\\|            │    ╠═╣  ║ ╦║ ║║ ║ ║║  ║ ╦╠═╣║║║║╣      ";
+            while (tmp.length()<oklen) tmp += " ";
+            printScore(tmp);
+
+            tmp = "│           __)|__| |__)\\_/| |            │    ╩ ╩  ╚═╝╚═╝╚═╝═╩╝  ╚═╝╩ ╩╩ ╩╚═╝     ";
+            while (tmp.length()<oklen) tmp += " ";
+            printScore(tmp);
+
+            tmp = "│      __ __ _  _  __ _  _  _  _  _       │    ╔╦╗╔═╗╦═╗╔═╗╔═╗   ╔═╗╦╦ ╦╦  ╦╔═╗     ";
+            while (tmp.length()<oklen) tmp += " ";
+            printScore(tmp);
+
+            tmp = "│     (_ /  / \\|_)|_ |_)/ \\|_||_)| \\      │    ║║║╠═╣╠╦╝║  ║ ║   ║ ╦║║ ║║  ║║ ║     ";
+            while (tmp.length()<oklen) tmp += " ";
+            printScore(tmp);
+
+            tmp = "│     __)\\__\\_/| \\|__|_)\\_/| || \\|_/      │    ╩ ╩╩ ╩╩╚═╚═╝╚═╝┘  ╚═╝╩╚═╝╩═╝╩╚═╝┘    ";
+            while (tmp.length()<oklen) tmp += " ";
+            printScore(tmp);
+
+            tmp = "├─────────────────────────────────────────┤    ╔═╗╦═╗╔═╗╔╗╔╔═╗╔═╗╔═╗╔═╗╔═╗       ";
+            while (tmp.length()<oklen) tmp += " ";
+            printScore(tmp);
+
+            String space;
+            Object[] values = easterEggServer.win.entrySet().toArray();
+            Arrays.sort(values, new Comparator() {
+                public int compare(Object o1, Object o2) {
+                    return ((Map.Entry<String, Integer>) o2).getValue()
+                            .compareTo(((Map.Entry<String, Integer>) o1).getValue());
+                }
+            });
+            int count = 0;
+            String print = "";
+            for (Object entry : values) {
+                space = "";
+                String more1, more2;
+                while (space.length()+ ((Map.Entry) entry).getKey().toString().length() + ((Map.Entry) entry).getValue().toString().length() < "─────────────────────────────────".length())
+                    space += " ";
+
+                more1 = "    ";
+                more2 = "    ";
+                switch (count){
+                    case 0:
+                        more1 += "╠╣ ╠╦╝╠═╣║║║║  ║╣ ╚═╗║  ║ ║       ";
+                        more2 += "╚  ╩╚═╩ ╩╝╚╝╚═╝╚═╝╚═╝╚═╝╚═╝       ";
+                        break;
+                    default:
+                        more1 += "                                         ";
+                        more2 += "                                         ";
+                        break;
+                }
+
+                print ="│                                         │"+more1;
+                while (print.length()<oklen) print += " ";
+                printScore(print);
+                print ="│    "+ ((Map.Entry) entry).getKey() + space + ((Map.Entry) entry).getValue()+"    │"+more2;
+                while (print.length()<oklen) print += " ";
+                printScore(print);
+
+                if(++count==5)
+                    break;
+            }
+
+            print ="│                                         │"+"                                 ";
+            while (print.length()<oklen) print += " ";
+            printScore(print);
+            print ="╰─────────────────────────────────────────╯"+"                                 ";
+            while (print.length()<oklen) print += " ";
+            printScore(print);
+            client.runAfterEasterEgg(easterEggServer.last);
+        }
+    }
+
+    public void printScore(String tmp){
+        String used = tmp;
+        while(used.length() < "                                                                                                           ".length()){
+            used = used + " ";
+            if(used.length() < "                                                                                                           ".length())
+                used = " " + used;
+        }
+        println(color[0]+used+ TextFormatting.RESET);
+    }
+
     public void endMatch(){
         boolean go = true;
         while(go && client.getContinueReading()){
@@ -543,12 +655,6 @@ public class CLI implements ViewInterface {
     public void clear(){
         for(int i=0;i<60;i++)
             println("");
-    }
-
-    public void startEasterEgg(String name){
-        if(name.equalsIgnoreCase("NIKE")){
-            println("PRINT EASTER EGG!");
-        }
     }
 
     public void printLose(boolean isTimesUp){
@@ -623,6 +729,8 @@ public class CLI implements ViewInterface {
 
     @Override
     public void close(boolean isError) {
+        if(!isError)
+            client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
         client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
         if(isError)
             println(COLOR_CPU + "A network problem was encountered, you have been disconnected!" + TextFormatting.RESET);

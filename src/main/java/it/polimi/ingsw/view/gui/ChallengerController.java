@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.commons.clientmessages.ChallengerChoseClient;
+import it.polimi.ingsw.commons.clientmessages.EasterEggClient;
 import it.polimi.ingsw.model.cards.CardName;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -11,6 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,6 +73,8 @@ public class ChallengerController extends DefaultController {
     int count = 0;
 
     List<CardName> selected;
+
+    private int eeCounter;
 
     @FXML
     @Override
@@ -146,6 +150,8 @@ public class ChallengerController extends DefaultController {
         banner.setPrefSize(800,60);
         banner.setText("Waiting for opponent's choice...");
         banner.setVisible(false);
+
+        eeCounter = 0;
     }
 
     @Override
@@ -210,19 +216,24 @@ public class ChallengerController extends DefaultController {
         textFieldName.setLayoutX(400);
         setUpTextField(textFieldName);
         buttonDescription.setFont(f);
+
+        eeCounter = 0;
     }
 
     public void rightCard(ActionEvent actionEvent) {
+        eeCounter = 0;
         if(++count == cards.size()) count = 0;
         setCard();
     }
 
     public void leftCard(ActionEvent actionEvent) {
+        eeCounter = 0;
         if(--count == -1) count = cards.size()-1;
         setCard();
     }
 
     public void setCard(){
+        eeCounter = 0;
         try{
             imageViewCard.setImage(new Image("/it.polimi.ingsw/view/gui/img/card/"+cards.get(count).toString().toLowerCase()+".png"));
             textFieldName.setText(cards.get(count).toString());
@@ -246,6 +257,7 @@ public class ChallengerController extends DefaultController {
     }
 
     public void acceptOnAction(ActionEvent actionEvent) {
+        eeCounter = 0;
         if(!selected.contains(cards.get(count))){
             selected.add(cards.get(count));
             showSelected();
@@ -257,6 +269,7 @@ public class ChallengerController extends DefaultController {
     }
 
     public void sendOnAction(ActionEvent actionEvent){
+        eeCounter = 0;
         if(selected.size() == gui.getClient().getPlayers().size()){
             gui.getClient().sendMessage(new ChallengerChoseClient(gui.getClient().getUsername(), selected));
             banner.setVisible(true);
@@ -266,6 +279,7 @@ public class ChallengerController extends DefaultController {
     }
 
     public void clearOnAction(ActionEvent actionEvent) {
+        eeCounter = 0;
         selected.clear();
         buttonSend.setDisable(true);
         buttonSend.setVisible(false);
@@ -273,6 +287,7 @@ public class ChallengerController extends DefaultController {
     }
 
     public void showSelected(){
+        eeCounter = 0;
         buttonGod1.getStyleClass().clear();
         buttonGod2.getStyleClass().clear();
         buttonGod3.getStyleClass().clear();
@@ -291,5 +306,34 @@ public class ChallengerController extends DefaultController {
                     break;
             }
         }
+    }
+
+    public void easterEgg(ActionEvent actionEvent) {
+        if(++eeCounter==5)
+            gui.getClient().sendMessage(new EasterEggClient(gui.getClient().getUsername()));
+    }
+
+    @Override
+    public void showHelper(){
+        super.showHelper();
+        eeCounter = 0;
+    }
+
+    @Override
+    public void quitOnAction(ActionEvent actionEvent) {
+        super.quitOnAction(actionEvent);
+        eeCounter = 0;
+    }
+
+    @Override
+    public void topPressed(MouseEvent mouseEvent) {
+        super.topPressed(mouseEvent);
+        eeCounter = 0;
+    }
+
+    @Override
+    public void topDragged(MouseEvent mouseEvent) {
+        super.topDragged(mouseEvent);
+        eeCounter = 0;
     }
 }

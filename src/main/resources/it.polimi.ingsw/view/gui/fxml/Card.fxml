@@ -26,7 +26,7 @@
              <Button fx:id="buttonGod1" onAction="#setGod1" layoutX="54.0" layoutY="298.0" mnemonicParsing="false" styleClass="button" stylesheets="@../css/button.css" />
              <Button fx:id="buttonGod2" onAction="#setGod2" layoutX="182.0" layoutY="292.0" mnemonicParsing="false" styleClass="button" stylesheets="@../css/button.css"  />
              <Button fx:id="buttonGod3" onAction="#setGod3" layoutX="324.0" layoutY="288.0" mnemonicParsing="false" styleClass="button" stylesheets="@../css/button.css" />
-             <Button fx:id="buttonDescription" layoutX="552.0" layoutY="125.0" prefHeight="200.0" prefWidth="331.0" styleClass="cardDescription" stylesheets="@../css/text-field.css" />
+             <Button fx:id="buttonDescription" onAction="#easterEgg" layoutX="552.0" layoutY="125.0" prefHeight="200.0" prefWidth="331.0" styleClass="cardDescription" stylesheets="@../css/text-field.css" />
              <TextField fx:id="textFieldName1" alignment="CENTER" layoutX="251.0" layoutY="387.0" styleClass="godName" stylesheets="@../css/text-field.css" text="Label" />
              <TextField fx:id="textFieldName2" alignment="CENTER" layoutX="251.0" layoutY="387.0" styleClass="godName" stylesheets="@../css/text-field.css" text="Label" />
              <TextField fx:id="textFieldName3" alignment="CENTER" layoutX="251.0" layoutY="387.0" styleClass="godName" stylesheets="@../css/text-field.css" text="Label" />

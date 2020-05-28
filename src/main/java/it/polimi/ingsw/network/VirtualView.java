@@ -159,10 +159,12 @@ public class VirtualView extends Observable implements Observer {
             for(String name : connectedPlayers.keySet())
                 if(name.equals(((SomeoneLoseServer) sm).player))
                     losers.add(name);
+        }else if(sm instanceof EasterEggServer && lastMessage instanceof AvailableCardServer){
+            ((EasterEggServer) sm).last = (AvailableCardServer) lastMessage;
         }
 
         if(server != null && currentStatus != Status.END){
-            if(!(sm instanceof ReConnectionServer))
+            if(!(sm instanceof ReConnectionServer) && !(sm instanceof EasterEggServer))
                 lastMessage = sm;
 
             if(sm instanceof PingServer)

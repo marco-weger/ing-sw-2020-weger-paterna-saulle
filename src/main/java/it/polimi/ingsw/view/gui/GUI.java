@@ -26,8 +26,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -674,14 +673,46 @@ public class GUI extends Application implements ViewInterface {
     }
 
     @Override
+    public void handleMessage(EasterEggServer easterEggServer) {
+        if(easterEggServer.player.equals(client.getUsername())){
+            Platform.runLater(() -> {
+                Scene s = load("/it.polimi.ingsw/view/gui/fxml/EasterEgg.fxml");
+
+                FXMLLoader newLoader = (FXMLLoader) s.getUserData();
+                DefaultController newController = newLoader.getController();
+                if(newController instanceof EasterEggController){
+                    boolean go = true;
+                    ((EasterEggController) newController).setLast(easterEggServer.last);
+                    ((EasterEggController) newController).buttonLobby.setText("");
+                    Object[] values = easterEggServer.win.entrySet().toArray();
+                    Arrays.sort(values, new Comparator() {
+                        public int compare(Object o1, Object o2) {
+                            return ((Map.Entry<String, Integer>) o2).getValue()
+                                    .compareTo(((Map.Entry<String, Integer>) o1).getValue());
+                        }
+                    });
+                    for (Object entry : values) {
+                        ((EasterEggController) newController).buttonLobby.setText(
+                                ((EasterEggController) newController).buttonLobby.getText()+(go ? "" : "\n")+((Map.Entry) entry).getKey() + "\t" + ((Map.Entry) entry).getValue());
+                        go = false;
+                    }
+                }
+
+                primaryStage.setScene(s);
+                primaryStage.show();
+            });
+        }
+    }
+
+    @Override
     public void statusHandler(CurrentStatusServer message){
 
     }
 
     @Override
     public void close(boolean isError) {
-        // if(!isError)
-        //  client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
+        if(!isError)
+          client.sendMessage(new DisconnectionClient(client.getUsername(),isError));
         Platform.runLater(() -> {
             error = new Stage();
             try {
@@ -734,65 +765,6 @@ public class GUI extends Application implements ViewInterface {
         Scene scene = load("/it.polimi.ingsw/view/gui/fxml/Home.fxml");
         primaryStage.setScene(scene);
         primaryStage.show();
-
-/*
-        SnapPlayer p;
-        p = new SnapPlayer("asdasd");
-        p.card = CardName.ARTEMIS;
-        client.getPlayers().add(p);
-        p = new SnapPlayer("fdggh");
-        p.card = CardName.MINOTAUR;
-        client.getPlayers().add(p);
-        p = new SnapPlayer("dfgds");
-        p.card = CardName.DEMETER;
-        client.getPlayers().add(p);
-        client.setUsername("fdggh");
-
-        Platform.runLater(() -> {
-            Scene sn = load("/it.polimi.ingsw/view/gui/fxml/Board.fxml");;
-            FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
-            DefaultController controllerx = loader2.getController();
-
-            if (controllerx instanceof BoardController) {
-                controllerx.setup();
-                ((BoardController) controllerx).banner.setText(((BoardController) controllerx).workerITA.getText());
-                ((BoardController) controllerx).setState(0);
-                ((BoardController) controllerx).refresh();
-                primaryStage.setScene(sn);
-                primaryStage.show();
-
-
-            }
-
-            Platform.runLater(() -> {
-                win = new Stage();
-                //end.setText("YOU WIN!");
-                unShowTimer();
-                try {
-                    //System.out.println(file);
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/it.polimi.ingsw/view/gui/fxml/Win.fxml"));
-                    Parent root2 = loader.load();
-                    defaultcontroller = loader.getController();
-                    defaultcontroller.setGUI(this);
-                    Scene scene = new Scene(Objects.requireNonNull(root2), 421, 450, Color.TRANSPARENT);
-                    scene.setCursor(new ImageCursor(new Image("/it.polimi.ingsw/view/gui/img/pointer.png")));
-                    win.initStyle(StageStyle.TRANSPARENT);
-                    win.setAlwaysOnTop(true);
-                    scene.setUserData(loader);
-                    win.initModality(Modality.WINDOW_MODAL);
-                    win.initOwner(primaryStage);
-                    scene.setUserData(loader);
-                    win.setScene(scene);
-                    win.setX((primaryStage.getX()+sceneWidth/2-421/2));
-                    win.setY((primaryStage.getY()+sceneHeight/2-450/2));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //win.showAndWait();
-                close(true);
-            });
-        });*/
-
     }
 
     public void setTimerText(long val){
