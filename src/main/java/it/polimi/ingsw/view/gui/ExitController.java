@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.commons.clientmessages.DisconnectionClient;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,7 +40,7 @@ public class ExitController extends  DefaultController{
     }
     public void yes(ActionEvent actionEvent) {
         gui.getClient().disconnectionHandler();
-        gui.close(false);
+        this.gui.getClient().sendMessage(new DisconnectionClient(this.gui.getClient().getUsername(),false));
         System.exit(0);
     }
 
