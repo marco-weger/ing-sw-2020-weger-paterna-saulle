@@ -335,7 +335,7 @@ public class GUI extends Application implements ViewInterface {
                                 ((BoardController) c).refresh();
                                 ((BoardController) c).setState(1);
                             });
-                        } else System.out.println("FATAL ERROR CURRENTSTATUSSERVER MESSAGE!");
+                        } else System.out.println("FATAL ERROR CURRENTSTATUSSERVER [START] MESSAGE!");
                     });
                     break;
                 default:
@@ -370,7 +370,7 @@ public class GUI extends Application implements ViewInterface {
                 if (controllerx instanceof BoardController) {
                     ((BoardController) controllerx).NEWbanner.setText("WAIT, " + message.player + "'s Turn");
                     ((BoardController) controllerx).refresh();
-                } else System.out.println("FATAL ERROR CURRENTSTATUSSERVER MESSAGE");
+                } else System.out.println("FATAL ERROR CURRENTSTATUSSERVER [OPPONENT'S TURN] MESSAGE");
             });
         }
 
