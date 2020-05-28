@@ -22,6 +22,9 @@ public class EasterEggController extends DefaultController{
     @FXML
     public Button buttonContinue;
 
+    @FXML
+    public Button banner;
+
     private AvailableCardServer last;
 
     @FXML
@@ -48,6 +51,12 @@ public class EasterEggController extends DefaultController{
         buttonContinue.setMinSize(x,y);
         buttonContinue.setMaxSize(x,y);
         buttonContinue.setPrefSize(x,y);
+
+        banner.setMinSize(800,60);
+        banner.setMaxSize(800,60);
+        banner.setPrefSize(800,60);
+        banner.setText("A SECRET IS REVEALED!");
+
     }
 
     @Override
@@ -60,8 +69,11 @@ public class EasterEggController extends DefaultController{
         buttonLobby.setLayoutY(95);
         buttonLobby.setFont(f);
 
-        buttonContinue.setLayoutY(bottom.getPrefHeight()/2-buttonContinue.getPrefHeight()/2);
-        buttonContinue.setLayoutX(gui.sceneWidth/2-buttonContinue.getPrefWidth()/2);
+        buttonContinue.setLayoutY(39);
+        buttonContinue.setLayoutX(95);
+
+        banner.setLayoutY(bottom.getPrefHeight()/2-banner.getPrefHeight()/2);
+        banner.setLayoutX((gui.sceneWidth/2)-400);
     }
 
     public void setLast(AvailableCardServer last){ this.last=last; }

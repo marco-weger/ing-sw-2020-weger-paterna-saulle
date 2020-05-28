@@ -13,7 +13,8 @@
    </top>
    <bottom>
       <AnchorPane fx:id="bottom" prefHeight="138.0" prefWidth="950.0" BorderPane.alignment="CENTER">
-         <Button fx:id="buttonContinue" layoutX="443.0" layoutY="454.0" mnemonicParsing="false" onAction="#buttonContinue" styleClass="continue-mini" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="44.0" />
+         <Button fx:id="banner" layoutX="248.0" layoutY="56.0" prefHeight="27.0" prefWidth="409.0" styleClass="banner" stylesheets="@../css/button.css" />
+         <Button fx:id="buttonContinue" layoutX="59.0" layoutY="39.0" mnemonicParsing="false" onAction="#buttonContinue" styleClass="continue-mini" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="44.0" />
       </AnchorPane>
    </bottom>
    <center>
