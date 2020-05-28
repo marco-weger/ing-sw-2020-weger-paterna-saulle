@@ -188,15 +188,13 @@ public class GUI extends Application implements ViewInterface {
     }
 
 
-    //FIXME probably useless message
+    /**
+     * Assign the the currentPlayer the card that he've chosen
+     * @param message
+     */
     @Override
     public void handleMessage(CardChosenServer message) {
         getPlayerByName(message.player).card = message.cardName;
-        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
-        DefaultController controller = loader.getController();
-        if(controller instanceof BoardController){
-            ((BoardController) controller).setState(0);
-        }
     }
 
 
@@ -208,6 +206,9 @@ public class GUI extends Application implements ViewInterface {
     @Override
     public void handleMessage(WorkerChosenServer message) {
         currentP++; //FRANCESCO COUNTER
+        if(currentP/2 == client.getPlayers().size()){
+            currentP--;
+        }
         boolean flag = false;
         try {
             FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
