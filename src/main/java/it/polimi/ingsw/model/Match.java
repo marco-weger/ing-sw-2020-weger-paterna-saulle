@@ -304,6 +304,10 @@ public class Match extends Observable implements Serializable {
         this.notifyObservers(rcs);
     }
 
+    /**
+     * It generates EasterEggServer message and notify it to VirtualView
+     * @param name of the player
+     */
     public void activeEasterEgg(String name){
         HashMap<String, Integer> win = new HashMap<>();
         ObjectInputStream objIn;
