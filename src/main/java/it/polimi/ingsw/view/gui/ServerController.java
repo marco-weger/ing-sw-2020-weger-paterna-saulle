@@ -92,11 +92,11 @@ public class ServerController extends DefaultController {
         buttonConnect.setMaxSize(200,114);
         buttonConnect.setPrefSize(200,114);
 
-        banner.setMinSize(400,60);
-        banner.setMaxSize(400,60);
-        banner.setPrefSize(400,60);
-        banner.setText("Server unreachable! Try later...");
-        banner.setVisible(false);
+        banner.setMinSize(800,60);
+        banner.setMaxSize(800,60);
+        banner.setPrefSize(800,60);
+        banner.setText("Server Unavailable, try again later or type a new address");
+        banner.setVisible(true);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class ServerController extends DefaultController {
         buttonConnect.setLayoutX(gui.sceneWidth/2-100);
 
         banner.setLayoutY(gui.sceneHeight-top.getPrefHeight()-center.getPrefHeight()-bottom.getPrefHeight()/2-banner.getPrefHeight()/2);
-        banner.setLayoutX((gui.sceneWidth/2)-200);
+        banner.setLayoutX((gui.sceneWidth/2)-400);
 
         setUpTextField(port);
         setUpTextField(ip1);
@@ -131,7 +131,8 @@ public class ServerController extends DefaultController {
         this.gui.getClient().setIp(ip1.getText()+'.'+ip2.getText()+'.'+ip3.getText()+'.'+ip4.getText());
         this.gui.getClient().setPort(Integer.parseInt(port.getText()));
         if(!this.gui.getClient().connect()){
-            banner.setVisible(true);
+            banner.setText("New Server Unreachable, try again later or type a new address");
+
         }
     }
 

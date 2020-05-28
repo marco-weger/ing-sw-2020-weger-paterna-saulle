@@ -49,13 +49,23 @@ public class CLI implements ViewInterface {
 
     private String currentPlayer = "";
 
+    /**
+     * Constructor
+     * @param client Client
+     * @param symbols A Greek Symbol
+     */
     public CLI(Client client, String symbols){
         this.client = client;
         this.symbols = symbols;
     }
 
+
+    /**
+     * If Server is Unreachable, Ask to the Player to Type a new ip address
+     * and a new port
+     */
     @Override
-    public void displayFirstWindow() { // tested
+    public void displayFirstWindow() {
         while(!client.connect())
         {
             println(TextFormatting.RESET+"Server unreachable!");
@@ -68,8 +78,14 @@ public class CLI implements ViewInterface {
         }
     }
 
+
+    /**
+     * Prints the available cells and ask the current Player
+     * to chose an available Cell
+     * @param message a CheckMoveServer message
+     */
     @Override
-    public void handleMessage(CheckMoveServer message) { // tested
+    public void handleMessage(CheckMoveServer message) {
         if(this.client.getUsername().equals(client.getCurrentPlayer())){
             print(TextFormatting.RESET+"Cell Available: ");
             for(SnapCell cell : message.sc) {
@@ -109,8 +125,14 @@ public class CLI implements ViewInterface {
         }
     }
 
+
+    /**
+     * Prints the available cells and ask the current Player
+     * to chose an available Cell
+     * @param message a CheckBuildServer message
+     */
     @Override
-    public void handleMessage(CheckBuildServer message) { // tested
+    public void handleMessage(CheckBuildServer message) {
         if(this.client.getUsername().equals(client.getCurrentPlayer())){
             print(TextFormatting.RESET+"Cell Available: ");
             for(SnapCell cell : message.sc) {
@@ -150,6 +172,12 @@ public class CLI implements ViewInterface {
         }
     }
 
+
+    /**
+     * Set to the currentPlayer the card chosen
+     * clean the screen and prints the update lobby
+     * @param message a CardChosenServer message
+     */
     @Override
     public void handleMessage(CardChosenServer message) { // tested
         getPlayerByName(message.player).card = message.cardName;
@@ -158,8 +186,14 @@ public class CLI implements ViewInterface {
         printLobby(0);
     }
 
+
+    /**
+     * Ask to the Current player to type an available position to initialize the workers
+     * refresh the board on every correct decision
+     * @param message a WorkerChosenServer message
+     */
     @Override
-    public void handleMessage(WorkerChosenServer message) { // tested
+    public void handleMessage(WorkerChosenServer message) {
         clear();
         client.getWorkers().add(new SnapWorker(message.x,message.y,message.player,message.worker));
         printTitle();
@@ -196,6 +230,11 @@ public class CLI implements ViewInterface {
         }
     }
 
+
+    /**
+     * Read the Current Player input and return the cell chosen
+     * @return return the cell
+     */
     private SnapCell getWorkerCell() {
         SnapCell c;
         c = readCell();
@@ -210,8 +249,14 @@ public class CLI implements ViewInterface {
         return c;
     }
 
+
+    /**
+     * Ask the current Player if he wants to use the Ability of his God
+     * Read the input, and send an the decision to the controller
+     * @return return the cell
+     */
     @Override
-    public void handleMessage(QuestionAbilityServer message) { // TODO test
+    public void handleMessage(QuestionAbilityServer message) {
         if(client.getUsername().equals(client.getCurrentPlayer())){
             do {
                 clearLine();

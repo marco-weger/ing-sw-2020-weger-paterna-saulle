@@ -1009,7 +1009,6 @@ public class BoardController extends DefaultController {
             nOff(no);
             questionFlag = false;
             NEWbanner.setLayoutX((gui.sceneWidth/2)-400);
-            refresh();
         }
     }
 
@@ -1026,7 +1025,6 @@ public class BoardController extends DefaultController {
             nOff(no);
             questionFlag = false;
             NEWbanner.setLayoutX((gui.sceneWidth/2)-400);
-            refresh();
         }
         if(loserFlag){
             this.gui.getClient().resetMatch();
@@ -1829,7 +1827,6 @@ public class BoardController extends DefaultController {
             yOff(yes);
             nOff(no);
             questionFlag = false;
-            refresh();
         }
     }
 
