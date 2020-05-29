@@ -136,6 +136,36 @@ public class HephaestusTest {
          assertFalse(p.get(0).getCard().activable(p,b));
     }
 
+    @Test
+    public void checkActivableTrue() {
+        initialize();
+        p.get(0).setWorker1(new Worker(2,2));
+        p.get(0).setWorker2(new Worker(1,1));
+        p.get(1).setWorker1(new Worker(0,0));
+        p.get(1).setWorker2(new Worker(1,2));
+        p.get(2).setWorker1(new Worker(1,3));
+        p.get(2).setWorker2(new Worker(4,4));
+        p.get(0).setCurrentWorker(1);
+        Board b = new Board();
+        assertNotNull(p);
+        assertNotNull(b);
+        for (Cell c : b.getField()) {
+            if (c.getRow() == 3 && c.getColumn() == 1)
+                c.setLevel(2);
+            else if (c.getRow() == 3 && c.getColumn() == 2)
+                c.setLevel(2);
+            else if (c.getRow() == 3 && c.getColumn() == 3)
+                c.setLevel(0);
+            else if (c.getRow() == 2 && c.getColumn() == 1)
+                c.setLevel(3);
+            else if (c.getRow() == 2 && c.getColumn() == 3)
+                c.setLevel(4);
+        }
+
+;
+         assertTrue(p.get(0).getCard().activable(p,b));
+    }
+
     //build
     @Test
     public void build_null() {
@@ -191,5 +221,11 @@ public class HephaestusTest {
             p.get(0).getCard().build(p, b, c);
             assertEquals(3,b.getCell(c.getRow(),c.getColumn()).getLevel());
         }
+    }
+
+    @Test
+    public void activable_null(){
+        initialize();
+        assertTrue(p.get(0).getCard().activable(null,null));
     }
 }

@@ -19,7 +19,7 @@ public class Demeter extends Card {
      * Card Constructor
      * @param name the name of the card
      * @param active tell if the power is active
-     * @param opponent opponent's active his OPPONENT'S TURN ABILITY, remove the respective cells
+     * @param opponent OPPONENT'S TURN ABILITY FLAG, remove the respective cells to opponents
      * @param question tell if the god needs the Question Ability (Banner on GUI / Input and Print on CLI)
      * @param status tell in which state the God use his Ability
      * @param vw the Client's VirtualView
