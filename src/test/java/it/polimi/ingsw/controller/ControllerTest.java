@@ -40,6 +40,22 @@ public class ControllerTest {
         controller.setMatch(m);
     }
 
+    @Test
+    public void mode(){
+        vw = new VirtualView(null);
+        Match m = new Match(42,vw);
+        //generate a Controller for that Match
+        controller = new Controller(vw);
+        controller.setMatch(m);
+        controller.update(new ModeChoseClient("Giulio",3));
+        assertEquals(1, m.getPlayers().size());
+        controller.update(new ModeChoseClient("Marco",3));
+        assertEquals(2, m.getPlayers().size());
+        controller.update(new ModeChoseClient("Francesco",3));
+        assertEquals(3, m.getPlayers().size());
+    }
+
+
 
     @Test
     public void getter_setter(){
@@ -222,7 +238,7 @@ public class ControllerTest {
          assertFalse(controller.getMatch().getCurrentPlayer().getCard().isActive());
          assertEquals(Status.CHOSEN,controller.getMatch().getStatus());
         //Giulio has answered yes to the question
-         //so it will activate his ability, and switch to next turn
+         // so it will activate his ability, and switch to next turn
         controller.handleMessage(new AnswerAbilityClient(controller.getMatch().getCurrentPlayer().getName(), true, controller.getMatch().getStatus()));
          assertTrue(controller.getMatch().getCurrentPlayer().getCard().isActive());
         assertEquals(Status.QUESTION_M,controller.getMatch().getStatus());
@@ -235,7 +251,7 @@ public class ControllerTest {
          controller.getMatch().setStatus(Status.START);
          controller.handleMessage(new AnswerAbilityClient("Giulio", false, controller.getMatch().getStatus()));
          assertTrue(controller.getMatch().getCurrentPlayer().getCard().isActive());
-//         assertEquals(controller.getMatch().getStatus(), Status.START);
+         assertEquals(Status.CHOSEN,controller.getMatch().getStatus());
      }
 
     @Test
@@ -331,8 +347,9 @@ public class ControllerTest {
         controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
         controller.getMatch().getBoard().getCell(1,0).setLevel(0);
         controller.handleMessage(new BuildClient("Francesco", 1, 0));
-        //assertTrue(controller.getMatch().getCurrentPlayer().getCard().build(controller.getMatch().getPlayers(),controller.getMatch().getBoard(),controller.getMatch().getBoard().getCell(1,0)));
         assertEquals(1, controller.getMatch().getBoard().getCell(1, 0).getLevel());
+        assertTrue(controller.getMatch().getCurrentPlayer().getCard().build(controller.getMatch().getPlayers(),controller.getMatch().getBoard(),controller.getMatch().getBoard().getCell(1,0)));
+        assertEquals(2, controller.getMatch().getBoard().getCell(1, 0).getLevel());
         assertEquals(Status.START, controller.getMatch().getStatus());
     }
 
@@ -350,8 +367,8 @@ public class ControllerTest {
         controller.getMatch().getPlayers().get(1).setCurrentWorker(1);
         controller.getMatch().getBoard().getCell(1,0).setLevel(0);
         controller.handleMessage(new BuildClient("Francesco", 1, 0));
-        //assertTrue(controller.getMatch().getCurrentPlayer().getCard().build(controller.getMatch().getPlayers(),controller.getMatch().getBoard(),controller.getMatch().getBoard().getCell(1,0)));
-        assertEquals(1, controller.getMatch().getBoard().getCell(1, 0).getLevel());
+        assertTrue(controller.getMatch().getCurrentPlayer().getCard().build(controller.getMatch().getPlayers(),controller.getMatch().getBoard(),controller.getMatch().getBoard().getCell(1,0)));
+        assertEquals(2, controller.getMatch().getBoard().getCell(1, 0).getLevel());
         assertEquals(Status.QUESTION_M, controller.getMatch().getStatus());
     }
 
@@ -379,7 +396,6 @@ public class ControllerTest {
         controller.getMatch().setLosers(new ArrayList<>(Collections.singletonList(controller.getMatch().getPlayers().get(0))),false);
         controller.getMatch().setLosers(new ArrayList<>(Collections.singletonList(controller.getMatch().getPlayers().get(0))),false);
         controller.startTurn(true);
-        //controller.endGame(controller.getMatch().getPlayers().get(2));
         assertEquals(2, controller.getMatch().getLosers().size());
         assertTrue(controller.getMatch().isEnded());
         assertEquals("Giulio",controller.getMatch().getPlayers().get(0).getName());
@@ -405,6 +421,7 @@ public class ControllerTest {
         assertTrue(controller.getMatch().isEnded());
         assertEquals(Status.END, controller.getMatch().getStatus());
     }
+
 
     @Test
     public void startTurnTestSTART() {
@@ -434,7 +451,7 @@ public class ControllerTest {
                 ce.setLevel(0);
         }
         controller.startTurn(false);
-        //assertFalse(controller.getMatch().getCurrentPlayer().getCard().hasLost(controller.getMatch().getPlayers(),controller.getMatch().getBoard()));
+        assertFalse(controller.getMatch().getCurrentPlayer().getCard().hasLost(controller.getMatch().getPlayers(),controller.getMatch().getBoard()));
         assertEquals(Status.START, controller.getMatch().getStatus());
     }
 
