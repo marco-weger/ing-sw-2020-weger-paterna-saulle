@@ -9,7 +9,7 @@ This project was made between March and July 2020 as our final thesis project at
 
 
 ## Quick Index
-* [prerequirements](#Prerequirements)
+* [requirements](#Requirements)
 * [get jar files](#Get-JARs)
 * [json config](#Configuration)
 * [start Client](#Start-Client)
@@ -18,7 +18,7 @@ This project was made between March and July 2020 as our final thesis project at
 * [server status](#Santorini-Official-Server)
 
 
-## Prerequirements
+## Requirements
 
 You need **JavaSE 14** or higher version to run this game.    
 https://www.oracle.com/java/technologies/javase-downloads.html

@@ -24,6 +24,10 @@ public class LoseController extends DefaultController{
     @FXML
     public AnchorPane anchorLose;
 
+    /**
+     * set the background image
+     * set buttons
+     */
     @FXML
     @Override
     public void initialize() {
@@ -42,6 +46,10 @@ public class LoseController extends DefaultController{
         someonewinflag = false;
     }
 
+    /**
+     * remains in game, but doesn't permit to modify the board (spectate).
+     * @param actionEvent spectator button clicked.
+     */
     public void spectator(ActionEvent actionEvent) {
         if(this.gui.getClient().getPlayers().size() > 1 && !someonewinflag) {
             this.gui.getLose().close();
@@ -55,6 +63,10 @@ public class LoseController extends DefaultController{
         }
     }
 
+    /**
+     * exit the match, redirect to mode choose.
+     * @param actionEvent newgame button clicked.
+     */
     public void newgame(ActionEvent actionEvent) {
         this.gui.getClient().resetMatch();
         this.gui.getLose().close();
@@ -65,6 +77,10 @@ public class LoseController extends DefaultController{
         //this.gui.getClient().sendMessage(new ModeChoseClient(gui.getClient().getUsername(),Integer.parseInt(text)));
     }
 
+    /**
+     * Set the background of the current Scene
+     * @param image the background image
+     */
     @Override
     public void setBackground(Image image){
         anchorLose.setBackground(new Background(new BackgroundImage(image,

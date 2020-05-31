@@ -484,6 +484,11 @@ public class CLI implements ViewInterface {
         client.sendMessage(new ConnectionClient(this.client.getUsername()));
     }
 
+    /**
+     * Set the color of the player currently logged
+     * and print the current lobby.
+     * @param message a LobbyServer.
+     */
     @Override
     public void handleMessage(LobbyServer message) { // tested
         clear();
@@ -506,6 +511,12 @@ public class CLI implements ViewInterface {
         }
     }
 
+
+    /**
+     * Request the type of match the player want to enter,
+     * if not correct, repeat the question.
+     * @param message a ModeRequestServer.
+     */
     @Override
     public void handleMessage(ModeRequestServer message) { // tested
         int mode;
@@ -524,6 +535,11 @@ public class CLI implements ViewInterface {
         client.sendMessage(new ModeChoseClient(this.client.getUsername(),mode));
     }
 
+    /**
+     * Refresh the current board printing the title, and
+     * the new updated board, when someone has built.
+     * @param message a BuiltServer.
+     */
     @Override
     public void handleMessage(BuiltServer message) { // tested
         clear();
@@ -531,6 +547,11 @@ public class CLI implements ViewInterface {
         printTable();
     }
 
+    /**
+     * Refresh the current board printing the title, and
+     * the new updated board, when someone has moved.
+     * @param message a MovedServer.
+     */
     @Override
     public void handleMessage(MovedServer message) { // tested
         clear();
@@ -538,11 +559,21 @@ public class CLI implements ViewInterface {
         printTable();
     }
 
+    /**
+     * Ping message for connection control purposes.
+     */
     @Override
     public void handleMessage(PingServer pingServer) {
 
     }
 
+
+    /**
+     * If the player has lost connection, it shows
+     * how many reconnection tests the server is running if
+     * the player is not someone who already lost.
+     * @param message a TimeOutServer.
+     */
     @Override
     public void handleMessage(TimeOutServer message) {
         if(message.n == 0 && !client.getMyPlayer().loser){
@@ -553,6 +584,16 @@ public class CLI implements ViewInterface {
         if(!client.getMyPlayer().loser) println(TextFormatting.UNDERLINE.toString() + TextFormatting.COLOR_RED + message.player + " has a network problem... Reconnection test " + (message.n+1) + " of " + (message.of+1) + TextFormatting.RESET);
     }
 
+    /**
+     * If one of the players in the current lobby has the
+     * same name as the one trying to reconnect, the server re-add this
+     * player in the match, giving the client the information about
+     * the game before he left.
+     * It also informs the others that the player has successfully returned.
+     * If the player refuse to continue to play in the past lobby,
+     * he's then redirected to a new current lobby (the old one will be deleted).
+     * @param message a ReConnectionServer.
+     */
     @Override
     public void handleMessage(ReConnectionServer message) {
         if(message.player.equals(client.getUsername())){
@@ -594,6 +635,9 @@ public class CLI implements ViewInterface {
         }
     }
 
+    /**
+     * Why don't u find out? ;)
+     */
     @Override
     public void handleMessage(EasterEggServer easterEggServer) {
         if(easterEggServer.player.equals(client.getUsername()) && easterEggServer.win.size() > 0){
@@ -707,6 +751,10 @@ public class CLI implements ViewInterface {
         }
     }
 
+    /**
+     * Print a scoreboard.
+     * @param tmp a String.
+     */
     public void printScore(String tmp){
         String used = tmp;
         while(used.length() < "                                                                                                           ".length()){
@@ -717,6 +765,12 @@ public class CLI implements ViewInterface {
         println(color[0]+used+ TextFormatting.RESET);
     }
 
+
+    /**
+     * Print a question if the player lose or win,
+     * asking what to do next (create a new lobby or close the game
+     * while still refreshing the board).
+     */
     public void endMatch(){
         boolean go = true;
         while(go && client.getContinueReading()){
@@ -736,11 +790,18 @@ public class CLI implements ViewInterface {
 
     // ********************************************************************************************************* //
 
+    /**
+     * Make space.
+     */
     public void clear(){
         for(int i=0;i<60;i++)
             println("");
     }
 
+    /**
+     * Printed when someone has lost, or his time's up.
+     * @param isTimesUp a boolean that depends on the timer value.
+     */
     public void printLose(boolean isTimesUp){
         if(isTimesUp){
             println(TextFormatting.loser()+ "              88888888888 d8b                       d8b                                               "+TextFormatting.RESET);
@@ -772,6 +833,9 @@ public class CLI implements ViewInterface {
         endMatch();
     }
 
+    /**
+     * Printed when someone wins.
+     */
     public void printWin(){
         println(TextFormatting.winner()+ "                Y88b   d88P  .d88888b.  888     888       888       888 8888888 888b    888                 " + TextFormatting.RESET);
         println(TextFormatting.winner()+ "      o          Y88b d88P  d88P' 'Y88b 888     888       888   o   888   888   8888b   888          o      " + TextFormatting.RESET);
@@ -784,6 +848,9 @@ public class CLI implements ViewInterface {
         endMatch();
     }
 
+    /**
+     * Printed the title.
+     */
     public void printTitle(){
         println(color[0]+"                             ____    _    _   _ _____ ___  ____  ___ _   _ ___                             " + TextFormatting.RESET);
         println(color[0]+"                            / ___|  / \\  | \\ | |_   _/ _ \\|  _ \\|_ _| \\ | |_ _|                            " + TextFormatting.RESET);
@@ -793,15 +860,29 @@ public class CLI implements ViewInterface {
         println(color[0]+"                                                                                                           "+TextFormatting.RESET);
     }
 
+    /**
+     * Modified println.
+     * @param string a String.
+     */
     public static void println(String string){
         System.out.println(string);
         System.out.flush();
     }
+
+    /**
+     * Modified print.
+     * @param string a String.
+     */
     public static void print(String string){
         System.out.print(string);
         System.out.flush();
     }
 
+    /**
+     * Print a waiting message for the players who
+     * have already chosen their card.
+     * @param message a CurretStatusServer.
+     */
     @Override
     public void statusHandler(CurrentStatusServer message){
         if(client.getMyPlayer() != null && !client.getMyPlayer().loser && !message.player.equals(client.getUsername())){
@@ -811,6 +892,10 @@ public class CLI implements ViewInterface {
         }
     }
 
+    /**
+     * Print an end message or an error message when the player ends the game.
+     * @param isError indicates if there is a problem whit the connection.
+     */
     @Override
     public void close(boolean isError) {
         if(!isError)
@@ -822,6 +907,9 @@ public class CLI implements ViewInterface {
         System.exit(0);
     }
 
+    /**
+     * Print the title and board.
+     */
     @Override
     public void displayBoard() {
         clear();
@@ -829,6 +917,9 @@ public class CLI implements ViewInterface {
         printTable();
     }
 
+    /**
+     * Clear something written.
+     */
     public void clearLine(){
         try{
             while (System.in.available() > 0)
@@ -836,6 +927,10 @@ public class CLI implements ViewInterface {
         }catch (Exception ignored){}
     }
 
+    /**
+     * Read when something is written.
+     * @return the string read or "" in specific cases.
+     */
     public String read(){
         String tmp = "";
         do{
@@ -850,6 +945,10 @@ public class CLI implements ViewInterface {
         return tmp;
     }
 
+    /**
+     * Read the input cell and verify its validity.
+     * @return a Snapcell of the modified cell.
+     */
     public SnapCell readCell(){
         boolean go;
         int x;
@@ -868,6 +967,13 @@ public class CLI implements ViewInterface {
         catch(Exception e){return null;}
     }
 
+
+    /**
+     * Print the board whit coordinates, and
+     * a string to notify who is playing.
+     * If the current player has lost, he's
+     * sent to the endMatch.
+     */
     public void printTable(){
         String[] print = new String[26];
 
@@ -930,6 +1036,12 @@ public class CLI implements ViewInterface {
             endMatch();
     }
 
+    /**
+     * Print a list of the players currently in game,
+     * notifying the god chosen.
+     * It also says if someone has already lost.
+     * @return the printed text.
+     */
     public String[] printPlayers(String[] print){
         for(int i=0;i<print.length;i++)
             print[i] += color[0] + "      ";
@@ -1012,6 +1124,12 @@ public class CLI implements ViewInterface {
         return print;
     }
 
+
+    /**
+     * Print a description of the card whit formatted text.
+     * @param toPrint for centering the text.
+     * @param w value of length of toPrint.
+     */
     private void printCardDescription(String[] toPrint, int w) {
         StringBuilder tmp = new StringBuilder(toPrint[w]);
         for(int j=0;j<(36-toPrint[w].length())/2;j++)
@@ -1022,6 +1140,12 @@ public class CLI implements ViewInterface {
         if(toPrint[w].length()%2!=0) toPrint[w] += " ";
     }
 
+
+    /**
+     * Create a pawn of the worker.
+     * @param cell indicates where the workers of player are.
+     * @return the pawn.
+     */
     public String printUserSymbol(SnapCell cell){
         for(SnapWorker sw : client.getWorkers()){
             if(sw.row == cell.row && sw.column == cell.column){
@@ -1031,9 +1155,21 @@ public class CLI implements ViewInterface {
         }
         return "     ";
     }
+
+    /**
+     * Take a symbol.
+     * @param symbol a random greek symbol.
+     * @return the symbol.
+     */
     public String printSymbol(String symbol){
         return color[0] + symbol + TextFormatting.RESET;
     }
+
+    /**
+     * Associate the name whit the symbol.
+     * @param name a player names.
+     * @return the symbol associated to the player.
+     */
     public SnapPlayer getPlayerByName(String name){
         for(SnapPlayer p : client.getPlayers())
             if(p.name.equals(name))
@@ -1041,6 +1177,10 @@ public class CLI implements ViewInterface {
         return null;
     }
 
+    /**
+     * Print the current lobby.
+     * @param type the "status type" of the player (disconnected, waiting)
+     */
     public void printLobby(int type){
         try {
             String[] toPrint = new String[7];
@@ -1090,6 +1230,10 @@ public class CLI implements ViewInterface {
         } catch (Exception ex){ println(ex.getMessage());}
     }
 
+    /**
+     * Print a list of cards.
+     * @param toPrint a List of the cards from which to choose.
+     */
     public static void printCard(List<CardName> toPrint){
         StringBuilder out;
         int max = 0;

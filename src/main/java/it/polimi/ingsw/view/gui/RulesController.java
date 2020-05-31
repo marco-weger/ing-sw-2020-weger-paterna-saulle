@@ -10,6 +10,11 @@ public class RulesController {
     @FXML
     public Button buttonExit;
 
+    /**
+     * Once clicked it close the window whit the rules
+     * of the game.
+     * @param actionEvent
+     */
     public void exitOnAction(ActionEvent actionEvent) {
         Stage stage = (Stage) buttonExit.getScene().getWindow();
         stage.close();

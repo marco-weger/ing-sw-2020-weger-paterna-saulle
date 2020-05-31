@@ -20,6 +20,10 @@ public class WinController extends DefaultController {
     @FXML
     public AnchorPane anchorWin;
 
+    /**
+     * set the background image
+     * set buttons
+     */
     @FXML
     @Override
     public void initialize() {
@@ -39,12 +43,20 @@ public class WinController extends DefaultController {
         //anchorWin.setStyle("-fx-border-color: green; -fx-border-width: 1px 1px 1px 1px");
     }
 
+    /**
+     * when pressed it disconnect the client and close the gui.
+     * @param actionEvent exit button clicked.
+     */
     public void exit(ActionEvent actionEvent) {
         gui.getClient().disconnectionHandler();
         gui.close(false);
         System.exit(0);
     }
 
+    /**
+     * exit the match, redirect to mode choose.
+     * @param actionEvent newgame button clicked.
+     */
     public void newgame(ActionEvent actionEvent) {
         this.gui.getClient().resetMatch();
         this.gui.getWin().close();
@@ -55,6 +67,11 @@ public class WinController extends DefaultController {
         //this.gui.getClient().sendMessage(new ModeChoseClient(gui.getClient().getUsername(),Integer.parseInt(text)));
     }
 
+
+    /**
+     * Set the background of the current Scene
+     * @param image the background image
+     */
     @Override
     public void setBackground(Image image){
         anchorWin.setBackground(new Background(new BackgroundImage(image,
