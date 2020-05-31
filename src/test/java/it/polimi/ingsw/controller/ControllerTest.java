@@ -196,7 +196,111 @@ public class ControllerTest {
 
     }
 
+    @Test
+    public void loadMatch(){
+        //create a list of players with the developers
+        vw = new VirtualView(null);
+        ArrayList<Player> players = new ArrayList<>(Arrays.asList(
+                new Player("Marco",vw),
+                new Player("Francesco",vw),
+                new Player("Giulio",vw)
+        ));
 
+        for(Player player:players){
+            player.setWorker1(new Worker(0,0));
+            player.setWorker2(new Worker(0,0));
+            player.setCard(CardName.ARTEMIS,vw);
+        }
+
+        //generate a Match
+        Match m = new Match(42,vw);
+        m.setPlayers(players);
+        //generate a Controller for that Match
+        controller = new Controller(vw,m);
+        assertEquals(controller.getMatch().getId(),42);
+    }
+
+    @Test
+    public void disconnection(){
+        //create a list of players with the developers
+        vw = new VirtualView(null);
+        ArrayList<Player> players = new ArrayList<>(Arrays.asList(
+                new Player("Marco",vw),
+                new Player("Francesco",vw),
+                new Player("Giulio",vw)
+        ));
+
+        for(Player player:players){
+            player.setWorker1(new Worker(0,0));
+            player.setWorker2(new Worker(0,0));
+            player.setCard(CardName.ARTEMIS,vw);
+        }
+
+        //generate a Match
+        Match m = new Match(42,vw);
+        m.setPlayers(players);
+        //generate a Controller for that Match
+        controller = new Controller(vw,m);
+        m.setStatus(Status.START);
+        m.getPlayers().get(0).setCurrent(true);
+        controller.handleMessage(new DisconnectionClient("Marco",true));
+        assertEquals(2,controller.getMatch().getPlayers().size());
+        assertEquals(1,controller.getMatch().getLosers().size());
+    }
+
+    @Test
+    public void disconnectionNAME_CHOICE(){
+        //create a list of players with the developers
+        vw = new VirtualView(null);
+        ArrayList<Player> players = new ArrayList<>(Arrays.asList(
+                new Player("Marco",vw),
+                new Player("Francesco",vw),
+                new Player("Giulio",vw)
+        ));
+
+        for(Player player:players){
+            player.setWorker1(new Worker(0,0));
+            player.setWorker2(new Worker(0,0));
+            player.setCard(CardName.ARTEMIS,vw);
+        }
+
+        //generate a Match
+        Match m = new Match(42,vw);
+        m.setPlayers(players);
+        //generate a Controller for that Match
+        controller = new Controller(vw,m);
+        m.setStatus(Status.NAME_CHOICE);
+        controller.handleMessage(new DisconnectionClient("Marco",false));
+        assertEquals(controller.getMatch().getPlayers().size(),2);
+    }
+
+    @Test
+    public void modeChose(){
+        //create a list of players with the developers
+        vw = new VirtualView(null);
+        ArrayList<Player> players = new ArrayList<>(Arrays.asList(
+                new Player("Marco",vw),
+                new Player("Francesco",vw),
+                new Player("Giulio",vw)
+        ));
+
+        for(Player player:players){
+            player.setWorker1(new Worker(0,0));
+            player.setWorker2(new Worker(0,0));
+            player.setCard(CardName.ARTEMIS,vw);
+        }
+
+        //generate a Match
+        Match m = new Match(42,vw);
+        m.setPlayers(players);
+        //generate a Controller for that Match
+        controller = new Controller(vw,m);
+        m.setStatus(Status.NAME_CHOICE);
+        ModeChoseClient mcc = new ModeChoseClient("Giulio",2);
+        mcc.refused = true;
+        controller.handleMessage(mcc);
+        assertTrue(controller.getMatch().isEnded());
+    }
 
     //Marco=PAN
     //Francesco=ATLAS
