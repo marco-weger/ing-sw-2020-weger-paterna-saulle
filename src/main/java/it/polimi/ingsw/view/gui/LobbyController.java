@@ -32,6 +32,11 @@ public class LobbyController extends DefaultController {
     @FXML
     public ImageView imageLobby;
 
+    /**
+     * set the background image
+     * set lobby logo
+     * set reconnected question
+     */
     @FXML
     @Override
     public void initialize(){
@@ -62,6 +67,9 @@ public class LobbyController extends DefaultController {
         new3.setVisible(false);
     }
 
+    /**
+     * set buttons and images
+     */
     @Override
     public void setup(){
         super.setup();
@@ -86,10 +94,17 @@ public class LobbyController extends DefaultController {
         banner.setLayoutX(0);
     }
 
+    /**
+     * constructor
+     */
     public void setReconnection(boolean reconnection) {
         this.reconnection = reconnection;
     }
 
+    /**
+     * join a new game lobby for 2 players.
+     * @param actionEvent newgame2 button clicked.
+     */
     public void newgame2(ActionEvent actionEvent) {
         if(reconnection) {
             this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(), 2, true));
@@ -99,6 +114,10 @@ public class LobbyController extends DefaultController {
         this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(),2));
     }
 
+    /**
+     * join a new game lobby for 3 players.
+     * @param actionEvent newgame3 button clicked.
+     */
     public void newgame3(ActionEvent actionEvent) {
         if (reconnection) {
             this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(),3,true));

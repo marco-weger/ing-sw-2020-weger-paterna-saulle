@@ -37,6 +37,12 @@ public class ServerController extends DefaultController {
     private static final String zeroTo255
             = "([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])";
 
+    /**
+     * set the background image
+     * set textfields
+     * set buttons, so they only accepts numeric values
+     * from 0 to 255
+     */
     @FXML
     @Override
     public void initialize(){
@@ -99,6 +105,9 @@ public class ServerController extends DefaultController {
         banner.setVisible(true);
     }
 
+    /**
+     * initialize buttons and textfields.
+     */
     @Override
     public void setup(){
         super.setup();
@@ -115,18 +124,36 @@ public class ServerController extends DefaultController {
         setUpTextField(ip4);
     }
 
+    /**
+     * When pushed try to connect to server.
+     * @param actionEvent
+     */
     public void connection(ActionEvent actionEvent) {
         tryConnect();
     }
 
+    /**
+     * When the player type enter on port, try to set value.
+     * @param actionEvent
+     */
     public void portOnAction(ActionEvent actionEvent) {
         tryConnect();
     }
 
+    /**
+     * When the player type enter on ip3, try to set value.
+     * @param actionEvent
+     */
     public void ip1OnAction(ActionEvent actionEvent) {
         tryConnect();
     }
 
+    /**
+     * When called it try to connect to server: ip1.ip2.ip3.ip4
+     * on port wrote by the user.
+     * if not able to establish a connection it shows a warning
+     * message on banner.
+     */
     public void tryConnect(){
         this.gui.getClient().setIp(ip1.getText()+'.'+ip2.getText()+'.'+ip3.getText()+'.'+ip4.getText());
         this.gui.getClient().setPort(Integer.parseInt(port.getText()));
@@ -136,14 +163,27 @@ public class ServerController extends DefaultController {
         }
     }
 
+    /**
+     * When the player type enter on ip2, try to set value.
+     * @param actionEvent
+     */
     public void ip2OnAction(ActionEvent actionEvent) {
         tryConnect();
     }
 
+    /**
+     * When the player type enter on ip3, try to set value.
+     * @param actionEvent
+     */
     public void ip3OnAction(ActionEvent actionEvent) {
         tryConnect();
     }
 
+
+    /**
+     * When the player type enter on ip4, try to set value.
+     * @param actionEvent
+     */
     public void ip4OnAction(ActionEvent actionEvent) {
         tryConnect();
     }

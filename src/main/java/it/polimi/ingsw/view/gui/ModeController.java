@@ -20,6 +20,10 @@ public class ModeController extends DefaultController{
     @FXML
     public Button button3;
 
+    /**
+     * set the background image
+     * set buttons
+     */
     @FXML
     @Override
     public void initialize(){
@@ -35,6 +39,9 @@ public class ModeController extends DefaultController{
         reconnection = false;
     }
 
+    /**
+     * Initialize background and buttons.
+     */
     @Override
     public void setup(){
         super.setup();
@@ -44,6 +51,10 @@ public class ModeController extends DefaultController{
         button3.setLayoutY(gui.sceneHeight/2);
     }
 
+    /**
+     * Once clicked it redirects to the current lobby of the 2 players mode.
+     * @param actionEvent
+     */
     public void button2OnAction(ActionEvent actionEvent) {
         if(reconnection) {
             this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(), 2, true));
@@ -52,6 +63,10 @@ public class ModeController extends DefaultController{
         this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(),2));
     }
 
+    /**
+     * Once clicked it redirects to the current lobby of the 3 players mode.
+     * @param actionEvent
+     */
     public void button3OnAction(ActionEvent actionEvent) {
         if (reconnection) {
             this.gui.getClient().sendMessage(new ModeChoseClient(this.gui.getClient().getUsername(),3,true));
