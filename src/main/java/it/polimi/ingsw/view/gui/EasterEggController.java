@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.commons.servermessages.AvailableCardServer;
-import it.polimi.ingsw.commons.servermessages.EasterEggServer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -70,7 +69,7 @@ public class EasterEggController extends DefaultController{
         buttonLobby.setPadding(new Insets(30, 0, 0, 0));
         imageLobby.setLayoutX(gui.sceneWidth/2-203);
         imageLobby.setLayoutY(65);
-        buttonLobby.setLayoutX(950/2-225);
+        buttonLobby.setLayoutX(250);  /*950/2 - 225*/
         buttonLobby.setLayoutY(95);
         buttonLobby.setFont(f);
 

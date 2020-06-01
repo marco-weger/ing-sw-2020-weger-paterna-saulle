@@ -168,7 +168,7 @@ public class ChallengerController extends DefaultController {
     @Override
     public void setup(){
         super.setup();
-        int y = 25;
+        double y = 25;
 
         banner.setLayoutY(bottom.getPrefHeight()/2-banner.getPrefHeight()/2);
         banner.setLayoutX((gui.sceneWidth/2)-400);
@@ -221,7 +221,7 @@ public class ChallengerController extends DefaultController {
         buttonDescription.setLayoutX(400);
 
         buttonAccept.setLayoutY(y);
-        buttonAccept.setLayoutX(400+525-197);
+        buttonAccept.setLayoutX(728); /*(400+525-197)*/
 
         textFieldName.setLayoutY(y);
         textFieldName.setLayoutX(400);
