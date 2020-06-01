@@ -101,7 +101,7 @@ When reconnecting, remember to vote for the same map the game was being played o
 
 
 ## Test
-**IntelliJ Coverage -** [Full Report](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/deliverables/test/Coverage%20Report)
+**IntelliJ Coverage -** [Full Report](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/deliverables/test/Coverage%20Report) <br>
 ![IJ TEST](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/deliverables/test/IJ_coverage.jpg)
 
 
