@@ -1,0 +1,424 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Server</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.network</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Server (it.polimi.ingsw.network)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Server</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    11,1%
+  </span>
+  <span class="absValue">
+    (2/ 18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    8,2%
+  </span>
+  <span class="absValue">
+    (11/ 134)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.network;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.commons.ServerMessage;
+<i>4</i>&nbsp;import it.polimi.ingsw.commons.Status;
+<i>5</i>&nbsp;import it.polimi.ingsw.commons.servermessages.PingServer;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.Match;
+<i>7</i>&nbsp;import org.json.simple.JSONObject;
+<i>8</i>&nbsp;import org.json.simple.parser.JSONParser;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import java.io.*;
+<i>11</i>&nbsp;import java.net.ServerSocket;
+<i>12</i>&nbsp;import java.net.Socket;
+<i>13</i>&nbsp;import java.util.ArrayList;
+<i>14</i>&nbsp;import java.util.List;
+<i>15</i>&nbsp;import java.util.Objects;
+<i>16</i>&nbsp;import java.util.Optional;
+<i>17</i>&nbsp;import java.util.concurrent.ExecutorService;
+<i>18</i>&nbsp;import java.util.concurrent.Executors;
+<i>19</i>&nbsp;import java.util.logging.Level;
+<i>20</i>&nbsp;import java.util.logging.Logger;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;public class Server {
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    /**
+<i>25</i>&nbsp;     * The logger
+<i>26</i>&nbsp;     */
+<b class="fc"><i>27</i>&nbsp;    private static final Logger LOGGER = Logger.getLogger(Server.class.getName());</b>
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    /**
+<i>30</i>&nbsp;     * The socket port
+<i>31</i>&nbsp;     */
+<i>32</i>&nbsp;    private int port;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    /**
+<i>35</i>&nbsp;     * VirtualView linked of current lobby (2 players)
+<i>36</i>&nbsp;     */
+<i>37</i>&nbsp;    private VirtualView currentVirtualView2;
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    /**
+<i>40</i>&nbsp;     * VirtualView linked of current lobby (3 players)
+<i>41</i>&nbsp;     */
+<i>42</i>&nbsp;    private VirtualView currentVirtualView3;
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    /**
+<i>45</i>&nbsp;     * All VirtualViews of 2 players mode instanced
+<i>46</i>&nbsp;     */
+<i>47</i>&nbsp;    private final ArrayList&lt;VirtualView&gt; virtualViews2;
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    /**
+<i>50</i>&nbsp;     * All VirtualViews of 3 players mode instanced
+<i>51</i>&nbsp;     */
+<i>52</i>&nbsp;    private final ArrayList&lt;VirtualView&gt; virtualViews3;
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    /**
+<i>55</i>&nbsp;     * List of players who chose the name but not the mode
+<i>56</i>&nbsp;     */
+<i>57</i>&nbsp;    private final ArrayList&lt;String&gt; pendingPlayers;
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    /**
+<i>60</i>&nbsp;     * Socket timeout for reading call
+<i>61</i>&nbsp;     */
+<i>62</i>&nbsp;    private int timeoutSocket;
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    /**
+<i>65</i>&nbsp;     * Socket ping period
+<i>66</i>&nbsp;     */
+<i>67</i>&nbsp;    private int pingPeriod;
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;    /**
+<i>70</i>&nbsp;     * Complete turn timer
+<i>71</i>&nbsp;     */
+<i>72</i>&nbsp;    private long turnTimer;
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    /**
+<i>75</i>&nbsp;     * Timer before lose after a disconnection
+<i>76</i>&nbsp;     */
+<i>77</i>&nbsp;    private int disconnectTimer;
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    /**
+<i>80</i>&nbsp;     * It assigns default value at configurable vars
+<i>81</i>&nbsp;     */
+<b class="fc"><i>82</i>&nbsp;    public Server(){</b>
+<b class="fc"><i>83</i>&nbsp;        this.virtualViews2 = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>84</i>&nbsp;        this.virtualViews3 = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>85</i>&nbsp;        this.pendingPlayers = new ArrayList&lt;&gt;();</b>
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;        // DEFAULT VALUE
+<b class="fc"><i>88</i>&nbsp;        this.port = 1234;</b>
+<b class="fc"><i>89</i>&nbsp;        this.pingPeriod = 2;</b>
+<b class="fc"><i>90</i>&nbsp;        this.timeoutSocket = 5;</b>
+<b class="fc"><i>91</i>&nbsp;        this.turnTimer = 180;</b>
+<b class="fc"><i>92</i>&nbsp;        this.disconnectTimer = 60;</b>
+<b class="fc"><i>93</i>&nbsp;    }</b>
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    /**
+<i>96</i>&nbsp;     * @return a list of 2 players virtual view
+<i>97</i>&nbsp;     */
+<b class="nc"><i>98</i>&nbsp;    public List&lt;VirtualView&gt; getVirtualViews2() { return virtualViews2; }</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;    /**
+<i>101</i>&nbsp;     * @return a list of 3 players virtual view
+<i>102</i>&nbsp;     */
+<b class="nc"><i>103</i>&nbsp;    public List&lt;VirtualView&gt; getVirtualViews3() { return virtualViews3; }</b>
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;    /**
+<i>106</i>&nbsp;     * @return a list of player who hasn not choose the mode
+<i>107</i>&nbsp;     */
+<b class="nc"><i>108</i>&nbsp;    public List&lt;String&gt; getPendingPlayers() { return pendingPlayers; }</b>
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;    /**
+<i>111</i>&nbsp;     * @return the current virtual view of 2 players match
+<i>112</i>&nbsp;     */
+<b class="nc"><i>113</i>&nbsp;    public VirtualView getCurrentVirtualView2(){ return currentVirtualView2; }</b>
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;    /**
+<i>116</i>&nbsp;     * @return the current virtual view of 3 players match
+<i>117</i>&nbsp;     */
+<b class="nc"><i>118</i>&nbsp;    public VirtualView getCurrentVirtualView3(){ return currentVirtualView3; }</b>
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;    /**
+<i>121</i>&nbsp;     * @return the timer of current turn
+<i>122</i>&nbsp;     */
+<b class="nc"><i>123</i>&nbsp;    public long getTurnTimer(){ return turnTimer; }</b>
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;    /**
+<i>126</i>&nbsp;     * @return the timer of disconnection during a game
+<i>127</i>&nbsp;     */
+<b class="nc"><i>128</i>&nbsp;    public int getdisconnectTimer(){ return disconnectTimer; }</b>
+<i>129</i>&nbsp;
+<i>130</i>&nbsp;
+<i>131</i>&nbsp;    /**
+<i>132</i>&nbsp;     * It iterates on all VirtualViews and all ServerClientHandlers
+<i>133</i>&nbsp;     * @return all players in a match
+<i>134</i>&nbsp;     */
+<i>135</i>&nbsp;    public List&lt;String&gt; getPlayers(){
+<b class="nc"><i>136</i>&nbsp;        ArrayList&lt;String&gt; players = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>137</i>&nbsp;        for(VirtualView vv : getVirtualViews2()){</b>
+<b class="nc"><i>138</i>&nbsp;            players.addAll(vv.getConnectedPlayers().keySet());</b>
+<b class="nc"><i>139</i>&nbsp;        }</b>
+<b class="nc"><i>140</i>&nbsp;        for(VirtualView vv : getVirtualViews3()){</b>
+<b class="nc"><i>141</i>&nbsp;            players.addAll(vv.getConnectedPlayers().keySet());</b>
+<b class="nc"><i>142</i>&nbsp;        }</b>
+<b class="nc"><i>143</i>&nbsp;        return players;</b>
+<i>144</i>&nbsp;    }
+<i>145</i>&nbsp;
+<i>146</i>&nbsp;    /**
+<i>147</i>&nbsp;     * It creates a new lobby for 2 players match
+<i>148</i>&nbsp;     */
+<i>149</i>&nbsp;    public void newCurrentVirtualView2(){
+<b class="nc"><i>150</i>&nbsp;        this.currentVirtualView2=new VirtualView(this);</b>
+<b class="nc"><i>151</i>&nbsp;        virtualViews2.add(this.currentVirtualView2);</b>
+<b class="nc"><i>152</i>&nbsp;    }</b>
+<i>153</i>&nbsp;
+<i>154</i>&nbsp;    /**
+<i>155</i>&nbsp;     * It creates a new lobby for 3 players match
+<i>156</i>&nbsp;     */
+<i>157</i>&nbsp;    public void newCurrentVirtualView3(){
+<b class="nc"><i>158</i>&nbsp;        this.currentVirtualView3=new VirtualView(this);</b>
+<b class="nc"><i>159</i>&nbsp;        virtualViews3.add(this.currentVirtualView3);</b>
+<b class="nc"><i>160</i>&nbsp;    }</b>
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;    /**
+<i>163</i>&nbsp;     * Main server: it accepts connection and start the client handler (ServerClientHandler)
+<i>164</i>&nbsp;     */
+<i>165</i>&nbsp;    public void startServer(){
+<i>166</i>&nbsp;        boolean go;
+<i>167</i>&nbsp;
+<i>168</i>&nbsp;        // if port is unavailable is start searching a free a port from port+1 and so on
+<b class="nc"><i>169</i>&nbsp;        ServerSocket serverSocket = null;</b>
+<b class="nc"><i>170</i>&nbsp;        int count=0;</b>
+<i>171</i>&nbsp;        do {
+<b class="nc"><i>172</i>&nbsp;            go=false;</b>
+<i>173</i>&nbsp;            try{
+<b class="nc"><i>174</i>&nbsp;                serverSocket = new ServerSocket(port);</b>
+<b class="nc"><i>175</i>&nbsp;                serverSocket.close();</b>
+<b class="nc"><i>176</i>&nbsp;            }catch (IOException ex){</b>
+<b class="nc"><i>177</i>&nbsp;                if(ex.toString().contains(&quot;BindException&quot;)){</b>
+<b class="nc"><i>178</i>&nbsp;                    port++;</b>
+<b class="nc"><i>179</i>&nbsp;                    go=true;</b>
+<i>180</i>&nbsp;                }
+<i>181</i>&nbsp;                else {
+<b class="nc"><i>182</i>&nbsp;                    LOGGER.log(Level.SEVERE, ex.toString(), ex);</b>
+<b class="nc"><i>183</i>&nbsp;                    return;</b>
+<i>184</i>&nbsp;                }
+<b class="nc"><i>185</i>&nbsp;            }</b>
+<b class="nc"><i>186</i>&nbsp;        }while (go &amp;&amp; count++ &lt; 100);</b>
+<i>187</i>&nbsp;
+<b class="nc"><i>188</i>&nbsp;        loadMatch();</b>
+<i>189</i>&nbsp;
+<b class="nc"><i>190</i>&nbsp;        this.virtualViews2.add(currentVirtualView2); // add the first VirtualView</b>
+<b class="nc"><i>191</i>&nbsp;        this.virtualViews3.add(currentVirtualView3); // add the first VirtualView</b>
+<i>192</i>&nbsp;
+<b class="nc"><i>193</i>&nbsp;        System.out.println(&quot;[SOCKET TIMEOUT] - &quot;+timeoutSocket + &quot;s&quot;);</b>
+<b class="nc"><i>194</i>&nbsp;        System.out.println(&quot;[PING PERIOD] - &quot;+pingPeriod + &quot;s&quot;);</b>
+<b class="nc"><i>195</i>&nbsp;        System.out.println(&quot;[PORT] - &quot;+port);</b>
+<i>196</i>&nbsp;
+<b class="nc"><i>197</i>&nbsp;        ExecutorService executor = Executors.newCachedThreadPool();</b>
+<i>198</i>&nbsp;
+<i>199</i>&nbsp;        try {
+<b class="nc"><i>200</i>&nbsp;            serverSocket = new ServerSocket(port);</b>
+<b class="nc"><i>201</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>202</i>&nbsp;            e.printStackTrace();</b>
+<i>203</i>&nbsp;        } finally {
+<b class="nc"><i>204</i>&nbsp;            Socket socket;</b>
+<i>205</i>&nbsp;            while (true){
+<i>206</i>&nbsp;                try{
+<b class="nc"><i>207</i>&nbsp;                    socket = serverSocket.accept();</b>
+<b class="nc"><i>208</i>&nbsp;                    socket.setSoTimeout(timeoutSocket*1000);</b>
+<b class="nc"><i>209</i>&nbsp;                    System.out.println(&quot;[NEW USER] - &quot; + socket.getRemoteSocketAddress().toString());</b>
+<i>210</i>&nbsp;
+<b class="nc"><i>211</i>&nbsp;                    executor.submit(new ServerClientHandler(socket,this, pingPeriod));</b>
+<b class="nc"><i>212</i>&nbsp;                }catch(IOException e){</b>
+<b class="nc"><i>213</i>&nbsp;                    System.err.println(&quot;[START_SERVER] - &quot;+e.getMessage());</b>
+<b class="nc"><i>214</i>&nbsp;                    break;</b>
+<b class="nc"><i>215</i>&nbsp;                }</b>
+<i>216</i>&nbsp;            }
+<b class="nc"><i>217</i>&nbsp;        }</b>
+<b class="nc"><i>218</i>&nbsp;        executor.shutdown();</b>
+<i>219</i>&nbsp;        try {
+<b class="nc"><i>220</i>&nbsp;            serverSocket.close();</b>
+<b class="nc"><i>221</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>222</i>&nbsp;            System.err.println(&quot;[START_SERVER] - &quot;+e.getMessage());</b>
+<b class="nc"><i>223</i>&nbsp;        }</b>
+<b class="nc"><i>224</i>&nbsp;    }</b>
+<i>225</i>&nbsp;
+<i>226</i>&nbsp;    /**
+<i>227</i>&nbsp;     * It sends the server message to all clients
+<i>228</i>&nbsp;     * @param sm the message
+<i>229</i>&nbsp;     * @param vv the virtual view
+<i>230</i>&nbsp;     */
+<i>231</i>&nbsp;    public void sendAll(ServerMessage sm, VirtualView vv){
+<b class="nc"><i>232</i>&nbsp;        for(Object sch : vv.getConnectedPlayers().values())</b>
+<b class="nc"><i>233</i>&nbsp;            if(sch != null)</b>
+<b class="nc"><i>234</i>&nbsp;                if(((ServerClientHandler) sch).isStillConnected())</b>
+<b class="nc"><i>235</i>&nbsp;                    ((ServerClientHandler) sch).notify(sm);</b>
+<b class="nc"><i>236</i>&nbsp;        System.out.println(&quot;[SENT] - &quot; + sm.toString().substring(sm.toString().lastIndexOf(&#39;.&#39;)+1,sm.toString().lastIndexOf(&#39;@&#39;)) + &quot;&quot;);</b>
+<b class="nc"><i>237</i>&nbsp;    }</b>
+<i>238</i>&nbsp;
+<i>239</i>&nbsp;    /**
+<i>240</i>&nbsp;     * It sends the server message to the client set in the message
+<i>241</i>&nbsp;     * @param sm the message
+<i>242</i>&nbsp;     * @param vv the virtual view
+<i>243</i>&nbsp;     */
+<i>244</i>&nbsp;    public void send(ServerMessage sm, VirtualView vv){
+<b class="nc"><i>245</i>&nbsp;        if(sm!=null &amp;&amp; vv != null)</b>
+<b class="nc"><i>246</i>&nbsp;            for(ServerClientHandler sch : vv.getConnectedPlayers().values())</b>
+<b class="nc"><i>247</i>&nbsp;                if(sm instanceof PingServer)</b>
+<b class="nc"><i>248</i>&nbsp;                    if(sch.getName().equals(((PingServer) sm).name) &amp;&amp; sch.isStillConnected())</b>
+<b class="nc"><i>249</i>&nbsp;                        sch.notify(sm);</b>
+<b class="nc"><i>250</i>&nbsp;        if(!(sm instanceof PingServer))</b>
+<b class="nc"><i>251</i>&nbsp;            System.out.println(&quot;[SENT --- ERRORE] - &quot; + Objects.requireNonNull(sm).toString().substring(sm.toString().lastIndexOf(&#39;.&#39;)+1,sm.toString().lastIndexOf(&#39;@&#39;)));</b>
+<b class="nc"><i>252</i>&nbsp;    }</b>
+<i>253</i>&nbsp;
+<i>254</i>&nbsp;    /**
+<i>255</i>&nbsp;     * Main to start the server
+<i>256</i>&nbsp;     * @param args usually it takes no args
+<i>257</i>&nbsp;     */
+<i>258</i>&nbsp;    public static void main(String[] args) {
+<b class="nc"><i>259</i>&nbsp;        Server server = new Server();</b>
+<i>260</i>&nbsp;
+<b class="nc"><i>261</i>&nbsp;        try (FileReader reader = new FileReader(&quot;resources&quot;+ File.separator+&quot;config.json&quot;))</b>
+<i>262</i>&nbsp;        {
+<i>263</i>&nbsp;            // json read
+<b class="nc"><i>264</i>&nbsp;            JSONParser jsonParser = new JSONParser();</b>
+<i>265</i>&nbsp;            JSONObject config;
+<i>266</i>&nbsp;
+<i>267</i>&nbsp;            //Read JSON file
+<b class="nc"><i>268</i>&nbsp;            Object obj = jsonParser.parse(reader);</b>
+<b class="nc"><i>269</i>&nbsp;            config = (JSONObject) obj;</b>
+<i>270</i>&nbsp;
+<b class="nc"><i>271</i>&nbsp;            if(config != null) {</b>
+<b class="nc"><i>272</i>&nbsp;                if (config.containsKey(&quot;port&quot;))</b>
+<b class="nc"><i>273</i>&nbsp;                    server.port = Integer.parseInt(config.get(&quot;port&quot;).toString());</b>
+<b class="nc"><i>274</i>&nbsp;                if(config.containsKey(&quot;pingPeriod&quot;))</b>
+<b class="nc"><i>275</i>&nbsp;                    server.pingPeriod = Integer.parseInt(config.get(&quot;pingPeriod&quot;).toString());</b>
+<b class="nc"><i>276</i>&nbsp;                if(config.containsKey(&quot;timeoutSocket&quot;))</b>
+<b class="nc"><i>277</i>&nbsp;                    server.timeoutSocket = Integer.parseInt(config.get(&quot;timeoutSocket&quot;).toString());</b>
+<b class="nc"><i>278</i>&nbsp;                if(config.containsKey(&quot;turnTimer&quot;))</b>
+<b class="nc"><i>279</i>&nbsp;                    server.turnTimer = Integer.parseInt(config.get(&quot;turnTimer&quot;).toString());</b>
+<b class="nc"><i>280</i>&nbsp;                if(config.containsKey(&quot;disconnectTimer&quot;))</b>
+<b class="nc"><i>281</i>&nbsp;                    server.disconnectTimer = Integer.parseInt(config.get(&quot;disconnectTimer&quot;).toString());</b>
+<i>282</i>&nbsp;            }
+<b class="nc"><i>283</i>&nbsp;        } catch (Exception e) {</b>
+<b class="nc"><i>284</i>&nbsp;            server.port = 1234;</b>
+<b class="nc"><i>285</i>&nbsp;        }</b>
+<i>286</i>&nbsp;
+<i>287</i>&nbsp;        //run server
+<b class="nc"><i>288</i>&nbsp;        server.newCurrentVirtualView2();</b>
+<b class="nc"><i>289</i>&nbsp;        server.newCurrentVirtualView3();</b>
+<b class="nc"><i>290</i>&nbsp;        server.startServer();</b>
+<b class="nc"><i>291</i>&nbsp;    }</b>
+<i>292</i>&nbsp;
+<i>293</i>&nbsp;    /**
+<i>294</i>&nbsp;     * Loads the match from a file
+<i>295</i>&nbsp;     */
+<i>296</i>&nbsp;    public void loadMatch(){
+<i>297</i>&nbsp;        ObjectInputStream objIn;
+<i>298</i>&nbsp;        try {
+<b class="nc"><i>299</i>&nbsp;            if(new File(&quot;resources&quot;+File.separator+&quot;saved-match&quot;).exists()){</b>
+<b class="nc"><i>300</i>&nbsp;                for (final File fileEntry : Objects.requireNonNull(new File(&quot;resources&quot;+File.separator+&quot;saved-match&quot;).listFiles())) {</b>
+<b class="nc"><i>301</i>&nbsp;                    if (!fileEntry.isDirectory() &amp;&amp; getExtensionByStringHandling(fileEntry.getName()).get().equals(&quot;santorini&quot;)) {</b>
+<b class="nc"><i>302</i>&nbsp;                        objIn = new ObjectInputStream(new FileInputStream(fileEntry.getAbsolutePath()));</b>
+<b class="nc"><i>303</i>&nbsp;                        Object obj = objIn.readObject();</b>
+<b class="nc"><i>304</i>&nbsp;                        if(obj instanceof Match) {</b>
+<b class="nc"><i>305</i>&nbsp;                            if (!((Match) obj).getStatus().equals(Status.NAME_CHOICE) &amp;&amp; !((Match) obj).getStatus().equals(Status.END)){</b>
+<i>306</i>&nbsp;                                //System.out.println(fileEntry.toString());
+<b class="nc"><i>307</i>&nbsp;                                if (((Match) obj).getPlayers().size() + ((Match) obj).getLosers().size() == 2) {</b>
+<b class="nc"><i>308</i>&nbsp;                                    Object sm = objIn.readObject();</b>
+<b class="nc"><i>309</i>&nbsp;                                    if(sm instanceof ServerMessage)</b>
+<b class="nc"><i>310</i>&nbsp;                                        virtualViews2.add(new VirtualView(this, (Match) obj, (ServerMessage) sm));</b>
+<b class="nc"><i>311</i>&nbsp;                                } else if (((Match) obj).getPlayers().size() + ((Match) obj).getLosers().size() == 3) {</b>
+<b class="nc"><i>312</i>&nbsp;                                    Object sm = objIn.readObject();</b>
+<b class="nc"><i>313</i>&nbsp;                                    if(sm instanceof ServerMessage)</b>
+<b class="nc"><i>314</i>&nbsp;                                        virtualViews3.add(new VirtualView(this, (Match) obj, (ServerMessage) sm));</b>
+<i>315</i>&nbsp;                                }
+<i>316</i>&nbsp;                            }
+<i>317</i>&nbsp;                        }
+<b class="nc"><i>318</i>&nbsp;                        objIn.close();</b>
+<i>319</i>&nbsp;                    }
+<i>320</i>&nbsp;                }
+<i>321</i>&nbsp;            }
+<b class="nc"><i>322</i>&nbsp;            System.out.println(&quot;[2 PLAYERS] - &quot;+(virtualViews2.size()-1)+&quot; loaded&quot;);</b>
+<b class="nc"><i>323</i>&nbsp;            System.out.println(&quot;[3 PLAYERS] - &quot;+(virtualViews3.size()-1)+&quot; loaded&quot;);</b>
+<b class="nc"><i>324</i>&nbsp;        } catch (IOException | ClassNotFoundException e) {</b>
+<b class="nc"><i>325</i>&nbsp;            System.out.println(&quot;[2 PLAYERS MATCH] - &quot;+(virtualViews2.size()-1)+&quot; match loaded&quot;);</b>
+<b class="nc"><i>326</i>&nbsp;            System.out.println(&quot;[3 PLAYERS MATCH] - &quot;+(virtualViews3.size()-1)+&quot; match loaded&quot;);</b>
+<b class="nc"><i>327</i>&nbsp;        }</b>
+<b class="nc"><i>328</i>&nbsp;    }</b>
+<i>329</i>&nbsp;
+<i>330</i>&nbsp;    /**
+<i>331</i>&nbsp;     * Ref. https://www.baeldung.com/java-file-extension
+<i>332</i>&nbsp;     * @param filename the file
+<i>333</i>&nbsp;     * @return file extension, if exists
+<i>334</i>&nbsp;     */
+<i>335</i>&nbsp;    public Optional&lt;String&gt; getExtensionByStringHandling(String filename) {
+<b class="nc"><i>336</i>&nbsp;        return Optional.ofNullable(filename)</b>
+<b class="nc"><i>337</i>&nbsp;                .filter(f -&gt; f.contains(&quot;.&quot;))</b>
+<b class="nc"><i>338</i>&nbsp;                .map(f -&gt; f.substring(filename.lastIndexOf(&quot;.&quot;) + 1));</b>
+<i>339</i>&nbsp;    }
+<i>340</i>&nbsp;
+<i>341</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>

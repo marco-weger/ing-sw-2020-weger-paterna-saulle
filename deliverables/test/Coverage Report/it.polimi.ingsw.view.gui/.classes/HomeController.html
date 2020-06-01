@@ -1,0 +1,149 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: HomeController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.gui</a> ]
+</div>
+
+<h1>Coverage Summary for Class: HomeController (it.polimi.ingsw.view.gui)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">HomeController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.gui;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javafx.application.Platform;
+<i>4</i>&nbsp;import javafx.fxml.FXML;
+<i>5</i>&nbsp;import javafx.scene.control.Button;
+<i>6</i>&nbsp;import javafx.scene.image.Image;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;
+<b class="nc"><i>9</i>&nbsp;public class HomeController extends DefaultController{</b>
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;    @FXML
+<i>12</i>&nbsp;    public Button buttonPlay;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    @FXML
+<i>15</i>&nbsp;    public Button buttonHelp;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    /**
+<i>19</i>&nbsp;     * set the background image
+<i>20</i>&nbsp;     * set size of the button
+<i>21</i>&nbsp;     */
+<i>22</i>&nbsp;    @FXML
+<i>23</i>&nbsp;    @Override
+<i>24</i>&nbsp;    public void initialize(){
+<b class="nc"><i>25</i>&nbsp;        super.initialize();</b>
+<b class="nc"><i>26</i>&nbsp;        super.setBackground(new Image(&quot;/it.polimi.ingsw/view/gui/img/scene/bg_home.png&quot;));</b>
+<i>27</i>&nbsp;
+<b class="nc"><i>28</i>&nbsp;        int size = 200;</b>
+<b class="nc"><i>29</i>&nbsp;        buttonPlay.setPrefSize(size,size);</b>
+<b class="nc"><i>30</i>&nbsp;        buttonPlay.setMaxSize(size,size);</b>
+<b class="nc"><i>31</i>&nbsp;        buttonPlay.setMinSize(size,size);</b>
+<b class="nc"><i>32</i>&nbsp;        buttonHelp.setPrefSize(size,size);</b>
+<b class="nc"><i>33</i>&nbsp;        buttonHelp.setMaxSize(size,size);</b>
+<b class="nc"><i>34</i>&nbsp;        buttonHelp.setMinSize(size,size);</b>
+<i>35</i>&nbsp;
+<b class="nc"><i>36</i>&nbsp;        buttonHelper.setVisible(false);</b>
+<b class="nc"><i>37</i>&nbsp;    }</b>
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    /**
+<i>40</i>&nbsp;     * Show the helper
+<i>41</i>&nbsp;     * @param actionEvent help button clicked
+<i>42</i>&nbsp;     */
+<i>43</i>&nbsp;    public void handleHelpButton(javafx.event.ActionEvent actionEvent) {
+<b class="nc"><i>44</i>&nbsp;        showHelper();</b>
+<b class="nc"><i>45</i>&nbsp;    }</b>
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    /**
+<i>49</i>&nbsp;     * Try a connection to the main Server
+<i>50</i>&nbsp;     * if true -&gt; load Name Scene
+<i>51</i>&nbsp;     * else -&gt; load Server Scene
+<i>52</i>&nbsp;     * @param actionEvent
+<i>53</i>&nbsp;     */
+<i>54</i>&nbsp;    public void handlePlayButton(javafx.event.ActionEvent actionEvent) {
+<b class="nc"><i>55</i>&nbsp;        boolean go = this.gui.getClient().connect();</b>
+<b class="nc"><i>56</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>57</i>&nbsp;            if(go)</b>
+<b class="nc"><i>58</i>&nbsp;                this.gui.getPrimaryStage().setScene(this.gui.load(&quot;/it.polimi.ingsw/view/gui/fxml/Name.fxml&quot;));</b>
+<i>59</i>&nbsp;            else
+<b class="nc"><i>60</i>&nbsp;                this.gui.getPrimaryStage().setScene(this.gui.load(&quot;/it.polimi.ingsw/view/gui/fxml/Server.fxml&quot;));</b>
+<i>61</i>&nbsp;
+<b class="nc"><i>62</i>&nbsp;            this.gui.getPrimaryStage().show();</b>
+<b class="nc"><i>63</i>&nbsp;        });</b>
+<b class="nc"><i>64</i>&nbsp;    }</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>

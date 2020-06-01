@@ -1,0 +1,179 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TimerDisconnection</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.network</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TimerDisconnection (it.polimi.ingsw.network)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TimerDisconnection</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 30)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.network;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.commons.Status;
+<i>4</i>&nbsp;import it.polimi.ingsw.commons.servermessages.TimeOutServer;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import java.util.concurrent.ScheduledExecutorService;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class TimerDisconnection implements Runnable {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;    /**
+<i>11</i>&nbsp;     * The client
+<i>12</i>&nbsp;     */
+<i>13</i>&nbsp;    final ServerClientHandler sch;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    /**
+<i>16</i>&nbsp;     * Thread
+<i>17</i>&nbsp;     */
+<i>18</i>&nbsp;    final ScheduledExecutorService ses;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * The counter of execution
+<i>22</i>&nbsp;     */
+<i>23</i>&nbsp;    int count;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    /**
+<i>26</i>&nbsp;     * The number of try
+<i>27</i>&nbsp;     */
+<i>28</i>&nbsp;    long numberOfTry;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    /**
+<i>31</i>&nbsp;     * True while the timer is running
+<i>32</i>&nbsp;     */
+<i>33</i>&nbsp;    boolean alive;
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     *
+<i>37</i>&nbsp;     * @param sch the client
+<i>38</i>&nbsp;     * @param ses the thread manager
+<i>39</i>&nbsp;     * @param numberOfTry number of try
+<i>40</i>&nbsp;     */
+<b class="nc"><i>41</i>&nbsp;    public TimerDisconnection(ServerClientHandler sch, ScheduledExecutorService ses, long numberOfTry){</b>
+<b class="nc"><i>42</i>&nbsp;        this.sch = sch;</b>
+<b class="nc"><i>43</i>&nbsp;        this.ses = ses;</b>
+<b class="nc"><i>44</i>&nbsp;        this.numberOfTry = numberOfTry;</b>
+<b class="nc"><i>45</i>&nbsp;        this.count = 0;</b>
+<b class="nc"><i>46</i>&nbsp;        this.alive = true;</b>
+<i>47</i>&nbsp;
+<b class="nc"><i>48</i>&nbsp;        if(sch.getPing() != null)</b>
+<b class="nc"><i>49</i>&nbsp;            sch.getPing().cancel();</b>
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;        try{
+<b class="nc"><i>52</i>&nbsp;            sch.getVirtualView().getTurn().cancel();</b>
+<b class="nc"><i>53</i>&nbsp;        }catch (Exception ignored){}</b>
+<b class="nc"><i>54</i>&nbsp;    }</b>
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    /**
+<i>57</i>&nbsp;     * When an object implementing interface &lt;code&gt;Runnable&lt;/code&gt; is used
+<i>58</i>&nbsp;     * to create a thread, starting the thread causes the object&#39;s
+<i>59</i>&nbsp;     * &lt;code&gt;run&lt;/code&gt; method to be called in that separately executing
+<i>60</i>&nbsp;     * thread.
+<i>61</i>&nbsp;     * &lt;p&gt;
+<i>62</i>&nbsp;     * The general contract of the method &lt;code&gt;run&lt;/code&gt; is that it may
+<i>63</i>&nbsp;     * take any action whatsoever.
+<i>64</i>&nbsp;     *
+<i>65</i>&nbsp;     * @see Thread#run()
+<i>66</i>&nbsp;     */
+<i>67</i>&nbsp;    @Override
+<i>68</i>&nbsp;    public void run() {
+<i>69</i>&nbsp;        //System.out.println(count+&quot;/&quot;+numberOfTry);
+<b class="nc"><i>70</i>&nbsp;        if(this.alive &amp;&amp; sch.isStillConnected() &amp;&amp; sch.getVirtualView() != null &amp;&amp; !sch.getVirtualView().getCurrentStatus().equals(Status.NAME_CHOICE)) {</b>
+<i>71</i>&nbsp;            try {
+<b class="nc"><i>72</i>&nbsp;                if (sch.getIn().available() != 0) { // if the connection is reestablished</b>
+<b class="nc"><i>73</i>&nbsp;                    sch.setStillConnected(true);</b>
+<b class="nc"><i>74</i>&nbsp;                    sch.startPing();</b>
+<b class="nc"><i>75</i>&nbsp;                    ses.shutdown(); // stop timer</b>
+<i>76</i>&nbsp;                } else { // send the try to all clients
+<b class="nc"><i>77</i>&nbsp;                    sch.getServer().sendAll(new TimeOutServer(sch.getName(), count, numberOfTry), sch.getVirtualView());</b>
+<i>78</i>&nbsp;                }
+<b class="nc"><i>79</i>&nbsp;            } catch (Exception e) {</b>
+<b class="nc"><i>80</i>&nbsp;                System.out.println(&quot;[TO] - &quot; + e.getMessage());</b>
+<b class="nc"><i>81</i>&nbsp;            }</b>
+<i>82</i>&nbsp;
+<b class="nc"><i>83</i>&nbsp;            if (++count &gt; numberOfTry) { // the timer&#39;s end</b>
+<b class="nc"><i>84</i>&nbsp;                sch.disconnectionHandler();</b>
+<b class="nc"><i>85</i>&nbsp;                sch.setStillConnected(false);</b>
+<b class="nc"><i>86</i>&nbsp;                this.alive = false;</b>
+<b class="nc"><i>87</i>&nbsp;                ses.shutdown();</b>
+<i>88</i>&nbsp;            }
+<i>89</i>&nbsp;        } else {
+<b class="nc"><i>90</i>&nbsp;            sch.disconnectionHandler();</b>
+<b class="nc"><i>91</i>&nbsp;            sch.setStillConnected(false);</b>
+<b class="nc"><i>92</i>&nbsp;            this.alive = false;</b>
+<b class="nc"><i>93</i>&nbsp;            ses.shutdown();</b>
+<i>94</i>&nbsp;        }
+<b class="nc"><i>95</i>&nbsp;    }</b>
+<i>96</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>

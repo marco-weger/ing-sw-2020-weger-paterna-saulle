@@ -1,0 +1,1175 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GUI</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.gui</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GUI (it.polimi.ingsw.view.gui)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GUI</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 73)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 552)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GUI$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GUI$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 76)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 556)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.gui;
+<i>2</i>&nbsp;import it.polimi.ingsw.commons.SnapCell;
+<i>3</i>&nbsp;import it.polimi.ingsw.commons.SnapPlayer;
+<i>4</i>&nbsp;import it.polimi.ingsw.commons.SnapWorker;
+<i>5</i>&nbsp;import it.polimi.ingsw.commons.Status;
+<i>6</i>&nbsp;import it.polimi.ingsw.commons.servermessages.*;
+<i>7</i>&nbsp;import it.polimi.ingsw.network.Client;
+<i>8</i>&nbsp;import it.polimi.ingsw.network.TimerTurnClient;
+<i>9</i>&nbsp;import it.polimi.ingsw.view.ViewInterface;
+<i>10</i>&nbsp;import javafx.application.Application;
+<i>11</i>&nbsp;import javafx.application.Platform;
+<i>12</i>&nbsp;import javafx.fxml.FXMLLoader;
+<i>13</i>&nbsp;import javafx.scene.ImageCursor;
+<i>14</i>&nbsp;import javafx.scene.Parent;
+<i>15</i>&nbsp;import javafx.scene.Scene;
+<i>16</i>&nbsp;import javafx.scene.image.Image;
+<i>17</i>&nbsp;import javafx.scene.input.KeyCode;
+<i>18</i>&nbsp;import javafx.scene.paint.Color;
+<i>19</i>&nbsp;import javafx.scene.text.Text;
+<i>20</i>&nbsp;import javafx.stage.Modality;
+<i>21</i>&nbsp;import javafx.stage.Stage;
+<i>22</i>&nbsp;import javafx.stage.StageStyle;
+<i>23</i>&nbsp;import java.io.IOException;
+<i>24</i>&nbsp;import java.util.*;
+<i>25</i>&nbsp;import java.util.concurrent.Executors;
+<i>26</i>&nbsp;import java.util.concurrent.ScheduledExecutorService;
+<i>27</i>&nbsp;import java.util.concurrent.TimeUnit;
+<i>28</i>&nbsp;import java.util.logging.Level;
+<i>29</i>&nbsp;import java.util.logging.Logger;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;
+<b class="nc"><i>32</i>&nbsp;public class GUI extends Application implements ViewInterface {</b>
+<i>33</i>&nbsp;
+<b class="nc"><i>34</i>&nbsp;    private static final Logger LOGGER = Logger.getLogger(HomeController.class.getName());</b>
+<b class="nc"><i>35</i>&nbsp;    double sceneWidth = 0;</b>
+<b class="nc"><i>36</i>&nbsp;    double sceneHeight = 0;</b>
+<b class="nc"><i>37</i>&nbsp;    int currentP = 0; /* a parameter to Save CurrentPlayer during the CARD_CHOSE Status*/</b>
+<b class="nc"><i>38</i>&nbsp;    int NetworkErrorFlag = 0; /*a flag to avoid mutliple netork error freeze*/</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    Parent root;
+<i>42</i>&nbsp;    DefaultController defaultcontroller;
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    private static final String CURSOR = &quot;/it.polimi.ingsw/view/gui/img/pointer.png&quot;;
+<i>45</i>&nbsp;    private static final String BOARD = &quot;/it.polimi.ingsw/view/gui/fxml/Board.fxml&quot;;
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    private static final double POPUPX = 421;
+<i>48</i>&nbsp;    private static final double POPUPY = 450;
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    private TimerTurnClient timer;
+<i>51</i>&nbsp;    private Client client;
+<i>52</i>&nbsp;    private Stage primaryStage;
+<i>53</i>&nbsp;    private Stage win;
+<i>54</i>&nbsp;    private Stage lose;
+<i>55</i>&nbsp;    private Stage error;
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    private ScheduledExecutorService timeOut;
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    public Stage getLose() {
+<b class="nc"><i>60</i>&nbsp;        return lose;</b>
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    public Stage getPrimaryStage(){
+<b class="nc"><i>64</i>&nbsp;        return primaryStage;</b>
+<i>65</i>&nbsp;    }
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    public Stage getWin() {
+<b class="nc"><i>68</i>&nbsp;        return win;</b>
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;    /**
+<i>73</i>&nbsp;     * Main JavaFX function, set size,cursor and Style of Santorini
+<i>74</i>&nbsp;     * Creates a new Client
+<i>75</i>&nbsp;     * @param primaryStage the mainstage of the GUI
+<i>76</i>&nbsp;     */
+<i>77</i>&nbsp;    @Override
+<i>78</i>&nbsp;    public void start(Stage primaryStage) {
+<b class="nc"><i>79</i>&nbsp;        sceneWidth = 950;</b>
+<b class="nc"><i>80</i>&nbsp;        sceneHeight = 800;</b>
+<b class="nc"><i>81</i>&nbsp;        this.primaryStage = primaryStage;</b>
+<b class="nc"><i>82</i>&nbsp;        primaryStage.setTitle(&quot;Santorini&quot;);</b>
+<b class="nc"><i>83</i>&nbsp;        primaryStage.initStyle(StageStyle.TRANSPARENT);</b>
+<b class="nc"><i>84</i>&nbsp;        primaryStage.getIcons().add(new Image(&quot;/it.polimi.ingsw/view/gui/img/icon.png&quot;));</b>
+<b class="nc"><i>85</i>&nbsp;        client = new Client();</b>
+<b class="nc"><i>86</i>&nbsp;        client.readParams(client);</b>
+<b class="nc"><i>87</i>&nbsp;        client.setView(this);</b>
+<b class="nc"><i>88</i>&nbsp;        displayFirstWindow();</b>
+<b class="nc"><i>89</i>&nbsp;    }</b>
+<i>90</i>&nbsp;
+<b class="nc"><i>91</i>&nbsp;    public Client getClient(){ return client; }</b>
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;    /**
+<i>95</i>&nbsp;     * Load safely an FXML file to the primaryStage
+<i>96</i>&nbsp;     * @param file path to an FXML file
+<i>97</i>&nbsp;     *
+<i>98</i>&nbsp;     */
+<i>99</i>&nbsp;    public Scene load(String file){
+<i>100</i>&nbsp;        try {
+<b class="nc"><i>101</i>&nbsp;            FXMLLoader loader = new FXMLLoader(getClass().getResource(file));</b>
+<b class="nc"><i>102</i>&nbsp;            root = loader.load();</b>
+<b class="nc"><i>103</i>&nbsp;            defaultcontroller = loader.getController();</b>
+<b class="nc"><i>104</i>&nbsp;            defaultcontroller.setGUI(this);</b>
+<b class="nc"><i>105</i>&nbsp;            double limitY = 190* sceneWidth /1300;</b>
+<i>106</i>&nbsp;
+<b class="nc"><i>107</i>&nbsp;            defaultcontroller.top.setMinWidth(sceneWidth);</b>
+<b class="nc"><i>108</i>&nbsp;            defaultcontroller.top.setMinHeight(limitY);</b>
+<b class="nc"><i>109</i>&nbsp;            defaultcontroller.top.setMaxWidth(sceneWidth);</b>
+<b class="nc"><i>110</i>&nbsp;            defaultcontroller.top.setMaxHeight(limitY);</b>
+<b class="nc"><i>111</i>&nbsp;            defaultcontroller.bottom.setMinWidth(sceneWidth);</b>
+<b class="nc"><i>112</i>&nbsp;            defaultcontroller.bottom.setMinHeight(limitY);</b>
+<b class="nc"><i>113</i>&nbsp;            defaultcontroller.bottom.setMaxWidth(sceneWidth);</b>
+<b class="nc"><i>114</i>&nbsp;            defaultcontroller.bottom.setMaxHeight(limitY);</b>
+<b class="nc"><i>115</i>&nbsp;            defaultcontroller.center.setMinWidth(sceneWidth);</b>
+<b class="nc"><i>116</i>&nbsp;            defaultcontroller.center.setMaxWidth(sceneWidth);</b>
+<i>117</i>&nbsp;
+<b class="nc"><i>118</i>&nbsp;            defaultcontroller.buttonQuit.setMinSize(40,40);</b>
+<b class="nc"><i>119</i>&nbsp;            defaultcontroller.buttonQuit.setMaxSize(40,40);</b>
+<b class="nc"><i>120</i>&nbsp;            defaultcontroller.buttonQuit.setPrefSize(40,40);</b>
+<b class="nc"><i>121</i>&nbsp;            defaultcontroller.buttonHelper.setMinSize(62,40);</b>
+<b class="nc"><i>122</i>&nbsp;            defaultcontroller.buttonHelper.setMaxSize(62,40);</b>
+<b class="nc"><i>123</i>&nbsp;            defaultcontroller.buttonHelper.setPrefSize(62,40);</b>
+<b class="nc"><i>124</i>&nbsp;            defaultcontroller.buttonQuit.setLayoutY(limitY/2-20);</b>
+<b class="nc"><i>125</i>&nbsp;            defaultcontroller.buttonHelper.setLayoutY(limitY/2-20);</b>
+<b class="nc"><i>126</i>&nbsp;            defaultcontroller.buttonQuit.setLayoutX(sceneWidth-50);</b>
+<b class="nc"><i>127</i>&nbsp;            defaultcontroller.buttonHelper.setLayoutX(sceneWidth-120);</b>
+<i>128</i>&nbsp;
+<b class="nc"><i>129</i>&nbsp;            Scene scene = new Scene(Objects.requireNonNull(root), sceneWidth, sceneHeight, Color.TRANSPARENT);</b>
+<b class="nc"><i>130</i>&nbsp;            scene.setCursor(new ImageCursor(new Image(CURSOR)));</b>
+<i>131</i>&nbsp;            //ImageCursor.getBestSize(30,30).getWidth(),ImageCursor.getBestSize(30,30).getHeight())
+<b class="nc"><i>132</i>&nbsp;            scene.setUserData(loader);</b>
+<b class="nc"><i>133</i>&nbsp;            defaultcontroller.mainstage = primaryStage;</b>
+<b class="nc"><i>134</i>&nbsp;            defaultcontroller.setup();</b>
+<b class="nc"><i>135</i>&nbsp;            return scene;</b>
+<b class="nc"><i>136</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>137</i>&nbsp;            e.printStackTrace();</b>
+<b class="nc"><i>138</i>&nbsp;            return null;</b>
+<i>139</i>&nbsp;        }
+<i>140</i>&nbsp;    }
+<i>141</i>&nbsp;
+<i>142</i>&nbsp;
+<i>143</i>&nbsp;    /**
+<i>144</i>&nbsp;     * Shows on board the cells available included in the CheckMoveServer message
+<i>145</i>&nbsp;     * updates the banner message
+<i>146</i>&nbsp;     * Enables the currentPlayer to send MovedClient message
+<i>147</i>&nbsp;     * @param message a CheckMoveServer message
+<i>148</i>&nbsp;     */
+<i>149</i>&nbsp;    @Override
+<i>150</i>&nbsp;    public void handleMessage(CheckMoveServer message) {
+<b class="nc"><i>151</i>&nbsp;        if(client.getUsername().equals(client.getCurrentPlayer())){</b>
+<b class="nc"><i>152</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>153</i>&nbsp;                FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>154</i>&nbsp;                DefaultController controller = loader.getController();</b>
+<b class="nc"><i>155</i>&nbsp;                if(controller instanceof BoardController){</b>
+<b class="nc"><i>156</i>&nbsp;                    ((BoardController) controller).setCms(message);</b>
+<b class="nc"><i>157</i>&nbsp;                    ((BoardController) controller).banner.setText(&quot;Choose the cell where you want to move&quot;);</b>
+<b class="nc"><i>158</i>&nbsp;                    ((BoardController) controller).showCheckMove(message);</b>
+<b class="nc"><i>159</i>&nbsp;                    ((BoardController) controller).setState(2);</b>
+<b class="nc"><i>160</i>&nbsp;                    ((BoardController) controller).refresh();</b>
+<b class="nc"><i>161</i>&nbsp;                } else System.out.println(&quot;FATAL ERROR - CHECKMOVESERVER MESSAGE&quot;);</b>
+<b class="nc"><i>162</i>&nbsp;            });</b>
+<i>163</i>&nbsp;        }
+<b class="nc"><i>164</i>&nbsp;    }</b>
+<i>165</i>&nbsp;
+<i>166</i>&nbsp;
+<i>167</i>&nbsp;    /**
+<i>168</i>&nbsp;     * Shows on board the cells available included in the CheckBuildServer message
+<i>169</i>&nbsp;     * updates the banner message
+<i>170</i>&nbsp;     * Enables the currentPlayer to send BuildClient message
+<i>171</i>&nbsp;     * @param message a CheckBuildServer message
+<i>172</i>&nbsp;     */
+<i>173</i>&nbsp;    @Override
+<i>174</i>&nbsp;    public void handleMessage(CheckBuildServer message) {
+<b class="nc"><i>175</i>&nbsp;        if(client.getUsername().equals(client.getCurrentPlayer())) {</b>
+<b class="nc"><i>176</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>177</i>&nbsp;                FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>178</i>&nbsp;                DefaultController controller = loader.getController();</b>
+<b class="nc"><i>179</i>&nbsp;                if (controller instanceof BoardController) {</b>
+<b class="nc"><i>180</i>&nbsp;                    ((BoardController) controller).setCbs(message);</b>
+<b class="nc"><i>181</i>&nbsp;                    ((BoardController) controller).banner.setText(&quot;Choose the cell where you want to build&quot;);</b>
+<b class="nc"><i>182</i>&nbsp;                    ((BoardController) controller).showCheckBuild(message);</b>
+<b class="nc"><i>183</i>&nbsp;                    ((BoardController) controller).setState(3);</b>
+<b class="nc"><i>184</i>&nbsp;                    ((BoardController) controller).refresh();</b>
+<b class="nc"><i>185</i>&nbsp;                } else System.out.println(&quot;FATAL ERROR - CHECKBUILDSERVER MESSAGE&quot;);</b>
+<b class="nc"><i>186</i>&nbsp;            });</b>
+<i>187</i>&nbsp;        }
+<b class="nc"><i>188</i>&nbsp;    }</b>
+<i>189</i>&nbsp;
+<i>190</i>&nbsp;
+<i>191</i>&nbsp;    /**
+<i>192</i>&nbsp;     * Assign the the currentPlayer the card that he&#39;ve chosen
+<i>193</i>&nbsp;     * @param message
+<i>194</i>&nbsp;     */
+<i>195</i>&nbsp;    @Override
+<i>196</i>&nbsp;    public void handleMessage(CardChosenServer message) {
+<b class="nc"><i>197</i>&nbsp;        getPlayerByName(message.player).card = message.cardName;</b>
+<b class="nc"><i>198</i>&nbsp;    }</b>
+<i>199</i>&nbsp;
+<i>200</i>&nbsp;
+<i>201</i>&nbsp;    /**
+<i>202</i>&nbsp;     *Updates the banner message
+<i>203</i>&nbsp;     * Enables the currentPlayer to send WorkerInitialize message
+<i>204</i>&nbsp;     * @param message a WorkerChosenServer message
+<i>205</i>&nbsp;     */
+<i>206</i>&nbsp;    @Override
+<i>207</i>&nbsp;    public void handleMessage(WorkerChosenServer message) {
+<b class="nc"><i>208</i>&nbsp;        currentP++; //FRANCESCO COUNTER</b>
+<b class="nc"><i>209</i>&nbsp;        if(currentP/2 == client.getPlayers().size()){</b>
+<b class="nc"><i>210</i>&nbsp;            currentP--;</b>
+<i>211</i>&nbsp;        }
+<b class="nc"><i>212</i>&nbsp;        boolean flag = false;</b>
+<i>213</i>&nbsp;        try {
+<b class="nc"><i>214</i>&nbsp;            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>215</i>&nbsp;            client.getWorkers().add(new SnapWorker(message.x, message.y, message.player, message.worker));</b>
+<b class="nc"><i>216</i>&nbsp;            if (message.player.equals(this.client.getUsername())) {</b>
+<b class="nc"><i>217</i>&nbsp;                if (message.worker == 1) {</b>
+<i>218</i>&nbsp;                    DefaultController controllerx;
+<b class="nc"><i>219</i>&nbsp;                    controllerx = loader.getController();</b>
+<i>220</i>&nbsp;                    //second Worker
+<b class="nc"><i>221</i>&nbsp;                    if (controllerx instanceof BoardController) {</b>
+<b class="nc"><i>222</i>&nbsp;                        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>223</i>&nbsp;                            ((BoardController) controllerx).banner.setText(&quot;Choose the position of the second worker&quot;);</b>
+<b class="nc"><i>224</i>&nbsp;                            ((BoardController) controllerx).setState(0);</b>
+<b class="nc"><i>225</i>&nbsp;                        });</b>
+<b class="nc"><i>226</i>&nbsp;                        flag = true;</b>
+<i>227</i>&nbsp;                    }
+<b class="nc"><i>228</i>&nbsp;                }</b>
+<i>229</i>&nbsp;            } else {
+<b class="nc"><i>230</i>&nbsp;                for (int i = 0; i &lt; client.getPlayers().size() - 1; i++) {</b>
+<b class="nc"><i>231</i>&nbsp;                    if (client.getPlayers().get(i).name.equals(message.player) &amp;&amp; client.getPlayers().get(i + 1).name.equals(client.getUsername()) &amp;&amp; message.worker == 2) {</b>
+<i>232</i>&nbsp;                        DefaultController controllerx;
+<b class="nc"><i>233</i>&nbsp;                        controllerx = loader.getController();</b>
+<i>234</i>&nbsp;
+<b class="nc"><i>235</i>&nbsp;                        if (controllerx instanceof BoardController) {</b>
+<b class="nc"><i>236</i>&nbsp;                            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>237</i>&nbsp;                                controllerx.setup();</b>
+<b class="nc"><i>238</i>&nbsp;                                ((BoardController) controllerx).banner.setText(&quot;Choose the position of the first worker&quot;);</b>
+<b class="nc"><i>239</i>&nbsp;                                ((BoardController) controllerx).setState(0);</b>
+<b class="nc"><i>240</i>&nbsp;                                ((BoardController) controllerx).refresh();</b>
+<b class="nc"><i>241</i>&nbsp;                            });</b>
+<b class="nc"><i>242</i>&nbsp;                            flag = true;</b>
+<i>243</i>&nbsp;                        }
+<i>244</i>&nbsp;                    }
+<i>245</i>&nbsp;                }
+<i>246</i>&nbsp;
+<i>247</i>&nbsp;            }
+<b class="nc"><i>248</i>&nbsp;        }catch (Exception ex){</b>
+<b class="nc"><i>249</i>&nbsp;            System.err.println(&quot;IMPORTANT!!!&quot;);</b>
+<b class="nc"><i>250</i>&nbsp;            LOGGER.log( Level.SEVERE, ex.toString(), ex );</b>
+<b class="nc"><i>251</i>&nbsp;        }</b>
+<b class="nc"><i>252</i>&nbsp;        if(!flag){</b>
+<b class="nc"><i>253</i>&nbsp;            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<i>254</i>&nbsp;            DefaultController controllerx;
+<b class="nc"><i>255</i>&nbsp;            controllerx = loader.getController();</b>
+<b class="nc"><i>256</i>&nbsp;            if (controllerx instanceof BoardController) {</b>
+<b class="nc"><i>257</i>&nbsp;                Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>258</i>&nbsp;                    controllerx.setup();</b>
+<b class="nc"><i>259</i>&nbsp;                    ((BoardController) controllerx).banner.setText(&quot;WAIT, &quot; + client.getPlayers().get(currentP/2).name+ &quot;&#39;s Turn&quot;);</b>
+<b class="nc"><i>260</i>&nbsp;                    ((BoardController) controllerx).refresh();</b>
+<b class="nc"><i>261</i>&nbsp;                });</b>
+<i>262</i>&nbsp;            }
+<i>263</i>&nbsp;
+<i>264</i>&nbsp;        }
+<b class="nc"><i>265</i>&nbsp;    }</b>
+<i>266</i>&nbsp;
+<i>267</i>&nbsp;
+<i>268</i>&nbsp;    /**
+<i>269</i>&nbsp;     * Updates the banner message
+<i>270</i>&nbsp;     * Shows Yes and No button on the Banner
+<i>271</i>&nbsp;     * Enables the Client to send AnswerAbilityClient message
+<i>272</i>&nbsp;     * @param message a QuestionAbilityMessage message
+<i>273</i>&nbsp;     */
+<i>274</i>&nbsp;    @Override
+<i>275</i>&nbsp;    public void handleMessage(QuestionAbilityServer message) {
+<b class="nc"><i>276</i>&nbsp;        if(client.getUsername().equals(client.getCurrentPlayer())){</b>
+<b class="nc"><i>277</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>278</i>&nbsp;                FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>279</i>&nbsp;                DefaultController controller = loader.getController();</b>
+<b class="nc"><i>280</i>&nbsp;                if(controller instanceof BoardController){</b>
+<b class="nc"><i>281</i>&nbsp;                    ((BoardController) controller).setQas(message);</b>
+<b class="nc"><i>282</i>&nbsp;                    ((BoardController) controller).question();</b>
+<b class="nc"><i>283</i>&nbsp;                    ((BoardController) controller).refresh();</b>
+<b class="nc"><i>284</i>&nbsp;                } else System.out.println(&quot;FATAL ERROR - QUESTIONABILITYSERVER MESSAGE&quot;);</b>
+<b class="nc"><i>285</i>&nbsp;            });</b>
+<i>286</i>&nbsp;        }
+<b class="nc"><i>287</i>&nbsp;    }</b>
+<i>288</i>&nbsp;
+<i>289</i>&nbsp;
+<i>290</i>&nbsp;    /**
+<i>291</i>&nbsp;     * Handle the First WorkerInitialize, and the WorkerChose
+<i>292</i>&nbsp;     * in both case update the banner message
+<i>293</i>&nbsp;     * In case of WORKER_CHOSE, enable the current player to send WorkerInitalizeClient message
+<i>294</i>&nbsp;     * IN case of START, enable the current player to send WorkerChoseClient message
+<i>295</i>&nbsp;     * @param message a CurrentStatusServer message
+<i>296</i>&nbsp;     */
+<i>297</i>&nbsp;    @Override
+<i>298</i>&nbsp;    public void handleMessage(CurrentStatusServer message) {
+<i>299</i>&nbsp;        DefaultController controller;
+<i>300</i>&nbsp;        FXMLLoader loader;
+<b class="nc"><i>301</i>&nbsp;        if(!client.getMyPlayer().loser &amp;&amp; message.player.equals(client.getUsername())){</b>
+<b class="nc"><i>302</i>&nbsp;            switch(message.status){</b>
+<i>303</i>&nbsp;                case WORKER_CHOICE:
+<b class="nc"><i>304</i>&nbsp;                    Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>305</i>&nbsp;                        Scene s = load(BOARD);</b>
+<b class="nc"><i>306</i>&nbsp;                        FXMLLoader xloader = (FXMLLoader) s.getUserData();</b>
+<b class="nc"><i>307</i>&nbsp;                        DefaultController xcontroller = xloader.getController();</b>
+<i>308</i>&nbsp;                        //player1, initalize first worker
+<b class="nc"><i>309</i>&nbsp;                        if(xcontroller instanceof BoardController){</b>
+<b class="nc"><i>310</i>&nbsp;                            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>311</i>&nbsp;                                ((BoardController) xcontroller).refresh();</b>
+<b class="nc"><i>312</i>&nbsp;                                ((BoardController) xcontroller).banner.setText(&quot;Choose the position of the first worker&quot;);</b>
+<b class="nc"><i>313</i>&nbsp;                                xcontroller.setup();</b>
+<b class="nc"><i>314</i>&nbsp;                                ((BoardController) xcontroller).setState(0);</b>
+<b class="nc"><i>315</i>&nbsp;                                s.setOnKeyPressed(e -&gt; {</b>
+<b class="nc"><i>316</i>&nbsp;                                    if (e.getCode() == KeyCode.Y || e.getCode() == KeyCode.N) {</b>
+<b class="nc"><i>317</i>&nbsp;                                        ((BoardController) xcontroller).activeQuestionIfPossible(e.getCode());</b>
+<i>318</i>&nbsp;                                    }
+<b class="nc"><i>319</i>&nbsp;                                });</b>
+<b class="nc"><i>320</i>&nbsp;                            });</b>
+<i>321</i>&nbsp;                        }
+<i>322</i>&nbsp;
+<b class="nc"><i>323</i>&nbsp;                        primaryStage.setScene(s);</b>
+<b class="nc"><i>324</i>&nbsp;                        primaryStage.show();</b>
+<b class="nc"><i>325</i>&nbsp;                    });</b>
+<b class="nc"><i>326</i>&nbsp;                    break;</b>
+<i>327</i>&nbsp;                case START:
+<b class="nc"><i>328</i>&nbsp;                    Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>329</i>&nbsp;                        FXMLLoader l = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>330</i>&nbsp;                        DefaultController c = l.getController();</b>
+<b class="nc"><i>331</i>&nbsp;                        if(c instanceof BoardController){</b>
+<b class="nc"><i>332</i>&nbsp;                            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>333</i>&nbsp;                                ((BoardController) c).setCss(message);</b>
+<b class="nc"><i>334</i>&nbsp;                                ((BoardController) c).banner.setText(&quot;Choose a Worker&quot;);</b>
+<b class="nc"><i>335</i>&nbsp;                                ((BoardController) c).refresh();</b>
+<b class="nc"><i>336</i>&nbsp;                                ((BoardController) c).setState(1);</b>
+<b class="nc"><i>337</i>&nbsp;                            });</b>
+<b class="nc"><i>338</i>&nbsp;                        } else System.out.println(&quot;FATAL ERROR - CURRENTSTATUSSERVER [START] MESSAGE!&quot;);</b>
+<b class="nc"><i>339</i>&nbsp;                    });</b>
+<b class="nc"><i>340</i>&nbsp;                    break;</b>
+<i>341</i>&nbsp;                default:
+<i>342</i>&nbsp;                    break;
+<i>343</i>&nbsp;            }
+<i>344</i>&nbsp;        }
+<b class="nc"><i>345</i>&nbsp;        if(!message.player.equals(client.getUsername()) &amp;&amp; !client.getMyPlayer().loser &amp;&amp; message.status == Status.WORKER_CHOICE ){</b>
+<b class="nc"><i>346</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>347</i>&nbsp;                Scene sn = load(BOARD);</b>
+<b class="nc"><i>348</i>&nbsp;                FXMLLoader loader2 = (FXMLLoader) sn.getUserData();</b>
+<b class="nc"><i>349</i>&nbsp;                DefaultController controllerx = loader2.getController();</b>
+<b class="nc"><i>350</i>&nbsp;                if(controllerx instanceof BoardController){</b>
+<b class="nc"><i>351</i>&nbsp;                    Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>352</i>&nbsp;                        ((BoardController) controllerx).banner.setText(&quot;WAIT, &quot;+message.player+&quot;&#39;s Turn&quot;);</b>
+<b class="nc"><i>353</i>&nbsp;                        ((BoardController) controllerx).refresh();</b>
+<b class="nc"><i>354</i>&nbsp;                        sn.setOnKeyPressed(e -&gt; {</b>
+<b class="nc"><i>355</i>&nbsp;                            if (e.getCode() == KeyCode.Y || e.getCode() == KeyCode.N) {</b>
+<b class="nc"><i>356</i>&nbsp;                                ((BoardController) controllerx).activeQuestionIfPossible(e.getCode());</b>
+<i>357</i>&nbsp;                            }
+<b class="nc"><i>358</i>&nbsp;                        });</b>
+<b class="nc"><i>359</i>&nbsp;                    });</b>
+<i>360</i>&nbsp;                }
+<i>361</i>&nbsp;
+<b class="nc"><i>362</i>&nbsp;                primaryStage.setScene(sn);</b>
+<b class="nc"><i>363</i>&nbsp;                primaryStage.show();</b>
+<b class="nc"><i>364</i>&nbsp;            });</b>
+<i>365</i>&nbsp;        }
+<b class="nc"><i>366</i>&nbsp;        if(!message.player.equals(client.getUsername()) &amp;&amp; !client.getMyPlayer().loser &amp;&amp; message.status != Status.WORKER_CHOICE ){</b>
+<b class="nc"><i>367</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>368</i>&nbsp;                FXMLLoader loaderx = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>369</i>&nbsp;                DefaultController controllerx = loaderx.getController();</b>
+<b class="nc"><i>370</i>&nbsp;                if (controllerx instanceof BoardController) {</b>
+<b class="nc"><i>371</i>&nbsp;                    ((BoardController) controllerx).banner.setText(&quot;WAIT, &quot; + message.player + &quot;&#39;s Turn&quot;);</b>
+<b class="nc"><i>372</i>&nbsp;                    ((BoardController) controllerx).refresh();</b>
+<i>373</i>&nbsp;                }
+<b class="nc"><i>374</i>&nbsp;            });</b>
+<i>375</i>&nbsp;        }
+<i>376</i>&nbsp;
+<b class="nc"><i>377</i>&nbsp;        if(message.status.equals(Status.START) || message.status.equals(Status.WORKER_CHOICE)){</b>
+<b class="nc"><i>378</i>&nbsp;            startTimer(message.timer);</b>
+<i>379</i>&nbsp;        }
+<b class="nc"><i>380</i>&nbsp;    }</b>
+<i>381</i>&nbsp;
+<i>382</i>&nbsp;
+<i>383</i>&nbsp;    /**
+<i>384</i>&nbsp;     * Removes the loser to the Players Arraylist
+<i>385</i>&nbsp;     * Shows to the Loser the Lose PopUp
+<i>386</i>&nbsp;     * Updates the banner message
+<i>387</i>&nbsp;     * @param message a SomeoneLoseServer message
+<i>388</i>&nbsp;     */
+<i>389</i>&nbsp;    @Override
+<i>390</i>&nbsp;    public void handleMessage(SomeoneLoseServer message) {
+<b class="nc"><i>391</i>&nbsp;        Text alert = new Text();</b>
+<b class="nc"><i>392</i>&nbsp;        for(SnapPlayer sp : client.getPlayers())</b>
+<b class="nc"><i>393</i>&nbsp;            if(sp.name.equals(message.player))</b>
+<b class="nc"><i>394</i>&nbsp;                sp.loser = true;</b>
+<i>395</i>&nbsp;
+<b class="nc"><i>396</i>&nbsp;        ArrayList&lt;SnapWorker&gt; toDelete = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>397</i>&nbsp;        for(SnapWorker sw : client.getWorkers())</b>
+<b class="nc"><i>398</i>&nbsp;            if(sw.name.equals(message.player))</b>
+<b class="nc"><i>399</i>&nbsp;                toDelete.add(sw);</b>
+<b class="nc"><i>400</i>&nbsp;        client.removeWorkers(toDelete);</b>
+<i>401</i>&nbsp;
+<b class="nc"><i>402</i>&nbsp;        if(this.client.getUsername().equals(message.player)){</b>
+<b class="nc"><i>403</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>404</i>&nbsp;                unShowTimer();</b>
+<b class="nc"><i>405</i>&nbsp;                lose = new Stage();</b>
+<i>406</i>&nbsp;                try {
+<b class="nc"><i>407</i>&nbsp;                    FXMLLoader loader = new FXMLLoader(getClass().getResource(&quot;/it.polimi.ingsw/view/gui/fxml/Lose.fxml&quot;));</b>
+<b class="nc"><i>408</i>&nbsp;                    Parent root3 = loader.load();</b>
+<b class="nc"><i>409</i>&nbsp;                    defaultcontroller = loader.getController();</b>
+<b class="nc"><i>410</i>&nbsp;                    defaultcontroller.setGUI(this);</b>
+<b class="nc"><i>411</i>&nbsp;                    if(defaultcontroller instanceof LoseController) {</b>
+<b class="nc"><i>412</i>&nbsp;                        if (getClient().getPlayers().size() &gt; 1)</b>
+<b class="nc"><i>413</i>&nbsp;                            ((LoseController) defaultcontroller).Spectator.getStyleClass().add(&quot;spectator&quot;);</b>
+<i>414</i>&nbsp;                        else
+<b class="nc"><i>415</i>&nbsp;                            ((LoseController) defaultcontroller).Spectator.getStyleClass().add(&quot;exit&quot;);</b>
+<i>416</i>&nbsp;                    }
+<i>417</i>&nbsp;
+<b class="nc"><i>418</i>&nbsp;                    Scene scene = new Scene(Objects.requireNonNull(root3), POPUPX, POPUPY, Color.TRANSPARENT);</b>
+<b class="nc"><i>419</i>&nbsp;                    scene.setCursor(new ImageCursor(new Image(CURSOR),36,45));</b>
+<b class="nc"><i>420</i>&nbsp;                    lose.initStyle(StageStyle.TRANSPARENT);</b>
+<b class="nc"><i>421</i>&nbsp;                    lose.setAlwaysOnTop(true);</b>
+<b class="nc"><i>422</i>&nbsp;                    lose.initModality(Modality.WINDOW_MODAL);</b>
+<b class="nc"><i>423</i>&nbsp;                    lose.initOwner(primaryStage);</b>
+<b class="nc"><i>424</i>&nbsp;                    scene.setUserData(loader);</b>
+<i>425</i>&nbsp;
+<b class="nc"><i>426</i>&nbsp;                    lose.setScene(scene);</b>
+<i>427</i>&nbsp;
+<b class="nc"><i>428</i>&nbsp;                    lose.setX((primaryStage.getX()+sceneWidth/2- POPUPX /2));</b>
+<b class="nc"><i>429</i>&nbsp;                    lose.setY((primaryStage.getY()+sceneHeight/2- POPUPY /2));</b>
+<b class="nc"><i>430</i>&nbsp;                } catch (IOException e) {</b>
+<b class="nc"><i>431</i>&nbsp;                    e.printStackTrace();</b>
+<b class="nc"><i>432</i>&nbsp;                }</b>
+<b class="nc"><i>433</i>&nbsp;                lose.showAndWait();</b>
+<i>434</i>&nbsp;
+<b class="nc"><i>435</i>&nbsp;            });</b>
+<i>436</i>&nbsp;        }
+<b class="nc"><i>437</i>&nbsp;        else alert.setText(message.player + &quot;has lost!&quot;);</b>
+<i>438</i>&nbsp;
+<b class="nc"><i>439</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>440</i>&nbsp;            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>441</i>&nbsp;            DefaultController controller = loader.getController();</b>
+<b class="nc"><i>442</i>&nbsp;            if(controller instanceof BoardController){</b>
+<b class="nc"><i>443</i>&nbsp;                ((BoardController) controller).banner.setText(alert.getText());</b>
+<b class="nc"><i>444</i>&nbsp;                ((BoardController) controller).refresh();</b>
+<b class="nc"><i>445</i>&nbsp;            } else System.out.println(&quot;FATAL ERROR - SOMEONELOSE SERVER MESSAGE&quot;);</b>
+<b class="nc"><i>446</i>&nbsp;        });</b>
+<b class="nc"><i>447</i>&nbsp;    }</b>
+<i>448</i>&nbsp;
+<i>449</i>&nbsp;
+<i>450</i>&nbsp;    /**
+<i>451</i>&nbsp;     * If is the first message, shows to the Challenger the Challenger Scene
+<i>452</i>&nbsp;     * Otherwise shows th Card Scene to the Current PLayer
+<i>453</i>&nbsp;     * @param message an AbailableCardServer
+<i>454</i>&nbsp;     */
+<i>455</i>&nbsp;    @Override
+<i>456</i>&nbsp;    public void handleMessage(AvailableCardServer message) {
+<b class="nc"><i>457</i>&nbsp;        if(message.player.equals(this.getClient().getUsername())){</b>
+<b class="nc"><i>458</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>459</i>&nbsp;                if(message.cardName.isEmpty()){</b>
+<b class="nc"><i>460</i>&nbsp;                    primaryStage.setScene(load(&quot;/it.polimi.ingsw/view/gui/fxml/Challenger.fxml&quot;));</b>
+<i>461</i>&nbsp;                }
+<i>462</i>&nbsp;                else{
+<b class="nc"><i>463</i>&nbsp;                    Scene scene = load(&quot;/it.polimi.ingsw/view/gui/fxml/Card.fxml&quot;);</b>
+<i>464</i>&nbsp;
+<b class="nc"><i>465</i>&nbsp;                    FXMLLoader loader = (FXMLLoader) scene.getUserData();</b>
+<b class="nc"><i>466</i>&nbsp;                    DefaultController controller = loader.getController();</b>
+<b class="nc"><i>467</i>&nbsp;                    if(controller instanceof CardController){</b>
+<b class="nc"><i>468</i>&nbsp;                        ((CardController) controller).cards = message.cardName;</b>
+<b class="nc"><i>469</i>&nbsp;                        ((CardController) controller).setGods();</b>
+<i>470</i>&nbsp;                    }
+<i>471</i>&nbsp;
+<b class="nc"><i>472</i>&nbsp;                    primaryStage.setScene(scene);</b>
+<i>473</i>&nbsp;                }
+<b class="nc"><i>474</i>&nbsp;                primaryStage.show();</b>
+<b class="nc"><i>475</i>&nbsp;            });</b>
+<i>476</i>&nbsp;        }
+<b class="nc"><i>477</i>&nbsp;    }</b>
+<i>478</i>&nbsp;
+<i>479</i>&nbsp;
+<i>480</i>&nbsp;    /**
+<i>481</i>&nbsp;     * Updates the banner
+<i>482</i>&nbsp;     * Shows to the winner the Win PopUp
+<i>483</i>&nbsp;     * Shows to the Losers the Lose PopUp
+<i>484</i>&nbsp;     * @param message a SomeoneWinServer message
+<i>485</i>&nbsp;     */
+<i>486</i>&nbsp;    @Override
+<i>487</i>&nbsp;    public void handleMessage(SomeoneWinServer message) {
+<b class="nc"><i>488</i>&nbsp;        unShowTimer();</b>
+<b class="nc"><i>489</i>&nbsp;        Text end = new Text();</b>
+<b class="nc"><i>490</i>&nbsp;        if(this.client.getUsername().equals(message.player)){</b>
+<b class="nc"><i>491</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>492</i>&nbsp;                win = new Stage();</b>
+<b class="nc"><i>493</i>&nbsp;                end.setText(&quot;YOU WIN!&quot;);</b>
+<b class="nc"><i>494</i>&nbsp;                unShowTimer();</b>
+<i>495</i>&nbsp;                try {
+<b class="nc"><i>496</i>&nbsp;                    FXMLLoader loader = new FXMLLoader(getClass().getResource(&quot;/it.polimi.ingsw/view/gui/fxml/Win.fxml&quot;));</b>
+<b class="nc"><i>497</i>&nbsp;                    Parent root2 = loader.load();</b>
+<b class="nc"><i>498</i>&nbsp;                    defaultcontroller = loader.getController();</b>
+<b class="nc"><i>499</i>&nbsp;                    defaultcontroller.setGUI(this);</b>
+<b class="nc"><i>500</i>&nbsp;                    Scene scene = new Scene(Objects.requireNonNull(root2), POPUPX, POPUPY, Color.TRANSPARENT);</b>
+<b class="nc"><i>501</i>&nbsp;                    scene.setCursor(new ImageCursor(new Image(CURSOR),36,45));</b>
+<b class="nc"><i>502</i>&nbsp;                    win.initStyle(StageStyle.TRANSPARENT);</b>
+<b class="nc"><i>503</i>&nbsp;                    win.setAlwaysOnTop(true);</b>
+<b class="nc"><i>504</i>&nbsp;                    scene.setUserData(loader);</b>
+<b class="nc"><i>505</i>&nbsp;                    win.initModality(Modality.WINDOW_MODAL);</b>
+<b class="nc"><i>506</i>&nbsp;                    win.initOwner(primaryStage);</b>
+<b class="nc"><i>507</i>&nbsp;                    scene.setUserData(loader);</b>
+<b class="nc"><i>508</i>&nbsp;                    win.setScene(scene);</b>
+<i>509</i>&nbsp;
+<b class="nc"><i>510</i>&nbsp;                    win.setX((primaryStage.getX()+sceneWidth/2- POPUPX /2));</b>
+<b class="nc"><i>511</i>&nbsp;                    win.setY((primaryStage.getY()+sceneHeight/2- POPUPY /2));</b>
+<b class="nc"><i>512</i>&nbsp;                } catch (IOException e) {</b>
+<b class="nc"><i>513</i>&nbsp;                    e.printStackTrace();</b>
+<b class="nc"><i>514</i>&nbsp;                }</b>
+<b class="nc"><i>515</i>&nbsp;                win.showAndWait();</b>
+<b class="nc"><i>516</i>&nbsp;            });</b>
+<i>517</i>&nbsp;        }
+<i>518</i>&nbsp;        else {
+<b class="nc"><i>519</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>520</i>&nbsp;                lose = new Stage();</b>
+<b class="nc"><i>521</i>&nbsp;                end.setText(&quot;YOU LOSE!&quot;);</b>
+<b class="nc"><i>522</i>&nbsp;                unShowTimer();</b>
+<i>523</i>&nbsp;                try {
+<b class="nc"><i>524</i>&nbsp;                    FXMLLoader loader = new FXMLLoader(getClass().getResource(&quot;/it.polimi.ingsw/view/gui/fxml/Lose.fxml&quot;));</b>
+<b class="nc"><i>525</i>&nbsp;                    Parent root3 = loader.load();</b>
+<b class="nc"><i>526</i>&nbsp;                    defaultcontroller = loader.getController();</b>
+<b class="nc"><i>527</i>&nbsp;                    defaultcontroller.setGUI(this);</b>
+<b class="nc"><i>528</i>&nbsp;                    Scene scene = new Scene(Objects.requireNonNull(root3), POPUPX, POPUPY, Color.TRANSPARENT);</b>
+<b class="nc"><i>529</i>&nbsp;                    scene.setCursor(new ImageCursor(new Image(CURSOR),36,45));</b>
+<b class="nc"><i>530</i>&nbsp;                    lose.initStyle(StageStyle.TRANSPARENT);</b>
+<b class="nc"><i>531</i>&nbsp;                    lose.setAlwaysOnTop(true);</b>
+<b class="nc"><i>532</i>&nbsp;                    lose.initModality(Modality.WINDOW_MODAL);</b>
+<b class="nc"><i>533</i>&nbsp;                    lose.initOwner(primaryStage);</b>
+<b class="nc"><i>534</i>&nbsp;                    if(defaultcontroller instanceof LoseController) {</b>
+<b class="nc"><i>535</i>&nbsp;                        ((LoseController) defaultcontroller).Spectator.getStyleClass().add(&quot;exit&quot;);</b>
+<b class="nc"><i>536</i>&nbsp;                        ((LoseController) defaultcontroller).setSomeonewinflag(true);</b>
+<i>537</i>&nbsp;                    }
+<b class="nc"><i>538</i>&nbsp;                    scene.setUserData(loader);</b>
+<b class="nc"><i>539</i>&nbsp;                    lose.setScene(scene);</b>
+<i>540</i>&nbsp;
+<b class="nc"><i>541</i>&nbsp;                    lose.setX((primaryStage.getX()+sceneWidth/2- POPUPX /2));</b>
+<b class="nc"><i>542</i>&nbsp;                    lose.setY((primaryStage.getY()+sceneHeight/2- POPUPY /2));</b>
+<b class="nc"><i>543</i>&nbsp;                } catch (IOException e) {</b>
+<b class="nc"><i>544</i>&nbsp;                    e.printStackTrace();</b>
+<b class="nc"><i>545</i>&nbsp;                }</b>
+<b class="nc"><i>546</i>&nbsp;                lose.showAndWait();</b>
+<b class="nc"><i>547</i>&nbsp;            });</b>
+<i>548</i>&nbsp;        }
+<b class="nc"><i>549</i>&nbsp;        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>550</i>&nbsp;        DefaultController controller = loader.getController();</b>
+<b class="nc"><i>551</i>&nbsp;        if(controller instanceof BoardController) {</b>
+<b class="nc"><i>552</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>553</i>&nbsp;                ((BoardController) controller).banner.setLayoutX((sceneWidth/2)-400);</b>
+<b class="nc"><i>554</i>&nbsp;                ((BoardController) controller).banner.setText(end.getText());</b>
+<b class="nc"><i>555</i>&nbsp;                ((BoardController) controller).refresh();</b>
+<b class="nc"><i>556</i>&nbsp;            });</b>
+<i>557</i>&nbsp;        }
+<i>558</i>&nbsp;
+<b class="nc"><i>559</i>&nbsp;    }</b>
+<i>560</i>&nbsp;
+<i>561</i>&nbsp;
+<i>562</i>&nbsp;    /**
+<i>563</i>&nbsp;     * Shows the Name Scene to the Client
+<i>564</i>&nbsp;     * @param message a NameRequestServer message
+<i>565</i>&nbsp;     */
+<i>566</i>&nbsp;    @Override
+<i>567</i>&nbsp;    public void handleMessage(NameRequestServer message) {
+<b class="nc"><i>568</i>&nbsp;        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>569</i>&nbsp;        DefaultController controller = loader.getController();</b>
+<b class="nc"><i>570</i>&nbsp;        if(controller instanceof NameController){</b>
+<b class="nc"><i>571</i>&nbsp;            ((NameController) controller).showBanner();</b>
+<i>572</i>&nbsp;        } else {
+<b class="nc"><i>573</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>574</i>&nbsp;                primaryStage.setScene(load(&quot;/it.polimi.ingsw/view/gui/fxml/Name.fxml&quot;));</b>
+<b class="nc"><i>575</i>&nbsp;                primaryStage.show();</b>
+<b class="nc"><i>576</i>&nbsp;            });</b>
+<i>577</i>&nbsp;        }
+<b class="nc"><i>578</i>&nbsp;    }</b>
+<i>579</i>&nbsp;
+<i>580</i>&nbsp;
+<i>581</i>&nbsp;    /**
+<i>582</i>&nbsp;     * Shows the Lobby Scene to the players
+<i>583</i>&nbsp;     * Assigns colors to the Players
+<i>584</i>&nbsp;     * @param message a LobbyServer message
+<i>585</i>&nbsp;     */
+<i>586</i>&nbsp;    @Override
+<i>587</i>&nbsp;    public void handleMessage(LobbyServer message) {
+<b class="nc"><i>588</i>&nbsp;        client.setPlayersByString(message.players);</b>
+<i>589</i>&nbsp;
+<b class="nc"><i>590</i>&nbsp;        for(int i=0;i&lt;client.getPlayers().size();i++){</b>
+<b class="nc"><i>591</i>&nbsp;            if(i==0)</b>
+<b class="nc"><i>592</i>&nbsp;                client.getPlayers().get(i).color = &quot;/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png&quot;;</b>
+<b class="nc"><i>593</i>&nbsp;            else if(i==1)</b>
+<b class="nc"><i>594</i>&nbsp;                client.getPlayers().get(i).color = &quot;/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png&quot;;</b>
+<b class="nc"><i>595</i>&nbsp;            else if(i==2)</b>
+<b class="nc"><i>596</i>&nbsp;                client.getPlayers().get(i).color = &quot;/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png&quot;;</b>
+<i>597</i>&nbsp;        }
+<i>598</i>&nbsp;
+<b class="nc"><i>599</i>&nbsp;        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>600</i>&nbsp;        DefaultController controller = loader.getController();</b>
+<i>601</i>&nbsp;
+<b class="nc"><i>602</i>&nbsp;        if(controller instanceof LobbyController){</b>
+<b class="nc"><i>603</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>604</i>&nbsp;                ((LobbyController) controller).setReconnection(false);</b>
+<b class="nc"><i>605</i>&nbsp;                ((LobbyController) controller).new2.setVisible(false);</b>
+<b class="nc"><i>606</i>&nbsp;                ((LobbyController) controller).new3.setVisible(false);</b>
+<b class="nc"><i>607</i>&nbsp;                ((LobbyController) controller).banner.setVisible(false);</b>
+<b class="nc"><i>608</i>&nbsp;                ((LobbyController) controller).buttonLobby.setText(&quot;&quot;);</b>
+<b class="nc"><i>609</i>&nbsp;                for(int i=0; i&lt;message.players.size(); i++){</b>
+<b class="nc"><i>610</i>&nbsp;                    ((LobbyController) controller).buttonLobby.setText(((LobbyController) controller).buttonLobby.getText()+message.players.get(i)</b>
+<b class="nc"><i>611</i>&nbsp;                            +(i+1 == message.players.size() ? &quot;&quot; : &quot;\n&quot;));</b>
+<i>612</i>&nbsp;                }
+<b class="nc"><i>613</i>&nbsp;            });</b>
+<i>614</i>&nbsp;        } else {
+<b class="nc"><i>615</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>616</i>&nbsp;                Scene s = load(&quot;/it.polimi.ingsw/view/gui/fxml/Lobby.fxml&quot;);</b>
+<i>617</i>&nbsp;
+<b class="nc"><i>618</i>&nbsp;                FXMLLoader newLoader = (FXMLLoader) s.getUserData();</b>
+<b class="nc"><i>619</i>&nbsp;                DefaultController newController = newLoader.getController();</b>
+<b class="nc"><i>620</i>&nbsp;                if(newController instanceof LobbyController){</b>
+<b class="nc"><i>621</i>&nbsp;                    for(int i=0; i&lt;message.players.size(); i++){</b>
+<b class="nc"><i>622</i>&nbsp;                        ((LobbyController) newController).buttonLobby.setText(((LobbyController) newController).buttonLobby.getText()+message.players.get(i)</b>
+<b class="nc"><i>623</i>&nbsp;                                +(i+1 == message.players.size() ? &quot;&quot; : &quot;\n&quot;));</b>
+<i>624</i>&nbsp;                    }
+<i>625</i>&nbsp;                }
+<i>626</i>&nbsp;
+<b class="nc"><i>627</i>&nbsp;                primaryStage.setScene(s);</b>
+<b class="nc"><i>628</i>&nbsp;                primaryStage.show();</b>
+<b class="nc"><i>629</i>&nbsp;            });</b>
+<i>630</i>&nbsp;        }
+<b class="nc"><i>631</i>&nbsp;    }</b>
+<i>632</i>&nbsp;
+<i>633</i>&nbsp;
+<i>634</i>&nbsp;    /**
+<i>635</i>&nbsp;     * Shows the Mode Scene to the Client
+<i>636</i>&nbsp;     * Enables the Client to send ModeChoseClient message
+<i>637</i>&nbsp;     * @param message
+<i>638</i>&nbsp;     */
+<i>639</i>&nbsp;    @Override
+<i>640</i>&nbsp;    public void handleMessage(ModeRequestServer message) {
+<b class="nc"><i>641</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>642</i>&nbsp;            primaryStage.setScene(load(&quot;/it.polimi.ingsw/view/gui/fxml/Mode.fxml&quot;));</b>
+<b class="nc"><i>643</i>&nbsp;            primaryStage.show();</b>
+<b class="nc"><i>644</i>&nbsp;        });</b>
+<b class="nc"><i>645</i>&nbsp;    }</b>
+<i>646</i>&nbsp;
+<i>647</i>&nbsp;
+<i>648</i>&nbsp;    /**
+<i>649</i>&nbsp;     * refresh the board due to a costruction
+<i>650</i>&nbsp;     * @param message a BuiltServer message
+<i>651</i>&nbsp;     */
+<i>652</i>&nbsp;    @Override
+<i>653</i>&nbsp;    public void handleMessage(BuiltServer message) {
+<b class="nc"><i>654</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>655</i>&nbsp;            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>656</i>&nbsp;            DefaultController controller = loader.getController();</b>
+<b class="nc"><i>657</i>&nbsp;            if(controller instanceof BoardController){</b>
+<b class="nc"><i>658</i>&nbsp;                ((BoardController) controller).refresh();</b>
+<b class="nc"><i>659</i>&nbsp;            } else System.out.println(&quot;FATAL ERROR - BUILTSERVER MESSAGE&quot;);</b>
+<b class="nc"><i>660</i>&nbsp;        });</b>
+<b class="nc"><i>661</i>&nbsp;    }</b>
+<i>662</i>&nbsp;
+<i>663</i>&nbsp;
+<i>664</i>&nbsp;    /**
+<i>665</i>&nbsp;     * refresh the board due to a move of a Pawn
+<i>666</i>&nbsp;     * @param message a MovedServer message
+<i>667</i>&nbsp;     */
+<i>668</i>&nbsp;    @Override
+<i>669</i>&nbsp;    public void handleMessage(MovedServer message) {
+<b class="nc"><i>670</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>671</i>&nbsp;            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>672</i>&nbsp;            DefaultController controller = loader.getController();</b>
+<b class="nc"><i>673</i>&nbsp;            if(controller instanceof BoardController){</b>
+<b class="nc"><i>674</i>&nbsp;                ((BoardController) controller).refresh();</b>
+<b class="nc"><i>675</i>&nbsp;            } else System.out.println(&quot;FATAL ERROR - MOVEDSERVER MESSAGE&quot;);</b>
+<b class="nc"><i>676</i>&nbsp;        });</b>
+<b class="nc"><i>677</i>&nbsp;    }</b>
+<i>678</i>&nbsp;
+<i>679</i>&nbsp;
+<i>680</i>&nbsp;    /**
+<i>681</i>&nbsp;     * Just a ping message to check the reachability client/server
+<i>682</i>&nbsp;     * @param message
+<i>683</i>&nbsp;     */
+<i>684</i>&nbsp;    @Override
+<i>685</i>&nbsp;    public void handleMessage(PingServer message) {
+<i>686</i>&nbsp;
+<b class="nc"><i>687</i>&nbsp;    }</b>
+<i>688</i>&nbsp;
+<i>689</i>&nbsp;    @Override
+<i>690</i>&nbsp;    public void handleMessage(TimeOutServer message) {
+<b class="nc"><i>691</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>692</i>&nbsp;            FXMLLoader l = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>693</i>&nbsp;            DefaultController c = l.getController();</b>
+<b class="nc"><i>694</i>&nbsp;            if(c instanceof BoardController){</b>
+<b class="nc"><i>695</i>&nbsp;                Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>696</i>&nbsp;                    if(((BoardController) c).getQuestionFlag()){</b>
+<b class="nc"><i>697</i>&nbsp;                        ((BoardController) c).yOff(((BoardController) c).yes);</b>
+<b class="nc"><i>698</i>&nbsp;                        ((BoardController) c).nOff(((BoardController) c).no);</b>
+<b class="nc"><i>699</i>&nbsp;                        ((BoardController) c).setQuestionFlag(false);</b>
+<b class="nc"><i>700</i>&nbsp;                        ((BoardController) c).refresh();</b>
+<i>701</i>&nbsp;                    }
+<b class="nc"><i>702</i>&nbsp;                    if(message.n == 0 &amp;&amp; ((BoardController) c).Cms != null &amp;&amp; ((BoardController) c).Cms.sc != null)</b>
+<b class="nc"><i>703</i>&nbsp;                        for (SnapCell cellx : ((BoardController) c).Cms.sc)</b>
+<b class="nc"><i>704</i>&nbsp;                            ((BoardController) c).lightItDown(((BoardController) c).getCell(cellx.row,cellx.column));</b>
+<b class="nc"><i>705</i>&nbsp;                    ((BoardController) c).unShowTimer();</b>
+<b class="nc"><i>706</i>&nbsp;                    ((BoardController) c).banner.setLayoutX((this.sceneWidth/2)-400);</b>
+<b class="nc"><i>707</i>&nbsp;                    ((BoardController) c).banner.setText(message.player+&quot; has a network issue... Reconnecting &quot; + (message.n+1) + &quot;/&quot; + (message.of+1));</b>
+<b class="nc"><i>708</i>&nbsp;                    ((BoardController) c).setState(4);</b>
+<b class="nc"><i>709</i>&nbsp;                });</b>
+<b class="nc"><i>710</i>&nbsp;            } else System.out.println(&quot;FATAL ERROR - TIMEROUT SERVER MESSAGE!&quot;);</b>
+<b class="nc"><i>711</i>&nbsp;        });</b>
+<b class="nc"><i>712</i>&nbsp;    }</b>
+<i>713</i>&nbsp;
+<i>714</i>&nbsp;
+<i>715</i>&nbsp;    /**
+<i>716</i>&nbsp;     * PERSISTENCE (Case Server Crash)
+<i>717</i>&nbsp;     * Resend to the Client all the state of the previous match
+<i>718</i>&nbsp;     * Resend to the Client them pawns color
+<i>719</i>&nbsp;     * Reload the Lobby Scene to every Client
+<i>720</i>&nbsp;     * @param message
+<i>721</i>&nbsp;     */
+<i>722</i>&nbsp;    @Override
+<i>723</i>&nbsp;    public void handleMessage(ReConnectionServer message) {
+<b class="nc"><i>724</i>&nbsp;        if(message.player.equals(client.getUsername())){</b>
+<b class="nc"><i>725</i>&nbsp;            client.setBoard(message.board);</b>
+<b class="nc"><i>726</i>&nbsp;            client.setWorkers(message.workers);</b>
+<b class="nc"><i>727</i>&nbsp;            client.setPlayersBySnap(message.players);</b>
+<b class="nc"><i>728</i>&nbsp;            client.setCurrentPlayer(message.currentPlayer);</b>
+<b class="nc"><i>729</i>&nbsp;            client.setMustPrint(true);</b>
+<b class="nc"><i>730</i>&nbsp;            for(int i=0;i&lt;client.getPlayers().size();i++){</b>
+<b class="nc"><i>731</i>&nbsp;                if(i==0)</b>
+<b class="nc"><i>732</i>&nbsp;                    client.getPlayers().get(i).color = &quot;/it.polimi.ingsw/view/gui/img/pawn/pawn_red.png&quot;;</b>
+<b class="nc"><i>733</i>&nbsp;                else if(i==1)</b>
+<b class="nc"><i>734</i>&nbsp;                    client.getPlayers().get(i).color = &quot;/it.polimi.ingsw/view/gui/img/pawn/pawn_blu.png&quot;;</b>
+<b class="nc"><i>735</i>&nbsp;                else if(i==2)</b>
+<b class="nc"><i>736</i>&nbsp;                    client.getPlayers().get(i).color = &quot;/it.polimi.ingsw/view/gui/img/pawn/pawn_yellow.png&quot;;</b>
+<i>737</i>&nbsp;            }
+<i>738</i>&nbsp;
+<b class="nc"><i>739</i>&nbsp;            if(message.type == 2){</b>
+<i>740</i>&nbsp;                // LOBBY
+<b class="nc"><i>741</i>&nbsp;                Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>742</i>&nbsp;                    Scene s = load(&quot;/it.polimi.ingsw/view/gui/fxml/Lobby.fxml&quot;);</b>
+<i>743</i>&nbsp;
+<b class="nc"><i>744</i>&nbsp;                    FXMLLoader loader = (FXMLLoader) s.getUserData();</b>
+<b class="nc"><i>745</i>&nbsp;                    DefaultController controller = loader.getController();</b>
+<b class="nc"><i>746</i>&nbsp;                    if(controller instanceof LobbyController){</b>
+<b class="nc"><i>747</i>&nbsp;                        ((LobbyController) controller).setReconnection(true);</b>
+<b class="nc"><i>748</i>&nbsp;                        ((LobbyController) controller).new2.setVisible(true);</b>
+<b class="nc"><i>749</i>&nbsp;                        ((LobbyController) controller).new3.setVisible(true);</b>
+<b class="nc"><i>750</i>&nbsp;                        ((LobbyController) controller).banner.setVisible(true);</b>
+<b class="nc"><i>751</i>&nbsp;                        for(int i=0; i&lt;message.players.size(); i++){</b>
+<b class="nc"><i>752</i>&nbsp;                            ((LobbyController) controller).buttonLobby.setText(((LobbyController) controller).buttonLobby.getText()+message.players.get(i).name</b>
+<b class="nc"><i>753</i>&nbsp;                                    +(i+1 == message.players.size() ? &quot;&quot; : &quot;\n&quot;));</b>
+<i>754</i>&nbsp;                        }
+<i>755</i>&nbsp;                    }
+<b class="nc"><i>756</i>&nbsp;                    primaryStage.setScene(s);</b>
+<b class="nc"><i>757</i>&nbsp;                    primaryStage.show();</b>
+<b class="nc"><i>758</i>&nbsp;                });</b>
+<i>759</i>&nbsp;            }
+<i>760</i>&nbsp;        } else {
+<b class="nc"><i>761</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>762</i>&nbsp;                FXMLLoader l = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>763</i>&nbsp;                DefaultController c = l.getController();</b>
+<b class="nc"><i>764</i>&nbsp;                if(c instanceof BoardController){</b>
+<b class="nc"><i>765</i>&nbsp;                    ((BoardController) c).showTimer();</b>
+<b class="nc"><i>766</i>&nbsp;                    ((BoardController) c).banner.setText(message.player+&quot; IS BACK!&quot;);</b>
+<b class="nc"><i>767</i>&nbsp;                    ((BoardController) c).refresh();</b>
+<i>768</i>&nbsp;                }
+<b class="nc"><i>769</i>&nbsp;            });</b>
+<i>770</i>&nbsp;        }
+<b class="nc"><i>771</i>&nbsp;    }</b>
+<i>772</i>&nbsp;
+<i>773</i>&nbsp;
+<i>774</i>&nbsp;    /**
+<i>775</i>&nbsp;     * EasterEgg Secret
+<i>776</i>&nbsp;     * NO SPOILERS
+<i>777</i>&nbsp;     * @param easterEggServer
+<i>778</i>&nbsp;     */
+<i>779</i>&nbsp;    @Override
+<i>780</i>&nbsp;    public void handleMessage(EasterEggServer easterEggServer) {
+<b class="nc"><i>781</i>&nbsp;        if(easterEggServer.player.equals(client.getUsername())){</b>
+<b class="nc"><i>782</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>783</i>&nbsp;                Scene s = load(&quot;/it.polimi.ingsw/view/gui/fxml/EasterEgg.fxml&quot;);</b>
+<i>784</i>&nbsp;
+<b class="nc"><i>785</i>&nbsp;                FXMLLoader newLoader = (FXMLLoader) s.getUserData();</b>
+<b class="nc"><i>786</i>&nbsp;                DefaultController newController = newLoader.getController();</b>
+<b class="nc"><i>787</i>&nbsp;                if(newController instanceof EasterEggController){</b>
+<b class="nc"><i>788</i>&nbsp;                    boolean go = true;</b>
+<b class="nc"><i>789</i>&nbsp;                    ((EasterEggController) newController).setLast(easterEggServer.last);</b>
+<b class="nc"><i>790</i>&nbsp;                    ((EasterEggController) newController).buttonLobby.setText(&quot;&quot;);</b>
+<b class="nc"><i>791</i>&nbsp;                    Object[] values = easterEggServer.win.entrySet().toArray();</b>
+<b class="nc"><i>792</i>&nbsp;                    Arrays.sort(values, new Comparator() {</b>
+<i>793</i>&nbsp;                        public int compare(Object o1, Object o2) {
+<b class="nc"><i>794</i>&nbsp;                            return ((Map.Entry&lt;String, Integer&gt;) o2).getValue()</b>
+<b class="nc"><i>795</i>&nbsp;                                    .compareTo(((Map.Entry&lt;String, Integer&gt;) o1).getValue());</b>
+<i>796</i>&nbsp;                        }
+<i>797</i>&nbsp;                    });
+<b class="nc"><i>798</i>&nbsp;                    for (Object entry : values) {</b>
+<b class="nc"><i>799</i>&nbsp;                        ((EasterEggController) newController).buttonLobby.setText(</b>
+<b class="nc"><i>800</i>&nbsp;                                ((EasterEggController) newController).buttonLobby.getText()+(go ? &quot;&quot; : &quot;\n&quot;)+((Map.Entry) entry).getKey() + &quot;   &quot; + ((Map.Entry) entry).getValue());</b>
+<b class="nc"><i>801</i>&nbsp;                        go = false;</b>
+<i>802</i>&nbsp;                    }
+<i>803</i>&nbsp;                }
+<i>804</i>&nbsp;
+<b class="nc"><i>805</i>&nbsp;                primaryStage.setScene(s);</b>
+<b class="nc"><i>806</i>&nbsp;                primaryStage.show();</b>
+<b class="nc"><i>807</i>&nbsp;            });</b>
+<i>808</i>&nbsp;        }
+<b class="nc"><i>809</i>&nbsp;    }</b>
+<i>810</i>&nbsp;
+<i>811</i>&nbsp;
+<i>812</i>&nbsp;    /**
+<i>813</i>&nbsp;     * Used in the CLI the handle the opponent&#39;s banner message
+<i>814</i>&nbsp;     * Not used in GUI mode
+<i>815</i>&nbsp;     * @param message a CurrentStatusServer message
+<i>816</i>&nbsp;     */
+<i>817</i>&nbsp;    @Override
+<i>818</i>&nbsp;    public void statusHandler(CurrentStatusServer message){
+<i>819</i>&nbsp;
+<b class="nc"><i>820</i>&nbsp;    }</b>
+<i>821</i>&nbsp;
+<i>822</i>&nbsp;
+<i>823</i>&nbsp;    /**
+<i>824</i>&nbsp;     * In CLI mode, handle the close of the match due to an error or a quit request
+<i>825</i>&nbsp;     * In GUI mode, handle the clos of the march ONLY due to an error.
+<i>826</i>&nbsp;     * Shows the error PopUp.
+<i>827</i>&nbsp;     * @param isError Useless in GUI mode
+<i>828</i>&nbsp;     */
+<i>829</i>&nbsp;    @Override
+<i>830</i>&nbsp;    public void close(boolean isError) {
+<b class="nc"><i>831</i>&nbsp;        if(NetworkErrorFlag == 0) {</b>
+<b class="nc"><i>832</i>&nbsp;            NetworkErrorFlag++;</b>
+<b class="nc"><i>833</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>834</i>&nbsp;                error = new Stage();</b>
+<i>835</i>&nbsp;                try {
+<b class="nc"><i>836</i>&nbsp;                    FXMLLoader loader = new FXMLLoader(getClass().getResource(&quot;/it.polimi.ingsw/view/gui/fxml/Error.fxml&quot;));</b>
+<b class="nc"><i>837</i>&nbsp;                    Parent root2 = loader.load();</b>
+<b class="nc"><i>838</i>&nbsp;                    defaultcontroller = loader.getController();</b>
+<b class="nc"><i>839</i>&nbsp;                    defaultcontroller.setGUI(this);</b>
+<b class="nc"><i>840</i>&nbsp;                    Scene scene = new Scene(Objects.requireNonNull(root2), POPUPX, POPUPY, Color.TRANSPARENT);</b>
+<b class="nc"><i>841</i>&nbsp;                    scene.setCursor(new ImageCursor(new Image(CURSOR), 36, 45));</b>
+<b class="nc"><i>842</i>&nbsp;                    error.initStyle(StageStyle.TRANSPARENT);</b>
+<b class="nc"><i>843</i>&nbsp;                    error.setAlwaysOnTop(true);</b>
+<b class="nc"><i>844</i>&nbsp;                    scene.setUserData(loader);</b>
+<b class="nc"><i>845</i>&nbsp;                    error.initModality(Modality.WINDOW_MODAL);</b>
+<b class="nc"><i>846</i>&nbsp;                    error.initOwner(getPrimaryStage());</b>
+<b class="nc"><i>847</i>&nbsp;                    scene.setUserData(loader);</b>
+<b class="nc"><i>848</i>&nbsp;                    error.setScene(scene);</b>
+<i>849</i>&nbsp;
+<b class="nc"><i>850</i>&nbsp;                    error.setX((getPrimaryStage().getX() + sceneWidth / 2 - POPUPX / 2));</b>
+<b class="nc"><i>851</i>&nbsp;                    error.setY((getPrimaryStage().getY() + sceneHeight / 2 - POPUPY / 2));</b>
+<b class="nc"><i>852</i>&nbsp;                } catch (IOException e) {</b>
+<b class="nc"><i>853</i>&nbsp;                    e.printStackTrace();</b>
+<b class="nc"><i>854</i>&nbsp;                }</b>
+<b class="nc"><i>855</i>&nbsp;                error.showAndWait();</b>
+<b class="nc"><i>856</i>&nbsp;            });</b>
+<i>857</i>&nbsp;        }
+<b class="nc"><i>858</i>&nbsp;    }</b>
+<i>859</i>&nbsp;
+<i>860</i>&nbsp;
+<i>861</i>&nbsp;    /**
+<i>862</i>&nbsp;     * PERSISTENCE (Client Crash)
+<i>863</i>&nbsp;     * Just reload the old Match if the Client is returned in time
+<i>864</i>&nbsp;     */
+<i>865</i>&nbsp;    @Override
+<i>866</i>&nbsp;    public void displayBoard() {
+<b class="nc"><i>867</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>868</i>&nbsp;            Scene s = load(BOARD);</b>
+<b class="nc"><i>869</i>&nbsp;            FXMLLoader xloader = (FXMLLoader) s.getUserData();</b>
+<b class="nc"><i>870</i>&nbsp;            DefaultController xcontroller = xloader.getController();</b>
+<i>871</i>&nbsp;            //player1, initalize first worker
+<b class="nc"><i>872</i>&nbsp;            if(xcontroller instanceof BoardController){</b>
+<b class="nc"><i>873</i>&nbsp;                ((BoardController) xcontroller).refresh();</b>
+<b class="nc"><i>874</i>&nbsp;                xcontroller.setup();</b>
+<b class="nc"><i>875</i>&nbsp;                s.setOnKeyPressed(e -&gt; {</b>
+<b class="nc"><i>876</i>&nbsp;                    if (e.getCode() == KeyCode.Y || e.getCode() == KeyCode.N) {</b>
+<b class="nc"><i>877</i>&nbsp;                        ((BoardController) xcontroller).activeQuestionIfPossible(e.getCode());</b>
+<i>878</i>&nbsp;                    }
+<b class="nc"><i>879</i>&nbsp;                });</b>
+<i>880</i>&nbsp;            }
+<b class="nc"><i>881</i>&nbsp;            primaryStage.setScene(s);</b>
+<b class="nc"><i>882</i>&nbsp;            primaryStage.show();</b>
+<b class="nc"><i>883</i>&nbsp;        });</b>
+<b class="nc"><i>884</i>&nbsp;    }</b>
+<i>885</i>&nbsp;
+<i>886</i>&nbsp;
+<i>887</i>&nbsp;    /**
+<i>888</i>&nbsp;     * load the Home Scene
+<i>889</i>&nbsp;     * Shows the PrimaryStage
+<i>890</i>&nbsp;     */
+<i>891</i>&nbsp;    @Override
+<i>892</i>&nbsp;    public void displayFirstWindow() {
+<b class="nc"><i>893</i>&nbsp;        Scene scene = load(&quot;/it.polimi.ingsw/view/gui/fxml/Home.fxml&quot;);</b>
+<b class="nc"><i>894</i>&nbsp;        primaryStage.setScene(scene);</b>
+<b class="nc"><i>895</i>&nbsp;        primaryStage.show();</b>
+<i>896</i>&nbsp;
+<i>897</i>&nbsp;        /* TEST BENCH */
+<i>898</i>&nbsp;/*
+<i>899</i>&nbsp;        SnapPlayer p;
+<i>900</i>&nbsp;        p = new SnapPlayer(&quot;asdasd&quot;);
+<i>901</i>&nbsp;        p.card = CardName.ARTEMIS;
+<i>902</i>&nbsp;        client.getPlayers().add(p);
+<i>903</i>&nbsp;        p = new SnapPlayer(&quot;fdggh&quot;);
+<i>904</i>&nbsp;        p.card = CardName.MINOTAUR;
+<i>905</i>&nbsp;        client.getPlayers().add(p);
+<i>906</i>&nbsp;        p = new SnapPlayer(&quot;dfgds&quot;);
+<i>907</i>&nbsp;        p.card = CardName.DEMETER;
+<i>908</i>&nbsp;        client.getPlayers().add(p);
+<i>909</i>&nbsp;        client.setUsername(&quot;fdggh&quot;);
+<i>910</i>&nbsp;
+<i>911</i>&nbsp;        Platform.runLater(() -&gt; {
+<i>912</i>&nbsp;            Scene sn = load(&quot;/it.polimi.ingsw/view/gui/fxml/Board.fxml&quot;);;
+<i>913</i>&nbsp;            FXMLLoader loader2 = (FXMLLoader) sn.getUserData();
+<i>914</i>&nbsp;            DefaultController controllerx = loader2.getController();
+<i>915</i>&nbsp;
+<i>916</i>&nbsp;            if (controllerx instanceof BoardController) {
+<i>917</i>&nbsp;                controllerx.setup();
+<i>918</i>&nbsp;                ((BoardController) controllerx).banner.setText(((BoardController) controllerx).workerITA.getText());
+<i>919</i>&nbsp;                ((BoardController) controllerx).setState(0);
+<i>920</i>&nbsp;                ((BoardController) controllerx).refresh();
+<i>921</i>&nbsp;                primaryStage.setScene(sn);
+<i>922</i>&nbsp;                primaryStage.show();
+<i>923</i>&nbsp;
+<i>924</i>&nbsp;
+<i>925</i>&nbsp;            }
+<i>926</i>&nbsp;
+<i>927</i>&nbsp;            Platform.runLater(() -&gt; {
+<i>928</i>&nbsp;                win = new Stage();
+<i>929</i>&nbsp;                //end.setText(&quot;YOU WIN!&quot;);
+<i>930</i>&nbsp;                unShowTimer();
+<i>931</i>&nbsp;                try {
+<i>932</i>&nbsp;                    //System.out.println(file);
+<i>933</i>&nbsp;                    FXMLLoader loader = new FXMLLoader(getClass().getResource(&quot;/it.polimi.ingsw/view/gui/fxml/Win.fxml&quot;));
+<i>934</i>&nbsp;                    Parent root2 = loader.load();
+<i>935</i>&nbsp;                    defaultcontroller = loader.getController();
+<i>936</i>&nbsp;                    defaultcontroller.setGUI(this);
+<i>937</i>&nbsp;                    Scene scene = new Scene(Objects.requireNonNull(root2), 421, 450, Color.TRANSPARENT);
+<i>938</i>&nbsp;                    scene.setCursor(new ImageCursor(new Image(&quot;/it.polimi.ingsw/view/gui/img/pointer.png&quot;)));
+<i>939</i>&nbsp;                    win.initStyle(StageStyle.TRANSPARENT);
+<i>940</i>&nbsp;                    win.setAlwaysOnTop(true);
+<i>941</i>&nbsp;                    scene.setUserData(loader);
+<i>942</i>&nbsp;                    win.initModality(Modality.WINDOW_MODAL);
+<i>943</i>&nbsp;                    win.initOwner(primaryStage);
+<i>944</i>&nbsp;                    scene.setUserData(loader);
+<i>945</i>&nbsp;                    win.setScene(scene);
+<i>946</i>&nbsp;                    win.setX((primaryStage.getX()+sceneWidth/2-421/2));
+<i>947</i>&nbsp;                    win.setY((primaryStage.getY()+sceneHeight/2-450/2));
+<i>948</i>&nbsp;                } catch (IOException e) {
+<i>949</i>&nbsp;                    e.printStackTrace();
+<i>950</i>&nbsp;                }
+<i>951</i>&nbsp;                //win.showAndWait();
+<i>952</i>&nbsp;                close(true);
+<i>953</i>&nbsp;            });
+<i>954</i>&nbsp;        });*/
+<i>955</i>&nbsp;
+<b class="nc"><i>956</i>&nbsp;    }</b>
+<i>957</i>&nbsp;
+<i>958</i>&nbsp;
+<i>959</i>&nbsp;    /**
+<i>960</i>&nbsp;     * Shows the timer on the board
+<i>961</i>&nbsp;     * @param val ask to Marco
+<i>962</i>&nbsp;     */
+<i>963</i>&nbsp;    public void setTimerText(long val){
+<b class="nc"><i>964</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<i>965</i>&nbsp;            try{
+<b class="nc"><i>966</i>&nbsp;                FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>967</i>&nbsp;                DefaultController controller = loader.getController();</b>
+<b class="nc"><i>968</i>&nbsp;                if(controller instanceof BoardController){</b>
+<b class="nc"><i>969</i>&nbsp;                    if(((BoardController) controller).getShowTimer()){</b>
+<b class="nc"><i>970</i>&nbsp;                        ((BoardController) controller).buttonTimer.setVisible(true);</b>
+<b class="nc"><i>971</i>&nbsp;                        ((BoardController) controller).buttonTimer.setText(val+&quot;&quot;);</b>
+<i>972</i>&nbsp;                    }
+<i>973</i>&nbsp;                }
+<b class="nc"><i>974</i>&nbsp;            } catch (Exception ignored){}</b>
+<b class="nc"><i>975</i>&nbsp;        });</b>
+<b class="nc"><i>976</i>&nbsp;    }</b>
+<i>977</i>&nbsp;
+<i>978</i>&nbsp;
+<i>979</i>&nbsp;    /**
+<i>980</i>&nbsp;     * Remove the timer on the banner
+<i>981</i>&nbsp;     */
+<i>982</i>&nbsp;    public void unShowTimer(){
+<b class="nc"><i>983</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<i>984</i>&nbsp;            try{
+<b class="nc"><i>985</i>&nbsp;                FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>986</i>&nbsp;                DefaultController controller = loader.getController();</b>
+<b class="nc"><i>987</i>&nbsp;                if(controller instanceof BoardController){</b>
+<b class="nc"><i>988</i>&nbsp;                    ((BoardController) controller).unShowTimer(); //.setVisible(false);</b>
+<b class="nc"><i>989</i>&nbsp;                } else LOGGER.log( Level.SEVERE, &quot;UNSHOWTIMER&quot;);</b>
+<b class="nc"><i>990</i>&nbsp;            } catch (Exception ex){</b>
+<b class="nc"><i>991</i>&nbsp;                LOGGER.log( Level.SEVERE, ex.toString(), ex );</b>
+<b class="nc"><i>992</i>&nbsp;            }</b>
+<b class="nc"><i>993</i>&nbsp;        });</b>
+<b class="nc"><i>994</i>&nbsp;    }</b>
+<i>995</i>&nbsp;
+<i>996</i>&nbsp;
+<i>997</i>&nbsp;    /**
+<i>998</i>&nbsp;     * Start the timer on the banner
+<i>999</i>&nbsp;     * @param second the current second
+<i>1000</i>&nbsp;     */
+<i>1001</i>&nbsp;    public void startTimer(long second){
+<b class="nc"><i>1002</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>1003</i>&nbsp;            FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>1004</i>&nbsp;            DefaultController controller = loader.getController();</b>
+<b class="nc"><i>1005</i>&nbsp;            if(controller instanceof BoardController){</b>
+<i>1006</i>&nbsp;                try{
+<b class="nc"><i>1007</i>&nbsp;                    if(timeOut != null)</b>
+<b class="nc"><i>1008</i>&nbsp;                        timeOut.shutdown();</b>
+<b class="nc"><i>1009</i>&nbsp;                } catch (Exception ignored){}</b>
+<i>1010</i>&nbsp;                try{
+<b class="nc"><i>1011</i>&nbsp;                    timeOut = Executors.newSingleThreadScheduledExecutor();</b>
+<b class="nc"><i>1012</i>&nbsp;                    timer = new TimerTurnClient(this,timeOut,second);</b>
+<b class="nc"><i>1013</i>&nbsp;                    timeOut.scheduleAtFixedRate(timer, 0, 1000, TimeUnit.MILLISECONDS);</b>
+<b class="nc"><i>1014</i>&nbsp;                } catch (Exception ex){</b>
+<b class="nc"><i>1015</i>&nbsp;                    LOGGER.log( Level.SEVERE, ex.toString(), ex );</b>
+<b class="nc"><i>1016</i>&nbsp;                }</b>
+<i>1017</i>&nbsp;            }
+<b class="nc"><i>1018</i>&nbsp;        });</b>
+<b class="nc"><i>1019</i>&nbsp;    }</b>
+<i>1020</i>&nbsp;
+<i>1021</i>&nbsp;
+<i>1022</i>&nbsp;    /**
+<i>1023</i>&nbsp;     * @param name the name of a Player
+<i>1024</i>&nbsp;     * @return the Player Pointer on the Arraylist of SnapPlayers
+<i>1025</i>&nbsp;     */
+<i>1026</i>&nbsp;    public SnapPlayer getPlayerByName(String name) {
+<b class="nc"><i>1027</i>&nbsp;        for (SnapPlayer p : client.getPlayers())</b>
+<b class="nc"><i>1028</i>&nbsp;            if (p.name.equals(name))</b>
+<b class="nc"><i>1029</i>&nbsp;                return p;</b>
+<b class="nc"><i>1030</i>&nbsp;        return null;</b>
+<i>1031</i>&nbsp;    }
+<i>1032</i>&nbsp;
+<i>1033</i>&nbsp;
+<i>1034</i>&nbsp;    /**
+<i>1035</i>&nbsp;     * Set the loserBanner message
+<i>1036</i>&nbsp;     * Refresh the board
+<i>1037</i>&nbsp;     */
+<i>1038</i>&nbsp;    public void setLoserBar() {
+<b class="nc"><i>1039</i>&nbsp;        FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();</b>
+<b class="nc"><i>1040</i>&nbsp;        DefaultController controller = loader.getController();</b>
+<b class="nc"><i>1041</i>&nbsp;        if (controller instanceof BoardController) {</b>
+<b class="nc"><i>1042</i>&nbsp;            ((BoardController) controller).loserbanner();</b>
+<b class="nc"><i>1043</i>&nbsp;            ((BoardController) controller).refresh();</b>
+<i>1044</i>&nbsp;
+<i>1045</i>&nbsp;        }
+<b class="nc"><i>1046</i>&nbsp;    }</b>
+<i>1047</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>

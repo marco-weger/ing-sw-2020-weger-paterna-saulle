@@ -1,0 +1,412 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Card</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.cards</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Card (it.polimi.ingsw.model.cards)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Card</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (19/ 19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96%
+  </span>
+  <span class="absValue">
+    (119/ 124)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Card$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (20/ 20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96%
+  </span>
+  <span class="absValue">
+    (120/ 125)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.cards;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.Observable;
+<i>4</i>&nbsp;import it.polimi.ingsw.commons.SnapCell;
+<i>5</i>&nbsp;import it.polimi.ingsw.commons.SnapWorker;
+<i>6</i>&nbsp;import it.polimi.ingsw.commons.Status;
+<i>7</i>&nbsp;import it.polimi.ingsw.commons.servermessages.*;
+<i>8</i>&nbsp;import it.polimi.ingsw.model.*;
+<i>9</i>&nbsp;import it.polimi.ingsw.network.VirtualView;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import java.io.Serializable;
+<i>12</i>&nbsp;import java.util.ArrayList;
+<i>13</i>&nbsp;import java.util.List;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;public class Card extends Observable implements Serializable {
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    /**
+<i>18</i>&nbsp;     * Active is related to the ability.
+<i>19</i>&nbsp;     * Final parameters are used to manage abilities.
+<i>20</i>&nbsp;     * OPPONENT: it is true if the ability influences opposite turns.
+<i>21</i>&nbsp;     * QUESTION: it is true if the ability need a question to be actived.
+<i>22</i>&nbsp;     * STATUS: the state when the ability could be actived.
+<i>23</i>&nbsp;     */
+<i>24</i>&nbsp;    private final CardName name;
+<i>25</i>&nbsp;    private boolean active;
+<i>26</i>&nbsp;    private final boolean opponent;
+<i>27</i>&nbsp;    private final boolean question;
+<i>28</i>&nbsp;    private final Status status;
+<i>29</i>&nbsp;
+<b class="fc"><i>30</i>&nbsp;    public Card(CardName name, boolean active, boolean opponent, boolean question, Status status, VirtualView vv) {</b>
+<b class="fc"><i>31</i>&nbsp;        this.name = name;</b>
+<b class="fc"><i>32</i>&nbsp;        this.active = active;</b>
+<b class="fc"><i>33</i>&nbsp;        this.opponent = opponent;</b>
+<b class="fc"><i>34</i>&nbsp;        this.question = question;</b>
+<b class="fc"><i>35</i>&nbsp;        this.status = status;</b>
+<b class="fc"><i>36</i>&nbsp;        if(vv != null)</b>
+<b class="fc"><i>37</i>&nbsp;            this.addObserver(vv);</b>
+<b class="fc"><i>38</i>&nbsp;    }</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    public CardName getName() {
+<b class="fc"><i>41</i>&nbsp;        return name;</b>
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    public boolean isActive() {
+<b class="fc"><i>45</i>&nbsp;        return active;</b>
+<i>46</i>&nbsp;    }
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    public void setActive(boolean active) {
+<b class="fc"><i>49</i>&nbsp;        this.active = active;</b>
+<b class="fc"><i>50</i>&nbsp;    }</b>
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    public boolean isOpponent() {
+<b class="fc"><i>53</i>&nbsp;        return opponent;</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    public boolean isQuestion() {
+<b class="fc"><i>57</i>&nbsp;        return question;</b>
+<i>58</i>&nbsp;    }
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    public Status getStatus() {
+<b class="fc"><i>61</i>&nbsp;        return status;</b>
+<i>62</i>&nbsp;    }
+<i>63</i>&nbsp;
+<b class="fc"><i>64</i>&nbsp;    public void initializeTurn(){}</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    /**
+<i>68</i>&nbsp;     * It checks for the after move win condition
+<i>69</i>&nbsp;     * @param from cell
+<i>70</i>&nbsp;     * @param to cell
+<i>71</i>&nbsp;     * @return true if this move is a win condition
+<i>72</i>&nbsp;     */
+<i>73</i>&nbsp;    public boolean checkWin(Cell from, Cell to) {
+<b class="fc"><i>74</i>&nbsp;        if(from != null &amp;&amp; to != null){</b>
+<b class="fc"><i>75</i>&nbsp;            return (from.getLevel() == 2 &amp;&amp; to.getLevel() == 3);</b>
+<i>76</i>&nbsp;        }
+<b class="fc"><i>77</i>&nbsp;        return false;</b>
+<i>78</i>&nbsp;    }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    /**
+<i>82</i>&nbsp;     * @param p list of player
+<i>83</i>&nbsp;     * @param b board
+<i>84</i>&nbsp;     * @return list of cells where active worker could build
+<i>85</i>&nbsp;     */
+<i>86</i>&nbsp;    public List&lt;Cell&gt; checkBuild(List&lt;Player&gt; p, Board b) {
+<b class="fc"><i>87</i>&nbsp;        if(p == null || b == null) return new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>88</i>&nbsp;        Worker actived = null;</b>
+<b class="fc"><i>89</i>&nbsp;        for(Player player:p)</b>
+<b class="fc"><i>90</i>&nbsp;            if(player.getCard().name.compareTo(this.name) == 0)</b>
+<b class="fc"><i>91</i>&nbsp;                actived = player.getCurrentWorker();</b>
+<b class="fc"><i>92</i>&nbsp;        if(actived == null) return new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>93</i>&nbsp;        ArrayList&lt;Cell&gt; ret = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>94</i>&nbsp;        for(Cell c:b.getField())</b>
+<b class="fc"><i>95</i>&nbsp;            if(Math.abs(c.getRow()-actived.getRow()) &lt;= 1 &amp;&amp; Math.abs(c.getColumn()-actived.getColumn()) &lt;= 1 &amp;&amp; c.getLevel() &lt; 4 &amp;&amp; !c.isOccupied(p))</b>
+<b class="fc"><i>96</i>&nbsp;                ret.add(c);</b>
+<b class="fc"><i>97</i>&nbsp;        return ret;</b>
+<i>98</i>&nbsp;    }
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;    /**
+<i>102</i>&nbsp;     * @param p list of player
+<i>103</i>&nbsp;     * @param b board
+<i>104</i>&nbsp;     * @return list of cells where active worker could move
+<i>105</i>&nbsp;     */
+<i>106</i>&nbsp;    public List&lt;Cell&gt; checkMove(List&lt;Player&gt; p, Board b){
+<b class="fc"><i>107</i>&nbsp;        if(p == null || b == null) return new ArrayList&lt;&gt;(0);</b>
+<b class="fc"><i>108</i>&nbsp;        Worker actived = null;</b>
+<b class="fc"><i>109</i>&nbsp;        for(Player player:p)</b>
+<b class="fc"><i>110</i>&nbsp;            if(player.getCard().name.compareTo(this.name) == 0)</b>
+<b class="fc"><i>111</i>&nbsp;                actived = player.getCurrentWorker();</b>
+<b class="fc"><i>112</i>&nbsp;        if(actived == null) return new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>113</i>&nbsp;        ArrayList&lt;Cell&gt; available = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>114</i>&nbsp;        for(Cell c:b.getField())</b>
+<b class="fc"><i>115</i>&nbsp;            if(Math.abs(c.getRow()-actived.getRow()) &lt;= 1 &amp;&amp; Math.abs(c.getColumn()-actived.getColumn()) &lt;= 1 &amp;&amp; c.getLevel() &lt; 4 &amp;&amp; c.getLevel() &lt;= actived.getLevel(b)+1 &amp;&amp; !c.isOccupied(p))</b>
+<b class="fc"><i>116</i>&nbsp;                available.add(c);</b>
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;        // here i check for opponent&#39;s turn ability
+<b class="fc"><i>119</i>&nbsp;        for (Player player : p)</b>
+<b class="fc"><i>120</i>&nbsp;            if (player.getCard().isOpponent() &amp;&amp; player.getCard().isActive())</b>
+<b class="fc"><i>121</i>&nbsp;                available.removeAll(player.getCard().activeBlock(p, b, actived,Status.QUESTION_M));</b>
+<b class="fc"><i>122</i>&nbsp;        return available;</b>
+<i>123</i>&nbsp;    }
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;
+<i>126</i>&nbsp;    /**
+<i>127</i>&nbsp;     * If the ability influences opposite turns this method return blocked cells (QUESTION_M for move and QUESTION_B for build).
+<i>128</i>&nbsp;     * @param w active worker
+<i>129</i>&nbsp;     * @param b board
+<i>130</i>&nbsp;     * @param current current state of current turn
+<i>131</i>&nbsp;     */
+<i>132</i>&nbsp;    protected List&lt;Cell&gt; activeBlock(List&lt;Player&gt; p, Board b, Worker w,  Status current){
+<b class="fc"><i>133</i>&nbsp;        return new ArrayList&lt;&gt;();</b>
+<i>134</i>&nbsp;    }
+<i>135</i>&nbsp;
+<i>136</i>&nbsp;
+<i>137</i>&nbsp;    /**
+<i>138</i>&nbsp;     * @param p list of player
+<i>139</i>&nbsp;     * @param b board
+<i>140</i>&nbsp;     * @param to where to move
+<i>141</i>&nbsp;     */
+<i>142</i>&nbsp;    public boolean move(List&lt;Player&gt; p, Board b, Cell to){
+<b class="fc"><i>143</i>&nbsp;        if (!(p == null || b == null || to == null)) {</b>
+<b class="fc"><i>144</i>&nbsp;            Player current = null;</b>
+<b class="fc"><i>145</i>&nbsp;            for (Player player : p)</b>
+<b class="fc"><i>146</i>&nbsp;                if (player.getCard().getName().compareTo(this.getName()) == 0)</b>
+<b class="fc"><i>147</i>&nbsp;                    current = player;</b>
+<b class="fc"><i>148</i>&nbsp;            if (current != null &amp;&amp; current.getCurrentWorker() != null) {</b>
+<b class="fc"><i>149</i>&nbsp;                List&lt;Cell&gt; available = checkMove(p, b);</b>
+<b class="fc"><i>150</i>&nbsp;                for (Player player : p)</b>
+<b class="fc"><i>151</i>&nbsp;                    if (player.getCard().isOpponent() &amp;&amp; player.getCard().isActive())</b>
+<b class="nc"><i>152</i>&nbsp;                        available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_M));</b>
+<b class="fc"><i>153</i>&nbsp;                    if (available.contains(to)) {</b>
+<b class="fc"><i>154</i>&nbsp;                        current.getCurrentWorker().move(to.getRow(), to.getColumn());</b>
+<b class="fc"><i>155</i>&nbsp;                        notifyObservers(new MovedServer(new SnapWorker(to.getRow(),to.getColumn(),current.getName(),current.getWorker1().isActive() ? 1 : 2)));</b>
+<b class="fc"><i>156</i>&nbsp;                    return true;</b>
+<i>157</i>&nbsp;                }
+<i>158</i>&nbsp;            }
+<i>159</i>&nbsp;        }
+<b class="fc"><i>160</i>&nbsp;        return false;</b>
+<i>161</i>&nbsp;    }
+<i>162</i>&nbsp;
+<i>163</i>&nbsp;
+<i>164</i>&nbsp;    /**
+<i>165</i>&nbsp;     * @param p list of player
+<i>166</i>&nbsp;     * @param b board
+<i>167</i>&nbsp;     * @param to where to build
+<i>168</i>&nbsp;     */
+<i>169</i>&nbsp;    public boolean build(List&lt;Player&gt; p, Board b, Cell to){
+<b class="fc"><i>170</i>&nbsp;        if(!(p == null || b == null || to == null)){</b>
+<b class="fc"><i>171</i>&nbsp;            Player current = null;</b>
+<b class="fc"><i>172</i>&nbsp;            for(Player player:p)</b>
+<b class="fc"><i>173</i>&nbsp;                if(player.getCard().getName().compareTo(this.getName()) == 0)</b>
+<b class="fc"><i>174</i>&nbsp;                    current = player;</b>
+<b class="fc"><i>175</i>&nbsp;            if(current != null &amp;&amp; current.getCurrentWorker() != null) {</b>
+<b class="fc"><i>176</i>&nbsp;                List&lt;Cell&gt; available = checkBuild(p,b);</b>
+<b class="fc"><i>177</i>&nbsp;                for(Player player:p)</b>
+<b class="fc"><i>178</i>&nbsp;                    if(player.getCard().getName().compareTo(this.getName()) != 0)</b>
+<b class="fc"><i>179</i>&nbsp;                        available.removeAll(player.getCard().activeBlock(p, b, current.getCurrentWorker(),Status.QUESTION_B));</b>
+<b class="fc"><i>180</i>&nbsp;                if(available.contains(to)){</b>
+<b class="fc"><i>181</i>&nbsp;                    available.get(available.indexOf(to)).setLevel(available.get(available.indexOf(to)).getLevel()+1);</b>
+<b class="fc"><i>182</i>&nbsp;                    notifyObservers(new BuiltServer(new SnapCell(available.get(available.indexOf(to)).getRow(),available.get(available.indexOf(to)).getColumn(),available.get(available.indexOf(to)).getLevel())));</b>
+<b class="fc"><i>183</i>&nbsp;                    return true;</b>
+<i>184</i>&nbsp;                }
+<i>185</i>&nbsp;            }
+<i>186</i>&nbsp;        }
+<b class="fc"><i>187</i>&nbsp;        return false;</b>
+<i>188</i>&nbsp;    }
+<i>189</i>&nbsp;
+<i>190</i>&nbsp;
+<i>191</i>&nbsp;    /**
+<i>192</i>&nbsp;     * @param current current state of current turn
+<i>193</i>&nbsp;     * @return next status by considering active abilities
+<i>194</i>&nbsp;     */
+<i>195</i>&nbsp;    public Status getNextStatus(Status current){
+<b class="fc"><i>196</i>&nbsp;        if(current == null) return null;</b>
+<b class="fc"><i>197</i>&nbsp;        switch (current){</b>
+<i>198</i>&nbsp;            case START:
+<b class="fc"><i>199</i>&nbsp;                return Status.CHOSEN;</b>
+<i>200</i>&nbsp;            case CHOSEN:
+<b class="fc"><i>201</i>&nbsp;                return Status.QUESTION_M;</b>
+<i>202</i>&nbsp;            case QUESTION_M:
+<b class="fc"><i>203</i>&nbsp;                return Status.MOVED;</b>
+<i>204</i>&nbsp;            case MOVED:
+<b class="fc"><i>205</i>&nbsp;                return Status.QUESTION_B;</b>
+<i>206</i>&nbsp;            case QUESTION_B:
+<b class="fc"><i>207</i>&nbsp;                return Status.BUILT;</b>
+<i>208</i>&nbsp;            case BUILT:
+<b class="fc"><i>209</i>&nbsp;                return Status.START;</b>
+<i>210</i>&nbsp;            default:
+<b class="nc"><i>211</i>&nbsp;                return null;</b>
+<i>212</i>&nbsp;        }
+<i>213</i>&nbsp;    }
+<i>214</i>&nbsp;
+<i>215</i>&nbsp;
+<i>216</i>&nbsp;    /**
+<i>217</i>&nbsp;     * It creates a message and notify the VIEW for available cells
+<i>218</i>&nbsp;     * @param p players
+<i>219</i>&nbsp;     * @param b the board
+<i>220</i>&nbsp;     */
+<i>221</i>&nbsp;    public List&lt;SnapCell&gt; getCheckMove(List&lt;Player&gt; p, Board b){
+<b class="fc"><i>222</i>&nbsp;        List&lt;Cell&gt; available = this.checkMove(p,b);</b>
+<b class="fc"><i>223</i>&nbsp;        ArrayList&lt;SnapCell&gt; snap = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>224</i>&nbsp;        for(Cell c:available)</b>
+<b class="fc"><i>225</i>&nbsp;            snap.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));</b>
+<b class="fc"><i>226</i>&nbsp;        for(Player player:p){</b>
+<b class="fc"><i>227</i>&nbsp;            if(player.getCard().name.compareTo(this.name) == 0){</b>
+<b class="fc"><i>228</i>&nbsp;                notifyObservers(new CheckMoveServer(snap));</b>
+<i>229</i>&nbsp;            }
+<b class="fc"><i>230</i>&nbsp;        }</b>
+<b class="fc"><i>231</i>&nbsp;        return snap;</b>
+<i>232</i>&nbsp;    }
+<i>233</i>&nbsp;
+<i>234</i>&nbsp;
+<i>235</i>&nbsp;    /**
+<i>236</i>&nbsp;     * It creates a message and notify the VIEW for available cells
+<i>237</i>&nbsp;     * @param p players
+<i>238</i>&nbsp;     * @param b the board
+<i>239</i>&nbsp;     */
+<i>240</i>&nbsp;    public List&lt;SnapCell&gt; getCheckBuild(List&lt;Player&gt; p, Board b){
+<b class="fc"><i>241</i>&nbsp;        List&lt;Cell&gt; available = this.checkBuild(p,b);</b>
+<b class="fc"><i>242</i>&nbsp;        ArrayList&lt;SnapCell&gt; snap = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>243</i>&nbsp;        for(Cell c:available)</b>
+<b class="fc"><i>244</i>&nbsp;            snap.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));</b>
+<b class="fc"><i>245</i>&nbsp;        for(Player player:p){</b>
+<b class="fc"><i>246</i>&nbsp;            if(player.getCard().name.compareTo(this.name) == 0){</b>
+<b class="fc"><i>247</i>&nbsp;                notifyObservers(new CheckBuildServer(snap));</b>
+<i>248</i>&nbsp;            }
+<b class="fc"><i>249</i>&nbsp;        }</b>
+<b class="fc"><i>250</i>&nbsp;        return snap;</b>
+<i>251</i>&nbsp;    }
+<i>252</i>&nbsp;
+<i>253</i>&nbsp;
+<i>254</i>&nbsp;     /**
+<i>255</i>&nbsp;     * @param p list of player
+<i>256</i>&nbsp;     * @param b board
+<i>257</i>&nbsp;     * @return true if you could activate ability in this turn
+<i>258</i>&nbsp;     */
+<i>259</i>&nbsp;    public boolean activable(List&lt;Player&gt; p, Board b){
+<b class="fc"><i>260</i>&nbsp;        return true;</b>
+<i>261</i>&nbsp;    }
+<i>262</i>&nbsp;
+<i>263</i>&nbsp;
+<i>264</i>&nbsp;    /**
+<i>265</i>&nbsp;     * @param p list of players
+<i>266</i>&nbsp;     * @param b board
+<i>267</i>&nbsp;     * @return It checks if current player doesn&#39;t have move, and update workers status
+<i>268</i>&nbsp;     */
+<i>269</i>&nbsp;    public boolean hasLost(List&lt;Player&gt; p, Board b) {
+<b class="fc"><i>270</i>&nbsp;        if(p == null || b == null) return false;</b>
+<b class="fc"><i>271</i>&nbsp;        Player current = null;</b>
+<b class="fc"><i>272</i>&nbsp;        for (Player player : p) {</b>
+<b class="fc"><i>273</i>&nbsp;            if (player.getCard().getName().compareTo(this.getName()) == 0)</b>
+<b class="fc"><i>274</i>&nbsp;                current = player;</b>
+<b class="fc"><i>275</i>&nbsp;        }</b>
+<i>276</i>&nbsp;
+<b class="fc"><i>277</i>&nbsp;        if (current == null) {</b>
+<b class="nc"><i>278</i>&nbsp;            throw new NullPointerException(&quot;Current player is Null&quot;);</b>
+<i>279</i>&nbsp;        }
+<i>280</i>&nbsp;
+<b class="fc"><i>281</i>&nbsp;        current.setCurrentWorker(1);</b>
+<b class="fc"><i>282</i>&nbsp;        if (current.getCard().checkMove(p, b).isEmpty()) {</b>
+<b class="fc"><i>283</i>&nbsp;            current.setCurrentWorker(2);</b>
+<i>284</i>&nbsp;
+<b class="fc"><i>285</i>&nbsp;            if (current.getCard().checkMove(p, b).isEmpty()) {</b>
+<b class="fc"><i>286</i>&nbsp;                current.getCurrentWorker().move(-1, -1);</b>
+<b class="fc"><i>287</i>&nbsp;                current.setCurrentWorker(1);</b>
+<b class="fc"><i>288</i>&nbsp;                current.getCurrentWorker().move(-1, -1);</b>
+<b class="fc"><i>289</i>&nbsp;                return true;</b>
+<i>290</i>&nbsp;            } else {
+<b class="nc"><i>291</i>&nbsp;                current.setCurrentWorker(0);</b>
+<b class="nc"><i>292</i>&nbsp;                return false;</b>
+<i>293</i>&nbsp;            }
+<i>294</i>&nbsp;        }
+<i>295</i>&nbsp;        else {
+<b class="fc"><i>296</i>&nbsp;            current.setCurrentWorker(0);</b>
+<b class="fc"><i>297</i>&nbsp;            return false;</b>
+<i>298</i>&nbsp;        }
+<i>299</i>&nbsp;    }
+<i>300</i>&nbsp;
+<i>301</i>&nbsp;
+<i>302</i>&nbsp;}
+<i>303</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>

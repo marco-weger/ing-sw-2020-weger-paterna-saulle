@@ -1,0 +1,129 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Observable</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Observable (it.polimi.ingsw)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Observable</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,3%
+  </span>
+  <span class="absValue">
+    (12/ 13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.commons.ServerMessage;
+<i>4</i>&nbsp;import it.polimi.ingsw.commons.Status;
+<i>5</i>&nbsp;import it.polimi.ingsw.commons.servermessages.ReConnectionServer;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.Match;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.util.ArrayList;
+<i>9</i>&nbsp;import java.util.Arrays;
+<i>10</i>&nbsp;
+<b class="fc"><i>11</i>&nbsp;public class Observable {</b>
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    /**
+<i>14</i>&nbsp;     * The list of observes
+<i>15</i>&nbsp;     */
+<b class="fc"><i>16</i>&nbsp;    final ArrayList&lt;Observer&gt; observers = new ArrayList&lt;&gt;();</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    /**
+<i>19</i>&nbsp;     * It adds an observer
+<i>20</i>&nbsp;     * @param o
+<i>21</i>&nbsp;     */
+<i>22</i>&nbsp;    public void addObserver(Observer o){
+<b class="fc"><i>23</i>&nbsp;        if(observers.contains(o))</b>
+<b class="nc"><i>24</i>&nbsp;            throw new RuntimeException(&quot;This observer is already registered&quot;);</b>
+<b class="fc"><i>25</i>&nbsp;        observers.add(o);</b>
+<b class="fc"><i>26</i>&nbsp;    }</b>
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    /**
+<i>29</i>&nbsp;     * It clears the list of observers
+<i>30</i>&nbsp;     */
+<i>31</i>&nbsp;    public void clearObserver(){
+<b class="fc"><i>32</i>&nbsp;        observers.clear();</b>
+<b class="fc"><i>33</i>&nbsp;    }</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * It notifies all observers
+<i>37</i>&nbsp;     * @param obj
+<i>38</i>&nbsp;     */
+<i>39</i>&nbsp;    public void notifyObservers(Object obj){
+<b class="fc"><i>40</i>&nbsp;        for(Observer i : observers)</b>
+<b class="fc"><i>41</i>&nbsp;            i.update(obj);</b>
+<b class="fc"><i>42</i>&nbsp;        if(this instanceof Match &amp;&amp; obj instanceof ServerMessage &amp;&amp; !Arrays.asList(Status.NAME_CHOICE,Status.WORKER_CHOICE,Status.CARD_CHOICE).contains(((Match) this).getStatus()) &amp;&amp; !(obj instanceof ReConnectionServer))</b>
+<b class="fc"><i>43</i>&nbsp;            ((Match) this).saveToFile((ServerMessage) obj);</b>
+<b class="fc"><i>44</i>&nbsp;    }</b>
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>
