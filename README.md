@@ -58,7 +58,8 @@ Allowed params:
 ## Start Game
 Enjoy Santorini in GUI mode or try the 90s Experience with CLI mode.<br>
 Download and run **client.jar** and **put in the same folder** the directory [resources](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/deliverables/jars) with the json file.<br>You will play in our Official Server (Check [here](#Santorini-Official-Server) if our Server is available) <br><br>
-You can also play Santorini with your own Server, just run **Server.jar** on your pc, and set your ip on JSON file. <br> (if you prefer, **you can avoid to use JSON file**,just don't put the directory resources in client.jar's folder,<br> the game will ask you the ip and the port that you want to use).
+You can also play Santorini with your own Server, just run **Server.jar** on your pc, and set your ip on JSON file. <br> (if you prefer, **you can avoid to use JSON file**,just don't put the directory resources in client.jar's folder,<br> the game will ask you the ip and the port that you want to use).<br>
+![exemple](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/doc/Exemple.png)
 
 
 #### Start Client
