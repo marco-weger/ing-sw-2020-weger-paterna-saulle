@@ -15,6 +15,7 @@ This project was made between March and July 2020 as our final thesis project at
 * [start Client](#Start-Client)
 * [start Server](#Start-Server)
 * [specification covered](#Specification-Covered)
+* [testing](#Testing)
 * [server status](#Santorini-Official-Server)
 
 
@@ -57,7 +58,8 @@ Allowed params:
 ## Start Game
 Enjoy Santorini in GUI mode or try the 90s Experience with CLI mode.<br>
 Download and run **client.jar** and **put in the same folder** the directory [resources](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/deliverables/jars) with the json file.<br>You will play in our Official Server (Check [here](#Santorini-Official-Server) if our Server is available) <br><br>
-You can also play Santorini with your own Server, just run **Server.jar** on your pc, and set your ip on JSON file. <br> (if you prefer, **you can avoid to use JSON file**,just don't put the directory resources in client.jar's folder,<br> the game will ask you the ip and the port that you want to use).
+You can also play Santorini with your own Server, just run **Server.jar** on your pc, and set your ip on json file. <br> (if you prefer, **you can avoid to use json file**, just don't put the directory resources in client.jar's folder,<br> the game will ask you the ip and the port that you want to use).<br>
+![exemple](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/doc/Exemple.png)
 
 
 #### Start Client
@@ -83,21 +85,27 @@ When reconnecting, remember to vote for the same map the game was being played o
 -->
 
 ## Specification Covered
-| Functionality | State |
-|:-----------------------|:------------------------------------:|
-| Basic rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Complete rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Socket | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| GUI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| CLI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Multiple games | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Persistence | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| Functionality | State | Description |
+|:-----------------------|:-------------------|:------------------------------------|
+| Basic rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | 2 players mode with 5 cards implemented|
+| Complete rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | 2 players and 3 players mode with 9 cards implemented | 
+| Socket | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | Network Socket Implemented |
+| CLI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | Command Line Interface |
+| GUI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | Graphical User Interface |
+| Multiple games | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | The game allows players to join in a new lobby at the end of a match|
+| Persistence | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | Game status saved on disk. The game can resume after a server or client crash |
 
 <!--
 [![RED](https://placehold.it/15/f03c15/f03c15)](#)
 [![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#)
 [![GREEN](https://placehold.it/15/44bb44/44bb44)](#)
 -->
+
+
+## Testing
+**IntelliJ Coverage -** [Full Report](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/deliverables/test/Coverage%20Report) <br>
+![IJ TEST](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/deliverables/test/IJ_coverage.jpg)
+
 
 ## Santorini Official Server 
 Powered by Microsoft Azure
