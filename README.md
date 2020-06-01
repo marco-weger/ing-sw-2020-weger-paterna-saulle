@@ -85,15 +85,15 @@ When reconnecting, remember to vote for the same map the game was being played o
 -->
 
 ## Specification Covered
-| Functionality | State |
-|:-----------------------|:------------------------------------:|
-| Basic rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Complete rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Socket | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| GUI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| CLI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Multiple games | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Persistence | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| Functionality | State | Description |
+|:-----------------------|:-------------------|:------------------------------------|
+| Basic rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | 2 players mode with 5 cards implemented|
+| Complete rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | 2 players and 3 players mode with 9 cards implemented | 
+| Socket | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | Network Socket Implemented |
+| CLI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | Command Line Interface |
+| GUI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | Graphical User Interface |
+| Multiple games | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | The game allows players to join in a new lobby at the end of a match|
+| Persistence | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | Game status saved on disk. The game can resume after a server or client crash |
 
 <!--
 [![RED](https://placehold.it/15/f03c15/f03c15)](#)
