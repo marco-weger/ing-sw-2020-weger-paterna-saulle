@@ -15,6 +15,7 @@ This project was made between March and July 2020 as our final thesis project at
 * [start Client](#Start-Client)
 * [start Server](#Start-Server)
 * [specification covered](#Specification-Covered)
+* [testing](#Testing)
 * [server status](#Santorini-Official-Server)
 
 
@@ -100,7 +101,7 @@ When reconnecting, remember to vote for the same map the game was being played o
 -->
 
 
-## Test
+## Testing
 **IntelliJ Coverage -** [Full Report](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/tree/master/deliverables/test/Coverage%20Report) <br>
 ![IJ TEST](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/deliverables/test/IJ_coverage.jpg)
 
