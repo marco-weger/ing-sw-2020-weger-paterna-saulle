@@ -102,7 +102,6 @@ public class CLITest {
     }
      */
 
-    /*
     @Test
     public void testEasterEgg(){
         Client c = new Client();
@@ -128,5 +127,4 @@ public class CLITest {
         win.put("AtertSD",6);
         view.handleMessage(new EasterEggServer("MARCO",win));
     }
-    */
 }
