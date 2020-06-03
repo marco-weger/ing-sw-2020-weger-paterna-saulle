@@ -1,0 +1,10 @@
+it.polimi.ingsw
+it.polimi.ingsw.commons
+it.polimi.ingsw.commons.clientmessages
+it.polimi.ingsw.commons.servermessages
+it.polimi.ingsw.controller
+it.polimi.ingsw.model
+it.polimi.ingsw.model.cards
+it.polimi.ingsw.network
+it.polimi.ingsw.view
+it.polimi.ingsw.view.gui
