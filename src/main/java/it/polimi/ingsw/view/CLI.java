@@ -642,7 +642,7 @@ public class CLI implements ViewInterface {
         if(easterEggServer.player.equals(client.getUsername()) && easterEggServer.win.size() > 0){
             clear();
             printTitle();
-
+/*
             println(color[0]+"                     __    __   ___   __  __ ____    ____ ____   ____ __ __ __                             " + TextFormatting.RESET);
             println(color[0]+"                     ||    ||  // \\\\  ||\\ || || \\\\  ||    || \\\\ ||    || || ||                             " + TextFormatting.RESET);
             println(color[0]+"                     \\\\ /\\ // ((   )) ||\\\\|| ||  )) ||==  ||_// ||==  || || ||                             " + TextFormatting.RESET);
@@ -659,20 +659,20 @@ public class CLI implements ViewInterface {
             println(color[0]+"            ((   )) || || ||_//    ||==  ||=||  \\\\    ||   ||==  ||_//    ||==  (( ___ (( ___              " + TextFormatting.RESET);
             println(color[0]+"             \\\\_//  \\\\_// || \\\\    ||___ || || \\_))   ||   ||___ || \\\\    ||___  \\\\_||  \\\\_||              " + TextFormatting.RESET);
             println(color[0]+"                                                                                                           " + TextFormatting.RESET);
-/*
-println(color[0]+"                     █████      ███████ ███████  ██████ ██████  ███████ ████████                           " + TextFormatting.RESET);
-println(color[0]+"                    ██   ██     ██      ██      ██      ██   ██ ██         ██                              " + TextFormatting.RESET);
-println(color[0]+"                    ███████     ███████ █████   ██      ██████  █████      ██                              " + TextFormatting.RESET);
-println(color[0]+"                    ██   ██          ██ ██      ██      ██   ██ ██         ██                              " + TextFormatting.RESET);
-println(color[0]+"                    ██   ██     ███████ ███████  ██████ ██   ██ ███████    ██                              " + TextFormatting.RESET);
-println(color[0]+"                                                                                                           " + TextFormatting.RESET);
-println(color[0]+"    ██ ███████     ██████  ███████ ██    ██ ███████ ██      ███████  █████  ████████ ███████ ██████  ██    " + TextFormatting.RESET);
-println(color[0]+"    ██ ██          ██   ██ ██      ██    ██ ██      ██      ██      ██   ██    ██    ██      ██   ██ ██    " + TextFormatting.RESET);
-println(color[0]+"    ██ ███████     ██████  █████   ██    ██ █████   ██      █████   ███████    ██    █████   ██   ██ ██    " + TextFormatting.RESET);
-println(color[0]+"    ██      ██     ██   ██ ██       ██  ██  ██      ██      ██      ██   ██    ██    ██      ██   ██       " + TextFormatting.RESET);
-println(color[0]+"    ██ ███████     ██   ██ ███████   ████   ███████ ███████ ███████ ██   ██    ██    ███████ ██████  ██    " + TextFormatting.RESET);
-println(color[0]+"                                                                                                           " + TextFormatting.RESET);
 */
+println(color[0]+"                       █████      ███████ ███████  ██████ ██████  ███████ ████████                         " + TextFormatting.RESET);
+println(color[0]+"                      ██   ██     ██      ██      ██      ██   ██ ██         ██                            " + TextFormatting.RESET);
+println(color[0]+"                      ███████     ███████ █████   ██      ██████  █████      ██                            " + TextFormatting.RESET);
+println(color[0]+"                      ██   ██          ██ ██      ██      ██   ██ ██         ██                            " + TextFormatting.RESET);
+println(color[0]+"                      ██   ██     ███████ ███████  ██████ ██   ██ ███████    ██                            " + TextFormatting.RESET);
+println(color[0]+"                                                                                                           " + TextFormatting.RESET);
+println(color[0]+"            ██ ███████     ██████  ███████ ██    ██ ███████  █████  ██      ███████ ██████  ██             " + TextFormatting.RESET);
+println(color[0]+"            ██ ██          ██   ██ ██      ██    ██ ██      ██   ██ ██      ██      ██   ██ ██             " + TextFormatting.RESET);
+println(color[0]+"            ██ ███████     ██████  █████   ██    ██ █████   ███████ ██      █████   ██   ██ ██             " + TextFormatting.RESET);
+println(color[0]+"            ██      ██     ██   ██ ██       ██  ██  ██      ██   ██ ██      ██      ██   ██                " + TextFormatting.RESET);
+println(color[0]+"            ██ ███████     ██   ██ ███████   ████   ███████ ██   ██ ███████ ███████ ██████  ██             " + TextFormatting.RESET);
+println(color[0]+"                                                                                                           " + TextFormatting.RESET);
+
             String tmp = "╭─────────────────────────────────────────╮                                             ";
             printScore(tmp);
 
