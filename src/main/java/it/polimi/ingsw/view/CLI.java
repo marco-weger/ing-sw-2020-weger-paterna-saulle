@@ -333,7 +333,7 @@ public class CLI implements ViewInterface {
      * @param message a SomeoneLoseServer message
      */
     @Override
-    public void handleMessage(SomeoneLoseServer message) { // TODO test
+    public void handleMessage(SomeoneLoseServer message) {
         for(SnapPlayer sp : client.getPlayers())
             if(sp.name.equals(message.player))
                 sp.loser = true;
@@ -446,7 +446,7 @@ public class CLI implements ViewInterface {
      * @param message
      */
     @Override
-    public void handleMessage(SomeoneWinServer message) { // TODO test
+    public void handleMessage(SomeoneWinServer message) {
         clear();
         if(this.client.getUsername().equals(message.player))
             printWin();

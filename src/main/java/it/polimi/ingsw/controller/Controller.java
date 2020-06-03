@@ -248,7 +248,6 @@ public class Controller implements Observer, ClientMessageHandler {
                 match.getCurrentPlayer().getCard().getCheckMove(match.getPlayers(), match.getBoard());
             else if (match.getStatus().compareTo(Status.QUESTION_B) == 0)
                 match.getCurrentPlayer().getCard().getCheckBuild(match.getPlayers(), match.getBoard()); }
-        //TODO rimuvoere dopo i test
         else{
             match.setStatus(match.getCurrentPlayer().getCard().getNextStatus(match.getStatus()));
         }
