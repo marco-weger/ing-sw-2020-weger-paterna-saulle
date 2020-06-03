@@ -797,11 +797,11 @@ public class GUI extends Application implements ViewInterface {
                     });
                     int i = 0;
                     for (Object entry : values) {
+                        if(i++==5)
+                            break;
                         ((EasterEggController) newController).buttonLobby.setText(
                                 ((EasterEggController) newController).buttonLobby.getText()+(go ? "" : "\n")+((Map.Entry) entry).getKey() + "   " + ((Map.Entry) entry).getValue());
                         go = false;
-                        if(i++==5)
-                            break;
                     }
                 }
 
