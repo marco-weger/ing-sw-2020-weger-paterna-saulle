@@ -253,7 +253,6 @@ public class CLI implements ViewInterface {
     /**
      * Ask the current Player if he wants to use the Ability of his God
      * Read the input, and send an the decision to the controller
-     * @return return the cell
      */
     @Override
     public void handleMessage(QuestionAbilityServer message) {

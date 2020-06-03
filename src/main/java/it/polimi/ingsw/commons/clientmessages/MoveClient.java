@@ -13,6 +13,7 @@ public class MoveClient extends ClientMessage {
 
     /**
      * This messagge will be send to the server from the client with the decision of the player about where move.
+     * @param name the name of the player
      * @param x the row chosen to move
      * @param y the column chosen to move
      */

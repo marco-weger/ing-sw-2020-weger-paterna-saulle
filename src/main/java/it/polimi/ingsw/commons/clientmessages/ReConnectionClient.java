@@ -14,6 +14,7 @@ public class ReConnectionClient extends ClientMessage {
      * This message will be sent to the server from the client that want to Re-Connect to an open Match
      * [Persistence]
      * @param name the name of the player
+     * @param type 1 to reconnection to a match, 2 for new lobby
      */
     public ReConnectionClient(String name, int type){
         super(name);
