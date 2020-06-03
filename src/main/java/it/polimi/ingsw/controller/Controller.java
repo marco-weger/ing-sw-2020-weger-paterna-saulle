@@ -383,7 +383,7 @@ public class Controller implements Observer, ClientMessageHandler {
      * if the GoOne is false, but the player doesn't have won, check if the player have lost --> (in case move the player into loser list)
      * @param goOn if true goes to the next player, if false initialize the turn
      */
-    // FIXME this method must be private (to check tests)
+    // this method must be private (to check tests)
     public void startTurn(boolean goOn){
         if(!match.isEnded()){
             if(goOn) match.setNextPlayer();
