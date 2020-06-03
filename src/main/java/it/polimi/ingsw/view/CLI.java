@@ -643,22 +643,36 @@ public class CLI implements ViewInterface {
             clear();
             printTitle();
 
-            println(color[0]+"                   __    __   ___   __  __ ____    ____ ____   ____ __ __ __                               " + TextFormatting.RESET);
-            println(color[0]+"                   ||    ||  // \\\\  ||\\ || || \\\\  ||    || \\\\ ||    || || ||                               " + TextFormatting.RESET);
-            println(color[0]+"                   \\\\ /\\ // ((   )) ||\\\\|| ||  )) ||==  ||_// ||==  || || ||                               " + TextFormatting.RESET);
-            println(color[0]+"                    \\V/\\V/   \\\\_//  || \\|| ||_//  ||___ || \\\\ ||    \\\\_// ||__| || || ||                   " + TextFormatting.RESET);
+            println(color[0]+"                     __    __   ___   __  __ ____    ____ ____   ____ __ __ __                             " + TextFormatting.RESET);
+            println(color[0]+"                     ||    ||  // \\\\  ||\\ || || \\\\  ||    || \\\\ ||    || || ||                             " + TextFormatting.RESET);
+            println(color[0]+"                     \\\\ /\\ // ((   )) ||\\\\|| ||  )) ||==  ||_// ||==  || || ||                             " + TextFormatting.RESET);
+            println(color[0]+"                      \\V/\\V/   \\\\_//  || \\|| ||_//  ||___ || \\\\ ||    \\\\_// ||__| || || ||                 " + TextFormatting.RESET);
             println(color[0]+"                                                                                                           " + TextFormatting.RESET);
-            println(color[0]+"     _  _   ___   __ __    __  __  ___  ____      ____   __  __    ___   ___   __ __  ____ ____  ____      " + TextFormatting.RESET);
-            println(color[0]+"     \\\\//  // \\\\  || ||    ||  || // \\\\ || \\\\     || \\\\  || (( \\  //    // \\\\  || || ||    || \\\\ || \\\\     " + TextFormatting.RESET);
-            println(color[0]+"      )/  ((   )) || ||    ||==|| ||=|| ||  ))    ||  )) ||  \\\\  ((    ((   )) \\\\ // ||==  ||_// ||  ))    " + TextFormatting.RESET);
-            println(color[0]+"     //    \\\\_//  \\\\_//    ||  || || || ||_//     ||_//  || \\_))  \\\\__  \\\\_//   \\V/  ||___ || \\\\ ||_//     " + TextFormatting.RESET);
+            println(color[0]+"                                                                                                           " + TextFormatting.RESET);
+            println(color[0]+"             _  _   ___   __ __    __  __  ___  __ __  ____     ____   ___   __ __ __  __ ____             " + TextFormatting.RESET);
+            println(color[0]+"             \\\\//  // \\\\  || ||    ||  || // \\\\ || || ||       ||     // \\\\  || || ||\\ || || \\\\            " + TextFormatting.RESET);
+            println(color[0]+"              )/  ((   )) || ||    ||==|| ||=|| \\\\ // ||==     ||==  ((   )) || || ||\\\\|| ||  ))           " + TextFormatting.RESET);
+            println(color[0]+"             //    \\\\_//  \\\\_//    ||  || || ||  \\V/  ||___    ||     \\\\_//  \\\\_// || \\|| ||_//            " + TextFormatting.RESET);
             println(color[0]+"                                                                                                           " + TextFormatting.RESET);
             println(color[0]+"              ___   __ __ ____      ____  ___   __  ______  ____ ____      ____   ___    ___               " + TextFormatting.RESET);
             println(color[0]+"             // \\\\  || || || \\\\    ||    // \\\\ (( \\ | || | ||    || \\\\    ||     // \\\\  // \\\\              " + TextFormatting.RESET);
             println(color[0]+"            ((   )) || || ||_//    ||==  ||=||  \\\\    ||   ||==  ||_//    ||==  (( ___ (( ___              " + TextFormatting.RESET);
             println(color[0]+"             \\\\_//  \\\\_// || \\\\    ||___ || || \\_))   ||   ||___ || \\\\    ||___  \\\\_||  \\\\_||              " + TextFormatting.RESET);
             println(color[0]+"                                                                                                           " + TextFormatting.RESET);
-
+/*
+println(color[0]+"                     █████      ███████ ███████  ██████ ██████  ███████ ████████                           " + TextFormatting.RESET);
+println(color[0]+"                    ██   ██     ██      ██      ██      ██   ██ ██         ██                              " + TextFormatting.RESET);
+println(color[0]+"                    ███████     ███████ █████   ██      ██████  █████      ██                              " + TextFormatting.RESET);
+println(color[0]+"                    ██   ██          ██ ██      ██      ██   ██ ██         ██                              " + TextFormatting.RESET);
+println(color[0]+"                    ██   ██     ███████ ███████  ██████ ██   ██ ███████    ██                              " + TextFormatting.RESET);
+println(color[0]+"                                                                                                           " + TextFormatting.RESET);
+println(color[0]+"    ██ ███████     ██████  ███████ ██    ██ ███████ ██      ███████  █████  ████████ ███████ ██████  ██    " + TextFormatting.RESET);
+println(color[0]+"    ██ ██          ██   ██ ██      ██    ██ ██      ██      ██      ██   ██    ██    ██      ██   ██ ██    " + TextFormatting.RESET);
+println(color[0]+"    ██ ███████     ██████  █████   ██    ██ █████   ██      █████   ███████    ██    █████   ██   ██ ██    " + TextFormatting.RESET);
+println(color[0]+"    ██      ██     ██   ██ ██       ██  ██  ██      ██      ██      ██   ██    ██    ██      ██   ██       " + TextFormatting.RESET);
+println(color[0]+"    ██ ███████     ██   ██ ███████   ████   ███████ ███████ ███████ ██   ██    ██    ███████ ██████  ██    " + TextFormatting.RESET);
+println(color[0]+"                                                                                                           " + TextFormatting.RESET);
+*/
             String tmp = "╭─────────────────────────────────────────╮                                             ";
             printScore(tmp);
 
