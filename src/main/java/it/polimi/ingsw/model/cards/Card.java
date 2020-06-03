@@ -126,8 +126,10 @@ public class Card extends Observable implements Serializable {
     /**
      * If the ability influences opposite turns this method return blocked cells (QUESTION_M for move and QUESTION_B for build).
      * @param w active worker
+     * @param p player
      * @param b board
      * @param current current state of current turn
+     * @return list with blocked cell
      */
     protected List<Cell> activeBlock(List<Player> p, Board b, Worker w,  Status current){
         return new ArrayList<>();
@@ -138,6 +140,7 @@ public class Card extends Observable implements Serializable {
      * @param p list of player
      * @param b board
      * @param to where to move
+     * @return true if the move request is correct
      */
     public boolean move(List<Player> p, Board b, Cell to){
         if (!(p == null || b == null || to == null)) {
@@ -165,6 +168,7 @@ public class Card extends Observable implements Serializable {
      * @param p list of player
      * @param b board
      * @param to where to build
+     * @retrun true if the build request is correct
      */
     public boolean build(List<Player> p, Board b, Cell to){
         if(!(p == null || b == null || to == null)){
@@ -217,6 +221,7 @@ public class Card extends Observable implements Serializable {
      * It creates a message and notify the VIEW for available cells
      * @param p players
      * @param b the board
+     * @return a list of available cell
      */
     public List<SnapCell> getCheckMove(List<Player> p, Board b){
         List<Cell> available = this.checkMove(p,b);
@@ -236,6 +241,7 @@ public class Card extends Observable implements Serializable {
      * It creates a message and notify the VIEW for available cells
      * @param p players
      * @param b the board
+     * @return a list of available cell
      */
     public List<SnapCell> getCheckBuild(List<Player> p, Board b){
         List<Cell> available = this.checkBuild(p,b);

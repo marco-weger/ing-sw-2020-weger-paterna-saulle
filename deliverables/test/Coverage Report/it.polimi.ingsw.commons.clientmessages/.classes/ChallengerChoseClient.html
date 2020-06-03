@@ -1,0 +1,108 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ChallengerChoseClient</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.commons.clientmessages</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ChallengerChoseClient (it.polimi.ingsw.commons.clientmessages)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ChallengerChoseClient</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.commons.clientmessages;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.ClientMessageHandler;
+<i>4</i>&nbsp;import it.polimi.ingsw.commons.ClientMessage;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.cards.CardName;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import java.util.List;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;public class ChallengerChoseClient extends ClientMessage {
+<i>10</i>&nbsp;    @Override
+<b class="fc"><i>11</i>&nbsp;    public void accept(ClientMessageHandler cmh) {cmh.handleMessage(this);}</b>
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    public final List&lt;CardName&gt; c;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    /**
+<i>16</i>&nbsp;     * This messagge will be send to the server from the client with the three or two cards picked from the deck by the challenger
+<i>17</i>&nbsp;     * @param name the name of the challenger
+<i>18</i>&nbsp;     * @param c ths list of card pick from the deck
+<i>19</i>&nbsp;     */
+<i>20</i>&nbsp;    public ChallengerChoseClient(String name, List&lt;CardName&gt; c) {
+<b class="fc"><i>21</i>&nbsp;        super(name);</b>
+<b class="fc"><i>22</i>&nbsp;        this.c = c;</b>
+<b class="fc"><i>23</i>&nbsp;    }</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>

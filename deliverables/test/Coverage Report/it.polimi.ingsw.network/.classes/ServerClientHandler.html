@@ -1,0 +1,661 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ServerClientHandler</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.network</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ServerClientHandler (it.polimi.ingsw.network)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ServerClientHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 266)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.network;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.commons.ClientMessage;
+<i>4</i>&nbsp;import it.polimi.ingsw.commons.ServerMessage;
+<i>5</i>&nbsp;import it.polimi.ingsw.commons.Status;
+<i>6</i>&nbsp;import it.polimi.ingsw.commons.clientmessages.*;
+<i>7</i>&nbsp;import it.polimi.ingsw.commons.servermessages.*;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import java.io.BufferedInputStream;
+<i>10</i>&nbsp;import java.io.IOException;
+<i>11</i>&nbsp;import java.io.ObjectInputStream;
+<i>12</i>&nbsp;import java.io.ObjectOutputStream;
+<i>13</i>&nbsp;import java.net.Socket;
+<i>14</i>&nbsp;import java.net.SocketTimeoutException;
+<i>15</i>&nbsp;import java.util.Arrays;
+<i>16</i>&nbsp;import java.util.Timer;
+<i>17</i>&nbsp;import java.util.concurrent.Executors;
+<i>18</i>&nbsp;import java.util.concurrent.ScheduledExecutorService;
+<i>19</i>&nbsp;import java.util.concurrent.TimeUnit;
+<i>20</i>&nbsp;import java.util.logging.Level;
+<i>21</i>&nbsp;import java.util.logging.Logger;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;public class ServerClientHandler implements Runnable {
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    /**
+<i>26</i>&nbsp;     * The logger
+<i>27</i>&nbsp;     */
+<b class="nc"><i>28</i>&nbsp;    private static final Logger LOGGER = Logger.getLogger(ServerClientHandler.class.getName());</b>
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    /**
+<i>31</i>&nbsp;     * The socket
+<i>32</i>&nbsp;     */
+<i>33</i>&nbsp;    private final Socket socket;
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * The main server
+<i>37</i>&nbsp;     */
+<i>38</i>&nbsp;    private final Server server;
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    /**
+<i>41</i>&nbsp;     * It is used to read object from client
+<i>42</i>&nbsp;     */
+<i>43</i>&nbsp;    private ObjectInputStream in;
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    /**
+<i>46</i>&nbsp;     * It is used to write object to client
+<i>47</i>&nbsp;     */
+<i>48</i>&nbsp;    private ObjectOutputStream out;
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    /**
+<i>51</i>&nbsp;     * The VirtualView of the match (players in the same match have same instance)
+<i>52</i>&nbsp;     */
+<i>53</i>&nbsp;    private VirtualView virtualView;
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    /**
+<i>56</i>&nbsp;     * The name of the player
+<i>57</i>&nbsp;     */
+<i>58</i>&nbsp;    private String name;
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    /**
+<i>61</i>&nbsp;     * Socket ping period
+<i>62</i>&nbsp;     */
+<i>63</i>&nbsp;    private final long pingPeriod;
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    /**
+<i>66</i>&nbsp;     * Timer task to send ping to the client
+<i>67</i>&nbsp;     */
+<i>68</i>&nbsp;    private Timer ping;
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    /**
+<i>71</i>&nbsp;     * This value is changed by turn timers, it is used to stop socket reading.
+<i>72</i>&nbsp;     */
+<i>73</i>&nbsp;    private boolean turnTimesUp;
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;    /**
+<i>76</i>&nbsp;     * True if the connection is alive
+<i>77</i>&nbsp;     */
+<i>78</i>&nbsp;    private boolean stillConnected;
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    /**
+<i>81</i>&nbsp;     * The timer of disconnection handler
+<i>82</i>&nbsp;     */
+<i>83</i>&nbsp;    private TimerDisconnection timerDisconnection;
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;    /**
+<i>86</i>&nbsp;     * @param socket connection
+<i>87</i>&nbsp;     * @param server the SERVER
+<i>88</i>&nbsp;     * @param pingPeriod period used to run ping task
+<i>89</i>&nbsp;     */
+<b class="nc"><i>90</i>&nbsp;    public ServerClientHandler (Socket socket, Server server, int pingPeriod){</b>
+<b class="nc"><i>91</i>&nbsp;        this.socket = socket;</b>
+<b class="nc"><i>92</i>&nbsp;        this.server = server;</b>
+<b class="nc"><i>93</i>&nbsp;        this.virtualView = null;</b>
+<b class="nc"><i>94</i>&nbsp;        this.name = socket.getRemoteSocketAddress().toString();</b>
+<b class="nc"><i>95</i>&nbsp;        this.pingPeriod = pingPeriod;</b>
+<b class="nc"><i>96</i>&nbsp;        this.turnTimesUp = false;</b>
+<i>97</i>&nbsp;
+<b class="nc"><i>98</i>&nbsp;        if(isConnected()){</b>
+<b class="nc"><i>99</i>&nbsp;            stillConnected = true;</b>
+<i>100</i>&nbsp;        }
+<b class="nc"><i>101</i>&nbsp;    }</b>
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;    /**
+<i>104</i>&nbsp;     * It checks if connection is alive
+<i>105</i>&nbsp;     * @return
+<i>106</i>&nbsp;     */
+<i>107</i>&nbsp;    private boolean isConnected(){
+<i>108</i>&nbsp;        try{
+<b class="nc"><i>109</i>&nbsp;            return socket.isConnected();</b>
+<b class="nc"><i>110</i>&nbsp;        } catch (Exception ignored){ return false; }</b>
+<i>111</i>&nbsp;    }
+<i>112</i>&nbsp;
+<i>113</i>&nbsp;    /**
+<i>114</i>&nbsp;     * The username getter
+<i>115</i>&nbsp;     * @return
+<i>116</i>&nbsp;     */
+<b class="nc"><i>117</i>&nbsp;    public String getName() {return name;}</b>
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;    /**
+<i>120</i>&nbsp;     * The flag is used during live disconnection, during wait time
+<i>121</i>&nbsp;     * @return
+<i>122</i>&nbsp;     */
+<b class="nc"><i>123</i>&nbsp;    public boolean isStillConnected() {return stillConnected;}</b>
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;    /**
+<i>126</i>&nbsp;     * The input stream getter
+<i>127</i>&nbsp;     * @return
+<i>128</i>&nbsp;     */
+<b class="nc"><i>129</i>&nbsp;    public ObjectInputStream getIn(){ return in;}</b>
+<i>130</i>&nbsp;
+<i>131</i>&nbsp;    /**
+<i>132</i>&nbsp;     * The stillConnected flag setter
+<i>133</i>&nbsp;     * @param stillConnected
+<i>134</i>&nbsp;     */
+<b class="nc"><i>135</i>&nbsp;    public void setStillConnected(boolean stillConnected){ this.stillConnected = stillConnected; }</b>
+<i>136</i>&nbsp;
+<i>137</i>&nbsp;    /**
+<i>138</i>&nbsp;     * The instance of Server
+<i>139</i>&nbsp;     * @return
+<i>140</i>&nbsp;     */
+<b class="nc"><i>141</i>&nbsp;    public Server getServer(){ return server; }</b>
+<i>142</i>&nbsp;
+<i>143</i>&nbsp;    /**
+<i>144</i>&nbsp;     * The VirtualView of current match
+<i>145</i>&nbsp;     * @return
+<i>146</i>&nbsp;     */
+<b class="nc"><i>147</i>&nbsp;    public VirtualView getVirtualView(){ return virtualView; }</b>
+<i>148</i>&nbsp;
+<i>149</i>&nbsp;    /**
+<i>150</i>&nbsp;     * The ping task
+<i>151</i>&nbsp;     * @return
+<i>152</i>&nbsp;     */
+<b class="nc"><i>153</i>&nbsp;    public Timer getPing(){ return ping; }</b>
+<i>154</i>&nbsp;
+<i>155</i>&nbsp;    /*
+<i>156</i>&nbsp;    public ObjectInputStream getInputStream(){ return in; }
+<i>157</i>&nbsp;
+<i>158</i>&nbsp;    public ObjectOutputStream getOutputStream(){ return out; }
+<i>159</i>&nbsp;     */
+<i>160</i>&nbsp;
+<i>161</i>&nbsp;    /**
+<i>162</i>&nbsp;     * When an object implementing interface &lt;code&gt;Runnable&lt;/code&gt; is used
+<i>163</i>&nbsp;     * to create a thread, starting the thread causes the object&#39;s
+<i>164</i>&nbsp;     * &lt;code&gt;run&lt;/code&gt; method to be called in that separately executing
+<i>165</i>&nbsp;     * thread.
+<i>166</i>&nbsp;     * &lt;p&gt;
+<i>167</i>&nbsp;     * The general contract of the method &lt;code&gt;run&lt;/code&gt; is that it may
+<i>168</i>&nbsp;     * take any action whatsoever.
+<i>169</i>&nbsp;     *
+<i>170</i>&nbsp;     * A thread is used to read object from every player. It starts immediately after the connection.
+<i>171</i>&nbsp;     *
+<i>172</i>&nbsp;     * @see Thread#run()
+<i>173</i>&nbsp;     */
+<i>174</i>&nbsp;    @Override
+<i>175</i>&nbsp;    public void run() {
+<i>176</i>&nbsp;        // get streams for socket output and input
+<i>177</i>&nbsp;        try {
+<b class="nc"><i>178</i>&nbsp;            out = new ObjectOutputStream(socket.getOutputStream());</b>
+<b class="nc"><i>179</i>&nbsp;            in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));</b>
+<b class="nc"><i>180</i>&nbsp;            stillConnected = true;</b>
+<b class="nc"><i>181</i>&nbsp;            out.writeObject(new PingServer(this.name)); // first ping fixes error of first connection of server</b>
+<b class="nc"><i>182</i>&nbsp;            startPing();</b>
+<b class="nc"><i>183</i>&nbsp;        } catch (IOException ex) {</b>
+<b class="nc"><i>184</i>&nbsp;            LOGGER.log( Level.SEVERE, ex.toString(), ex );</b>
+<i>185</i>&nbsp;        } finally {
+<b class="nc"><i>186</i>&nbsp;            int go = questionName(); // 1 load - 0 question - -1 error</b>
+<i>187</i>&nbsp;
+<i>188</i>&nbsp;            // the &quot;if&quot; manage name setup, it&#39;s a singular part of the game because it&#39;s necessary to guarantee unique names
+<b class="nc"><i>189</i>&nbsp;            if(socket.isConnected()){</b>
+<b class="nc"><i>190</i>&nbsp;                if(go == 0)</b>
+<b class="nc"><i>191</i>&nbsp;                    go = questionMode();</b>
+<i>192</i>&nbsp;
+<b class="nc"><i>193</i>&nbsp;                if(go == -1)</b>
+<b class="nc"><i>194</i>&nbsp;                    virtualView.notify(new DisconnectionClient(this.name,true));</b>
+<i>195</i>&nbsp;            }
+<i>196</i>&nbsp;
+<b class="nc"><i>197</i>&nbsp;            if(go == 1){</b>
+<i>198</i>&nbsp;                ClientMessage object;
+<i>199</i>&nbsp;                // standard loop to read
+<i>200</i>&nbsp;                do{
+<i>201</i>&nbsp;                    try {
+<b class="nc"><i>202</i>&nbsp;                        object = (ClientMessage) readFromClient();</b>
+<b class="nc"><i>203</i>&nbsp;                        if(object != null){</b>
+<b class="nc"><i>204</i>&nbsp;                            System.out.println(&quot;[RECEIVED] - &quot; + object.toString().substring(object.toString().lastIndexOf(&#39;.&#39;)+1,</b>
+<b class="nc"><i>205</i>&nbsp;                                    object.toString().lastIndexOf(&#39;@&#39;)) + &quot; - &quot; + (object.name.equals(&quot;&quot;) ? &quot;ALL&quot; : object.name));</b>
+<i>206</i>&nbsp;
+<b class="nc"><i>207</i>&nbsp;                            if(object instanceof ModeChoseClient){</b>
+<b class="nc"><i>208</i>&nbsp;                                if(((ModeChoseClient) object).refused){</b>
+<b class="nc"><i>209</i>&nbsp;                                    virtualView.notify(object);</b>
+<b class="nc"><i>210</i>&nbsp;                                    server.getVirtualViews2().remove(virtualView);</b>
+<b class="nc"><i>211</i>&nbsp;                                    server.getVirtualViews3().remove(virtualView);</b>
+<i>212</i>&nbsp;
+<b class="nc"><i>213</i>&nbsp;                                    ((ModeChoseClient) object).refused = false;</b>
+<b class="nc"><i>214</i>&nbsp;                                    ((ModeChoseClient) object).sch = this;</b>
+<b class="nc"><i>215</i>&nbsp;                                    if(((ModeChoseClient) object).mode == 2){</b>
+<b class="nc"><i>216</i>&nbsp;                                        if(!server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE)){</b>
+<b class="nc"><i>217</i>&nbsp;                                            server.newCurrentVirtualView2();</b>
+<i>218</i>&nbsp;                                        }
+<b class="nc"><i>219</i>&nbsp;                                        virtualView = server.getCurrentVirtualView2();</b>
+<b class="nc"><i>220</i>&nbsp;                                        virtualView.notify(object);</b>
+<i>221</i>&nbsp;                                    }
+<b class="nc"><i>222</i>&nbsp;                                    else if(((ModeChoseClient) object).mode == 3){</b>
+<b class="nc"><i>223</i>&nbsp;                                        if(!server.getCurrentVirtualView3().getCurrentStatus().equals(Status.NAME_CHOICE)){</b>
+<b class="nc"><i>224</i>&nbsp;                                            server.newCurrentVirtualView3();</b>
+<i>225</i>&nbsp;                                        }
+<b class="nc"><i>226</i>&nbsp;                                        virtualView = server.getCurrentVirtualView3();</b>
+<b class="nc"><i>227</i>&nbsp;                                        virtualView.notify(object);</b>
+<i>228</i>&nbsp;                                    }
+<b class="nc"><i>229</i>&nbsp;                                } else if(virtualView.isEnded() || virtualView.getLosers().contains(this.getName())){</b>
+<b class="nc"><i>230</i>&nbsp;                                    ((ModeChoseClient) object).sch = this;</b>
+<b class="nc"><i>231</i>&nbsp;                                    if(((ModeChoseClient) object).mode == 2){</b>
+<b class="nc"><i>232</i>&nbsp;                                        this.turnTimesUp = false;</b>
+<i>233</i>&nbsp;                                        // this part set up new match
+<b class="nc"><i>234</i>&nbsp;                                        if(!server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE)){</b>
+<b class="nc"><i>235</i>&nbsp;                                            server.newCurrentVirtualView2();</b>
+<i>236</i>&nbsp;                                        }
+<b class="nc"><i>237</i>&nbsp;                                        virtualView = server.getCurrentVirtualView2();</b>
+<b class="nc"><i>238</i>&nbsp;                                        virtualView.notify(object);</b>
+<i>239</i>&nbsp;                                    }
+<b class="nc"><i>240</i>&nbsp;                                    else if(((ModeChoseClient) object).mode == 3){</b>
+<b class="nc"><i>241</i>&nbsp;                                        this.turnTimesUp = false;</b>
+<i>242</i>&nbsp;                                        // this part set up new match
+<b class="nc"><i>243</i>&nbsp;                                        if(!server.getCurrentVirtualView3().getCurrentStatus().equals(Status.NAME_CHOICE)){</b>
+<b class="nc"><i>244</i>&nbsp;                                            server.newCurrentVirtualView3();</b>
+<i>245</i>&nbsp;                                        }
+<b class="nc"><i>246</i>&nbsp;                                        virtualView = server.getCurrentVirtualView3();</b>
+<b class="nc"><i>247</i>&nbsp;                                        virtualView.notify(object);</b>
+<i>248</i>&nbsp;                                    }
+<i>249</i>&nbsp;                                }
+<i>250</i>&nbsp;                            }
+<b class="nc"><i>251</i>&nbsp;                            else if(virtualView != null)</b>
+<b class="nc"><i>252</i>&nbsp;                                virtualView.notify(object);</b>
+<b class="nc"><i>253</i>&nbsp;                            else System.out.println(&quot;ERROR VIRTUAL VIEW&quot;);</b>
+<i>254</i>&nbsp;                        }
+<b class="nc"><i>255</i>&nbsp;                    } catch (Exception e) {</b>
+<b class="nc"><i>256</i>&nbsp;                        if(virtualView != null &amp;&amp; !virtualView.getCurrentStatus().equals(Status.END)) // &amp;&amp; im not a loser</b>
+<i>257</i>&nbsp;                        {
+<b class="nc"><i>258</i>&nbsp;                            timeOut();</b>
+<i>259</i>&nbsp;                        }
+<b class="nc"><i>260</i>&nbsp;                    }</b>
+<b class="nc"><i>261</i>&nbsp;                }while(stillConnected &amp;&amp; !turnTimesUp);</b>
+<i>262</i>&nbsp;            }
+<b class="nc"><i>263</i>&nbsp;            while(timerDisconnection.alive) timerDisconnection.alive = false;</b>
+<b class="nc"><i>264</i>&nbsp;        }</b>
+<b class="nc"><i>265</i>&nbsp;    }</b>
+<i>266</i>&nbsp;
+<i>267</i>&nbsp;    /**
+<i>268</i>&nbsp;     * It asks client the username and then it checks for persistence
+<i>269</i>&nbsp;     * @return 1 if you need to load the lobby, 0 username is ok, -1 if errors
+<i>270</i>&nbsp;     */
+<i>271</i>&nbsp;    public int questionName(){
+<b class="nc"><i>272</i>&nbsp;        Object object = null;</b>
+<b class="nc"><i>273</i>&nbsp;        int ret = 0;</b>
+<i>274</i>&nbsp;        do{
+<i>275</i>&nbsp;            // send to client request for name an wait for answer
+<b class="nc"><i>276</i>&nbsp;            if(isConnected())</b>
+<b class="nc"><i>277</i>&nbsp;                this.notify(new NameRequestServer(ret == 0));</b>
+<i>278</i>&nbsp;            try {
+<b class="nc"><i>279</i>&nbsp;                object = readFromClient();</b>
+<b class="nc"><i>280</i>&nbsp;                ret = 0;</b>
+<b class="nc"><i>281</i>&nbsp;            } catch (Exception ex) {</b>
+<b class="nc"><i>282</i>&nbsp;                LOGGER.log( Level.SEVERE, ex.toString(), ex );</b>
+<b class="nc"><i>283</i>&nbsp;                disconnectionHandler();</b>
+<b class="nc"><i>284</i>&nbsp;                return -1; // thread terminate</b>
+<i>285</i>&nbsp;            } finally {
+<b class="nc"><i>286</i>&nbsp;                if(object instanceof ConnectionClient){</b>
+<b class="nc"><i>287</i>&nbsp;                    if(((ConnectionClient) object).name.length() &lt;= 12) {</b>
+<b class="nc"><i>288</i>&nbsp;                        ConnectionClient cc = (ConnectionClient) object;</b>
+<i>289</i>&nbsp;
+<i>290</i>&nbsp;                        // check on current vv (you cant be disconnected in the current lobby)
+<b class="nc"><i>291</i>&nbsp;                        if(server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE) &amp;&amp; server.getCurrentVirtualView2().getConnectedPlayers().containsKey(cc.name))</b>
+<b class="nc"><i>292</i>&nbsp;                            ret = -1;</b>
+<b class="nc"><i>293</i>&nbsp;                        else if(server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE) &amp;&amp; server.getCurrentVirtualView3().getConnectedPlayers().containsKey(cc.name))</b>
+<b class="nc"><i>294</i>&nbsp;                            ret = -1;</b>
+<i>295</i>&nbsp;                        // check on floating players
+<b class="nc"><i>296</i>&nbsp;                        else if(server.getPendingPlayers().contains(cc.name))</b>
+<b class="nc"><i>297</i>&nbsp;                            ret = -1;</b>
+<i>298</i>&nbsp;                        else {
+<b class="nc"><i>299</i>&nbsp;                            for (VirtualView vv : server.getVirtualViews2()){</b>
+<b class="nc"><i>300</i>&nbsp;                                if(checkVirtualView(vv,cc)){</b>
+<b class="nc"><i>301</i>&nbsp;                                    ret = 1;</b>
+<b class="nc"><i>302</i>&nbsp;                                    break;</b>
+<i>303</i>&nbsp;                                }
+<b class="nc"><i>304</i>&nbsp;                            }</b>
+<b class="nc"><i>305</i>&nbsp;                            if(ret == 0){</b>
+<b class="nc"><i>306</i>&nbsp;                                for (VirtualView vv : server.getVirtualViews3()){</b>
+<b class="nc"><i>307</i>&nbsp;                                    if(checkVirtualView(vv,cc)){</b>
+<b class="nc"><i>308</i>&nbsp;                                        ret = 1;</b>
+<b class="nc"><i>309</i>&nbsp;                                        break;</b>
+<i>310</i>&nbsp;                                    }
+<b class="nc"><i>311</i>&nbsp;                                }</b>
+<i>312</i>&nbsp;                            }
+<i>313</i>&nbsp;                        }
+<b class="nc"><i>314</i>&nbsp;                    } else ret = -1;</b>
+<b class="nc"><i>315</i>&nbsp;                } else if (object instanceof DisconnectionClient){</b>
+<b class="nc"><i>316</i>&nbsp;                    virtualView.getConnectedPlayers().remove(this.name);</b>
+<b class="nc"><i>317</i>&nbsp;                    server.getPendingPlayers().remove(this.name);</b>
+<b class="nc"><i>318</i>&nbsp;                }else ret = -1;</b>
+<b class="nc"><i>319</i>&nbsp;            }</b>
+<b class="nc"><i>320</i>&nbsp;        }while(ret == -1); // loop until the name is invalid</b>
+<i>321</i>&nbsp;
+<b class="nc"><i>322</i>&nbsp;        this.name = ((ConnectionClient) object).name;</b>
+<b class="nc"><i>323</i>&nbsp;        if(ret==0) server.getPendingPlayers().add(this.name);</b>
+<b class="nc"><i>324</i>&nbsp;        return ret;</b>
+<i>325</i>&nbsp;    }
+<i>326</i>&nbsp;
+<i>327</i>&nbsp;    /**
+<i>328</i>&nbsp;     * It iterates over an the ArrayList to find if tmpName appear in one
+<i>329</i>&nbsp;     * @param vv the VirtualView
+<i>330</i>&nbsp;     * @param cc ClientMessage received
+<i>331</i>&nbsp;     * @return 1 if you need to load the lobby, 0 username is ok, -1 if duplicate
+<i>332</i>&nbsp;     */
+<i>333</i>&nbsp;    private boolean checkVirtualView(VirtualView vv, ClientMessage cc) {
+<b class="nc"><i>334</i>&nbsp;        if(vv.getConnectedPlayers().containsKey(cc.name) &amp;&amp; !vv.getLosers().contains(cc.name) &amp;&amp; !vv.isEnded()){</b>
+<b class="nc"><i>335</i>&nbsp;            ServerClientHandler sch = vv.getConnectedPlayers().get(cc.name);</b>
+<i>336</i>&nbsp;            ReConnectionClient r;
+<b class="nc"><i>337</i>&nbsp;            this.name = cc.name;</b>
+<b class="nc"><i>338</i>&nbsp;            this.virtualView = vv;</b>
+<b class="nc"><i>339</i>&nbsp;            vv.getConnectedPlayers().put(cc.name, this);</b>
+<b class="nc"><i>340</i>&nbsp;            this.startPing();</b>
+<b class="nc"><i>341</i>&nbsp;            if(sch != null &amp;&amp; sch.timerDisconnection.alive){</b>
+<b class="nc"><i>342</i>&nbsp;                System.out.println(&quot;[RECONNECTION ALIVE] - &quot; + this.getName());</b>
+<b class="nc"><i>343</i>&nbsp;                sch.timerDisconnection.ses.shutdown();</b>
+<b class="nc"><i>344</i>&nbsp;                sch.setStillConnected(true);</b>
+<b class="nc"><i>345</i>&nbsp;                r = new ReConnectionClient(this.name, 1);</b>
+<i>346</i>&nbsp;            } else {
+<b class="nc"><i>347</i>&nbsp;                System.out.println(&quot;[RECONNECTION USER] - &quot; + this.getName());</b>
+<b class="nc"><i>348</i>&nbsp;                r = new ReConnectionClient(this.name, 2);</b>
+<i>349</i>&nbsp;            }
+<b class="nc"><i>350</i>&nbsp;            virtualView.notify(r);</b>
+<i>351</i>&nbsp;
+<b class="nc"><i>352</i>&nbsp;            boolean go = true;</b>
+<b class="nc"><i>353</i>&nbsp;            for(String player : vv.getConnectedPlayers().keySet())</b>
+<b class="nc"><i>354</i>&nbsp;                if(vv.getConnectedPlayers().get(player) == null) go = false;</b>
+<b class="nc"><i>355</i>&nbsp;            if(go){</b>
+<b class="nc"><i>356</i>&nbsp;                vv.sendLast();</b>
+<i>357</i>&nbsp;            }
+<i>358</i>&nbsp;
+<b class="nc"><i>359</i>&nbsp;            return true;</b>
+<i>360</i>&nbsp;        }
+<b class="nc"><i>361</i>&nbsp;        return false;</b>
+<i>362</i>&nbsp;    }
+<i>363</i>&nbsp;
+<i>364</i>&nbsp;    /**
+<i>365</i>&nbsp;     * It asks to client for 2 or 3 players match
+<i>366</i>&nbsp;     */
+<i>367</i>&nbsp;    public int questionMode(){
+<b class="nc"><i>368</i>&nbsp;        Object object = null;</b>
+<i>369</i>&nbsp;        do{
+<i>370</i>&nbsp;            //mode request
+<b class="nc"><i>371</i>&nbsp;            if(isConnected())</b>
+<b class="nc"><i>372</i>&nbsp;                this.notify(new ModeRequestServer());</b>
+<i>373</i>&nbsp;            try {
+<b class="nc"><i>374</i>&nbsp;                object = readFromClient();</b>
+<b class="nc"><i>375</i>&nbsp;            } catch (Exception ex) {</b>
+<b class="nc"><i>376</i>&nbsp;                LOGGER.log( Level.SEVERE, ex.toString(), ex );</b>
+<b class="nc"><i>377</i>&nbsp;                disconnectionHandler();</b>
+<b class="nc"><i>378</i>&nbsp;                server.getPendingPlayers().remove(this.name);</b>
+<b class="nc"><i>379</i>&nbsp;                return -1;</b>
+<i>380</i>&nbsp;            } finally {
+<b class="nc"><i>381</i>&nbsp;                if(object instanceof ModeChoseClient){</b>
+<b class="nc"><i>382</i>&nbsp;                    ((ModeChoseClient) object).sch = this;</b>
+<b class="nc"><i>383</i>&nbsp;                    if(((ModeChoseClient) object).mode == 2){</b>
+<i>384</i>&nbsp;                        // this part set up new match
+<b class="nc"><i>385</i>&nbsp;                        if(!server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE)){</b>
+<b class="nc"><i>386</i>&nbsp;                            server.newCurrentVirtualView2();</b>
+<i>387</i>&nbsp;                        }
+<b class="nc"><i>388</i>&nbsp;                        virtualView = server.getCurrentVirtualView2();</b>
+<b class="nc"><i>389</i>&nbsp;                        server.getPendingPlayers().remove(this.name);</b>
+<i>390</i>&nbsp;                    }
+<b class="nc"><i>391</i>&nbsp;                    else if(((ModeChoseClient) object).mode == 3){</b>
+<i>392</i>&nbsp;                        // this part set up new match
+<b class="nc"><i>393</i>&nbsp;                        if(!server.getCurrentVirtualView3().getCurrentStatus().equals(Status.NAME_CHOICE)){</b>
+<b class="nc"><i>394</i>&nbsp;                            server.newCurrentVirtualView3();</b>
+<i>395</i>&nbsp;                        }
+<b class="nc"><i>396</i>&nbsp;                        virtualView = server.getCurrentVirtualView3();</b>
+<b class="nc"><i>397</i>&nbsp;                        server.getPendingPlayers().remove(this.name);</b>
+<i>398</i>&nbsp;                    }
+<b class="nc"><i>399</i>&nbsp;                    ((ModeChoseClient) object).refused = false;</b>
+<b class="nc"><i>400</i>&nbsp;                } else if (object instanceof DisconnectionClient){</b>
+<b class="nc"><i>401</i>&nbsp;                    virtualView.getConnectedPlayers().remove(this.name);</b>
+<b class="nc"><i>402</i>&nbsp;                    server.getPendingPlayers().remove(this.name);</b>
+<i>403</i>&nbsp;                }
+<b class="nc"><i>404</i>&nbsp;            }</b>
+<b class="nc"><i>405</i>&nbsp;        }while(!(object instanceof ModeChoseClient) &amp;&amp; !turnTimesUp);</b>
+<b class="nc"><i>406</i>&nbsp;        virtualView.notify((ClientMessage) object);</b>
+<b class="nc"><i>407</i>&nbsp;        if(object != null)</b>
+<b class="nc"><i>408</i>&nbsp;            return 1;</b>
+<b class="nc"><i>409</i>&nbsp;        else return  -1;</b>
+<i>410</i>&nbsp;    }
+<i>411</i>&nbsp;
+<i>412</i>&nbsp;    /**
+<i>413</i>&nbsp;     * It starts when this client disconnect
+<i>414</i>&nbsp;     */
+<i>415</i>&nbsp;    protected void disconnectionHandler(){
+<b class="nc"><i>416</i>&nbsp;        if(ping != null)</b>
+<b class="nc"><i>417</i>&nbsp;            ping.cancel();</b>
+<b class="nc"><i>418</i>&nbsp;        stillConnected = false;</b>
+<i>419</i>&nbsp;        try {
+<b class="nc"><i>420</i>&nbsp;            if(Arrays.asList(Status.CARD_CHOICE,Status.NAME_CHOICE,Status.WORKER_CHOICE).contains(virtualView.getCurrentStatus()))</b>
+<b class="nc"><i>421</i>&nbsp;                virtualView.getConnectedPlayers().remove(this.name);</b>
+<b class="nc"><i>422</i>&nbsp;            else virtualView.getConnectedPlayers().put(this.name, null);</b>
+<b class="nc"><i>423</i>&nbsp;        }catch (Exception ignored){}</b>
+<i>424</i>&nbsp;        try {
+<b class="nc"><i>425</i>&nbsp;            virtualView.notify(new DisconnectionClient(this.name,true));</b>
+<b class="nc"><i>426</i>&nbsp;        }catch (Exception ignored){}</b>
+<i>427</i>&nbsp;        try {
+<b class="nc"><i>428</i>&nbsp;            server.getPendingPlayers().remove(this.name);</b>
+<b class="nc"><i>429</i>&nbsp;        }catch (Exception ignored){}</b>
+<i>430</i>&nbsp;        try{
+<b class="nc"><i>431</i>&nbsp;            if(socket != null &amp;&amp; !socket.isClosed())</b>
+<i>432</i>&nbsp;            {
+<b class="nc"><i>433</i>&nbsp;                socket.shutdownInput();</b>
+<b class="nc"><i>434</i>&nbsp;                socket.shutdownOutput();</b>
+<b class="nc"><i>435</i>&nbsp;                socket.close();</b>
+<b class="nc"><i>436</i>&nbsp;                System.out.println(&quot;[DISCONNECTED USER] - &quot; + this.getName());</b>
+<i>437</i>&nbsp;            }
+<b class="nc"><i>438</i>&nbsp;        } catch (Exception ex) {</b>
+<b class="nc"><i>439</i>&nbsp;            LOGGER.log( Level.SEVERE, ex.toString(), ex );</b>
+<b class="nc"><i>440</i>&nbsp;        }</b>
+<b class="nc"><i>441</i>&nbsp;    }</b>
+<i>442</i>&nbsp;
+<i>443</i>&nbsp;    /**
+<i>444</i>&nbsp;     * This method is used to write message to client
+<i>445</i>&nbsp;     * @param message it&#39;s an instance of a ServerMessage
+<i>446</i>&nbsp;     */
+<i>447</i>&nbsp;    protected void notify(ServerMessage message) {
+<i>448</i>&nbsp;        // spectator mode
+<b class="nc"><i>449</i>&nbsp;        if(message instanceof SomeoneLoseServer &amp;&amp; this.name.equals(((SomeoneLoseServer) message).player))</b>
+<b class="nc"><i>450</i>&nbsp;            virtualView.getLosers().add(this.name);</b>
+<i>451</i>&nbsp;
+<b class="nc"><i>452</i>&nbsp;        if(message instanceof SomeoneWinServer)</b>
+<b class="nc"><i>453</i>&nbsp;            if(!this.name.equals(((SomeoneWinServer) message).player))</b>
+<b class="nc"><i>454</i>&nbsp;                virtualView.getLosers().add(this.name);</b>
+<i>455</i>&nbsp;
+<i>456</i>&nbsp;        try{
+<b class="nc"><i>457</i>&nbsp;            if(stillConnected &amp;&amp; isConnected()){</b>
+<b class="nc"><i>458</i>&nbsp;                out.writeObject(message);</b>
+<b class="nc"><i>459</i>&nbsp;                out.flush();</b>
+<i>460</i>&nbsp;            }
+<b class="nc"><i>461</i>&nbsp;        } catch (Exception ex) {</b>
+<i>462</i>&nbsp;            //LOGGER.log( Level.SEVERE, ex.toString(), ex );
+<b class="nc"><i>463</i>&nbsp;            timeOut();</b>
+<b class="nc"><i>464</i>&nbsp;        }</b>
+<b class="nc"><i>465</i>&nbsp;    }</b>
+<i>466</i>&nbsp;
+<i>467</i>&nbsp;    /**
+<i>468</i>&nbsp;     * Ping task
+<i>469</i>&nbsp;     */
+<i>470</i>&nbsp;    public void startPing(){
+<b class="nc"><i>471</i>&nbsp;        ping = new Timer();</b>
+<b class="nc"><i>472</i>&nbsp;        ping.scheduleAtFixedRate(new TimerPing(this), 3000, pingPeriod*1000);</b>
+<b class="nc"><i>473</i>&nbsp;    }</b>
+<i>474</i>&nbsp;
+<i>475</i>&nbsp;    /**
+<i>476</i>&nbsp;     * @return the read object
+<i>477</i>&nbsp;     * @throws IOException of socket reading
+<i>478</i>&nbsp;     * @throws ClassNotFoundException of socket reading
+<i>479</i>&nbsp;     */
+<i>480</i>&nbsp;    protected Object readFromClient() throws IOException, ClassNotFoundException {
+<b class="nc"><i>481</i>&nbsp;        Object obj = null;</b>
+<i>482</i>&nbsp;        do{
+<b class="nc"><i>483</i>&nbsp;            if(!socket.isClosed() &amp;&amp; in.available() == 0){</b>
+<i>484</i>&nbsp;                try{
+<b class="nc"><i>485</i>&nbsp;                    obj = in.readObject();</b>
+<b class="nc"><i>486</i>&nbsp;                } catch (SocketTimeoutException ex){</b>
+<b class="nc"><i>487</i>&nbsp;                    timeOut();</b>
+<b class="nc"><i>488</i>&nbsp;                }</b>
+<i>489</i>&nbsp;            }
+<b class="nc"><i>490</i>&nbsp;        }while ((obj instanceof PingClient || obj == null) &amp;&amp; !turnTimesUp);</b>
+<i>491</i>&nbsp;
+<b class="nc"><i>492</i>&nbsp;        if(obj instanceof DisconnectionClient){</b>
+<b class="nc"><i>493</i>&nbsp;            disconnectionHandler();</b>
+<i>494</i>&nbsp;        }
+<i>495</i>&nbsp;
+<b class="nc"><i>496</i>&nbsp;        if(turnTimesUp){</b>
+<i>497</i>&nbsp;            //System.out.println(this.name+&quot;&#39;S TURN TIME&#39;S UP!&quot;);
+<b class="nc"><i>498</i>&nbsp;            return null;</b>
+<b class="nc"><i>499</i>&nbsp;        } else return obj;</b>
+<i>500</i>&nbsp;    }
+<i>501</i>&nbsp;
+<i>502</i>&nbsp;    /**
+<i>503</i>&nbsp;     * It manages a real time disconnection: start the timeout task if necessary or close the connection
+<i>504</i>&nbsp;     */
+<i>505</i>&nbsp;    public void timeOut(){
+<b class="nc"><i>506</i>&nbsp;        if(virtualView == null){</b>
+<b class="nc"><i>507</i>&nbsp;            disconnectionHandler();</b>
+<b class="nc"><i>508</i>&nbsp;        } else if(virtualView.getCurrentStatus().equals(Status.NAME_CHOICE)){</b>
+<b class="nc"><i>509</i>&nbsp;            virtualView.getConnectedPlayers().remove(this.name);</b>
+<b class="nc"><i>510</i>&nbsp;            server.getPendingPlayers().remove(this.name);</b>
+<b class="nc"><i>511</i>&nbsp;            virtualView.notify(new DisconnectionClient(this.name,true));</b>
+<b class="nc"><i>512</i>&nbsp;            this.close();</b>
+<i>513</i>&nbsp;        }
+<b class="nc"><i>514</i>&nbsp;        else if(virtualView.getCurrentStatus().equals(Status.CARD_CHOICE) || virtualView.getCurrentStatus().equals(Status.WORKER_CHOICE) &amp;&amp; stillConnected){</b>
+<b class="nc"><i>515</i>&nbsp;            virtualView.getTurn().cancel();</b>
+<b class="nc"><i>516</i>&nbsp;            virtualView.getConnectedPlayers().remove(this.name);</b>
+<b class="nc"><i>517</i>&nbsp;            server.getVirtualViews2().remove(this.getVirtualView());</b>
+<b class="nc"><i>518</i>&nbsp;            server.getVirtualViews3().remove(this.getVirtualView());</b>
+<b class="nc"><i>519</i>&nbsp;            for(ServerClientHandler sch : virtualView.getConnectedPlayers().values())</b>
+<b class="nc"><i>520</i>&nbsp;                sch.reset(virtualView.getConnectedPlayers().size() + 1);</b>
+<b class="nc"><i>521</i>&nbsp;            this.close();</b>
+<i>522</i>&nbsp;        }
+<b class="nc"><i>523</i>&nbsp;        else if((virtualView.getLosers().contains(this.getName()) || virtualView.isEnded()) &amp;&amp; stillConnected){</b>
+<b class="nc"><i>524</i>&nbsp;            this.close();</b>
+<b class="nc"><i>525</i>&nbsp;        } else if(timerDisconnection == null || !timerDisconnection.alive){</b>
+<b class="nc"><i>526</i>&nbsp;            long reconnectionPeriod = 5;</b>
+<b class="nc"><i>527</i>&nbsp;            ScheduledExecutorService timeOut = Executors.newSingleThreadScheduledExecutor();</b>
+<b class="nc"><i>528</i>&nbsp;            timerDisconnection = new TimerDisconnection(this,timeOut,server.getdisconnectTimer()/reconnectionPeriod);</b>
+<b class="nc"><i>529</i>&nbsp;            timeOut.scheduleAtFixedRate(timerDisconnection, 0, reconnectionPeriod*1000, TimeUnit.MILLISECONDS);</b>
+<i>530</i>&nbsp;        }
+<b class="nc"><i>531</i>&nbsp;    }</b>
+<i>532</i>&nbsp;
+<i>533</i>&nbsp;    /**
+<i>534</i>&nbsp;     * It try to notify the client for disconnection
+<i>535</i>&nbsp;     */
+<i>536</i>&nbsp;    public void timesUp(){
+<b class="nc"><i>537</i>&nbsp;        virtualView.notify(new DisconnectionClient(this.name,true));</b>
+<b class="nc"><i>538</i>&nbsp;    }</b>
+<i>539</i>&nbsp;
+<i>540</i>&nbsp;    /**
+<i>541</i>&nbsp;     * It kills all threads and tasks
+<i>542</i>&nbsp;     */
+<i>543</i>&nbsp;    public void close(){
+<b class="nc"><i>544</i>&nbsp;        if(ping != null)</b>
+<b class="nc"><i>545</i>&nbsp;            ping.cancel();</b>
+<b class="nc"><i>546</i>&nbsp;        stillConnected = false;</b>
+<b class="nc"><i>547</i>&nbsp;        this.virtualView = null;</b>
+<b class="nc"><i>548</i>&nbsp;        if(timerDisconnection != null){</b>
+<b class="nc"><i>549</i>&nbsp;            timerDisconnection.alive = false;</b>
+<b class="nc"><i>550</i>&nbsp;            timerDisconnection.ses.shutdown();</b>
+<i>551</i>&nbsp;        }
+<b class="nc"><i>552</i>&nbsp;    }</b>
+<i>553</i>&nbsp;
+<i>554</i>&nbsp;    /**
+<i>555</i>&nbsp;     * It resets the VirtualView and the Server
+<i>556</i>&nbsp;     * @param numberOfPlayer
+<i>557</i>&nbsp;     */
+<i>558</i>&nbsp;    public void reset(int numberOfPlayer){
+<b class="nc"><i>559</i>&nbsp;        ModeChoseClient object = new ModeChoseClient(name,numberOfPlayer);</b>
+<b class="nc"><i>560</i>&nbsp;        object.forced = true;</b>
+<b class="nc"><i>561</i>&nbsp;        object.sch = this;</b>
+<b class="nc"><i>562</i>&nbsp;        this.turnTimesUp = false;</b>
+<b class="nc"><i>563</i>&nbsp;        if(numberOfPlayer == 2){</b>
+<b class="nc"><i>564</i>&nbsp;            if(!server.getCurrentVirtualView2().getCurrentStatus().equals(Status.NAME_CHOICE)){</b>
+<b class="nc"><i>565</i>&nbsp;                server.newCurrentVirtualView2();</b>
+<i>566</i>&nbsp;            }
+<b class="nc"><i>567</i>&nbsp;            virtualView = server.getCurrentVirtualView2();</b>
+<i>568</i>&nbsp;        }
+<b class="nc"><i>569</i>&nbsp;        else if(numberOfPlayer == 3){</b>
+<b class="nc"><i>570</i>&nbsp;            if(!server.getCurrentVirtualView3().getCurrentStatus().equals(Status.NAME_CHOICE)){</b>
+<b class="nc"><i>571</i>&nbsp;                server.newCurrentVirtualView3();</b>
+<i>572</i>&nbsp;            }
+<b class="nc"><i>573</i>&nbsp;            virtualView = server.getCurrentVirtualView3();</b>
+<i>574</i>&nbsp;        }
+<b class="nc"><i>575</i>&nbsp;        virtualView.notify(object);</b>
+<b class="nc"><i>576</i>&nbsp;    }</b>
+<i>577</i>&nbsp;
+<i>578</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>

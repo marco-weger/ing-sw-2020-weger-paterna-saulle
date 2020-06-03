@@ -12,6 +12,7 @@ public class BuildClient extends ClientMessage {
 
     /**
      *This messagge will be send to the server from the client with the decision of the player about where Build.
+     * @param name the name of the Client
      * @param x the row chosen to build
      * @param y the column chosen to build
      */

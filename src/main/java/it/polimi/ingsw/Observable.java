@@ -17,7 +17,7 @@ public class Observable {
 
     /**
      * It adds an observer
-     * @param o
+     * @param o Observer
      */
     public void addObserver(Observer o){
         if(observers.contains(o))
@@ -34,7 +34,7 @@ public class Observable {
 
     /**
      * It notifies all observers
-     * @param obj
+     * @param obj Object
      */
     public void notifyObservers(Object obj){
         for(Observer i : observers)

@@ -43,20 +43,17 @@ public enum TextFormatting {
 
     private final String escape;
 
-    //FIXME
     TextFormatting(String escape)
     {
         this.escape = escape;
     }
 
-    //FIXME
     @Override
     public String toString()
     {
         return escape;
     }
 
-    //FIXME
     public static String initialize()
     {
         return TextFormatting.BACKGROUND_BRIGHT_YELLOW.toString() + TextFormatting.COLOR_BRIGHT_RED + TextFormatting.BOLD;

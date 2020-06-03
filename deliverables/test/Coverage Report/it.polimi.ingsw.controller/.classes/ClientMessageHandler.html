@@ -1,0 +1,66 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ClientMessageHandler</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ClientMessageHandler (it.polimi.ingsw.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ClientMessageHandler</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.commons.clientmessages.*;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;public interface ClientMessageHandler {
+<i>6</i>&nbsp;    void handleMessage(ConnectionClient message);
+<i>7</i>&nbsp;    void handleMessage(DisconnectionClient message);
+<i>8</i>&nbsp;    void handleMessage(ReConnectionClient message);
+<i>9</i>&nbsp;    void handleMessage(PingClient message);
+<i>10</i>&nbsp;    void handleMessage(ChallengerChoseClient message);
+<i>11</i>&nbsp;    void handleMessage(PlayerChoseClient message);
+<i>12</i>&nbsp;    void handleMessage(WorkerInitializeClient message);
+<i>13</i>&nbsp;    void handleMessage(WorkerChoseClient message);
+<i>14</i>&nbsp;    void handleMessage(AnswerAbilityClient message);
+<i>15</i>&nbsp;    void handleMessage(MoveClient message);
+<i>16</i>&nbsp;    void handleMessage(BuildClient message);
+<i>17</i>&nbsp;    void handleMessage(ModeChoseClient message);
+<i>18</i>&nbsp;    void handleMessage(EasterEggClient easterEggClient);
+<i>19</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>

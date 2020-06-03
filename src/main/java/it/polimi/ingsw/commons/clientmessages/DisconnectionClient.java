@@ -12,6 +12,7 @@ public class DisconnectionClient extends ClientMessage {
     /**
      * This message will be sent to the client from server in case of a disconnection request.
      * @param name the name of the player
+     * @param isTimesUp true if the player end his turn's timer
      */
     public DisconnectionClient(String name,boolean isTimesUp){
         super(name);

@@ -154,8 +154,8 @@ public class DefaultController{
                 scene.setUserData(loader);
                 exit.setScene(scene);
 
-                exit.setX((this.gui.getPrimaryStage().getX() + this.gui.sceneWidth / 2 - 421 / 2));
-                exit.setY((this.gui.getPrimaryStage().getY() + this.gui.sceneHeight / 2 - 450 / 2));
+                exit.setX((this.gui.getPrimaryStage().getX() + this.gui.sceneWidth / 2 - 210.5));  /*(421/2)*/
+                exit.setY((this.gui.getPrimaryStage().getY() + this.gui.sceneHeight / 2 - 225)); /*(450/2)*/
             } catch (IOException e) {
                 e.printStackTrace();
             }

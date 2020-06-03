@@ -9,7 +9,7 @@ public class PingClient extends ClientMessage {
 
     /**
      * a simple ping message
-     * @param name //FIXME
+     * @param name of the Client
      */
     public PingClient(String name){
         super(name);

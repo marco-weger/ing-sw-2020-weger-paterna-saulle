@@ -1,0 +1,433 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Match</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Match (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Match</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87%
+  </span>
+  <span class="absValue">
+    (20/ 23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    72,8%
+  </span>
+  <span class="absValue">
+    (110/ 151)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.Observable;
+<i>4</i>&nbsp;import it.polimi.ingsw.commons.ServerMessage;
+<i>5</i>&nbsp;import it.polimi.ingsw.commons.SnapCell;
+<i>6</i>&nbsp;import it.polimi.ingsw.commons.SnapWorker;
+<i>7</i>&nbsp;import it.polimi.ingsw.commons.Status;
+<i>8</i>&nbsp;import it.polimi.ingsw.commons.servermessages.*;
+<i>9</i>&nbsp;import it.polimi.ingsw.model.cards.CardName;
+<i>10</i>&nbsp;import it.polimi.ingsw.network.VirtualView;
+<i>11</i>&nbsp;import it.polimi.ingsw.commons.SnapPlayer;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import java.io.*;
+<i>14</i>&nbsp;import java.util.*;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;public class Match extends Observable implements Serializable {
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    /**
+<i>19</i>&nbsp;     * Unique id to discriminate the match
+<i>20</i>&nbsp;     */
+<i>21</i>&nbsp;    private final int id;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    /**
+<i>24</i>&nbsp;     * The board
+<i>25</i>&nbsp;     */
+<i>26</i>&nbsp;    private Board board;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    /**
+<i>29</i>&nbsp;     * List of players (2 or 3)
+<i>30</i>&nbsp;     */
+<i>31</i>&nbsp;    private List&lt;Player&gt; players;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    /**
+<i>34</i>&nbsp;     * List of losers
+<i>35</i>&nbsp;     */
+<i>36</i>&nbsp;    private final List&lt;Player&gt; losers;
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * Status of the match
+<i>40</i>&nbsp;     */
+<i>41</i>&nbsp;    private Status status;
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    /**
+<i>44</i>&nbsp;     * True if the match is ended
+<i>45</i>&nbsp;     */
+<i>46</i>&nbsp;    private boolean ended;
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    /**
+<i>49</i>&nbsp;     * This list is used during cards matching
+<i>50</i>&nbsp;     */
+<i>51</i>&nbsp;    private ArrayList&lt;CardName&gt; selectedCard;
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    private static final long serialVersionUID = 432457896345L;
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    /**
+<i>56</i>&nbsp;     * The match is initialized with these;
+<i>57</i>&nbsp;     * - BOARD: 5x5 cell board with all cells at 0 level
+<i>58</i>&nbsp;     * - ENDED: false
+<i>59</i>&nbsp;     * - STATUS: CARD_CHOICE
+<i>60</i>&nbsp;     * - PLAYERS: empty list
+<i>61</i>&nbsp;     * - SELECTEDCARD: empty list
+<i>62</i>&nbsp;     * - LOSERS: empty list
+<i>63</i>&nbsp;     * @param id the unique match id
+<i>64</i>&nbsp;     */
+<b class="fc"><i>65</i>&nbsp;    public Match(int id, VirtualView vv){</b>
+<b class="fc"><i>66</i>&nbsp;        this.id=id;</b>
+<b class="fc"><i>67</i>&nbsp;        this.board=new Board();</b>
+<b class="fc"><i>68</i>&nbsp;        this.ended=false;</b>
+<b class="fc"><i>69</i>&nbsp;        this.status=Status.NAME_CHOICE;</b>
+<b class="fc"><i>70</i>&nbsp;        this.players = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>71</i>&nbsp;        this.losers = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>72</i>&nbsp;        this.selectedCard = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>73</i>&nbsp;        if(vv != null)</b>
+<b class="fc"><i>74</i>&nbsp;            this.addObserver(vv);</b>
+<b class="fc"><i>75</i>&nbsp;    }</b>
+<i>76</i>&nbsp;
+<b class="fc"><i>77</i>&nbsp;    public int getId() { return id; }</b>
+<i>78</i>&nbsp;
+<b class="fc"><i>79</i>&nbsp;    public boolean isEnded() { return ended; }</b>
+<i>80</i>&nbsp;
+<b class="fc"><i>81</i>&nbsp;    public void setEnded(boolean ended) { this.ended = ended; }</b>
+<i>82</i>&nbsp;
+<b class="fc"><i>83</i>&nbsp;    public Status getStatus() { return status; }</b>
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;    public Board getBoard() {
+<b class="fc"><i>86</i>&nbsp;        return board;</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    public void setBoard(Board board) {
+<b class="fc"><i>90</i>&nbsp;        this.board = board;</b>
+<b class="fc"><i>91</i>&nbsp;    }</b>
+<i>92</i>&nbsp;
+<b class="fc"><i>93</i>&nbsp;    public List&lt;CardName&gt; getSelectedCard(){ return selectedCard; }</b>
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    public List&lt;Player&gt; getPlayers() {
+<b class="fc"><i>96</i>&nbsp;        return players;</b>
+<i>97</i>&nbsp;    }
+<i>98</i>&nbsp;
+<i>99</i>&nbsp;    public void setPlayers(List&lt;Player&gt; players) {
+<b class="fc"><i>100</i>&nbsp;        this.players = players;</b>
+<b class="fc"><i>101</i>&nbsp;    }</b>
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;    public List&lt;Player&gt; getLosers() {
+<b class="fc"><i>104</i>&nbsp;        return losers;</b>
+<i>105</i>&nbsp;    }
+<i>106</i>&nbsp;
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;    /**
+<i>109</i>&nbsp;     * When the status changes the view will be notified with current one and current player
+<i>110</i>&nbsp;     * @param status the new status
+<i>111</i>&nbsp;     */
+<i>112</i>&nbsp;    public void setStatus(Status status) {
+<b class="fc"><i>113</i>&nbsp;        this.status = status;</b>
+<i>114</i>&nbsp;
+<b class="fc"><i>115</i>&nbsp;        if(status.equals(Status.WORKER_CHOICE) &amp;&amp; getCurrentPlayer() == null)</b>
+<b class="fc"><i>116</i>&nbsp;            players.get(0).setCurrent(true);</b>
+<i>117</i>&nbsp;
+<b class="fc"><i>118</i>&nbsp;        if(getCurrentPlayer() != null){</b>
+<b class="fc"><i>119</i>&nbsp;            CurrentStatusServer message = new CurrentStatusServer(getCurrentPlayer().getName(),status);</b>
+<b class="fc"><i>120</i>&nbsp;            if (status.equals(Status.START)){</b>
+<b class="fc"><i>121</i>&nbsp;                getCurrentPlayer().setCurrentWorker(1);</b>
+<b class="fc"><i>122</i>&nbsp;                message.worker1 = !getCurrentPlayer().getCard().checkMove(players,board).isEmpty();</b>
+<b class="fc"><i>123</i>&nbsp;                getCurrentPlayer().setCurrentWorker(2);</b>
+<b class="fc"><i>124</i>&nbsp;                message.worker2 = !getCurrentPlayer().getCard().checkMove(players,board).isEmpty();</b>
+<b class="fc"><i>125</i>&nbsp;                getCurrentPlayer().setCurrentWorker(0);</b>
+<i>126</i>&nbsp;            }
+<b class="fc"><i>127</i>&nbsp;            if(status.getNotify())</b>
+<b class="fc"><i>128</i>&nbsp;                notifyObservers(message);</b>
+<b class="fc"><i>129</i>&nbsp;        }</b>
+<i>130</i>&nbsp;        else
+<b class="fc"><i>131</i>&nbsp;            notifyObservers(new CurrentStatusServer(&quot;&quot;,status));</b>
+<i>132</i>&nbsp;
+<b class="fc"><i>133</i>&nbsp;        if(status.equals(Status.CARD_CHOICE)){</b>
+<b class="fc"><i>134</i>&nbsp;            notifyObservers(new AvailableCardServer(this.players.get(0).getName(),new ArrayList&lt;&gt;()));</b>
+<i>135</i>&nbsp;            //notifyObservers(new AvailableCardServer(new ArrayList&lt;&gt;()));
+<i>136</i>&nbsp;        }
+<i>137</i>&nbsp;
+<b class="fc"><i>138</i>&nbsp;    }</b>
+<i>139</i>&nbsp;
+<i>140</i>&nbsp;
+<i>141</i>&nbsp;    /**
+<i>142</i>&nbsp;     * A method that add a player into the Loser List and remove it from the Active Player List
+<i>143</i>&nbsp;     * @param p select a player
+<i>144</i>&nbsp;     */
+<i>145</i>&nbsp;    public void setLosers(List&lt;Player&gt; p, boolean isTimesUp) {
+<b class="fc"><i>146</i>&nbsp;        if(p.size() == 1 &amp;&amp; p.get(0).isCurrent()){</b>
+<b class="fc"><i>147</i>&nbsp;            players.get((players.indexOf(getCurrentPlayer())+1)%(players.size())).setCurrent(true);</b>
+<i>148</i>&nbsp;        }
+<b class="fc"><i>149</i>&nbsp;        getLosers().addAll(p);</b>
+<b class="fc"><i>150</i>&nbsp;        getPlayers().removeAll(p);</b>
+<b class="fc"><i>151</i>&nbsp;        if(players.size() &gt; 1)</b>
+<b class="fc"><i>152</i>&nbsp;            for (Player player : p)</b>
+<b class="fc"><i>153</i>&nbsp;                notifyObservers(new SomeoneLoseServer(player.getName(),isTimesUp));</b>
+<b class="fc"><i>154</i>&nbsp;        else notifyObservers(new SomeoneWinServer(players.get(0).getName(),isTimesUp));</b>
+<i>155</i>&nbsp;
+<b class="fc"><i>156</i>&nbsp;        if(players.size() == 1){</b>
+<b class="fc"><i>157</i>&nbsp;            setEnded(true);</b>
+<b class="fc"><i>158</i>&nbsp;            setStatus(Status.END);</b>
+<i>159</i>&nbsp;        }
+<b class="fc"><i>160</i>&nbsp;    }</b>
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;
+<i>163</i>&nbsp;    /**
+<i>164</i>&nbsp;     * A method that pick the card from the deck and notify the third player to choose.
+<i>165</i>&nbsp;     * @param selectedCard the list of card selected
+<i>166</i>&nbsp;     */
+<i>167</i>&nbsp;    public void setSelectedCards(List&lt;CardName&gt; selectedCard){
+<b class="fc"><i>168</i>&nbsp;        this.selectedCard = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>169</i>&nbsp;        this.selectedCard.addAll(selectedCard);</b>
+<b class="fc"><i>170</i>&nbsp;        int i = this.getSelectedCard().size()-1;</b>
+<b class="fc"><i>171</i>&nbsp;        notifyObservers(new AvailableCardServer(this.getPlayers().get(i).getName(), selectedCard));</b>
+<b class="fc"><i>172</i>&nbsp;    }</b>
+<i>173</i>&nbsp;
+<i>174</i>&nbsp;
+<i>175</i>&nbsp;    /**
+<i>176</i>&nbsp;     * Current player getter
+<i>177</i>&nbsp;     */
+<i>178</i>&nbsp;    public Player getCurrentPlayer(){
+<b class="fc"><i>179</i>&nbsp;        for(Player p:players)</b>
+<b class="fc"><i>180</i>&nbsp;            if(p.isCurrent())</b>
+<b class="fc"><i>181</i>&nbsp;                return p;</b>
+<b class="fc"><i>182</i>&nbsp;        return null;</b>
+<i>183</i>&nbsp;    }
+<i>184</i>&nbsp;
+<i>185</i>&nbsp;
+<i>186</i>&nbsp;    /**
+<i>187</i>&nbsp;     * This method set next player, disable all workers and set START status
+<i>188</i>&nbsp;     */
+<i>189</i>&nbsp;    public void setNextPlayer() {
+<b class="fc"><i>190</i>&nbsp;        if(getCurrentPlayer() != null){</b>
+<b class="fc"><i>191</i>&nbsp;            int i = players.indexOf(getCurrentPlayer());</b>
+<b class="fc"><i>192</i>&nbsp;            getCurrentPlayer().setCurrent(false);</b>
+<b class="fc"><i>193</i>&nbsp;            if (i &lt; players.size()-1) {</b>
+<b class="fc"><i>194</i>&nbsp;                players.get(i + 1).setCurrent(true);</b>
+<i>195</i>&nbsp;            } else {
+<b class="fc"><i>196</i>&nbsp;                players.get(0).setCurrent(true);</b>
+<i>197</i>&nbsp;            }
+<b class="fc"><i>198</i>&nbsp;        }</b>
+<i>199</i>&nbsp;        else{
+<b class="fc"><i>200</i>&nbsp;            players.get(0).setCurrent(true);</b>
+<i>201</i>&nbsp;        }
+<b class="fc"><i>202</i>&nbsp;        for(Player p:players){</b>
+<b class="fc"><i>203</i>&nbsp;            p.getWorker1().setActive(false);</b>
+<b class="fc"><i>204</i>&nbsp;            p.getWorker2().setActive(false);</b>
+<b class="fc"><i>205</i>&nbsp;        }</b>
+<b class="fc"><i>206</i>&nbsp;        status=Status.START;</b>
+<b class="fc"><i>207</i>&nbsp;    }</b>
+<i>208</i>&nbsp;
+<i>209</i>&nbsp;
+<i>210</i>&nbsp;    /**
+<i>211</i>&nbsp;     * @return It verifies if the current player win for other players defeat
+<i>212</i>&nbsp;     */
+<i>213</i>&nbsp;    public boolean checkCurrentPlayerWin() {
+<b class="fc"><i>214</i>&nbsp;        if(players.size() == 1){</b>
+<b class="fc"><i>215</i>&nbsp;            notifyObservers(new SomeoneWinServer(players.get(0).getName(),false));</b>
+<b class="fc"><i>216</i>&nbsp;            return true;</b>
+<i>217</i>&nbsp;        }
+<b class="fc"><i>218</i>&nbsp;        return false;</b>
+<i>219</i>&nbsp;    }
+<i>220</i>&nbsp;
+<i>221</i>&nbsp;
+<i>222</i>&nbsp;    /**
+<i>223</i>&nbsp;     * When a player is added to the list players
+<i>224</i>&nbsp;     * it notifies the Lobby
+<i>225</i>&nbsp;     */
+<i>226</i>&nbsp;
+<i>227</i>&nbsp;    public void addPlayer(Player p, boolean forced){
+<b class="fc"><i>228</i>&nbsp;        getPlayers().add(p);</b>
+<b class="fc"><i>229</i>&nbsp;        ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>230</i>&nbsp;        for(Player player:players)</b>
+<b class="fc"><i>231</i>&nbsp;            names.add(player.getName());</b>
+<b class="fc"><i>232</i>&nbsp;        LobbyServer ls = new LobbyServer(names);</b>
+<b class="fc"><i>233</i>&nbsp;        ls.forced = forced;</b>
+<b class="fc"><i>234</i>&nbsp;        notifyObservers(ls);</b>
+<b class="fc"><i>235</i>&nbsp;    }</b>
+<i>236</i>&nbsp;
+<i>237</i>&nbsp;
+<i>238</i>&nbsp;    /**
+<i>239</i>&nbsp;     * When a player is removed to the list players
+<i>240</i>&nbsp;     * on the Initial phase, it notifies the Lobby
+<i>241</i>&nbsp;     */
+<i>242</i>&nbsp;    public void removePlayer(String name){
+<b class="fc"><i>243</i>&nbsp;        if(getStatus().equals(Status.NAME_CHOICE)){</b>
+<b class="fc"><i>244</i>&nbsp;            for(int i = 0; i&lt;getPlayers().size(); i++)</b>
+<b class="fc"><i>245</i>&nbsp;                if(getPlayers().get(i).getName().equals(name))</b>
+<b class="fc"><i>246</i>&nbsp;                    getPlayers().remove(getPlayers().get(i));</b>
+<i>247</i>&nbsp;
+<b class="fc"><i>248</i>&nbsp;            ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>249</i>&nbsp;            for(Player player:players)</b>
+<b class="fc"><i>250</i>&nbsp;                names.add(player.getName());</b>
+<b class="fc"><i>251</i>&nbsp;            notifyObservers(new LobbyServer(names));</b>
+<i>252</i>&nbsp;        }
+<b class="fc"><i>253</i>&nbsp;    }</b>
+<i>254</i>&nbsp;
+<i>255</i>&nbsp;
+<i>256</i>&nbsp;    /**
+<i>257</i>&nbsp;     * Saving the match in file for server persistence purpose
+<i>258</i>&nbsp;     */
+<i>259</i>&nbsp;    public void saveToFile(ServerMessage sm) {
+<i>260</i>&nbsp;        FileOutputStream out;
+<i>261</i>&nbsp;        ObjectOutputStream objOut;
+<i>262</i>&nbsp;
+<b class="fc"><i>263</i>&nbsp;        if(!new File(&quot;resources&quot; +File.separatorChar+&quot;saved-match&quot;).exists() &amp;&amp; !new File(&quot;resources&quot; +File.separatorChar+&quot;saved-match&quot;).mkdir())</b>
+<b class="nc"><i>264</i>&nbsp;            return;</b>
+<i>265</i>&nbsp;
+<i>266</i>&nbsp;        try {
+<i>267</i>&nbsp;
+<b class="fc"><i>268</i>&nbsp;            String path = System.getProperty(&quot;user.dir&quot;)+File.separatorChar+&quot;resources&quot; +File.separatorChar+&quot;saved-match&quot; + File.separatorChar + String.format(&quot;%07d&quot; , this.getId())+&quot;.santorini&quot;;</b>
+<b class="fc"><i>269</i>&nbsp;            File f = new File(path);</b>
+<b class="fc"><i>270</i>&nbsp;            out = new FileOutputStream(f);</b>
+<b class="fc"><i>271</i>&nbsp;            objOut = new ObjectOutputStream(out);</b>
+<b class="fc"><i>272</i>&nbsp;            objOut.writeObject(this);</b>
+<b class="fc"><i>273</i>&nbsp;            objOut.flush();</b>
+<b class="fc"><i>274</i>&nbsp;            objOut.writeObject(sm);</b>
+<b class="fc"><i>275</i>&nbsp;            objOut.flush();</b>
+<b class="fc"><i>276</i>&nbsp;            objOut.close();</b>
+<b class="fc"><i>277</i>&nbsp;            out.close();</b>
+<i>278</i>&nbsp;
+<b class="nc"><i>279</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>280</i>&nbsp;            e.printStackTrace();</b>
+<b class="fc"><i>281</i>&nbsp;        }</b>
+<b class="fc"><i>282</i>&nbsp;    }</b>
+<i>283</i>&nbsp;
+<i>284</i>&nbsp;    /**
+<i>285</i>&nbsp;     * Re-connect the player to the match
+<i>286</i>&nbsp;     * @param name
+<i>287</i>&nbsp;     */
+<i>288</i>&nbsp;    public void playerReConnection(String name, int type){
+<b class="nc"><i>289</i>&nbsp;        ReConnectionServer rcs = new ReConnectionServer(name, type);</b>
+<b class="nc"><i>290</i>&nbsp;        rcs.board = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>291</i>&nbsp;        for(Cell c : getBoard().getField())</b>
+<b class="nc"><i>292</i>&nbsp;            rcs.board.add(new SnapCell(c.getRow(),c.getColumn(),c.getLevel()));</b>
+<b class="nc"><i>293</i>&nbsp;        rcs.players = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>294</i>&nbsp;        rcs.workers = new ArrayList&lt;&gt;();</b>
+<i>295</i>&nbsp;        SnapPlayer snap;
+<b class="nc"><i>296</i>&nbsp;        for(Player p : getPlayers()){</b>
+<b class="nc"><i>297</i>&nbsp;            snap = new SnapPlayer(p.getName());</b>
+<b class="nc"><i>298</i>&nbsp;            snap.card = p.getCard().getName();</b>
+<b class="nc"><i>299</i>&nbsp;            rcs.players.add(snap);</b>
+<b class="nc"><i>300</i>&nbsp;            rcs.workers.add(new SnapWorker(p.getWorker1().getRow(),p.getWorker1().getColumn(),p.getName(),1));</b>
+<b class="nc"><i>301</i>&nbsp;            rcs.workers.add(new SnapWorker(p.getWorker2().getRow(),p.getWorker2().getColumn(),p.getName(),2));</b>
+<b class="nc"><i>302</i>&nbsp;        }</b>
+<b class="nc"><i>303</i>&nbsp;        rcs.currentPlayer = getCurrentPlayer().getName();</b>
+<b class="nc"><i>304</i>&nbsp;        this.notifyObservers(rcs);</b>
+<b class="nc"><i>305</i>&nbsp;    }</b>
+<i>306</i>&nbsp;
+<i>307</i>&nbsp;    /**
+<i>308</i>&nbsp;     * It generates EasterEggServer message and notify it to VirtualView
+<i>309</i>&nbsp;     * @param name of the player
+<i>310</i>&nbsp;     */
+<i>311</i>&nbsp;    public void activeEasterEgg(String name){
+<b class="nc"><i>312</i>&nbsp;        HashMap&lt;String, Integer&gt; win = new HashMap&lt;&gt;();</b>
+<i>313</i>&nbsp;        ObjectInputStream objIn;
+<i>314</i>&nbsp;        try {
+<b class="nc"><i>315</i>&nbsp;            if(new File(&quot;resources&quot;+File.separator+&quot;saved-match&quot;).exists()){</b>
+<b class="nc"><i>316</i>&nbsp;                for (final File fileEntry : Objects.requireNonNull(new File(&quot;resources&quot;+File.separator+&quot;saved-match&quot;).listFiles())) {</b>
+<b class="nc"><i>317</i>&nbsp;                    if (!fileEntry.isDirectory() &amp;&amp; getExtensionByStringHandling(fileEntry.getName()).get().equals(&quot;santorini&quot;)) {</b>
+<b class="nc"><i>318</i>&nbsp;                        objIn = new ObjectInputStream(new FileInputStream(fileEntry.getAbsolutePath()));</b>
+<b class="nc"><i>319</i>&nbsp;                        Object obj = objIn.readObject();</b>
+<b class="nc"><i>320</i>&nbsp;                        if(obj instanceof Match) {</b>
+<b class="nc"><i>321</i>&nbsp;                            if (((Match) obj).getStatus().equals(Status.END)){</b>
+<b class="nc"><i>322</i>&nbsp;                                ((Match) obj).getPlayers().removeAll(((Match) obj).getLosers());</b>
+<b class="nc"><i>323</i>&nbsp;                                if(((Match) obj).getPlayers().size()==1)</b>
+<b class="nc"><i>324</i>&nbsp;                                    if(win.containsKey(((Match) obj).getPlayers().get(0).getName()))</b>
+<b class="nc"><i>325</i>&nbsp;                                        win.put(((Match) obj).getPlayers().get(0).getName(),win.get(((Match) obj).getPlayers().get(0).getName())+1);</b>
+<b class="nc"><i>326</i>&nbsp;                                    else win.put(((Match) obj).getPlayers().get(0).getName(),1);</b>
+<i>327</i>&nbsp;                            }
+<i>328</i>&nbsp;                        }
+<b class="nc"><i>329</i>&nbsp;                        objIn.close();</b>
+<i>330</i>&nbsp;                    }
+<i>331</i>&nbsp;                }
+<i>332</i>&nbsp;            }
+<b class="nc"><i>333</i>&nbsp;            this.notifyObservers(new EasterEggServer(name,win));</b>
+<b class="nc"><i>334</i>&nbsp;        } catch (IOException | ClassNotFoundException e) {</b>
+<b class="nc"><i>335</i>&nbsp;            System.out.println(e.toString());</b>
+<b class="nc"><i>336</i>&nbsp;        }</b>
+<b class="nc"><i>337</i>&nbsp;    }</b>
+<i>338</i>&nbsp;
+<i>339</i>&nbsp;    /**
+<i>340</i>&nbsp;     * Ref. https://www.baeldung.com/java-file-extension
+<i>341</i>&nbsp;     * @param filename the file
+<i>342</i>&nbsp;     * @return file extension, if exists
+<i>343</i>&nbsp;     */
+<i>344</i>&nbsp;    public static Optional&lt;String&gt; getExtensionByStringHandling(String filename) {
+<b class="nc"><i>345</i>&nbsp;        return Optional.ofNullable(filename)</b>
+<b class="nc"><i>346</i>&nbsp;                .filter(f -&gt; f.contains(&quot;.&quot;))</b>
+<b class="nc"><i>347</i>&nbsp;                .map(f -&gt; f.substring(filename.lastIndexOf(&quot;.&quot;) + 1));</b>
+<i>348</i>&nbsp;    }
+<i>349</i>&nbsp;}
+<i>350</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>

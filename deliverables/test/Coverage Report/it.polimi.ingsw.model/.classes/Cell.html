@@ -1,0 +1,148 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Cell</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Cell (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Cell</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (19/ 19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.Serializable;
+<i>4</i>&nbsp;import java.util.List;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;public class Cell implements Serializable {
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;    /**
+<i>10</i>&nbsp;     * The row
+<i>11</i>&nbsp;     */
+<i>12</i>&nbsp;    private final int row;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    /**
+<i>15</i>&nbsp;     * The column
+<i>16</i>&nbsp;     */
+<i>17</i>&nbsp;    private final int column;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    /**
+<i>20</i>&nbsp;     * The level is a value from 0 (no buildings) to 4 (dome)
+<i>21</i>&nbsp;     */
+<i>22</i>&nbsp;    private int level;
+<i>23</i>&nbsp;
+<b class="fc"><i>24</i>&nbsp;    public Cell(int row, int column, int level) {</b>
+<b class="fc"><i>25</i>&nbsp;        this.row = row;</b>
+<b class="fc"><i>26</i>&nbsp;        this.column = column;</b>
+<b class="fc"><i>27</i>&nbsp;        this.level = level;</b>
+<b class="fc"><i>28</i>&nbsp;    }</b>
+<i>29</i>&nbsp;
+<b class="fc"><i>30</i>&nbsp;    public int getRow() {return row;}</b>
+<i>31</i>&nbsp;
+<b class="fc"><i>32</i>&nbsp;    public int getColumn() {return column;}</b>
+<i>33</i>&nbsp;
+<b class="fc"><i>34</i>&nbsp;    public int getLevel() {return level;}</b>
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    /**
+<i>38</i>&nbsp;     * It checks for a level from 0 to 4
+<i>39</i>&nbsp;     * @param level the level
+<i>40</i>&nbsp;     */
+<i>41</i>&nbsp;    public void setLevel(int level) {
+<b class="fc"><i>42</i>&nbsp;        if(level &gt;= 0 &amp;&amp; level &lt;= 4)</b>
+<b class="fc"><i>43</i>&nbsp;            this.level = level;</b>
+<b class="fc"><i>44</i>&nbsp;    }</b>
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    /**
+<i>48</i>&nbsp;     * It checks for any workers in the cell
+<i>49</i>&nbsp;     * @param p list of players
+<i>50</i>&nbsp;     * @return true if occupied
+<i>51</i>&nbsp;     */
+<i>52</i>&nbsp;    public boolean isOccupied(List&lt;Player&gt; p) {
+<b class="fc"><i>53</i>&nbsp;        if(p != null){</b>
+<b class="fc"><i>54</i>&nbsp;            for(Player player:p){</b>
+<b class="fc"><i>55</i>&nbsp;                if(player.getWorker1() != null &amp;&amp; player.getWorker1().getRow() == this.row &amp;&amp; player.getWorker1().getColumn() == this.column){</b>
+<b class="fc"><i>56</i>&nbsp;                    return true;</b>
+<i>57</i>&nbsp;                }
+<b class="fc"><i>58</i>&nbsp;                if(player.getWorker2() != null &amp;&amp; player.getWorker2().getRow() == this.row &amp;&amp; player.getWorker2().getColumn() == this.column){</b>
+<b class="fc"><i>59</i>&nbsp;                    return true;</b>
+<i>60</i>&nbsp;                }
+<b class="fc"><i>61</i>&nbsp;            }</b>
+<i>62</i>&nbsp;        }
+<b class="fc"><i>63</i>&nbsp;        return false;</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>

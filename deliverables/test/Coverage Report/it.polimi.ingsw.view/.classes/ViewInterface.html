@@ -1,0 +1,76 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ViewInterface</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ViewInterface (it.polimi.ingsw.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ViewInterface</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.commons.servermessages.*;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;public interface ViewInterface {
+<i>6</i>&nbsp;    void handleMessage(CheckMoveServer message);
+<i>7</i>&nbsp;    void handleMessage(CheckBuildServer message);
+<i>8</i>&nbsp;    void handleMessage(CardChosenServer message);
+<i>9</i>&nbsp;    void handleMessage(WorkerChosenServer message);
+<i>10</i>&nbsp;    void handleMessage(QuestionAbilityServer message);
+<i>11</i>&nbsp;    void handleMessage(CurrentStatusServer message);
+<i>12</i>&nbsp;    void handleMessage(SomeoneLoseServer message);
+<i>13</i>&nbsp;    void handleMessage(AvailableCardServer message);
+<i>14</i>&nbsp;    void handleMessage(SomeoneWinServer message);
+<i>15</i>&nbsp;    void handleMessage(NameRequestServer message);
+<i>16</i>&nbsp;    void handleMessage(LobbyServer message);
+<i>17</i>&nbsp;    void handleMessage(ModeRequestServer message);
+<i>18</i>&nbsp;    void handleMessage(BuiltServer message);
+<i>19</i>&nbsp;    void handleMessage(MovedServer message);
+<i>20</i>&nbsp;    void handleMessage(PingServer message);
+<i>21</i>&nbsp;    void handleMessage(TimeOutServer message);
+<i>22</i>&nbsp;    void handleMessage(ReConnectionServer message);
+<i>23</i>&nbsp;    void handleMessage(EasterEggServer easterEggServer);
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    void displayFirstWindow();
+<i>26</i>&nbsp;    void statusHandler(CurrentStatusServer message);
+<i>27</i>&nbsp;    void close(boolean isError);
+<i>28</i>&nbsp;    void displayBoard();
+<i>29</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>

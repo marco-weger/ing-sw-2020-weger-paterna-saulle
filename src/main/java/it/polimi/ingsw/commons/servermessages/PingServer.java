@@ -12,7 +12,7 @@ public class PingServer extends ServerMessage {
 
     /**
      * a simple ping message
-     * @param name //FIXME
+     * @param name of the client
      */
     public PingServer(String name){
         this.name=name;

@@ -1,0 +1,582 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Client</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.network</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Client (it.polimi.ingsw.network)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Client</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6,2%
+  </span>
+  <span class="absValue">
+    (2/ 32)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    4,6%
+  </span>
+  <span class="absValue">
+    (8/ 174)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.network;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.commons.*;
+<i>4</i>&nbsp;import it.polimi.ingsw.commons.clientmessages.DisconnectionClient;
+<i>5</i>&nbsp;import it.polimi.ingsw.commons.servermessages.*;
+<i>6</i>&nbsp;import it.polimi.ingsw.view.CLI;
+<i>7</i>&nbsp;import it.polimi.ingsw.view.ViewInterface;
+<i>8</i>&nbsp;import it.polimi.ingsw.view.gui.GUI;
+<i>9</i>&nbsp;import javafx.application.Application;
+<i>10</i>&nbsp;import org.json.simple.JSONObject;
+<i>11</i>&nbsp;import org.json.simple.parser.JSONParser;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import java.io.*;
+<i>14</i>&nbsp;import java.net.Socket;
+<i>15</i>&nbsp;import java.util.ArrayList;
+<i>16</i>&nbsp;import java.util.List;
+<i>17</i>&nbsp;import java.util.Random;
+<i>18</i>&nbsp;import java.util.Timer;
+<i>19</i>&nbsp;import java.util.concurrent.ExecutorService;
+<i>20</i>&nbsp;import java.util.concurrent.Executors;
+<i>21</i>&nbsp;import java.util.logging.Level;
+<i>22</i>&nbsp;import java.util.logging.Logger;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;public class Client implements Runnable{
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * The logger
+<i>28</i>&nbsp;     */
+<b class="fc"><i>29</i>&nbsp;    private static final Logger LOGGER = Logger.getLogger(Client.class.getName());</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    /**
+<i>32</i>&nbsp;     * View instance CLI or GUI
+<i>33</i>&nbsp;     */
+<i>34</i>&nbsp;    private ViewInterface view;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    /**
+<i>37</i>&nbsp;     * The socket used to server connection
+<i>38</i>&nbsp;     */
+<i>39</i>&nbsp;    private Socket socket;
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    /**
+<i>42</i>&nbsp;     * Stream used to read
+<i>43</i>&nbsp;     */
+<i>44</i>&nbsp;    private ObjectInputStream in;
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    /**
+<i>47</i>&nbsp;     * Stream used to write
+<i>48</i>&nbsp;     */
+<i>49</i>&nbsp;    private ObjectOutputStream out;
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    /**
+<i>52</i>&nbsp;     * Current board situation
+<i>53</i>&nbsp;     */
+<i>54</i>&nbsp;    protected List&lt;SnapCell&gt; board;
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    /**
+<i>57</i>&nbsp;     * Current workers position
+<i>58</i>&nbsp;     */
+<i>59</i>&nbsp;    protected List&lt;SnapWorker&gt; workers;
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    /**
+<i>62</i>&nbsp;     * Current players
+<i>63</i>&nbsp;     */
+<i>64</i>&nbsp;    protected List&lt;SnapPlayer&gt; players;
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    /**
+<i>67</i>&nbsp;     * My username
+<i>68</i>&nbsp;     */
+<i>69</i>&nbsp;    private String username;
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    /**
+<i>72</i>&nbsp;     * This flag is used to manage the persistence
+<i>73</i>&nbsp;     */
+<b class="nc"><i>74</i>&nbsp;    private boolean mustPrint = false;</b>
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;    /**
+<i>77</i>&nbsp;     * The period of ping scheduled task
+<i>78</i>&nbsp;     */
+<i>79</i>&nbsp;    private long pingPeriod;
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    /**
+<i>82</i>&nbsp;     * Socket timeout parameter
+<i>83</i>&nbsp;     */
+<i>84</i>&nbsp;    private int timeoutSocket;
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    /**
+<i>87</i>&nbsp;     * Timer task
+<i>88</i>&nbsp;     */
+<i>89</i>&nbsp;    private Timer ping;
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;    /**
+<i>92</i>&nbsp;     * This flag is used to block the user input in the CLI when necessary
+<i>93</i>&nbsp;     */
+<b class="nc"><i>94</i>&nbsp;    private boolean continueReading = true;</b>
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;    /**
+<i>97</i>&nbsp;     * Player of current turn
+<i>98</i>&nbsp;     */
+<i>99</i>&nbsp;    private String currentPlayer;
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;    /**
+<i>102</i>&nbsp;     * Thread used to run View method
+<i>103</i>&nbsp;     */
+<b class="nc"><i>104</i>&nbsp;    private Thread handler = null;</b>
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;    //private static final BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;    /**
+<i>109</i>&nbsp;     * The ip address
+<i>110</i>&nbsp;     */
+<i>111</i>&nbsp;    private String ip;
+<i>112</i>&nbsp;
+<i>113</i>&nbsp;    /**
+<i>114</i>&nbsp;     * The socket port
+<i>115</i>&nbsp;     */
+<i>116</i>&nbsp;    private int port;
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;    /**
+<i>119</i>&nbsp;     * In initialize all vars with default value
+<i>120</i>&nbsp;     */
+<b class="nc"><i>121</i>&nbsp;    public Client(){</b>
+<b class="nc"><i>122</i>&nbsp;        this.pingPeriod = 5;</b>
+<b class="nc"><i>123</i>&nbsp;        this.board = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>124</i>&nbsp;        this.workers=new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>125</i>&nbsp;        this.players = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>126</i>&nbsp;        resetMatch();</b>
+<b class="nc"><i>127</i>&nbsp;    }</b>
+<i>128</i>&nbsp;
+<i>129</i>&nbsp;    /**
+<i>130</i>&nbsp;     * In initialize board, workers and players
+<i>131</i>&nbsp;     */
+<i>132</i>&nbsp;    public void resetMatch(){
+<b class="nc"><i>133</i>&nbsp;        this.board.clear();</b>
+<b class="nc"><i>134</i>&nbsp;        for(int i=0; i&lt;5; i++){</b>
+<b class="nc"><i>135</i>&nbsp;            for(int j=0; j&lt;5; j++)</b>
+<b class="nc"><i>136</i>&nbsp;                board.add(new SnapCell(i,j,0));</b>
+<i>137</i>&nbsp;        }
+<b class="nc"><i>138</i>&nbsp;        this.workers.clear();</b>
+<b class="nc"><i>139</i>&nbsp;        this.players.clear();</b>
+<b class="nc"><i>140</i>&nbsp;    }</b>
+<i>141</i>&nbsp;
+<i>142</i>&nbsp;    /**
+<i>143</i>&nbsp;     * List of players
+<i>144</i>&nbsp;     * @return
+<i>145</i>&nbsp;     */
+<b class="nc"><i>146</i>&nbsp;    public List&lt;SnapPlayer&gt; getPlayers(){ return players; }</b>
+<i>147</i>&nbsp;
+<i>148</i>&nbsp;    /**
+<i>149</i>&nbsp;     * The view CLI or GUI
+<i>150</i>&nbsp;     * @return
+<i>151</i>&nbsp;     */
+<b class="nc"><i>152</i>&nbsp;    public ViewInterface getView() { return view; }</b>
+<i>153</i>&nbsp;
+<i>154</i>&nbsp;    /**
+<i>155</i>&nbsp;     * The view CLI or GUI
+<i>156</i>&nbsp;     * @param view
+<i>157</i>&nbsp;     */
+<b class="nc"><i>158</i>&nbsp;    public void setView(ViewInterface view) { this.view = view; }</b>
+<i>159</i>&nbsp;
+<i>160</i>&nbsp;    /**
+<i>161</i>&nbsp;     * The flag is used to print the board after a persistence event
+<i>162</i>&nbsp;     * @param mustPrint
+<i>163</i>&nbsp;     */
+<b class="nc"><i>164</i>&nbsp;    public void setMustPrint(boolean mustPrint){ this.mustPrint=mustPrint; }</b>
+<i>165</i>&nbsp;
+<i>166</i>&nbsp;    /**
+<i>167</i>&nbsp;     * The board getter
+<i>168</i>&nbsp;     * @return
+<i>169</i>&nbsp;     */
+<b class="nc"><i>170</i>&nbsp;    public List&lt;SnapCell&gt; getBoard() { return board; }</b>
+<i>171</i>&nbsp;
+<i>172</i>&nbsp;    /**
+<i>173</i>&nbsp;     * The workers getter
+<i>174</i>&nbsp;     * @return
+<i>175</i>&nbsp;     */
+<b class="nc"><i>176</i>&nbsp;    public List&lt;SnapWorker&gt; getWorkers() { return workers; }</b>
+<i>177</i>&nbsp;
+<i>178</i>&nbsp;    /**
+<i>179</i>&nbsp;     * The ip setter
+<i>180</i>&nbsp;     * @param ip
+<i>181</i>&nbsp;     */
+<b class="nc"><i>182</i>&nbsp;    public void setIp(String ip){ this.ip = ip; }</b>
+<i>183</i>&nbsp;
+<i>184</i>&nbsp;    /**
+<i>185</i>&nbsp;     * The port setter
+<i>186</i>&nbsp;     * @param port
+<i>187</i>&nbsp;     */
+<b class="nc"><i>188</i>&nbsp;    public void setPort(int port){ this.port=port; }</b>
+<i>189</i>&nbsp;
+<i>190</i>&nbsp;    /**
+<i>191</i>&nbsp;     * My username getter
+<i>192</i>&nbsp;     * @return
+<i>193</i>&nbsp;     */
+<b class="nc"><i>194</i>&nbsp;    public String getUsername(){ return this.username; }</b>
+<i>195</i>&nbsp;
+<i>196</i>&nbsp;    /**
+<i>197</i>&nbsp;     * My username setter
+<i>198</i>&nbsp;     * @param username
+<i>199</i>&nbsp;     */
+<b class="nc"><i>200</i>&nbsp;    public void setUsername(String username){ this.username=username; }</b>
+<i>201</i>&nbsp;
+<i>202</i>&nbsp;    /**
+<i>203</i>&nbsp;     * The continueReading getter
+<i>204</i>&nbsp;     * @return
+<i>205</i>&nbsp;     */
+<b class="nc"><i>206</i>&nbsp;    public boolean getContinueReading(){ return continueReading; }</b>
+<i>207</i>&nbsp;
+<i>208</i>&nbsp;    /**
+<i>209</i>&nbsp;     * The board setter
+<i>210</i>&nbsp;     * @param board
+<i>211</i>&nbsp;     */
+<b class="nc"><i>212</i>&nbsp;    public void setBoard(List&lt;SnapCell&gt; board){  this.board = board; }</b>
+<i>213</i>&nbsp;
+<i>214</i>&nbsp;    /**
+<i>215</i>&nbsp;     * Workers setter
+<i>216</i>&nbsp;     * @param workers
+<i>217</i>&nbsp;     */
+<b class="nc"><i>218</i>&nbsp;    public void setWorkers(List&lt;SnapWorker&gt; workers){ this.workers = workers; }</b>
+<i>219</i>&nbsp;
+<i>220</i>&nbsp;    /**
+<i>221</i>&nbsp;     * The current player getter
+<i>222</i>&nbsp;     * @return
+<i>223</i>&nbsp;     */
+<b class="nc"><i>224</i>&nbsp;    public String getCurrentPlayer(){ return currentPlayer; }</b>
+<i>225</i>&nbsp;
+<i>226</i>&nbsp;    /**
+<i>227</i>&nbsp;     * The current player setter
+<i>228</i>&nbsp;     * @param currentPlayer
+<i>229</i>&nbsp;     */
+<b class="nc"><i>230</i>&nbsp;    public void setCurrentPlayer(String currentPlayer){ this.currentPlayer=currentPlayer; }</b>
+<i>231</i>&nbsp;
+<i>232</i>&nbsp;    /**
+<i>233</i>&nbsp;     * It returns my player from players collection
+<i>234</i>&nbsp;     * @return
+<i>235</i>&nbsp;     */
+<i>236</i>&nbsp;    public SnapPlayer getMyPlayer(){
+<b class="nc"><i>237</i>&nbsp;        for(SnapPlayer sp : getPlayers())</b>
+<b class="nc"><i>238</i>&nbsp;            if(sp.name.equals(getUsername()))</b>
+<b class="nc"><i>239</i>&nbsp;                return sp;</b>
+<b class="nc"><i>240</i>&nbsp;        return null;</b>
+<i>241</i>&nbsp;    }
+<i>242</i>&nbsp;
+<i>243</i>&nbsp;    /**
+<i>244</i>&nbsp;     * It removes a worker from collection
+<i>245</i>&nbsp;     * @param snapWorkers
+<i>246</i>&nbsp;     */
+<i>247</i>&nbsp;    public void removeWorkers(List&lt;SnapWorker&gt; snapWorkers){
+<b class="nc"><i>248</i>&nbsp;        for(SnapWorker sw : snapWorkers)</b>
+<b class="nc"><i>249</i>&nbsp;            this.workers.remove(sw);</b>
+<b class="nc"><i>250</i>&nbsp;    }</b>
+<i>251</i>&nbsp;
+<i>252</i>&nbsp;    /**
+<i>253</i>&nbsp;     * It sets all the player of the collection
+<i>254</i>&nbsp;     * @param names
+<i>255</i>&nbsp;     */
+<i>256</i>&nbsp;    public void setPlayersByString(List&lt;String&gt; names){
+<i>257</i>&nbsp;        try{
+<b class="nc"><i>258</i>&nbsp;            this.players = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>259</i>&nbsp;            for (String name : names) {</b>
+<b class="nc"><i>260</i>&nbsp;                this.players.add(new SnapPlayer(name));</b>
+<b class="nc"><i>261</i>&nbsp;            }</b>
+<b class="nc"><i>262</i>&nbsp;        }catch (Exception e){</b>
+<b class="nc"><i>263</i>&nbsp;            System.exit(-1);</b>
+<b class="nc"><i>264</i>&nbsp;        }</b>
+<b class="nc"><i>265</i>&nbsp;    }</b>
+<i>266</i>&nbsp;
+<i>267</i>&nbsp;    /**
+<i>268</i>&nbsp;     * It sets all the player of the collection
+<i>269</i>&nbsp;     * @param players
+<i>270</i>&nbsp;     */
+<b class="nc"><i>271</i>&nbsp;    public void setPlayersBySnap(List&lt;SnapPlayer&gt; players){ this.players = players; }</b>
+<i>272</i>&nbsp;
+<i>273</i>&nbsp;    /**
+<i>274</i>&nbsp;     * It generates a 3 unique random chars string from &quot;ΓΔΘΛΠΣΦΨΩ&quot;
+<i>275</i>&nbsp;     * @return
+<i>276</i>&nbsp;     */
+<i>277</i>&nbsp;    public static String getRandomSymbol(){
+<b class="fc"><i>278</i>&nbsp;        final String GREEK = &quot;ΓΔΘΛΠΣΦΨΩ&quot;;</b>
+<i>279</i>&nbsp;        try {
+<b class="fc"><i>280</i>&nbsp;            StringBuilder ret = new StringBuilder();</b>
+<i>281</i>&nbsp;            String tmp;
+<b class="fc"><i>282</i>&nbsp;            while(ret.length()&lt;3){</b>
+<b class="fc"><i>283</i>&nbsp;                tmp = &quot;&quot;+GREEK.charAt(Math.abs(new Random().nextInt(GREEK.length())));</b>
+<b class="fc"><i>284</i>&nbsp;                if (!ret.toString().contains(tmp))</b>
+<b class="fc"><i>285</i>&nbsp;                    ret.append(tmp);</b>
+<i>286</i>&nbsp;            }
+<b class="fc"><i>287</i>&nbsp;            return ret.toString();</b>
+<b class="nc"><i>288</i>&nbsp;        } catch (Exception ex){</b>
+<b class="nc"><i>289</i>&nbsp;            LOGGER.log( Level.SEVERE, ex.toString(), ex );</b>
+<b class="nc"><i>290</i>&nbsp;            return &quot;*@%&quot;;</b>
+<i>291</i>&nbsp;        }
+<i>292</i>&nbsp;    }
+<i>293</i>&nbsp;
+<i>294</i>&nbsp;    /**
+<i>295</i>&nbsp;     * Main method, it basically starts the GUI, excepted if first element of args is &quot;CLI&quot;
+<i>296</i>&nbsp;     * @param args
+<i>297</i>&nbsp;     */
+<i>298</i>&nbsp;    public static void main(String[] args) {
+<b class="nc"><i>299</i>&nbsp;        String version = &quot;GUI&quot;;</b>
+<i>300</i>&nbsp;        //String version = &quot;CLI&quot;;
+<i>301</i>&nbsp;        boolean go;
+<i>302</i>&nbsp;
+<b class="nc"><i>303</i>&nbsp;        if(args.length == 1){</b>
+<b class="nc"><i>304</i>&nbsp;            version = args[0];</b>
+<b class="nc"><i>305</i>&nbsp;            args = new String[0];</b>
+<i>306</i>&nbsp;        }
+<i>307</i>&nbsp;
+<b class="nc"><i>308</i>&nbsp;        if(version.equalsIgnoreCase(&quot;CLI&quot;)){</b>
+<b class="nc"><i>309</i>&nbsp;            System.out.print(&quot;Connection to the server...&quot;);</b>
+<b class="nc"><i>310</i>&nbsp;            Client client = new Client();</b>
+<b class="nc"><i>311</i>&nbsp;            readParams(client);</b>
+<b class="nc"><i>312</i>&nbsp;            client.setView(new CLI(client,getRandomSymbol()));</b>
+<b class="nc"><i>313</i>&nbsp;            client.getView().displayFirstWindow();</b>
+<b class="nc"><i>314</i>&nbsp;        }</b>
+<b class="nc"><i>315</i>&nbsp;        else if(version.equalsIgnoreCase(&quot;GUI&quot;)){</b>
+<b class="nc"><i>316</i>&nbsp;            Application.launch(GUI.class, args);</b>
+<b class="nc"><i>317</i>&nbsp;        } else System.exit(-1);</b>
+<b class="nc"><i>318</i>&nbsp;    }</b>
+<i>319</i>&nbsp;
+<i>320</i>&nbsp;    /**
+<i>321</i>&nbsp;     * It start ping task
+<i>322</i>&nbsp;     */
+<i>323</i>&nbsp;    public void startPing(){
+<b class="nc"><i>324</i>&nbsp;        ping = new Timer();</b>
+<b class="nc"><i>325</i>&nbsp;        ping.scheduleAtFixedRate(new TimerPing(this), 0, pingPeriod*1000);</b>
+<b class="nc"><i>326</i>&nbsp;    }</b>
+<i>327</i>&nbsp;
+<i>328</i>&nbsp;    /**
+<i>329</i>&nbsp;     * It reads params from JSON config file
+<i>330</i>&nbsp;     * @param client
+<i>331</i>&nbsp;     */
+<i>332</i>&nbsp;    public static void readParams(Client client){
+<b class="nc"><i>333</i>&nbsp;        try (FileReader reader = new FileReader(&quot;resources&quot;+File.separator+&quot;config.json&quot;))</b>
+<i>334</i>&nbsp;        {
+<i>335</i>&nbsp;            // json read
+<b class="nc"><i>336</i>&nbsp;            JSONParser jsonParser = new JSONParser();</b>
+<i>337</i>&nbsp;            JSONObject config;
+<i>338</i>&nbsp;
+<i>339</i>&nbsp;            //Read JSON file
+<b class="nc"><i>340</i>&nbsp;            Object obj = jsonParser.parse(reader);</b>
+<b class="nc"><i>341</i>&nbsp;            config = (JSONObject) obj;</b>
+<i>342</i>&nbsp;
+<b class="nc"><i>343</i>&nbsp;            if(config != null){</b>
+<b class="nc"><i>344</i>&nbsp;                if (config.containsKey(&quot;port&quot;))</b>
+<b class="nc"><i>345</i>&nbsp;                    client.setPort(Integer.parseInt(config.get(&quot;port&quot;).toString()));</b>
+<b class="nc"><i>346</i>&nbsp;                if (config.containsKey(&quot;ip&quot;))</b>
+<b class="nc"><i>347</i>&nbsp;                    client.setIp(config.get(&quot;ip&quot;).toString());</b>
+<b class="nc"><i>348</i>&nbsp;                if (config.containsKey(&quot;pingPeriod&quot;))</b>
+<b class="nc"><i>349</i>&nbsp;                    client.pingPeriod = Integer.parseInt(config.get(&quot;pingPeriod&quot;).toString());</b>
+<b class="nc"><i>350</i>&nbsp;                if (config.containsKey(&quot;timeoutSocket&quot;))</b>
+<b class="nc"><i>351</i>&nbsp;                    client.timeoutSocket = Integer.parseInt(config.get(&quot;timeoutSocket&quot;).toString());</b>
+<i>352</i>&nbsp;            }
+<b class="nc"><i>353</i>&nbsp;        } catch (Exception e) {</b>
+<i>354</i>&nbsp;            // default params
+<b class="nc"><i>355</i>&nbsp;            client.setPort(1234);</b>
+<b class="nc"><i>356</i>&nbsp;            client.setIp(&quot;127.0.0.1&quot;);</b>
+<b class="nc"><i>357</i>&nbsp;        }</b>
+<b class="nc"><i>358</i>&nbsp;    }</b>
+<i>359</i>&nbsp;
+<i>360</i>&nbsp;    /**
+<i>361</i>&nbsp;     * It connects to server if possible
+<i>362</i>&nbsp;     * @return
+<i>363</i>&nbsp;     */
+<i>364</i>&nbsp;    public boolean connect() {
+<i>365</i>&nbsp;        try {
+<b class="nc"><i>366</i>&nbsp;            socket = new Socket(ip,port);</b>
+<b class="nc"><i>367</i>&nbsp;            socket.setSoTimeout(timeoutSocket*1000);</b>
+<b class="nc"><i>368</i>&nbsp;            out = new ObjectOutputStream(socket.getOutputStream());</b>
+<b class="nc"><i>369</i>&nbsp;            in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));</b>
+<b class="nc"><i>370</i>&nbsp;            startPing();</b>
+<b class="nc"><i>371</i>&nbsp;            ExecutorService executor = Executors.newCachedThreadPool();</b>
+<b class="nc"><i>372</i>&nbsp;            executor.submit(this);</b>
+<b class="nc"><i>373</i>&nbsp;            return true;</b>
+<b class="nc"><i>374</i>&nbsp;        } catch (IOException ex) {</b>
+<b class="nc"><i>375</i>&nbsp;            LOGGER.log( Level.CONFIG, &quot;Default address not valid (port:ip)&quot;, ex );</b>
+<b class="nc"><i>376</i>&nbsp;            return false;</b>
+<i>377</i>&nbsp;        }
+<i>378</i>&nbsp;    }
+<i>379</i>&nbsp;
+<i>380</i>&nbsp;    /**
+<i>381</i>&nbsp;     * The server task
+<i>382</i>&nbsp;     */
+<i>383</i>&nbsp;    @Override
+<i>384</i>&nbsp;    public void run() {
+<i>385</i>&nbsp;        try {
+<b class="nc"><i>386</i>&nbsp;            while (socket.isConnected() &amp;&amp; in != null) {</b>
+<b class="nc"><i>387</i>&nbsp;                ServerMessage msg = (ServerMessage) readFromServer();</b>
+<b class="nc"><i>388</i>&nbsp;                if(msg != null){</b>
+<i>389</i>&nbsp;                    // System.out.println(msg.toString());
+<b class="nc"><i>390</i>&nbsp;                    if(msg instanceof MovedServer){</b>
+<b class="nc"><i>391</i>&nbsp;                        for(SnapWorker worker : getWorkers()){</b>
+<b class="nc"><i>392</i>&nbsp;                            if(worker.name.equals(((MovedServer) msg).sw.name) &amp;&amp; worker.n == ((MovedServer) msg).sw.n){</b>
+<b class="nc"><i>393</i>&nbsp;                                worker.row = ((MovedServer) msg).sw.row;</b>
+<b class="nc"><i>394</i>&nbsp;                                worker.column = ((MovedServer) msg).sw.column;</b>
+<i>395</i>&nbsp;                            }
+<b class="nc"><i>396</i>&nbsp;                        }</b>
+<b class="nc"><i>397</i>&nbsp;                    }else if(msg instanceof BuiltServer){</b>
+<b class="nc"><i>398</i>&nbsp;                        for(SnapCell cell : getBoard()){</b>
+<b class="nc"><i>399</i>&nbsp;                            if(cell.toString().equals(((BuiltServer) msg).sc.toString())){</b>
+<b class="nc"><i>400</i>&nbsp;                                cell.level = ((BuiltServer) msg).sc.level;</b>
+<i>401</i>&nbsp;                            }
+<b class="nc"><i>402</i>&nbsp;                        }</b>
+<b class="nc"><i>403</i>&nbsp;                    }else if(msg instanceof CurrentStatusServer){</b>
+<b class="nc"><i>404</i>&nbsp;                        if(((CurrentStatusServer) msg).status.equals(Status.START))</b>
+<b class="nc"><i>405</i>&nbsp;                            currentPlayer = ((CurrentStatusServer) msg).player;</b>
+<b class="nc"><i>406</i>&nbsp;                        view.statusHandler((CurrentStatusServer) msg);</b>
+<b class="nc"><i>407</i>&nbsp;                    }else if(msg instanceof LobbyServer){</b>
+<b class="nc"><i>408</i>&nbsp;                        resetMatch();</b>
+<i>409</i>&nbsp;                    }
+<i>410</i>&nbsp;
+<b class="nc"><i>411</i>&nbsp;                    if(mustPrint &amp;&amp; !(msg instanceof ReConnectionServer)){</b>
+<b class="nc"><i>412</i>&nbsp;                        view.displayBoard();</b>
+<b class="nc"><i>413</i>&nbsp;                        mustPrint = false;</b>
+<i>414</i>&nbsp;                    }
+<i>415</i>&nbsp;
+<b class="nc"><i>416</i>&nbsp;                    continueReading = false;</b>
+<i>417</i>&nbsp;                    try {
+<b class="nc"><i>418</i>&nbsp;                        if (handler != null)</b>
+<b class="nc"><i>419</i>&nbsp;                            handler.join();</b>
+<b class="nc"><i>420</i>&nbsp;                    } catch (Exception ignored){}</b>
+<b class="nc"><i>421</i>&nbsp;                    continueReading = true;</b>
+<b class="nc"><i>422</i>&nbsp;                    if(msg instanceof ReConnectionServer || msg instanceof EasterEggServer){</b>
+<b class="nc"><i>423</i>&nbsp;                        msg.accept(view);</b>
+<i>424</i>&nbsp;                    } else {
+<b class="nc"><i>425</i>&nbsp;                        handler = new Thread(() -&gt; msg.accept(view));</b>
+<b class="nc"><i>426</i>&nbsp;                        handler.start();</b>
+<i>427</i>&nbsp;                    }
+<i>428</i>&nbsp;                }
+<b class="nc"><i>429</i>&nbsp;            }</b>
+<i>430</i>&nbsp;        }
+<b class="nc"><i>431</i>&nbsp;        catch (Exception ex){</b>
+<b class="nc"><i>432</i>&nbsp;            LOGGER.log( Level.SEVERE, ex.toString(), ex );</b>
+<b class="nc"><i>433</i>&nbsp;            System.exit(-1);</b>
+<b class="nc"><i>434</i>&nbsp;        }</b>
+<b class="nc"><i>435</i>&nbsp;    }</b>
+<i>436</i>&nbsp;
+<i>437</i>&nbsp;    /**
+<i>438</i>&nbsp;     * It resumes card choice after the easter egg
+<i>439</i>&nbsp;     * @param acs
+<i>440</i>&nbsp;     */
+<i>441</i>&nbsp;    public void runAfterEasterEgg(AvailableCardServer acs){
+<b class="nc"><i>442</i>&nbsp;        continueReading = false;</b>
+<i>443</i>&nbsp;        try {
+<b class="nc"><i>444</i>&nbsp;            if (handler != null)</b>
+<b class="nc"><i>445</i>&nbsp;                handler.join();</b>
+<b class="nc"><i>446</i>&nbsp;        } catch (Exception ignored){}</b>
+<b class="nc"><i>447</i>&nbsp;        continueReading = true;</b>
+<b class="nc"><i>448</i>&nbsp;        handler = new Thread(() -&gt; acs.accept(view));</b>
+<b class="nc"><i>449</i>&nbsp;        handler.start();</b>
+<b class="nc"><i>450</i>&nbsp;    }</b>
+<i>451</i>&nbsp;
+<i>452</i>&nbsp;    /**
+<i>453</i>&nbsp;     * It sends message to server
+<i>454</i>&nbsp;     * @param msg
+<i>455</i>&nbsp;     */
+<i>456</i>&nbsp;    public void sendMessage(ClientMessage msg){
+<b class="nc"><i>457</i>&nbsp;        if(out != null){</b>
+<i>458</i>&nbsp;            try {
+<b class="nc"><i>459</i>&nbsp;                out.writeObject(msg);</b>
+<b class="nc"><i>460</i>&nbsp;                out.flush();</b>
+<b class="nc"><i>461</i>&nbsp;                if(msg instanceof DisconnectionClient){</b>
+<b class="nc"><i>462</i>&nbsp;                    in.close();</b>
+<b class="nc"><i>463</i>&nbsp;                    out.close();</b>
+<b class="nc"><i>464</i>&nbsp;                    socket.close();</b>
+<i>465</i>&nbsp;                }
+<b class="nc"><i>466</i>&nbsp;            } catch (Exception ex) {</b>
+<i>467</i>&nbsp;                //LOGGER.log(Level.WARNING, &quot;Can&#39;t send &quot; + msg.toString(), ex);
+<b class="nc"><i>468</i>&nbsp;                view.close(true);</b>
+<b class="nc"><i>469</i>&nbsp;            }</b>
+<i>470</i>&nbsp;        }
+<b class="nc"><i>471</i>&nbsp;    }</b>
+<i>472</i>&nbsp;
+<i>473</i>&nbsp;    /**
+<i>474</i>&nbsp;     * It reads message from server
+<i>475</i>&nbsp;     * @return
+<i>476</i>&nbsp;     */
+<i>477</i>&nbsp;    protected Object readFromServer() {
+<b class="nc"><i>478</i>&nbsp;        Object obj = null;</b>
+<i>479</i>&nbsp;        do{
+<i>480</i>&nbsp;            try{
+<b class="nc"><i>481</i>&nbsp;                obj = in.readObject();</b>
+<b class="nc"><i>482</i>&nbsp;            } catch (Exception ex){</b>
+<i>483</i>&nbsp;                //LOGGER.log(Level.WARNING, &quot;Can&#39;t read ServerMessage&quot;, ex);
+<b class="nc"><i>484</i>&nbsp;                obj = null;</b>
+<b class="nc"><i>485</i>&nbsp;                view.close(true);</b>
+<b class="nc"><i>486</i>&nbsp;            }</b>
+<b class="nc"><i>487</i>&nbsp;        }while (obj != null &amp;&amp; (obj instanceof PingServer || !(obj instanceof ServerMessage)));</b>
+<b class="nc"><i>488</i>&nbsp;        return obj;</b>
+<i>489</i>&nbsp;    }
+<i>490</i>&nbsp;
+<i>491</i>&nbsp;    /**
+<i>492</i>&nbsp;     * It runs when there is a disconnection and stop the ping task
+<i>493</i>&nbsp;     */
+<i>494</i>&nbsp;    public void disconnectionHandler(){
+<i>495</i>&nbsp;        try{
+<b class="nc"><i>496</i>&nbsp;            ping.cancel();</b>
+<b class="nc"><i>497</i>&nbsp;        } catch (Exception ignored){}</b>
+<b class="nc"><i>498</i>&nbsp;    }</b>
+<i>499</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>

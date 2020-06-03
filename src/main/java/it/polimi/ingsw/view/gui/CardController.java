@@ -164,12 +164,12 @@ public class CardController extends DefaultController {
         textFieldName2.setLayoutY(10);
         textFieldName3.setLayoutY(10);
 
-        buttonSelected1.setLayoutY(425-225);
-        buttonSelected2.setLayoutY(425-225);
-        buttonSelected3.setLayoutY(425-225);
-        buttonGod1.setLayoutY(282-225);
-        buttonGod2.setLayoutY(282-225);
-        buttonGod3.setLayoutY(282-225);
+        buttonSelected1.setLayoutY(200);   /*(425-225)*/
+        buttonSelected2.setLayoutY(200);   /*(425-225)*/
+        buttonSelected3.setLayoutY(200);   /*(425-225)*/
+        buttonGod1.setLayoutY(57);    /*(282-225)*/
+        buttonGod2.setLayoutY(57);    /*(282-225)*/
+        buttonGod3.setLayoutY(57);    /*(282-225)*/
 
         buttonSend.setLayoutY(425);
         buttonSend.setLayoutX(gui.sceneWidth/2-buttonSend.getPrefWidth()/2);
@@ -252,7 +252,7 @@ public class CardController extends DefaultController {
      * set the god podium to the chosen god
      * @param b the button chosen
      * @param newValue a flag
-     * @param j #FIXME
+     * @param j the card chosen
      */
     public void setPodium(Button b, boolean newValue, int j){
         String[] splitted;

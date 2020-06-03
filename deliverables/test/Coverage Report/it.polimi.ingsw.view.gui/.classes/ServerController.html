@@ -1,0 +1,375 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ServerController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.gui</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ServerController (it.polimi.ingsw.view.gui)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ServerController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 48)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ServerController$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ServerController$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ServerController$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ServerController$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ServerController$5</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 73)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.gui;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javafx.beans.value.ChangeListener;
+<i>4</i>&nbsp;import javafx.beans.value.ObservableValue;
+<i>5</i>&nbsp;import javafx.event.ActionEvent;
+<i>6</i>&nbsp;import javafx.fxml.FXML;
+<i>7</i>&nbsp;import javafx.scene.control.Button;
+<i>8</i>&nbsp;import javafx.scene.control.TextField;
+<i>9</i>&nbsp;import javafx.scene.image.Image;
+<i>10</i>&nbsp;
+<b class="nc"><i>11</i>&nbsp;public class ServerController extends DefaultController {</b>
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    @FXML
+<i>14</i>&nbsp;    public TextField ip1;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    @FXML
+<i>17</i>&nbsp;    public TextField ip2;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    @FXML
+<i>20</i>&nbsp;    public TextField ip3;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    @FXML
+<i>23</i>&nbsp;    public TextField ip4;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    @FXML
+<i>26</i>&nbsp;    public TextField port;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    @FXML
+<i>29</i>&nbsp;    public Button buttonConnect;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    @FXML
+<i>32</i>&nbsp;    public Button banner;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    /**
+<i>35</i>&nbsp;     * Regex for an IP address (ref. https://mkyong.com/regular-expressions/how-to-validate-ip-address-with-regular-expression/)
+<i>36</i>&nbsp;     */
+<i>37</i>&nbsp;    private static final String zeroTo255
+<i>38</i>&nbsp;            = &quot;([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])&quot;;
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    /**
+<i>41</i>&nbsp;     * set the background image
+<i>42</i>&nbsp;     * set textfields
+<i>43</i>&nbsp;     * set buttons, so they only accepts numeric values
+<i>44</i>&nbsp;     * from 0 to 255
+<i>45</i>&nbsp;     */
+<i>46</i>&nbsp;    @FXML
+<i>47</i>&nbsp;    @Override
+<i>48</i>&nbsp;    public void initialize(){
+<b class="nc"><i>49</i>&nbsp;        super.initialize();</b>
+<b class="nc"><i>50</i>&nbsp;        super.setBackground(new Image(&quot;/it.polimi.ingsw/view/gui/img/scene/bg_server.png&quot;));</b>
+<i>51</i>&nbsp;        // force the field to be numeric only
+<b class="nc"><i>52</i>&nbsp;        port.textProperty().addListener(new ChangeListener&lt;String&gt;() {</b>
+<i>53</i>&nbsp;            @Override
+<i>54</i>&nbsp;            public void changed(ObservableValue&lt;? extends String&gt; observable, String oldValue, String newValue) {
+<b class="nc"><i>55</i>&nbsp;                if (!newValue.matches(&quot;\\d{0,6}&quot;)) {</b>
+<b class="nc"><i>56</i>&nbsp;                    port.setText(oldValue);</b>
+<b class="nc"><i>57</i>&nbsp;                } else port.getStyleClass().remove(&quot;text-field.error&quot;);</b>
+<b class="nc"><i>58</i>&nbsp;            }</b>
+<i>59</i>&nbsp;        });
+<i>60</i>&nbsp;        // force the field to be ip address
+<b class="nc"><i>61</i>&nbsp;        ip1.textProperty().addListener(new ChangeListener&lt;String&gt;() {</b>
+<i>62</i>&nbsp;            @Override
+<i>63</i>&nbsp;            public void changed(ObservableValue&lt;? extends String&gt; observable, String oldValue, String newValue) {
+<b class="nc"><i>64</i>&nbsp;                if (!newValue.matches(zeroTo255)) {</b>
+<b class="nc"><i>65</i>&nbsp;                    ip1.setText(oldValue);</b>
+<b class="nc"><i>66</i>&nbsp;                } else ip1.getStyleClass().remove(&quot;text-field.error&quot;);</b>
+<b class="nc"><i>67</i>&nbsp;            }</b>
+<i>68</i>&nbsp;        });
+<b class="nc"><i>69</i>&nbsp;        ip2.textProperty().addListener(new ChangeListener&lt;String&gt;() {</b>
+<i>70</i>&nbsp;            @Override
+<i>71</i>&nbsp;            public void changed(ObservableValue&lt;? extends String&gt; observable, String oldValue, String newValue) {
+<b class="nc"><i>72</i>&nbsp;                if (!newValue.matches(zeroTo255)) {</b>
+<b class="nc"><i>73</i>&nbsp;                    ip2.setText(oldValue);</b>
+<b class="nc"><i>74</i>&nbsp;                } else ip2.getStyleClass().remove(&quot;text-field.error&quot;);</b>
+<b class="nc"><i>75</i>&nbsp;            }</b>
+<i>76</i>&nbsp;        });
+<b class="nc"><i>77</i>&nbsp;        ip3.textProperty().addListener(new ChangeListener&lt;String&gt;() {</b>
+<i>78</i>&nbsp;            @Override
+<i>79</i>&nbsp;            public void changed(ObservableValue&lt;? extends String&gt; observable, String oldValue, String newValue) {
+<b class="nc"><i>80</i>&nbsp;                if (!newValue.matches(zeroTo255)) {</b>
+<b class="nc"><i>81</i>&nbsp;                    ip3.setText(oldValue);</b>
+<b class="nc"><i>82</i>&nbsp;                } else ip3.getStyleClass().remove(&quot;text-field.error&quot;);</b>
+<b class="nc"><i>83</i>&nbsp;            }</b>
+<i>84</i>&nbsp;        });
+<b class="nc"><i>85</i>&nbsp;        ip4.textProperty().addListener(new ChangeListener&lt;String&gt;() {</b>
+<i>86</i>&nbsp;            @Override
+<i>87</i>&nbsp;            public void changed(ObservableValue&lt;? extends String&gt; observable, String oldValue, String newValue) {
+<b class="nc"><i>88</i>&nbsp;                if (!newValue.matches(zeroTo255)) {</b>
+<b class="nc"><i>89</i>&nbsp;                    ip4.setText(oldValue);</b>
+<b class="nc"><i>90</i>&nbsp;                } else ip4.getStyleClass().remove(&quot;text-field.error&quot;);</b>
+<b class="nc"><i>91</i>&nbsp;            }</b>
+<i>92</i>&nbsp;        });
+<i>93</i>&nbsp;
+<b class="nc"><i>94</i>&nbsp;        buttonConnect.setMinSize(200,114);</b>
+<b class="nc"><i>95</i>&nbsp;        buttonConnect.setMaxSize(200,114);</b>
+<b class="nc"><i>96</i>&nbsp;        buttonConnect.setPrefSize(200,114);</b>
+<b class="nc"><i>97</i>&nbsp;        buttonConnect.setMinSize(200,114);</b>
+<b class="nc"><i>98</i>&nbsp;        buttonConnect.setMaxSize(200,114);</b>
+<b class="nc"><i>99</i>&nbsp;        buttonConnect.setPrefSize(200,114);</b>
+<i>100</i>&nbsp;
+<b class="nc"><i>101</i>&nbsp;        banner.setMinSize(800,60);</b>
+<b class="nc"><i>102</i>&nbsp;        banner.setMaxSize(800,60);</b>
+<b class="nc"><i>103</i>&nbsp;        banner.setPrefSize(800,60);</b>
+<b class="nc"><i>104</i>&nbsp;        banner.setText(&quot;Server Unavailable, try again later or type a new address&quot;);</b>
+<b class="nc"><i>105</i>&nbsp;        banner.setVisible(true);</b>
+<b class="nc"><i>106</i>&nbsp;    }</b>
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;    /**
+<i>109</i>&nbsp;     * initialize buttons and textfields.
+<i>110</i>&nbsp;     */
+<i>111</i>&nbsp;    @Override
+<i>112</i>&nbsp;    public void setup(){
+<b class="nc"><i>113</i>&nbsp;        super.setup();</b>
+<b class="nc"><i>114</i>&nbsp;        buttonConnect.setLayoutX(gui.sceneWidth/2-100);</b>
+<b class="nc"><i>115</i>&nbsp;        buttonConnect.setLayoutX(gui.sceneWidth/2-100);</b>
+<i>116</i>&nbsp;
+<b class="nc"><i>117</i>&nbsp;        banner.setLayoutY(gui.sceneHeight-top.getPrefHeight()-center.getPrefHeight()-bottom.getPrefHeight()/2-banner.getPrefHeight()/2);</b>
+<b class="nc"><i>118</i>&nbsp;        banner.setLayoutX((gui.sceneWidth/2)-400);</b>
+<i>119</i>&nbsp;
+<b class="nc"><i>120</i>&nbsp;        setUpTextField(port);</b>
+<b class="nc"><i>121</i>&nbsp;        setUpTextField(ip1);</b>
+<b class="nc"><i>122</i>&nbsp;        setUpTextField(ip2);</b>
+<b class="nc"><i>123</i>&nbsp;        setUpTextField(ip3);</b>
+<b class="nc"><i>124</i>&nbsp;        setUpTextField(ip4);</b>
+<b class="nc"><i>125</i>&nbsp;    }</b>
+<i>126</i>&nbsp;
+<i>127</i>&nbsp;    /**
+<i>128</i>&nbsp;     * When pushed try to connect to server.
+<i>129</i>&nbsp;     * @param actionEvent
+<i>130</i>&nbsp;     */
+<i>131</i>&nbsp;    public void connection(ActionEvent actionEvent) {
+<b class="nc"><i>132</i>&nbsp;        tryConnect();</b>
+<b class="nc"><i>133</i>&nbsp;    }</b>
+<i>134</i>&nbsp;
+<i>135</i>&nbsp;    /**
+<i>136</i>&nbsp;     * When the player type enter on port, try to set value.
+<i>137</i>&nbsp;     * @param actionEvent
+<i>138</i>&nbsp;     */
+<i>139</i>&nbsp;    public void portOnAction(ActionEvent actionEvent) {
+<b class="nc"><i>140</i>&nbsp;        tryConnect();</b>
+<b class="nc"><i>141</i>&nbsp;    }</b>
+<i>142</i>&nbsp;
+<i>143</i>&nbsp;    /**
+<i>144</i>&nbsp;     * When the player type enter on ip3, try to set value.
+<i>145</i>&nbsp;     * @param actionEvent
+<i>146</i>&nbsp;     */
+<i>147</i>&nbsp;    public void ip1OnAction(ActionEvent actionEvent) {
+<b class="nc"><i>148</i>&nbsp;        tryConnect();</b>
+<b class="nc"><i>149</i>&nbsp;    }</b>
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;    /**
+<i>152</i>&nbsp;     * When called it try to connect to server: ip1.ip2.ip3.ip4
+<i>153</i>&nbsp;     * on port wrote by the user.
+<i>154</i>&nbsp;     * if not able to establish a connection it shows a warning
+<i>155</i>&nbsp;     * message on banner.
+<i>156</i>&nbsp;     */
+<i>157</i>&nbsp;    public void tryConnect(){
+<b class="nc"><i>158</i>&nbsp;        this.gui.getClient().setIp(ip1.getText()+&#39;.&#39;+ip2.getText()+&#39;.&#39;+ip3.getText()+&#39;.&#39;+ip4.getText());</b>
+<b class="nc"><i>159</i>&nbsp;        this.gui.getClient().setPort(Integer.parseInt(port.getText()));</b>
+<b class="nc"><i>160</i>&nbsp;        if(!this.gui.getClient().connect()){</b>
+<b class="nc"><i>161</i>&nbsp;            banner.setText(&quot;New Server Unreachable, try again later or type a new address&quot;);</b>
+<i>162</i>&nbsp;
+<i>163</i>&nbsp;        }
+<b class="nc"><i>164</i>&nbsp;    }</b>
+<i>165</i>&nbsp;
+<i>166</i>&nbsp;    /**
+<i>167</i>&nbsp;     * When the player type enter on ip2, try to set value.
+<i>168</i>&nbsp;     * @param actionEvent
+<i>169</i>&nbsp;     */
+<i>170</i>&nbsp;    public void ip2OnAction(ActionEvent actionEvent) {
+<b class="nc"><i>171</i>&nbsp;        tryConnect();</b>
+<b class="nc"><i>172</i>&nbsp;    }</b>
+<i>173</i>&nbsp;
+<i>174</i>&nbsp;    /**
+<i>175</i>&nbsp;     * When the player type enter on ip3, try to set value.
+<i>176</i>&nbsp;     * @param actionEvent
+<i>177</i>&nbsp;     */
+<i>178</i>&nbsp;    public void ip3OnAction(ActionEvent actionEvent) {
+<b class="nc"><i>179</i>&nbsp;        tryConnect();</b>
+<b class="nc"><i>180</i>&nbsp;    }</b>
+<i>181</i>&nbsp;
+<i>182</i>&nbsp;
+<i>183</i>&nbsp;    /**
+<i>184</i>&nbsp;     * When the player type enter on ip4, try to set value.
+<i>185</i>&nbsp;     * @param actionEvent
+<i>186</i>&nbsp;     */
+<i>187</i>&nbsp;    public void ip4OnAction(ActionEvent actionEvent) {
+<b class="nc"><i>188</i>&nbsp;        tryConnect();</b>
+<b class="nc"><i>189</i>&nbsp;    }</b>
+<i>190</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-01 11:53</div>
+</div>
+</body>
+</html>

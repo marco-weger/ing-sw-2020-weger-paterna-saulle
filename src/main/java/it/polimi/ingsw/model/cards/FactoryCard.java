@@ -9,6 +9,7 @@ public class FactoryCard {
     /**
      * Factory pattern used to manage safely card generation
      * @param cardName name of the card you want to instance
+     * @param vv the client's virtual view
      * @return istance of the card
      */
     public static Card getCard(CardName cardName, VirtualView vv){

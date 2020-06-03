@@ -1,10 +1,8 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.commons.clientmessages.ModeChoseClient;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -25,9 +23,6 @@ public class LobbyController extends DefaultController {
 
     @FXML
     public Button buttonLobby;
-    
-    //@FXML
-    //public Button newGame;
 
     @FXML
     public ImageView imageLobby;
@@ -76,7 +71,7 @@ public class LobbyController extends DefaultController {
         buttonLobby.setPadding(new Insets(30, 0, 0, 0));
         imageLobby.setLayoutX(gui.sceneWidth/2-203);
         imageLobby.setLayoutY(65);
-        buttonLobby.setLayoutX(950/2-225);
+        buttonLobby.setLayoutX(250);  /*(950/2-225)*/
         buttonLobby.setLayoutY(95);
         buttonLobby.setFont(f);
 
