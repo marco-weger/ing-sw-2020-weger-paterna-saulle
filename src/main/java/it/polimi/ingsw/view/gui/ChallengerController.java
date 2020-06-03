@@ -70,6 +70,8 @@ public class ChallengerController extends DefaultController {
     @FXML
     public Button banner;
 
+    boolean eeBlock = false;
+
     int count = 0;
 
     List<CardName> selected;
@@ -310,6 +312,7 @@ public class ChallengerController extends DefaultController {
             banner.setVisible(true);
             buttonSend.setDisable(true);
             buttonClear.setDisable(true);
+            eeBlock = true;
         }
     }
 
@@ -360,7 +363,7 @@ public class ChallengerController extends DefaultController {
      * @param actionEvent 5 click on Something in this page
      */
     public void easterEgg(ActionEvent actionEvent) {
-        if(++eeCounter==5)
+        if(++eeCounter==5 && !eeBlock)
             gui.getClient().sendMessage(new EasterEggClient(gui.getClient().getUsername()));
     }
 

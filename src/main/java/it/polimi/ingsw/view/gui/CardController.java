@@ -54,6 +54,8 @@ public class CardController extends DefaultController {
 
     private int eeCounter;
 
+    boolean eeBlock = false;
+
     @FXML
     public Button banner;
 
@@ -348,6 +350,7 @@ public class CardController extends DefaultController {
             gui.getClient().sendMessage(new PlayerChoseClient(gui.getClient().getUsername(), cardName));
             banner.setVisible(true);
             buttonSend.setDisable(true);
+            eeBlock = true;
         }
         eeCounter=0;
     }
@@ -358,7 +361,7 @@ public class CardController extends DefaultController {
      * @param actionEvent just click 5 times something
      */
     public void easterEgg(ActionEvent actionEvent) {
-        if(++eeCounter==5)
+        if(++eeCounter==5 && !eeBlock)
             gui.getClient().sendMessage(new EasterEggClient(gui.getClient().getUsername()));
     }
 
