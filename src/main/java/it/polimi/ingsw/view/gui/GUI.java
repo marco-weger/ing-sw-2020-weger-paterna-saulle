@@ -375,7 +375,8 @@ public class GUI extends Application implements ViewInterface {
         }
 
         if(message.status.equals(Status.START) || message.status.equals(Status.WORKER_CHOICE)){
-            startTimer(message.timer);
+            if(!client.getMyPlayer().loser)
+                startTimer(message.timer);
         }
     }
 
