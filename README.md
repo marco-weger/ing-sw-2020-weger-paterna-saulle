@@ -9,14 +9,14 @@ This project was made between March and July 2020 as our final thesis project at
 
 
 ## Quick Index
-* [requirements](#Requirements)
-* [get jar files](#Get-JARs)
-* [json config](#Configuration)
-* [start Client](#Start-Client)
-* [start Server](#Start-Server)
-* [specification covered](#Specification-Covered)
-* [testing](#Testing)
-* [server status](#Santorini-Official-Server)
+* [Requirements](#Requirements)
+* [Get jar files](#Get-JARs)
+* [JSON config](#Configuration)
+* [Start Client](#Start-Client)
+* [Start Server](#Start-Server)
+* [Specification covered](#Specification-Covered)
+* [Testing](#Testing)
+* [Server status](#Santorini-Official-Server)
 
 
 ## Requirements
