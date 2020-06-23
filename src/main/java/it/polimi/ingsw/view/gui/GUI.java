@@ -964,12 +964,14 @@ public class GUI extends Application implements ViewInterface {
      * @param val ask to Marco
      */
     public void setTimerText(long val){
+        System.out.print(val + " - ");
         Platform.runLater(() -> {
             try{
                 FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
                 DefaultController controller = loader.getController();
                 if(controller instanceof BoardController){
                     if(((BoardController) controller).getShowTimer()){
+                        System.out.println("OK");
                         ((BoardController) controller).buttonTimer.setVisible(true);
                         ((BoardController) controller).buttonTimer.setText(val+"");
                     }
@@ -1006,6 +1008,7 @@ public class GUI extends Application implements ViewInterface {
             FXMLLoader loader = (FXMLLoader) primaryStage.getScene().getUserData();
             DefaultController controller = loader.getController();
             if(controller instanceof BoardController){
+                ((BoardController) controller).showTimer();
                 try{
                     if(timeOut != null)
                         timeOut.shutdown();
