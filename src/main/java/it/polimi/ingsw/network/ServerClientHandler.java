@@ -250,7 +250,7 @@ public class ServerClientHandler implements Runnable {
                             }
                             else if(virtualView != null)
                                 virtualView.notify(object);
-                            else System.out.println("ERROR VIRTUAL VIEW");
+                            //else System.out.println("ERROR VIRTUAL VIEW");
                         }
                     } catch (Exception e) {
                         if(virtualView != null && !virtualView.getCurrentStatus().equals(Status.END)) // && im not a loser
