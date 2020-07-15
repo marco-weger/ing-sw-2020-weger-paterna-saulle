@@ -958,7 +958,7 @@ public class BoardController extends DefaultController {
         Platform.runLater(() -> {
             //400
             banner.setLayoutX((buttonTimer.getLayoutX()+buttonTimer.getPrefWidth()+yes.getLayoutX())/2-400);
-            banner.setText("Do you want to use you God ability?");
+            banner.setText("Do you want to use your God ability?");
         });
         questionFlag = true;
     }
