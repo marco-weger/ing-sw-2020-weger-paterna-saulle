@@ -3,6 +3,7 @@
 # Final project of Software Engineering - 2020
 
 This project was made between March and July 2020 as our final thesis project at Politecnico di Milano. <br>
+Rated with **30 cum laude** on 12 July 2020. <br> <br>
  **Marco Weger** ([@marco-weger](https://github.com/marco-weger)) <br>
  **Francesco Paterna** ([@FrancescoPaterna](https://github.com/FrancescoPaterna)) <br>
  **Giulio Saulle** ([@aGiulioSaulle](https://github.com/GiulioSaulle))
