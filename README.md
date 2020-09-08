@@ -114,7 +114,7 @@ Powered by Microsoft Azure
 | Server |State| State | Turn Timer |
 |:-------|:-----|:------|:-----:|
 | 52.136.XXX.XXX |🇮🇹|[![GREEN](https://placehold.it/15/44bb44/44bb44)](#) &nbsp; Ready To Game| 03:00 |
-| 40.84.XXX.XXX |🇺🇸|[![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) &nbsp; On Request| 03:00 |
+| 40.84.XXX.XXX |🇺🇸|[![RED](https://placehold.it/15/ffdd00/ffdd00)](#) &nbsp; Offline| 03:00 |
 
 
 ![Santorini logo](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/src/main/resources/it.polimi.ingsw/view/gui/img/scene/bottom.png)
