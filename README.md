@@ -113,7 +113,7 @@ Powered by Microsoft Azure
 
 | Server |State| State | Turn Timer |
 |:-------|:-----|:------|:-----:|
-| 52.136.XXX.XXX |🇮🇹|[![YELLOW](https://placehold.it/15/ffdd00/ffdd00)](#) &nbsp; On Request (Contact the Devs) | 03:00 |
+| 52.136.XXX.XXX|🇮🇹|[![RED](https://placehold.it/15/f03c15/f03c15)](#) &nbsp; Offline| 03:00 |
 | 40.84.XXX.XXX |🇺🇸|[![RED](https://placehold.it/15/f03c15/f03c15)](#) &nbsp; Offline| 03:00 |
 
 
