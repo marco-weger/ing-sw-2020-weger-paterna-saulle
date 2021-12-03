@@ -88,13 +88,13 @@ When reconnecting, remember to vote for the same map the game was being played o
 ## Specification Covered
 | Functionality | State | Description |
 |:-----------------------|:-------------------|:------------------------------------|
-| Basic rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | 2 players mode with 5 cards implemented|
-| Complete rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | 2 players and 3 players mode with 9 cards implemented | 
-| Socket | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | Network Socket Implemented |
-| CLI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | Command Line Interface |
-| GUI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | Graphical User Interface |
-| Multiple games | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | The game allows players to join in a new lobby at the end of a match|
-| Persistence | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) | Game status saved on disk. The game can resume after a server or client crash |
+| Basic rules | [![GREEN](http://placehold.it/15/44bb44/44bb44)](#) | 2 players mode with 5 cards implemented|
+| Complete rules | [![GREEN](http://placehold.it/15/44bb44/44bb44)](#) | 2 players and 3 players mode with 9 cards implemented | 
+| Socket | [![GREEN](http://placehold.it/15/44bb44/44bb44)](#) | Network Socket Implemented |
+| CLI | [![GREEN](http://placehold.it/15/44bb44/44bb44)](#) | Command Line Interface |
+| GUI | [![GREEN](http://placehold.it/15/44bb44/44bb44)](#) | Graphical User Interface |
+| Multiple games | [![GREEN](http://placehold.it/15/44bb44/44bb44)](#) | The game allows players to join in a new lobby at the end of a match|
+| Persistence | [![GREEN](http://placehold.it/15/44bb44/44bb44)](#) | Game status saved on disk. The game can resume after a server or client crash |
 
 <!--
 [![RED](https://placehold.it/15/f03c15/f03c15)](#)
@@ -113,8 +113,8 @@ Powered by Microsoft Azure
 
 | Server |State| State | Turn Timer |
 |:-------|:-----|:------|:-----:|
-| 52.136.XXX.XXX|🇮🇹|[![RED](https://placehold.it/15/f03c15/f03c15)](#) &nbsp; Offline| 03:00 |
-| 40.84.XXX.XXX |🇺🇸|[![RED](https://placehold.it/15/f03c15/f03c15)](#) &nbsp; Offline| 03:00 |
+| 52.136.XXX.XXX|🇮🇹|[![RED](http://placehold.it/15/f03c15/f03c15)](#) &nbsp; Offline| 03:00 |
+| 40.84.XXX.XXX |🇺🇸|[![RED](http://placehold.it/15/f03c15/f03c15)](#) &nbsp; Offline| 03:00 |
 
 
 ![Santorini logo](https://github.com/marco-weger/ing-sw-2020-weger-paterna-saulle/blob/master/src/main/resources/it.polimi.ingsw/view/gui/img/scene/bottom.png)
